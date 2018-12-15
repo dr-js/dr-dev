@@ -1,0 +1,47 @@
+{
+  "private": true,
+  "name": "dr-dev",
+  "version": "0.0.0",
+  "description": "A collection of dev functions",
+  "author": "dr-js",
+  "license": "MIT",
+  "keywords": [
+    "Dr",
+    "Dr-js",
+    "JavaScript"
+  ],
+  "repository": "github:dr-js/dr-dev",
+  "bin": "bin/index.js",
+  "scripts": {
+    "// script ======================": "",
+    "script-base": "babel-node ./script quiet",
+    "script-pack": "babel-node ./script quiet pack",
+    "script-publish": "babel-node ./script pack publish",
+    "script-publish-dev": "babel-node ./script pack publish-dev",
+    "script-generate-spec": "babel-node ./script/generateSpec",
+    "script-pack-package": "babel-node ./script verbose pack pack-package unsafe",
+    "script-pack-package-publish": "babel-node ./script pack pack-package publish",
+    "script-pack-package-publish-dev": "babel-node ./script pack pack-package publish-dev",
+    "// build =======================": "",
+    "build-library": "babel ./source --out-dir ./output-gitignore/library",
+    "build-library-dev": "cross-env BABEL_ENV=dev npm run build-library -- --watch",
+    "build-module": "cross-env BABEL_ENV=module babel ./source --out-dir ./output-gitignore/module",
+    "build-bin": "babel ./source-bin --out-dir ./output-gitignore/bin",
+    "build-bin-dev": "cross-env BABEL_ENV=dev npm run build-bin -- --watch",
+    "// =============================": "",
+    "check-outdated": "node ./output-gitignore/bin -C -i ./resource",
+    "check-outdated-self": "node ./output-gitignore/bin -C -i ./package.json",
+    "prepack": "echo \"Error: pack with script-*\" && exit 1"
+  },
+  "engines": {
+    "node": "^8.12 || >=10.12",
+    "npm": ">=6"
+  },
+  "dependencies": {
+    "dr-js": "^0.18.0 || ^0.18.1-dev"
+  },
+  "devDependencies": {
+    "dr-dev-babel": "0.0.0"
+  },
+  "sideEffects": false
+}

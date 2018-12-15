@@ -1,0 +1,13 @@
+{
+  "__EXTRA__": {
+    "name": "dr-dev-babel-react",
+    "description": "ESLint + Babel + Mocha + React"
+  },
+  "IMPORT": [
+    "base",
+    "../eslint/[react]",
+    "../babel/[react]",
+    "../mocha",
+    "../react"
+  ]
+}

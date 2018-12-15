@@ -1,0 +1,7 @@
+{
+  "IMPORT": [ "../" ],
+  "INSTALL": [ "babel.config.js" ],
+  "dependencies": {
+    "@babel/preset-react": "^7.0.0"
+  }
+}

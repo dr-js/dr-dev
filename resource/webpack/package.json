@@ -1,0 +1,14 @@
+{
+  "INSTALL": [ { "from": "webpack.js", "to": "script/webpack.js" } ],
+  "scripts": {
+    "// build =======================": "",
+    "build-library": "babel-node ./script/webpack.js production profile",
+    "build-library-dev": "babel-node ./script/webpack.js development watch",
+    "// =============================": "",
+    "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json"
+  },
+  "dependencies": {
+    "webpack": "^4.27.1",
+    "babel-loader": "^8.0.4"
+  }
+}

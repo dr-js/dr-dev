@@ -1,0 +1,17 @@
+{
+  "INSTALL": [ "babel.config.js" ],
+  "scripts": {
+    "// build =======================": "",
+    "build-library": "babel ./source --out-dir ./library",
+    "build-library-dev": "cross-env BABEL_ENV=dev npm run build-library -- --watch"
+  },
+  "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/cli": "^7.2.0",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/plugin-proposal-class-properties": "^7.2.1",
+    "babel-plugin-minify-replace": "^0.5.0",
+    "babel-plugin-module-resolver": "^3.1.1"
+  }
+}

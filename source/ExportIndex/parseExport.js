@@ -1,0 +1,97 @@
+import { sep } from 'path'
+import { readFileSync } from 'fs'
+import { parse as parseAST } from '@babel/parser'
+import { compareString } from 'dr-js/module/common/compare'
+import { objectSortKey } from 'dr-js/module/common/mutable/Object'
+import { getPathStat, getPathTypeFromStat } from 'dr-js/module/node/file/File'
+import { getDirectoryInfoTree, walkDirectoryInfoTree } from 'dr-js/module/node/file/Directory'
+
+const getExportListFromParsedAST = (fileString, sourceFilename, parserPluginList) => {
+  const resultAST = parseAST(fileString, {
+    sourceFilename,
+    sourceType: 'module',
+    plugins: parserPluginList || [
+      'objectRestSpread',
+      'classProperties',
+      'exportDefaultFrom',
+      'exportNamespaceFrom',
+      'jsx'
+    ]
+  })
+  const exportNodeList = resultAST.program.body.filter(({ type }) => type === 'ExportNamedDeclaration')
+  return [].concat(...exportNodeList.map(({ specifiers, declaration }) => !declaration ? specifiers.map(({ exported: { name } }) => name)
+    : declaration.declarations ? declaration.declarations.map(({ id: { name } }) => name)
+      : [ declaration.id.name ]
+  ))
+}
+
+const sortSourceRouteMap = (sourceRouteMap) => {
+  Object.values(sourceRouteMap).forEach(({ routeList, directoryList, fileList }) => {
+    directoryList.sort(compareString)
+    fileList.sort(({ name: a }, { name: b }) => compareString(a, b))
+    fileList.forEach(({ exportList }) => exportList.sort(compareString))
+  })
+  objectSortKey(sourceRouteMap)
+  return sourceRouteMap
+}
+
+const createExportParser = ({ parserPluginList, logger }) => {
+  let sourceRouteMap = {
+    // 'source/route': {
+    //   routeList: [ 'source' ],
+    //   directoryList: [ /* name */ ],
+    //   fileList: [ /* { name, exportList: [ name ] } */ ]
+    // }
+  }
+
+  const getRoute = (routeList) => {
+    const key = routeList.join('/')
+    if (!sourceRouteMap[ key ]) sourceRouteMap[ key ] = { routeList, directoryList: [], fileList: [] }
+    return sourceRouteMap[ key ]
+  }
+
+  const parseExport = async (path) => {
+    const fileStat = await getPathStat(path)
+    const routeList = path.split(sep)
+    const name = routeList.pop()
+
+    if (fileStat.isDirectory()) {
+      logger.devLog(`[directory] ${path}`)
+      getRoute(routeList).directoryList.push(name)
+    } else if (fileStat.isFile() && name.endsWith('.js')) {
+      const fileString = readFileSync(path, { encoding: 'utf8' })
+      const exportList = getExportListFromParsedAST(fileString, path, parserPluginList)
+
+      logger.devLog(`[file] ${path}`)
+      if (!exportList.length) return
+
+      getRoute(routeList).fileList.push({ name: name.slice(0, -3), exportList }) // remove `.js` from name
+      logger.devLog(`  export [${exportList.length}]: ${exportList.join(', ')}`)
+    } else logger.devLog(`[skipped] ${path} (${getPathTypeFromStat(fileStat)})`)
+  }
+
+  return {
+    parseExport,
+    getSourceRouteMap: () => {
+      const result = sortSourceRouteMap(sourceRouteMap)
+      sourceRouteMap = {}
+      return result
+    }
+  }
+}
+
+const collectSourceRouteMap = async ({
+  pathRootList = [],
+  pathInfoFilter = (info) => true, // return true to keep
+  logger
+}) => {
+  const { parseExport, getSourceRouteMap } = createExportParser({ logger })
+  const parseWalkExport = (info) => pathInfoFilter(info) && parseExport(info.path)
+  for (const pathRoot of pathRootList) await walkDirectoryInfoTree(await getDirectoryInfoTree(pathRoot), parseWalkExport)
+  return getSourceRouteMap()
+}
+
+export {
+  createExportParser,
+  collectSourceRouteMap
+}

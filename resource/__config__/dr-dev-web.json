@@ -1,0 +1,13 @@
+{
+  "__EXTRA__": {
+    "name": "dr-dev-web",
+    "description": "Webpack + ESLint + Babel + Mocha"
+  },
+  "IMPORT": [
+    "base",
+    "../eslint",
+    "../babel",
+    "../mocha",
+    "../webpack"
+  ]
+}

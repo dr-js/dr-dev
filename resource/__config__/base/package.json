@@ -1,0 +1,36 @@
+{
+  "INSTALL": [
+    "sample.gitignore",
+    "README.md",
+    { "from": "index.js", "to": "script/index.js" },
+    { "from": "generateSpec.js", "to": "script/generateSpec.js" }
+  ],
+  "name": "",
+  "version": "",
+  "author": "dr-js",
+  "license": "MIT",
+  "description": "",
+  "keywords": [
+    "Dr",
+    "Dr-js",
+    "JavaScript"
+  ],
+  "repository": "github:dr-js/dev-dep",
+  "scripts": {
+    "// script ======================": "",
+    "script-base": "babel-node ./script quiet",
+    "script-pack": "babel-node ./script quiet pack",
+    "script-publish": "babel-node ./script pack publish",
+    "script-publish-dev": "babel-node ./script pack publish-dev",
+    "script-generate-spec": "babel-node ./script/generateSpec"
+  },
+  "engines": {
+    "node": "^8.12 || >=10.12",
+    "npm": ">=6"
+  },
+  "dependencies": {
+    "cross-env": "^5.2.0",
+    "terser": "^3.11.0"
+  },
+  "sideEffects": false
+}

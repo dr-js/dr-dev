@@ -1,0 +1,12 @@
+{
+  "__EXTRA__": {
+    "name": "dr-dev-babel",
+    "description": "ESLint + Babel + Mocha"
+  },
+  "IMPORT": [
+    "base",
+    "../eslint",
+    "../babel",
+    "../mocha"
+  ]
+}
