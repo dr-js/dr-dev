@@ -121,7 +121,7 @@
 <tr><td>babel-loader</td><td>^8.0.4</td></tr>
 <tr><td>babel-plugin-minify-replace</td><td>^0.5.0</td></tr>
 <tr><td>babel-plugin-module-resolver</td><td>^3.1.1</td></tr>
-<tr><td>babel-plugin-styled-components</td><td>^1.9.4</td></tr>
+<tr><td>babel-plugin-styled-components</td><td>^1.10.0</td></tr>
 <tr><td>cross-env</td><td>^5.2.0</td></tr>
 <tr><td>eslint</td><td>^5.10.0</td></tr>
 <tr><td>eslint-config-standard</td><td>^12.0.0</td></tr>
@@ -135,7 +135,7 @@
 <tr><td>prop-types</td><td>^15.6.2</td></tr>
 <tr><td>puppeteer</td><td>^1.11.0</td></tr>
 <tr><td>react</td><td>^16.6.3</td></tr>
-<tr><td>styled-components</td><td>^4.1.2</td></tr>
+<tr><td>styled-components</td><td>^4.1.3</td></tr>
 <tr><td>terser</td><td>^3.11.0</td></tr>
 <tr><td>webpack</td><td>^4.27.1</td></tr>
 </table>

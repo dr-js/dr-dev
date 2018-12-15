@@ -13,7 +13,7 @@ const processFileList = async ({ fileList, processor, rootPath = '', logger }) =
   let totalSizeSource = 0
   let totalSizeDelta = 0
   for (const filePath of fileList) {
-    const inputString = await readFileAsync(filePath, 'utf8')
+    const inputString = String(await readFileAsync(filePath))
     const outputString = await processor(inputString, filePath)
     const sizeSource = (await statAsync(filePath)).size
     let sizeOutput

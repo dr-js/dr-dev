@@ -12,7 +12,7 @@ const loadPackage = (pathInput, path, collect) => {
     devDependencies,
     peerDependencies,
     optionalDependencies
-  } = JSON.parse(readFileSync(path, 'utf8'))
+  } = JSON.parse(readFileSync(path))
   dependencies && collect(dependencies, packageSource)
   devDependencies && collect(devDependencies, packageSource)
   peerDependencies && collect(peerDependencies, packageSource)

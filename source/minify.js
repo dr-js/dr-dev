@@ -8,36 +8,27 @@ import { binary, time, padTable } from 'dr-js/module/common/format'
 import { __VERBOSE__ } from './main'
 
 const getTerserOption = ({
+  isReadable = false, // should be much more readable
   isDevelopment = false,
-  isModule = false // module should be much more readable
-} = {}) => {
-  const globalDefineMap = {
-    'process.env.NODE_ENV': isDevelopment ? 'development' : 'production',
-    '__DEV__': Boolean(isDevelopment)
+  ecma = 8, // specify one of: 5, 6, 7 or 8; use ES8/ES2017 for native async
+  toplevel = true, // enable top level variable and function name mangling and to drop unused variables and functions
+  globalDefineMap = {
+    '__DEV__': Boolean(isDevelopment),
+    'process.env.NODE_ENV': isDevelopment ? 'development' : 'production'
   }
-
-  const ecma = 8 // specify one of: 5, 6, 7 or 8; use ES8/ES2017 for native async
-  const toplevel = true // enable top level variable and function name mangling and to drop unused variables and functions
-  return {
-    ecma,
-    toplevel,
-    parse: { ecma },
-    compress: {
-      ecma,
-      toplevel,
-      join_vars: false,
-      sequences: false,
-      global_defs: globalDefineMap
-    },
-    mangle: isModule ? false : { toplevel },
-    output: isModule ? { ecma, beautify: true, indent_level: 2, width: 240 } : { ecma, beautify: false, semicolons: false },
-    sourceMap: false
-  }
-}
+} = {}) => ({
+  ecma,
+  toplevel,
+  parse: { ecma },
+  compress: { ecma, toplevel, join_vars: false, sequences: false, global_defs: globalDefineMap },
+  mangle: isReadable ? false : { toplevel },
+  output: isReadable ? { ecma, beautify: true, indent_level: 2, width: 240 } : { ecma, beautify: false, semicolons: false },
+  sourceMap: false
+})
 
 const minifyWithTerser = ({ filePath, option, logger }) => {
   const timeStart = clock()
-  const scriptSource = readFileSync(filePath, { encoding: 'utf8' })
+  const scriptSource = String(readFileSync(filePath))
   const { error, code: scriptOutput } = Terser.minify(scriptSource, option)
   if (error) {
     logger.padLog(`[minifyWithTerser] failed to minify file: ${filePath}`)

@@ -43,7 +43,7 @@ const processOutput = async ({ packageJSON, logger }) => {
   let sizeReduce = 0
 
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBin, option: getTerserOption(), rootPath: PATH_ROOT, logger })
-  sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isModule: true }), rootPath: PATH_ROOT, logger })
+  sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
   sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
 
   padLog(`size reduce: ${formatBinary(sizeReduce)}B`)

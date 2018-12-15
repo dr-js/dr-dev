@@ -59,7 +59,7 @@ const createExportParser = ({ parserPluginList, logger }) => {
       logger.devLog(`[directory] ${path}`)
       getRoute(routeList).directoryList.push(name)
     } else if (fileStat.isFile() && name.endsWith('.js')) {
-      const fileString = readFileSync(path, { encoding: 'utf8' })
+      const fileString = String(readFileSync(path))
       const exportList = getExportListFromParsedAST(fileString, path, parserPluginList)
 
       logger.devLog(`[file] ${path}`)
