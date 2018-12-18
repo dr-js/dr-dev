@@ -15,7 +15,7 @@ const getMarkdownHeaderLink = (
     .replace(/-+$/, '')
 ) => `[${text}](#${link})`
 
-const REGEXP_MARKDOWN_HEADER = /^#{1,6}(.+?)#*$/gm // TODO: will mis-match comment in bash
+const REGEXP_MARKDOWN_HEADER = /^#{1,6}(.+?)#*$/gm // TODO: will mis-match comment in bash, use `marked`?
 const matchMarkdownHeader = (string) => {
   const headerTextList = []
   let result

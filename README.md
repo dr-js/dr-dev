@@ -3,10 +3,12 @@
 [![i:npm]][l:npm]
 [![i:size]][l:size]
 [![i:lint]][l:lint]
+[![i:npm-dev]][l:npm]
 
 A collection of dev functions
 
 [i:npm]: https://img.shields.io/npm/v/dr-dev.svg
+[i:npm-dev]: https://img.shields.io/npm/v/dr-dev/dev.svg
 [l:npm]: https://npm.im/dr-dev
 [i:size]: https://packagephobia.now.sh/badge?p=dr-dev
 [l:size]: https://packagephobia.now.sh/result?p=dr-dev

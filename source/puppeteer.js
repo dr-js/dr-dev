@@ -38,12 +38,13 @@ const clearPuppeteerPage = ({ puppeteerPage }) => puppeteerPage.close()
 const initPuppeteerPage = async ({ puppeteerBrowser, logger }) => {
   logger.log('[Puppeteer|Page] init start')
   const puppeteerPage = await puppeteerBrowser.newPage()
-  __DEV__ && puppeteerPage.on('error', (error) => logger.log('[Puppeteer|Page] error:', error)) // Emitted when the puppeteerPage crashes.
-  __DEV__ && puppeteerPage.on('pageerror', (exceptionMessage) => logger.log('[Puppeteer|Page] pageerror:', exceptionMessage)) // Emitted when an uncaught exception happens within the puppeteerPage.
-  __DEV__ && puppeteerPage.on('requestfailed', (request) => logger.log('[Puppeteer|Page] requestfailed:', { url: request.url(), method: request.method() }))
+  puppeteerPage.on('error', (error) => logger.log('[Puppeteer|Page] error:', error)) // Emitted when the puppeteerPage crashes.
+  puppeteerPage.on('pageerror', (exceptionMessage) => logger.log('[Puppeteer|Page] page error:', exceptionMessage)) // Emitted when an uncaught exception happens within the puppeteerPage.
+  puppeteerPage.on('requestfailed', (request) => logger.log('[Puppeteer|Page] request failed:', { method: request.method(), url: request.url() }))
+  puppeteerPage.on('response', (response) => response.status() >= 400 && logger.add('[Puppeteer|Page] abnormal response:', { status: response.status(), url: response.url() }))
   // __DEV__ && puppeteerPage.on('console', (consoleMessage) => logger.log('[Puppeteer|Page] console:', consoleMessage.type(), consoleMessage.text()))
-  // __DEV__ && puppeteerPage.on('request', (request) => logger.log('[Puppeteer|Page] request', { url: request.url(), method: request.method() }))
-  // __DEV__ && puppeteerPage.on('response', (response) => logger.log('[Puppeteer|Page] response', { url: response.url(), ok: response.ok() }))
+  // __DEV__ && puppeteerPage.on('request', (request) => logger.log('[Puppeteer|Page] request:', { method: request.method(), url: request.url() }))
+  // __DEV__ && puppeteerPage.on('response', (response) => logger.log('[Puppeteer|Page] response:', { status: response.status(), url: response.url() }))
   logger.log('[Puppeteer|Page] init complete')
   return puppeteerPage
 }
@@ -95,7 +96,8 @@ const testWithPuppeteerMocha = async ({
         : resolve()
     })
     await puppeteerPage.setContent(testHTML, { waitUntil: 'load', timeout: timeoutLoad })
-    await puppeteerPage.setViewport({ width: 0, height: 0 }) // TODO: CHECK: if this will save render time
+    await puppeteerPage.setViewport({ width: 0, height: 0 }) //
+    // TODO: CHECK: if this will save render time
     log('[test] start')
 
     const timeoutToken = setTimeout(() => reject(new Error(`${testTag} test timeout`)), timeoutTest)

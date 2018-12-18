@@ -10,6 +10,7 @@ import { getFileListFromPathList, getScriptFileListFromPathList } from 'source/f
 import { initOutput, packOutput, verifyOutputBinVersion, getPublishFlag, checkPublishVersion, publishOutput } from 'source/commonOutput'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor'
 import { getTerserOption, minifyFileListWithTerser } from 'source/minify'
+import { writeLicenseFile } from 'source/license'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const PATH_OUTPUT = resolve(__dirname, '../output-gitignore')
@@ -80,6 +81,7 @@ const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
 
 runMain(async (logger) => {
   const packageJSON = await initOutput({ fromRoot, fromOutput, logger })
+  writeLicenseFile(fromRoot('LICENSE'), packageJSON.license, packageJSON.author)
   if (!argvFlag('pack')) return
 
   await buildOutput({ logger })

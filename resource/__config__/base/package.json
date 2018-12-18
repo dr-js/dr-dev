@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "cross-env": "^5.2.0",
-    "terser": "^3.11.0"
+    "terser": "^3.14.0"
   },
   "sideEffects": false
 }

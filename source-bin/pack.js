@@ -67,11 +67,13 @@ const doPack = async ({
     `# ${packageJSON.name}\n`,
     `[![i:npm]][l:npm]`,
     `[![i:size]][l:size]`,
+    `[![i:npm-dev]][l:npm]`,
     '',
     `${packageJSON.description}`,
     '',
     // TODO: CHECK: may need custom url escape for name?
     `[i:npm]: https://img.shields.io/npm/v/${packageJSON.name}.svg`,
+    `[i:npm-dev]: https://img.shields.io/npm/v/${packageJSON.name}/dev.svg`,
     `[l:npm]: https://npm.im/${packageJSON.name}`,
     `[i:size]: https://packagephobia.now.sh/badge?p=${packageJSON.name}`,
     `[l:size]: https://packagephobia.now.sh/result?p=${packageJSON.name}`

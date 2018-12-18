@@ -1,6 +1,8 @@
-MIT License
+import { writeFileSync } from 'fs'
 
-Copyright (c) 2019 dr-js
+const getLicenseMIT = (author) => `MIT License
+
+Copyright (c) ${new Date().getUTCFullYear()} ${author}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +21,18 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+`
+
+const GET_LICENSE_MAP = {
+  // TODO: add more?
+  MIT: getLicenseMIT
+}
+
+const writeLicenseFile = (path, type, author) => {
+  if (!type) return // allow skip by passing falsy license type
+  const getLicense = GET_LICENSE_MAP[ type.toUpperCase() ]
+  if (!getLicense) throw new Error(`License type <${type}> is not yet supported`)
+  writeFileSync(path, getLicense(author))
+}
+
+export { writeLicenseFile }

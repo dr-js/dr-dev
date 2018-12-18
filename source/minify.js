@@ -8,7 +8,7 @@ import { binary, time, padTable } from 'dr-js/module/common/format'
 import { __VERBOSE__ } from './main'
 
 const getTerserOption = ({
-  isReadable = false, // should be much more readable
+  isReadable = false, // should be much more readable // TODO: option `beautify` is being removed
   isDevelopment = false,
   ecma = 8, // specify one of: 5, 6, 7 or 8; use ES8/ES2017 for native async
   toplevel = true, // enable top level variable and function name mangling and to drop unused variables and functions

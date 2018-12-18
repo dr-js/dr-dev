@@ -13,6 +13,8 @@
   - `getFileListFromPathList`, `getScriptFileListFromPathList`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
   - `fileProcessorBabel`, `fileProcessorWebpack`, `processFileList`
++ 📄 [source/license.js](source/license.js)
+  - `writeLicenseFile`
 + 📄 [source/logger.js](source/logger.js)
   - `getLogger`
 + 📄 [source/main.js](source/main.js)
@@ -110,11 +112,11 @@
 #### Resource package
 📄 [resource/](resource/)
 <table>
-<tr><td>@babel/cli</td><td>^7.2.0</td></tr>
+<tr><td>@babel/cli</td><td>^7.2.3</td></tr>
 <tr><td>@babel/core</td><td>^7.2.2</td></tr>
 <tr><td>@babel/node</td><td>^7.2.2</td></tr>
-<tr><td>@babel/plugin-proposal-class-properties</td><td>^7.2.1</td></tr>
-<tr><td>@babel/preset-env</td><td>^7.2.0</td></tr>
+<tr><td>@babel/plugin-proposal-class-properties</td><td>^7.2.3</td></tr>
+<tr><td>@babel/preset-env</td><td>^7.2.3</td></tr>
 <tr><td>@babel/preset-react</td><td>^7.0.0</td></tr>
 <tr><td>@babel/register</td><td>^7.0.0</td></tr>
 <tr><td>babel-eslint</td><td>^10.0.1</td></tr>
@@ -123,19 +125,19 @@
 <tr><td>babel-plugin-module-resolver</td><td>^3.1.1</td></tr>
 <tr><td>babel-plugin-styled-components</td><td>^1.10.0</td></tr>
 <tr><td>cross-env</td><td>^5.2.0</td></tr>
-<tr><td>eslint</td><td>^5.10.0</td></tr>
+<tr><td>eslint</td><td>^5.11.1</td></tr>
 <tr><td>eslint-config-standard</td><td>^12.0.0</td></tr>
 <tr><td>eslint-config-standard-react</td><td>^7.0.2</td></tr>
 <tr><td>eslint-plugin-import</td><td>^2.14.0</td></tr>
 <tr><td>eslint-plugin-node</td><td>^8.0.0</td></tr>
 <tr><td>eslint-plugin-promise</td><td>^4.0.1</td></tr>
-<tr><td>eslint-plugin-react</td><td>^7.11.1</td></tr>
+<tr><td>eslint-plugin-react</td><td>^7.12.1</td></tr>
 <tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
 <tr><td>mocha</td><td>^5.2.0</td></tr>
 <tr><td>prop-types</td><td>^15.6.2</td></tr>
 <tr><td>puppeteer</td><td>^1.11.0</td></tr>
-<tr><td>react</td><td>^16.6.3</td></tr>
+<tr><td>react</td><td>^16.7.0</td></tr>
 <tr><td>styled-components</td><td>^4.1.3</td></tr>
-<tr><td>terser</td><td>^3.11.0</td></tr>
-<tr><td>webpack</td><td>^4.27.1</td></tr>
+<tr><td>terser</td><td>^3.14.0</td></tr>
+<tr><td>webpack</td><td>^4.28.3</td></tr>
 </table>
