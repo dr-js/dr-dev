@@ -37,8 +37,8 @@
 > ```
 > CLI Usage:
 >   --config -c [OPTIONAL] [ARGUMENT=1]
->       # from JSON: set to 'path/to/config.json'
->       # from ENV: set to 'env'
+>       from ENV: set to 'env'
+>       from JS/JSON file: set to 'path/to/config.js|json'
 >   --help -h [OPTIONAL] [ARGUMENT=0+]
 >       set to enable
 >   --version -v [OPTIONAL] [ARGUMENT=0+]
@@ -88,7 +88,7 @@
 >     export DR_DEV_SORT_KEY="[OPTIONAL-CHECK] [ARGUMENT=0+]"
 >     export DR_DEV_GIT_COMMIT="[OPTIONAL-CHECK] [ARGUMENT=0+]"
 >   "
-> JSON Usage:
+> CONFIG Usage:
 >   {
 >     "config": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "help": [ "[OPTIONAL] [ARGUMENT=0+]" ],
@@ -125,17 +125,17 @@
 <tr><td>babel-plugin-module-resolver</td><td>^3.1.3</td></tr>
 <tr><td>babel-plugin-styled-components</td><td>^1.10.0</td></tr>
 <tr><td>cross-env</td><td>^5.2.0</td></tr>
-<tr><td>eslint</td><td>^5.12.1</td></tr>
+<tr><td>eslint</td><td>^5.13.0</td></tr>
 <tr><td>eslint-config-standard</td><td>^12.0.0</td></tr>
 <tr><td>eslint-config-standard-react</td><td>^7.0.2</td></tr>
-<tr><td>eslint-plugin-import</td><td>^2.15.0</td></tr>
+<tr><td>eslint-plugin-import</td><td>^2.16.0</td></tr>
 <tr><td>eslint-plugin-node</td><td>^8.0.1</td></tr>
 <tr><td>eslint-plugin-promise</td><td>^4.0.1</td></tr>
 <tr><td>eslint-plugin-react</td><td>^7.12.4</td></tr>
 <tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
 <tr><td>mocha</td><td>^5.2.0</td></tr>
 <tr><td>prop-types</td><td>^15.6.2</td></tr>
-<tr><td>puppeteer</td><td>^1.11.0</td></tr>
+<tr><td>puppeteer</td><td>^1.12.1</td></tr>
 <tr><td>react</td><td>^16.7.0</td></tr>
 <tr><td>styled-components</td><td>^4.1.3</td></tr>
 <tr><td>terser</td><td>^3.14.1</td></tr>

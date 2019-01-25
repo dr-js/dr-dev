@@ -49,7 +49,10 @@ const initPuppeteerPage = async ({ puppeteerBrowser, logger }) => {
   return puppeteerPage
 }
 
-const runWithPuppeteer = async ({ taskFunc, logger }) => {
+const runWithPuppeteer = async ({
+  taskFunc,
+  logger
+}) => {
   const puppeteerBrowser = await initPuppeteerBrowser({ logger })
   const puppeteerPage = await initPuppeteerPage({ puppeteerBrowser, logger })
   logger.log('[Puppeteer|Page] test start')
@@ -63,7 +66,7 @@ const runWithPuppeteer = async ({ taskFunc, logger }) => {
 
 const testWithPuppeteerMocha = async ({
   testScriptString,
-  timeoutLoad = 10 * 1000,
+  timeoutPage = 10 * 1000,
   timeoutTest = 60 * 1000, // should done test in 1min
   logger
 }) => runWithPuppeteer({
@@ -95,9 +98,9 @@ const testWithPuppeteerMocha = async ({
         ? reject(new Error(`${failCount} test failed`))
         : resolve()
     })
-    await puppeteerPage.setContent(testHTML, { waitUntil: 'load', timeout: timeoutLoad })
-    await puppeteerPage.setViewport({ width: 0, height: 0 }) //
-    // TODO: CHECK: if this will save render time
+    await puppeteerPage.setDefaultTimeout(timeoutPage) // for all page operation
+    await puppeteerPage.setViewport({ width: 0, height: 0 }) // TODO: CHECK: if this will save render time
+    await puppeteerPage.setContent(testHTML, { waitUntil: 'load' })
     log('[test] start')
 
     const timeoutToken = setTimeout(() => reject(new Error(`${testTag} test timeout`)), timeoutTest)

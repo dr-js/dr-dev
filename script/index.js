@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { execSync, spawnSync } from 'child_process'
 
-import { binary as formatBinary } from 'dr-js/module/common/format'
+import { binary } from 'dr-js/module/common/format'
 import { modify } from 'dr-js/module/node/file/Modify'
 
 import { argvFlag, runMain } from 'source/main'
@@ -47,7 +47,7 @@ const processOutput = async ({ packageJSON, logger }) => {
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
   sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
 
-  padLog(`size reduce: ${formatBinary(sizeReduce)}B`)
+  padLog(`size reduce: ${binary(sizeReduce)}B`)
 }
 
 const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {

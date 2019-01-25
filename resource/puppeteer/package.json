@@ -6,6 +6,6 @@
     "test-puppeteer-mocha-dev": "babel-node ./script/browserTest development"
   },
   "dependencies": {
-    "puppeteer": "^1.11.0"
+    "puppeteer": "^1.12.1"
   }
 }
