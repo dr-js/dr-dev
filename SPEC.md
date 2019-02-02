@@ -39,10 +39,10 @@
 >   --config -c [OPTIONAL] [ARGUMENT=1]
 >       from ENV: set to 'env'
 >       from JS/JSON file: set to 'path/to/config.js|json'
->   --help -h [OPTIONAL] [ARGUMENT=0+]
->       set to enable
->   --version -v [OPTIONAL] [ARGUMENT=0+]
->       set to enable
+>   --help --h -h [OPTIONAL] [ARGUMENT=0+]
+>       show full help
+>   --version --v -v [OPTIONAL] [ARGUMENT=0+]
+>       show version
 >   --path-input -i [OPTIONAL-CHECK] [ARGUMENT=1]
 >       path to 'package.json', or directory with 'package.json' inside
 >   --check-outdated -C [OPTIONAL] [ARGUMENT=0+]
@@ -50,7 +50,7 @@
 >     --path-temp [OPTIONAL-CHECK] [ARGUMENT=1]
 >   --pack -P [OPTIONAL] [ARGUMENT=0+]
 >       set to enable
->     --path-output -o [OPTIONAL-CHECK] [ARGUMENT=1]
+>     --path-output --o -o [OPTIONAL-CHECK] [ARGUMENT=1]
 >         output path
 >     --output-name [OPTIONAL-CHECK] [ARGUMENT=1]
 >         output package name
@@ -64,9 +64,9 @@
 >         run npm publish-dev
 >   --step-package-version -S [OPTIONAL] [ARGUMENT=0+]
 >       step up package version (expect '0.0.0-dev.0-local.0' format)
->     --sort-key -K [OPTIONAL-CHECK] [ARGUMENT=0+]
+>     --sort-key --K -K [OPTIONAL-CHECK] [ARGUMENT=0+]
 >         sort keys in package.json
->     --git-commit -G [OPTIONAL-CHECK] [ARGUMENT=0+]
+>     --git-commit --G -G [OPTIONAL-CHECK] [ARGUMENT=0+]
 >         step up main version, and prepare a git commit
 > ENV Usage:
 >   "
@@ -122,7 +122,7 @@
 <tr><td>babel-eslint</td><td>^10.0.1</td></tr>
 <tr><td>babel-loader</td><td>^8.0.5</td></tr>
 <tr><td>babel-plugin-minify-replace</td><td>^0.5.0</td></tr>
-<tr><td>babel-plugin-module-resolver</td><td>^3.1.3</td></tr>
+<tr><td>babel-plugin-module-resolver</td><td>^3.2.0</td></tr>
 <tr><td>babel-plugin-styled-components</td><td>^1.10.0</td></tr>
 <tr><td>cross-env</td><td>^5.2.0</td></tr>
 <tr><td>eslint</td><td>^5.13.0</td></tr>
@@ -134,10 +134,10 @@
 <tr><td>eslint-plugin-react</td><td>^7.12.4</td></tr>
 <tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
 <tr><td>mocha</td><td>^5.2.0</td></tr>
-<tr><td>prop-types</td><td>^15.6.2</td></tr>
-<tr><td>puppeteer</td><td>^1.12.1</td></tr>
-<tr><td>react</td><td>^16.7.0</td></tr>
+<tr><td>prop-types</td><td>^15.7.1</td></tr>
+<tr><td>puppeteer</td><td>^1.12.2</td></tr>
+<tr><td>react</td><td>^16.8.1</td></tr>
 <tr><td>styled-components</td><td>^4.1.3</td></tr>
-<tr><td>terser</td><td>^3.14.1</td></tr>
-<tr><td>webpack</td><td>^4.29.0</td></tr>
+<tr><td>terser</td><td>^3.16.1</td></tr>
+<tr><td>webpack</td><td>^4.29.3</td></tr>
 </table>

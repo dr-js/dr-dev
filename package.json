@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "dr-dev",
-  "version": "0.0.2",
+  "version": "0.0.3-dev.0",
   "description": "A collection of dev functions",
   "author": "dr-js",
   "license": "MIT",
@@ -38,10 +38,10 @@
     "npm": ">=6"
   },
   "dependencies": {
-    "dr-js": "^0.19.0"
+    "dr-js": "0.20.0-dev.0"
   },
   "devDependencies": {
-    "dr-dev-babel": "0.0.2-dev.1"
+    "dr-dev-babel": "0.0.2"
   },
   "sideEffects": false
 }

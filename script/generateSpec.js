@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { writeFileSync } from 'fs'
 
-import { stringIndentLine } from 'dr-js/module/common/format'
+import { indentLine } from 'dr-js/module/common/string'
 
 import { runMain } from 'source/main'
 import { getLogger } from 'source/logger'
@@ -18,7 +18,7 @@ const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 const renderMarkdownBinOptionFormat = () => [
   renderMarkdownFileLink('source-bin/option.js'),
   '> ```',
-  stringIndentLine(formatUsage(), '> '),
+  indentLine(formatUsage(), '> '),
   '> ```'
 ]
 

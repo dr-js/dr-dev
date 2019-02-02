@@ -1,14 +1,17 @@
-import { getOptionalFormatFlag } from 'dr-js/module/common/module/Option/preset'
-import { ConfigPresetNode, prepareOption } from 'dr-js/module/node/module/Option'
+import { ConfigPreset, getOptionalFormatFlag, prepareOption, parseCompactFormat } from 'dr-js/module/node/module/Option/preset'
 
-const { SingleString, SinglePath, BooleanFlag, Config } = ConfigPresetNode
+const { SinglePath, Toggle, Config } = ConfigPreset
+
+const parseList = (...args) => args.map(parseCompactFormat)
 
 const OPTION_CONFIG = {
   prefixENV: 'dr-dev',
   formatList: [
     Config,
-    { ...BooleanFlag, name: 'help', shortName: 'h' },
-    { ...BooleanFlag, name: 'version', shortName: 'v' },
+    ...parseList(
+      'help,h/T|show full help',
+      'version,v/T|show version'
+    ),
     {
       ...SinglePath,
       optional: getOptionalFormatFlag('check-outdated', 'pack'),
@@ -17,35 +20,33 @@ const OPTION_CONFIG = {
       description: `path to 'package.json', or directory with 'package.json' inside`
     },
     {
-      ...BooleanFlag,
+      ...Toggle,
       name: 'check-outdated',
       shortName: 'C',
-      extendFormatList: [
-        { ...SinglePath, optional: true, name: 'path-temp' }
-      ]
+      extendFormatList: parseList('path-temp/SP,O')
     },
     {
-      ...BooleanFlag,
+      ...Toggle,
       name: 'pack',
       shortName: 'P',
-      extendFormatList: [
-        { ...SinglePath, name: 'path-output', shortName: 'o', description: `output path` },
-        { ...SingleString, optional: true, name: 'output-name', description: `output package name` },
-        { ...SingleString, optional: true, name: 'output-version', description: `output package version` },
-        { ...SingleString, optional: true, name: 'output-description', description: `output package description` },
-        { ...BooleanFlag, name: 'publish', description: `run npm publish` },
-        { ...BooleanFlag, name: 'publish-dev', description: `run npm publish-dev` }
-      ]
+      extendFormatList: parseList(
+        'path-output,o/SP|output path',
+        'output-name/SS,O|output package name',
+        'output-version/SS,O|output package version',
+        'output-description/SS,O|output package description',
+        'publish/T|run npm publish',
+        'publish-dev/T|run npm publish-dev'
+      )
     },
     {
-      ...BooleanFlag,
+      ...Toggle,
       name: 'step-package-version',
       shortName: 'S',
       description: `step up package version (expect '0.0.0-dev.0-local.0' format)`,
-      extendFormatList: [
-        { ...BooleanFlag, name: 'sort-key', shortName: 'K', description: `sort keys in package.json` },
-        { ...BooleanFlag, name: 'git-commit', shortName: 'G', description: `step up main version, and prepare a git commit` }
-      ]
+      extendFormatList: parseList(
+        'sort-key,K/T|sort keys in package.json',
+        'git-commit,G/T|step up main version, and prepare a git commit'
+      )
     }
   ]
 }
