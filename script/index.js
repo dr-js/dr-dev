@@ -7,7 +7,7 @@ import { modify } from 'dr-js/module/node/file/Modify'
 import { argvFlag, runMain } from 'source/main'
 import { getLogger } from 'source/logger'
 import { getFileListFromPathList, getScriptFileListFromPathList } from 'source/fileList'
-import { initOutput, packOutput, verifyOutputBinVersion, getPublishFlag, checkPublishVersion, publishOutput } from 'source/commonOutput'
+import { initOutput, packOutput, verifyOutputBinVersion, verifyNoGitignore, getPublishFlag, checkPublishVersion, publishOutput } from 'source/commonOutput'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor'
 import { getTerserOption, minifyFileListWithTerser } from 'source/minify'
 import { writeLicenseFile } from 'source/license'
@@ -80,8 +80,12 @@ const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
 }
 
 runMain(async (logger) => {
+  await verifyNoGitignore({ path: fromRoot('source'), logger })
+  await verifyNoGitignore({ path: fromRoot('source-bin'), logger })
+
   const packageJSON = await initOutput({ fromRoot, fromOutput, logger })
   writeLicenseFile(fromRoot('LICENSE'), packageJSON.license, packageJSON.author)
+
   if (!argvFlag('pack')) return
 
   await buildOutput({ logger })

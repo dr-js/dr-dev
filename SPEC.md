@@ -8,7 +8,7 @@
 + 📄 [source/commonOutput.js](source/commonOutput.js)
   - `checkPublishVersion`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyNoGitignore`, `verifyOutputBinVersion`
 + 📄 [source/exec.js](source/exec.js)
-  - `getGitBranch`, `getGitCommitHash`, `tryExec`
+  - `getGitBranch`, `getGitCommitHash`, `tryExec`, `withRunBackground`
 + 📄 [source/fileList.js](source/fileList.js)
   - `getFileListFromPathList`, `getScriptFileListFromPathList`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
@@ -36,19 +36,19 @@
 📄 [source-bin/option.js](source-bin/option.js)
 > ```
 > CLI Usage:
->   --config -c [OPTIONAL] [ARGUMENT=1]
->       from ENV: set to 'env'
->       from JS/JSON file: set to 'path/to/config.js|json'
+>   --config --c -c [OPTIONAL] [ARGUMENT=1]
+>       from ENV: set to "env"
+>       from JS/JSON file: set to "path/to/config.js|json"
 >   --help --h -h [OPTIONAL] [ARGUMENT=0+]
 >       show full help
 >   --version --v -v [OPTIONAL] [ARGUMENT=0+]
 >       show version
->   --path-input -i [OPTIONAL-CHECK] [ARGUMENT=1]
->       path to 'package.json', or directory with 'package.json' inside
->   --check-outdated -C [OPTIONAL] [ARGUMENT=0+]
+>   --path-input --i -i [OPTIONAL-CHECK] [ARGUMENT=1]
+>       path to "package.json", or directory with "package.json" inside
+>   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0+]
 >       set to enable
 >     --path-temp [OPTIONAL-CHECK] [ARGUMENT=1]
->   --pack -P [OPTIONAL] [ARGUMENT=0+]
+>   --pack --p -p [OPTIONAL] [ARGUMENT=0+]
 >       set to enable
 >     --path-output --o -o [OPTIONAL-CHECK] [ARGUMENT=1]
 >         output path
@@ -62,8 +62,8 @@
 >         run npm publish
 >     --publish-dev [OPTIONAL-CHECK] [ARGUMENT=0+]
 >         run npm publish-dev
->   --step-package-version -S [OPTIONAL] [ARGUMENT=0+]
->       step up package version (expect '0.0.0-dev.0-local.0' format)
+>   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0+]
+>       step up package version (expect "0.0.0-dev.0-local.0" format)
 >     --sort-key --K -K [OPTIONAL-CHECK] [ARGUMENT=0+]
 >         sort keys in package.json
 >     --git-commit --G -G [OPTIONAL-CHECK] [ARGUMENT=0+]
@@ -134,7 +134,7 @@
 <tr><td>eslint-plugin-react</td><td>^7.12.4</td></tr>
 <tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
 <tr><td>mocha</td><td>^5.2.0</td></tr>
-<tr><td>prop-types</td><td>^15.7.1</td></tr>
+<tr><td>prop-types</td><td>^15.7.2</td></tr>
 <tr><td>puppeteer</td><td>^1.12.2</td></tr>
 <tr><td>react</td><td>^16.8.1</td></tr>
 <tr><td>styled-components</td><td>^4.1.3</td></tr>

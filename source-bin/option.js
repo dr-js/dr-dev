@@ -1,35 +1,26 @@
-import { ConfigPreset, getOptionalFormatFlag, prepareOption, parseCompactFormat } from 'dr-js/module/node/module/Option/preset'
+import { Preset, getOptionalFormatFlag, prepareOption } from 'dr-js/module/node/module/Option/preset'
 
-const { SinglePath, Toggle, Config } = ConfigPreset
-
-const parseList = (...args) => args.map(parseCompactFormat)
+const { Config, parseCompact, parseCompactList } = Preset
 
 const OPTION_CONFIG = {
   prefixENV: 'dr-dev',
   formatList: [
     Config,
-    ...parseList(
+    ...parseCompactList(
       'help,h/T|show full help',
       'version,v/T|show version'
     ),
     {
-      ...SinglePath,
-      optional: getOptionalFormatFlag('check-outdated', 'pack'),
-      name: 'path-input',
-      shortName: 'i',
-      description: `path to 'package.json', or directory with 'package.json' inside`
+      ...parseCompact('path-input,i/SP|path to "package.json", or directory with "package.json" inside'),
+      optional: getOptionalFormatFlag('check-outdated', 'pack')
     },
     {
-      ...Toggle,
-      name: 'check-outdated',
-      shortName: 'C',
-      extendFormatList: parseList('path-temp/SP,O')
+      ...parseCompact('check-outdated,C/T'),
+      extendFormatList: parseCompactList('path-temp/SP,O')
     },
     {
-      ...Toggle,
-      name: 'pack',
-      shortName: 'P',
-      extendFormatList: parseList(
+      ...parseCompact('pack,p/T'),
+      extendFormatList: parseCompactList(
         'path-output,o/SP|output path',
         'output-name/SS,O|output package name',
         'output-version/SS,O|output package version',
@@ -39,11 +30,8 @@ const OPTION_CONFIG = {
       )
     },
     {
-      ...Toggle,
-      name: 'step-package-version',
-      shortName: 'S',
-      description: `step up package version (expect '0.0.0-dev.0-local.0' format)`,
-      extendFormatList: parseList(
+      ...parseCompact('step-package-version,S/T|step up package version (expect "0.0.0-dev.0-local.0" format)'),
+      extendFormatList: parseCompactList(
         'sort-key,K/T|sort keys in package.json',
         'git-commit,G/T|step up main version, and prepare a git commit'
       )
