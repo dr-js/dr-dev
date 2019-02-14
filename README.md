@@ -5,7 +5,7 @@
 [![i:lint]][l:lint]
 [![i:npm-dev]][l:npm]
 
-A collection of dev functions
+A collection of strange functions, for development
 
 [i:npm]: https://img.shields.io/npm/v/dr-dev.svg
 [i:npm-dev]: https://img.shields.io/npm/v/dr-dev/dev.svg

@@ -4,56 +4,47 @@ import { doCheckOutdated } from './checkOutdated'
 import { doPack } from './pack'
 import { doStepPackageVersion } from './stepPackageVersion'
 
-import { parseOption, formatUsage } from './option'
+import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
 import { name as packageName, version as packageVersion } from '../package.json'
 
-const runMode = async (
-  { tryGet, getFirst, tryGetFirst },
-  isCheckOutdated,
-  isPack,
-  isStepPackageVersion
-) => {
-  isCheckOutdated && await doCheckOutdated({
-    pathInput: getFirst('path-input'),
-    pathTemp: tryGetFirst('path-temp')
-  })
-  isPack && await doPack({
-    pathInput: getFirst('path-input'),
-    pathOutput: getFirst('path-output'),
-    outputName: tryGetFirst('output-name'),
-    outputVersion: tryGetFirst('output-version'),
-    outputDescription: tryGetFirst('output-description'),
-    isPublish: tryGet('publish'),
-    isPublishDev: tryGet('publish-dev')
-  })
-  isStepPackageVersion && await doStepPackageVersion({
-    pathInput: tryGetFirst('path-input') || '.',
-    isSortKey: tryGet('sort-key'),
-    isGitCommit: tryGet('git-commit')
-  })
+const runMode = async (modeName, { tryGet, getFirst, tryGetFirst }) => {
+  switch (modeName) {
+    case 'check-outdated' :
+      return doCheckOutdated({
+        pathInput: getFirst('path-input'),
+        pathTemp: tryGetFirst('path-temp')
+      })
+    case 'pack':
+      return doPack({
+        pathInput: getFirst('path-input'),
+        pathOutput: getFirst('path-output'),
+        outputName: tryGetFirst('output-name'),
+        outputVersion: tryGetFirst('output-version'),
+        outputDescription: tryGetFirst('output-description'),
+        isPublish: tryGet('publish'),
+        isPublishDev: tryGet('publish-dev')
+      })
+    case 'step-package-version':
+      return doStepPackageVersion({
+        pathInput: tryGetFirst('path-input') || '.',
+        isSortKey: tryGet('sort-key'),
+        isGitCommit: tryGet('git-commit')
+      })
+  }
 }
 
 const main = async () => {
   const optionData = await parseOption()
-  const { tryGet } = optionData
+  const modeName = MODE_NAME_LIST.find((name) => optionData.tryGet(name))
 
-  const isCheckOutdated = tryGet('check-outdated')
-  const isPack = tryGet('pack')
-  const isStepPackageVersion = tryGet('step-package-version')
-
-  if (!isCheckOutdated && !isPack && !isStepPackageVersion) {
-    return tryGet('version')
+  if (!modeName) {
+    return optionData.tryGet('version')
       ? console.log(JSON.stringify({ packageName, packageVersion }, null, '  '))
-      : console.log(formatUsage(null, tryGet('help') ? null : 'simple'))
+      : console.log(formatUsage(null, optionData.tryGet('help') ? null : 'simple'))
   }
 
-  await runMode(
-    optionData,
-    isCheckOutdated,
-    isPack,
-    isStepPackageVersion
-  ).catch((error) => {
-    console.warn(`[Error]`, error.stack || error)
+  await runMode(modeName, optionData).catch((error) => {
+    console.warn(`[Error] in mode: ${modeName}:`, error.stack || error)
     process.exit(2)
   })
 }

@@ -136,7 +136,7 @@
 <tr><td>mocha</td><td>^5.2.0</td></tr>
 <tr><td>prop-types</td><td>^15.7.2</td></tr>
 <tr><td>puppeteer</td><td>^1.12.2</td></tr>
-<tr><td>react</td><td>^16.8.1</td></tr>
+<tr><td>react</td><td>^16.8.2</td></tr>
 <tr><td>styled-components</td><td>^4.1.3</td></tr>
 <tr><td>terser</td><td>^3.16.1</td></tr>
 <tr><td>webpack</td><td>^4.29.3</td></tr>
