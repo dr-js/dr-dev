@@ -113,9 +113,9 @@
 📄 [resource/](resource/)
 <table>
 <tr><td>@babel/cli</td><td>^7.2.3</td></tr>
-<tr><td>@babel/core</td><td>^7.2.2</td></tr>
+<tr><td>@babel/core</td><td>^7.3.3</td></tr>
 <tr><td>@babel/node</td><td>^7.2.2</td></tr>
-<tr><td>@babel/plugin-proposal-class-properties</td><td>^7.3.0</td></tr>
+<tr><td>@babel/plugin-proposal-class-properties</td><td>^7.3.3</td></tr>
 <tr><td>@babel/preset-env</td><td>^7.3.1</td></tr>
 <tr><td>@babel/preset-react</td><td>^7.0.0</td></tr>
 <tr><td>@babel/register</td><td>^7.0.0</td></tr>
@@ -125,7 +125,7 @@
 <tr><td>babel-plugin-module-resolver</td><td>^3.2.0</td></tr>
 <tr><td>babel-plugin-styled-components</td><td>^1.10.0</td></tr>
 <tr><td>cross-env</td><td>^5.2.0</td></tr>
-<tr><td>eslint</td><td>^5.13.0</td></tr>
+<tr><td>eslint</td><td>^5.14.0</td></tr>
 <tr><td>eslint-config-standard</td><td>^12.0.0</td></tr>
 <tr><td>eslint-config-standard-react</td><td>^7.0.2</td></tr>
 <tr><td>eslint-plugin-import</td><td>^2.16.0</td></tr>
@@ -139,5 +139,5 @@
 <tr><td>react</td><td>^16.8.2</td></tr>
 <tr><td>styled-components</td><td>^4.1.3</td></tr>
 <tr><td>terser</td><td>^3.16.1</td></tr>
-<tr><td>webpack</td><td>^4.29.3</td></tr>
+<tr><td>webpack</td><td>^4.29.4</td></tr>
 </table>
