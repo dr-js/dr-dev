@@ -5,7 +5,7 @@ import { argvFlag, runMain } from 'dr-dev/module/main'
 import { getLogger } from 'dr-dev/module/logger'
 import { getScriptFileListFromPathList } from 'dr-dev/module/fileList'
 import { compileWithWebpack, commonFlag } from 'dr-dev/module/webpack'
-import { testWithPuppeteerMocha } from 'dr-dev/module/puppeteer'
+import { testWithPuppeteer } from 'dr-dev/module/puppeteer'
 
 import { readFileAsync } from 'dr-js/module/node/file/function'
 import { createDirectory } from 'dr-js/module/node/file/File'
@@ -51,5 +51,5 @@ runMain(async (logger) => {
   const testScriptString = await readFileAsync(PATH_BROWSER_TEST_JS)
   await modify.delete(PATH_BROWSER_TEST_JS)
 
-  await testWithPuppeteerMocha({ testScriptString, logger })
+  await testWithPuppeteer({ testScriptString, logger })
 }, getLogger(`browser-test`, argvFlag('quiet')))

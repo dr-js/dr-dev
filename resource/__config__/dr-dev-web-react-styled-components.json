@@ -1,13 +1,12 @@
 {
   "__EXTRA__": {
     "name": "dr-dev-web-react-styled-components",
-    "description": "Webpack + ESLint + Babel + Mocha + React + StyledComponents"
+    "description": "Webpack + ESLint + Babel + React + StyledComponents"
   },
   "IMPORT": [
     "base",
     "../eslint/[react]",
     "../babel/[react]",
-    "../mocha",
     "../webpack/[react]/[styled-components]",
     "../react"
   ]

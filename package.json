@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "dr-dev",
-  "version": "0.0.3",
+  "version": "0.0.4-dev.0",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -26,11 +26,13 @@
     "build-library": "babel ./source --out-dir ./output-gitignore/library",
     "build-library-dev": "cross-env BABEL_ENV=dev npm run build-library -- --watch",
     "build-module": "cross-env BABEL_ENV=module babel ./source --out-dir ./output-gitignore/module",
+    "build-browser": "babel-node ./script/webpack production profile",
     "build-bin": "babel ./source-bin --out-dir ./output-gitignore/bin",
     "build-bin-dev": "cross-env BABEL_ENV=dev npm run build-bin -- --watch",
     "// =============================": "",
     "check-outdated": "node ./output-gitignore/bin -C -i ./resource",
     "check-outdated-self": "node ./output-gitignore/bin -C -i ./package.json",
+    "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json",
     "prepack": "echo \"Error: pack with script-*\" && exit 1"
   },
   "engines": {
@@ -38,10 +40,10 @@
     "npm": ">=6"
   },
   "dependencies": {
-    "dr-js": "^0.20.0"
+    "dr-js": "0.20.2-dev.0"
   },
   "devDependencies": {
-    "dr-dev-babel": "0.0.3-dev.3"
+    "dr-dev-web": "0.0.4-dev.0"
   },
   "sideEffects": false
 }

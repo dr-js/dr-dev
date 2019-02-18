@@ -1,6 +1,7 @@
 import Puppeteer from 'puppeteer'
 
 import { catchAsync } from 'dr-js/module/common/error'
+import { time } from 'dr-js/module/common/format'
 import { createInsideOutPromise } from 'dr-js/module/common/function'
 import { readFileAsync } from 'dr-js/module/node/file/function'
 
@@ -64,30 +65,31 @@ const runWithPuppeteer = async ({
   return result
 }
 
-const testWithPuppeteerMocha = async ({
+const testWithPuppeteer = async ({
   testScriptString,
   timeoutPage = 10 * 1000,
   timeoutTest = 60 * 1000, // should done test in 1min
   logger
 }) => runWithPuppeteer({
   taskFunc: async ({ puppeteerPage }) => {
-    const { log } = logger
-    const { promise, resolve, reject } = createInsideOutPromise()
-    log('[test] init')
+    const { padLog, log } = logger
+    padLog(`[testWithPuppeteer] timeoutPage: ${time(timeoutPage)}, timeoutTest: ${time(timeoutTest)}`)
 
+    log('[test] init')
     const testTag = `BROWSER_TEST[${new Date().toISOString()}]`
     const testHTML = [
       `<!DOCTYPE html>`,
       `<meta charset="utf-8">`,
       `<link rel="icon" href="data:,">`, // stop fetch favicon
       `<title>${testTag}</title>`,
-      `<script>${await readFileAsync(require.resolve('mocha/mocha.js'))}</script>`,
-      `<script>window.mocha.setup({ ui: 'bdd', reporter: 'spec' })</script>`, // reporter: use console.log instead of render HTML
+      `<script>${await readFileAsync(require.resolve('dr-dev/browser/test.js'))}</script>`,
+      `<script>window.DrDevTest.TEST_SETUP({ timeout: ${timeoutTest} })</script>`,
       `<script>${testScriptString}</script>`,
-      `<script>window.mocha.run((failCount) => { console.log(JSON.stringify({ "${testTag}": { failCount } })) })</script>`
+      `<script>window.addEventListener('load', () => window.DrDevTest.TEST_RUN().then(({ failList }) => { console.log(JSON.stringify({ "${testTag}": { failCount: failList.length } })) }))</script>`
     ].join('\n')
     // await writeFileAsync(PATH_BROWSER_TEST_HTML, testHTML) // extra output
 
+    const { promise, resolve, reject } = createInsideOutPromise()
     puppeteerPage.on('console', (consoleMessage) => {
       const logType = consoleMessage.type()
       const logText = consoleMessage.text()
@@ -100,9 +102,9 @@ const testWithPuppeteerMocha = async ({
     })
     await puppeteerPage.setDefaultTimeout(timeoutPage) // for all page operation
     await puppeteerPage.setViewport({ width: 0, height: 0 }) // TODO: CHECK: if this will save render time
-    await puppeteerPage.setContent(testHTML, { waitUntil: 'load' })
-    log('[test] start')
+    log('[test] load')
 
+    await puppeteerPage.setContent(testHTML, { waitUntil: 'load' })
     const timeoutToken = setTimeout(() => reject(new Error(`${testTag} test timeout`)), timeoutTest)
     await promise
     clearTimeout(timeoutToken)
@@ -118,5 +120,5 @@ export {
   initPuppeteerPage,
   runWithPuppeteer,
 
-  testWithPuppeteerMocha
+  testWithPuppeteer
 }

@@ -30,6 +30,9 @@ const buildOutput = async ({ logger: { padLog } }) => {
   padLog(`build module`)
   execSync('npm run build-module', execOptionRoot)
 
+  padLog(`build browser`)
+  execSync('npm run build-browser', execOptionRoot)
+
   padLog(`build bin`)
   execSync('npm run build-bin', execOptionRoot)
 }
@@ -39,13 +42,13 @@ const processOutput = async ({ packageJSON, logger }) => {
 
   padLog(`process output`)
 
-  const fileListLibraryBin = await getScriptFileListFromPathList([ 'library', 'bin' ], fromOutput)
+  const fileListLibraryBrowserBin = await getScriptFileListFromPathList([ 'library', 'browser', 'bin' ], fromOutput)
   const fileListModule = await getScriptFileListFromPathList([ 'module' ], fromOutput)
   let sizeReduce = 0
 
-  sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBin, option: getTerserOption(), rootPath: PATH_ROOT, logger })
+  sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBrowserBin, option: getTerserOption(), rootPath: PATH_ROOT, logger })
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
-  sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
+  sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBrowserBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
 
   padLog(`size reduce: ${binary(sizeReduce)}B`)
 }

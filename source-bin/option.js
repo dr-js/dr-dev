@@ -17,6 +17,10 @@ const MODE_FORMAT_LIST = parseCompactList(
   [ 'step-package-version,S/T|step up package version (expect "0.0.0-dev.0-local.0" format)', parseCompactList(
     'sort-key,K/T|sort keys in package.json',
     'git-commit,G/T|step up main version, and prepare a git commit'
+  ) ],
+  [ 'test-root,T/SP,O|root path to look test file from, default to cwd', parseCompactList(
+    'test-file-suffix,TFS/SS,O|pattern for test file, default to ".js"',
+    'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"'
   ) ]
 )
 

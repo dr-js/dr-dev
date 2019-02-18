@@ -22,7 +22,11 @@
 + 📄 [source/minify.js](source/minify.js)
   - `getTerserOption`, `minifyFileListWithTerser`, `minifyWithTerser`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
-  - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteerMocha`
+  - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteer`
++ 📄 [source/terminalColor.js](source/terminalColor.js)
+  - `TerminalColor`, `shouldSupportColor`
++ 📄 [source/test.js](source/test.js)
+  - `TEST_RUN`, `TEST_SETUP`, `after`, `before`, `describe`, `it`
 + 📄 [source/webpack.js](source/webpack.js)
   - `commonFlag`, `compileWithWebpack`
 + 📄 [source/ExportIndex/generateInfo.js](source/ExportIndex/generateInfo.js)
@@ -68,6 +72,12 @@
 >         sort keys in package.json
 >     --git-commit --G -G [OPTIONAL-CHECK] [ARGUMENT=0+]
 >         step up main version, and prepare a git commit
+>   --test-root --T -T [OPTIONAL] [ARGUMENT=1]
+>       root path to look test file from, default to cwd
+>     --test-file-suffix --TFS [OPTIONAL-CHECK] [ARGUMENT=1]
+>         pattern for test file, default to ".js"
+>     --test-require --TR [OPTIONAL-CHECK] [ARGUMENT=1+]
+>         module or file to require before test files, mostly for "@babel/register"
 > ENV Usage:
 >   "
 >     #!/usr/bin/env bash
@@ -87,6 +97,9 @@
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_SORT_KEY="[OPTIONAL-CHECK] [ARGUMENT=0+]"
 >     export DR_DEV_GIT_COMMIT="[OPTIONAL-CHECK] [ARGUMENT=0+]"
+>     export DR_DEV_TEST_ROOT="[OPTIONAL] [ARGUMENT=1]"
+>     export DR_DEV_TEST_FILE_SUFFIX="[OPTIONAL-CHECK] [ARGUMENT=1]"
+>     export DR_DEV_TEST_REQUIRE="[OPTIONAL-CHECK] [ARGUMENT=1+]"
 >   "
 > CONFIG Usage:
 >   {
@@ -106,6 +119,9 @@
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "sortKey": [ "[OPTIONAL-CHECK] [ARGUMENT=0+]" ],
 >     "gitCommit": [ "[OPTIONAL-CHECK] [ARGUMENT=0+]" ],
+>     "testRoot": [ "[OPTIONAL] [ARGUMENT=1]" ],
+>     "testFileSuffix": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
+>     "testRequire": [ "[OPTIONAL-CHECK] [ARGUMENT=1+]" ],
 >   }
 > ```
 
@@ -125,7 +141,7 @@
 <tr><td>babel-plugin-module-resolver</td><td>^3.2.0</td></tr>
 <tr><td>babel-plugin-styled-components</td><td>^1.10.0</td></tr>
 <tr><td>cross-env</td><td>^5.2.0</td></tr>
-<tr><td>eslint</td><td>^5.14.0</td></tr>
+<tr><td>eslint</td><td>^5.14.1</td></tr>
 <tr><td>eslint-config-standard</td><td>^12.0.0</td></tr>
 <tr><td>eslint-config-standard-react</td><td>^7.0.2</td></tr>
 <tr><td>eslint-plugin-import</td><td>^2.16.0</td></tr>
@@ -133,11 +149,10 @@
 <tr><td>eslint-plugin-promise</td><td>^4.0.1</td></tr>
 <tr><td>eslint-plugin-react</td><td>^7.12.4</td></tr>
 <tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
-<tr><td>mocha</td><td>^5.2.0</td></tr>
 <tr><td>prop-types</td><td>^15.7.2</td></tr>
 <tr><td>puppeteer</td><td>^1.12.2</td></tr>
-<tr><td>react</td><td>^16.8.2</td></tr>
+<tr><td>react</td><td>^16.8.3</td></tr>
 <tr><td>styled-components</td><td>^4.1.3</td></tr>
 <tr><td>terser</td><td>^3.16.1</td></tr>
-<tr><td>webpack</td><td>^4.29.4</td></tr>
+<tr><td>webpack</td><td>^4.29.5</td></tr>
 </table>
