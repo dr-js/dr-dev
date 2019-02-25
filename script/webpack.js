@@ -1,8 +1,7 @@
 import { resolve } from 'path'
 import { DefinePlugin } from 'webpack'
 
-import { argvFlag, runMain } from 'source/main'
-import { getLogger } from 'source/logger'
+import { runMain } from 'source/main'
 import { compileWithWebpack, commonFlag } from 'source/webpack'
 
 const PATH_ROOT = resolve(__dirname, '..')
@@ -11,7 +10,7 @@ const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 const fromOutput = (...args) => resolve(PATH_OUTPUT, ...args)
 
 runMain(async (logger) => {
-  const { mode, isWatch, isProduction, profileOutput, assetMapOutput } = await commonFlag({ argvFlag, fromRoot, logger })
+  const { mode, isWatch, isProduction, profileOutput, assetMapOutput } = await commonFlag({ fromRoot, logger })
 
   const babelOption = {
     configFile: false,
@@ -27,7 +26,7 @@ runMain(async (logger) => {
     mode,
     bail: isProduction,
     output: { path: fromOutput('browser'), filename: '[name].js', library: 'DrDevTest', libraryTarget: 'umd' },
-    entry: { 'test': 'source/test' },
+    entry: { 'test': 'source/common/test' },
     resolve: { alias: { source: fromRoot('source') } },
     module: { rules: [ { test: /\.js$/, use: { loader: 'babel-loader', options: babelOption } } ] },
     plugins: [ new DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(mode), __DEV__: !isProduction, __ENV_NODE__: false }) ],
@@ -36,4 +35,4 @@ runMain(async (logger) => {
 
   logger.padLog(`compile with webpack mode: ${mode}, isWatch: ${Boolean(isWatch)}`)
   await compileWithWebpack({ config, isWatch, profileOutput, assetMapOutput, logger })
-}, getLogger(`webpack`, argvFlag('quiet')))
+}, 'webpack')

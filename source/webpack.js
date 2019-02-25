@@ -6,7 +6,7 @@ import { binary, time, padTable } from 'dr-js/module/common/format'
 import { createDirectory } from 'dr-js/module/node/file/File'
 import { addExitListenerSync } from 'dr-js/module/node/system/ExitListener'
 
-import { __VERBOSE__ } from './main'
+import { __VERBOSE__, argvFlag } from './node/env'
 
 const getStatsCheck = (onError, onStats) => (error, statsData) => {
   if (error) return onError(error)
@@ -81,16 +81,14 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, assetMapOutp
 }
 
 const commonFlag = async ({
-  argvFlag,
   fromRoot, // optional if directly set `profileOutput`
-  profileOutput = fromRoot('.temp-gitignore/profile-stat.json'),
+  mode = argvFlag('development', 'production') || 'production',
+  isWatch = Boolean(argvFlag('watch')),
+  isProduction = mode === 'production',
+  profileOutput = argvFlag('profile') ? fromRoot('.temp-gitignore/profile-stat.json') : null,
   assetMapOutput = '',
   logger: { log }
 }) => {
-  const mode = argvFlag('development', 'production') || 'production'
-  const isWatch = Boolean(argvFlag('watch'))
-  const isProduction = mode === 'production'
-  if (!argvFlag('profile')) profileOutput = null
   profileOutput && await createDirectory(dirname(profileOutput))
   assetMapOutput && await createDirectory(dirname(assetMapOutput))
   log(`compile flag: ${JSON.stringify({ mode, isWatch, isProduction, profileOutput, assetMapOutput }, null, '  ')}`)

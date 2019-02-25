@@ -1,7 +1,7 @@
 import { clock } from 'dr-js/module/common/time'
 import { time as formatTime } from 'dr-js/module/common/format'
 
-import { loadEnvKey, saveEnvKey, __VERBOSE__ } from './main'
+import { loadEnvKey, saveEnvKey, __VERBOSE__ } from './env'
 
 const EMPTY_FUNC = () => {}
 

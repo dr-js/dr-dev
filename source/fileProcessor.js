@@ -3,7 +3,7 @@ import { clock } from 'dr-js/module/common/time'
 import { binary, time, padTable } from 'dr-js/module/common/format'
 import { statAsync, unlinkAsync, readFileAsync, writeFileAsync } from 'dr-js/module/node/file/function'
 
-import { __VERBOSE__ } from './main'
+import { __VERBOSE__ } from './node/env'
 
 const processFileList = async ({ fileList, processor, rootPath = '', logger }) => {
   logger.padLog(`process ${fileList.length} file`)

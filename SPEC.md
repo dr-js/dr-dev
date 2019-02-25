@@ -5,35 +5,39 @@
 * [Resource package](#resource-package)
 
 #### Export Path
-+ 📄 [source/commonOutput.js](source/commonOutput.js)
-  - `checkPublishVersion`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyNoGitignore`, `verifyOutputBinVersion`
-+ 📄 [source/exec.js](source/exec.js)
-  - `getGitBranch`, `getGitCommitHash`, `tryExec`, `withRunBackground`
-+ 📄 [source/fileList.js](source/fileList.js)
-  - `getFileListFromPathList`, `getScriptFileListFromPathList`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
   - `fileProcessorBabel`, `fileProcessorWebpack`, `processFileList`
 + 📄 [source/license.js](source/license.js)
   - `writeLicenseFile`
-+ 📄 [source/logger.js](source/logger.js)
-  - `getLogger`
 + 📄 [source/main.js](source/main.js)
-  - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `runMain`, `saveEnvKey`, `syncEnvKey`
+  - `argvFlag`, `runMain`
 + 📄 [source/minify.js](source/minify.js)
   - `getTerserOption`, `minifyFileListWithTerser`, `minifyWithTerser`
++ 📄 [source/output.js](source/output.js)
+  - `checkPublishVersion`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyNoGitignore`, `verifyOutputBinVersion`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
   - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteer`
-+ 📄 [source/terminalColor.js](source/terminalColor.js)
-  - `TerminalColor`, `shouldSupportColor`
-+ 📄 [source/test.js](source/test.js)
-  - `TEST_RUN`, `TEST_SETUP`, `after`, `before`, `describe`, `it`
 + 📄 [source/webpack.js](source/webpack.js)
   - `commonFlag`, `compileWithWebpack`
-+ 📄 [source/ExportIndex/generateInfo.js](source/ExportIndex/generateInfo.js)
++ 📄 [source/common/dev.js](source/common/dev.js)
+  - `createTransformCacheWithInfo`, `hijackSetTimeoutInterval`
++ 📄 [source/common/terminalColor.js](source/common/terminalColor.js)
+  - `TerminalColor`, `shouldSupportColor`
++ 📄 [source/common/test.js](source/common/test.js)
+  - `TEST_RUN`, `TEST_SETUP`, `after`, `before`, `describe`, `it`
++ 📄 [source/node/env.js](source/node/env.js)
+  - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
++ 📄 [source/node/fileList.js](source/node/fileList.js)
+  - `getFileListFromPathList`, `getScriptFileListFromPathList`
++ 📄 [source/node/logger.js](source/node/logger.js)
+  - `getLogger`
++ 📄 [source/node/run.js](source/node/run.js)
+  - `getGitBranch`, `getGitCommitHash`, `withRunBackground`
++ 📄 [source/node/export/generate.js](source/node/export/generate.js)
   - `EXPORT_HOIST_LIST_KEY`, `EXPORT_LIST_KEY`, `HOIST_LIST_KEY`, `generateExportInfo`, `generateIndexScript`
-+ 📄 [source/ExportIndex/parseExport.js](source/ExportIndex/parseExport.js)
++ 📄 [source/node/export/parse.js](source/node/export/parse.js)
   - `collectSourceRouteMap`, `createExportParser`
-+ 📄 [source/ExportIndex/renderMarkdown.js](source/ExportIndex/renderMarkdown.js)
++ 📄 [source/node/export/renderMarkdown.js](source/node/export/renderMarkdown.js)
   - `autoAppendMarkdownHeaderLink`, `escapeMarkdownLink`, `getMarkdownHeaderLink`, `renderMarkdownDirectoryLink`, `renderMarkdownExportPath`, `renderMarkdownExportTree`, `renderMarkdownFileLink`
 
 #### Bin Option Format
@@ -129,10 +133,10 @@
 📄 [resource/](resource/)
 <table>
 <tr><td>@babel/cli</td><td>^7.2.3</td></tr>
-<tr><td>@babel/core</td><td>^7.3.3</td></tr>
+<tr><td>@babel/core</td><td>^7.3.4</td></tr>
 <tr><td>@babel/node</td><td>^7.2.2</td></tr>
-<tr><td>@babel/plugin-proposal-class-properties</td><td>^7.3.3</td></tr>
-<tr><td>@babel/preset-env</td><td>^7.3.1</td></tr>
+<tr><td>@babel/plugin-proposal-class-properties</td><td>^7.3.4</td></tr>
+<tr><td>@babel/preset-env</td><td>^7.3.4</td></tr>
 <tr><td>@babel/preset-react</td><td>^7.0.0</td></tr>
 <tr><td>@babel/register</td><td>^7.0.0</td></tr>
 <tr><td>babel-eslint</td><td>^10.0.1</td></tr>
@@ -141,7 +145,7 @@
 <tr><td>babel-plugin-module-resolver</td><td>^3.2.0</td></tr>
 <tr><td>babel-plugin-styled-components</td><td>^1.10.0</td></tr>
 <tr><td>cross-env</td><td>^5.2.0</td></tr>
-<tr><td>eslint</td><td>^5.14.1</td></tr>
+<tr><td>eslint</td><td>^5.15.2</td></tr>
 <tr><td>eslint-config-standard</td><td>^12.0.0</td></tr>
 <tr><td>eslint-config-standard-react</td><td>^7.0.2</td></tr>
 <tr><td>eslint-plugin-import</td><td>^2.16.0</td></tr>
@@ -150,9 +154,9 @@
 <tr><td>eslint-plugin-react</td><td>^7.12.4</td></tr>
 <tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
 <tr><td>prop-types</td><td>^15.7.2</td></tr>
-<tr><td>puppeteer</td><td>^1.12.2</td></tr>
-<tr><td>react</td><td>^16.8.3</td></tr>
+<tr><td>puppeteer</td><td>^1.13.0</td></tr>
+<tr><td>react</td><td>^16.8.4</td></tr>
 <tr><td>styled-components</td><td>^4.1.3</td></tr>
-<tr><td>terser</td><td>^3.16.1</td></tr>
-<tr><td>webpack</td><td>^4.29.5</td></tr>
+<tr><td>terser</td><td>^3.17.0</td></tr>
+<tr><td>webpack</td><td>^4.29.6</td></tr>
 </table>

@@ -1,30 +1,19 @@
 import { clock } from 'dr-js/module/common/time'
 import { time } from 'dr-js/module/common/format'
+import { isString } from 'dr-js/module/common/check'
 
-const loadEnvKey = (key) => {
-  try {
-    return JSON.parse(process.env[ key ])
-  } catch (error) { return null }
-}
-const saveEnvKey = (key, value) => {
-  try {
-    process.env[ key ] = JSON.stringify(value)
-  } catch (error) {}
-}
-const syncEnvKey = (key, defaultValue) => {
-  const value = loadEnvKey(key) || defaultValue
-  saveEnvKey(key, value)
-  return value
-}
+import { argvFlag } from './node/env'
+import { getLogger } from './node/logger'
 
-const __VERBOSE__ = syncEnvKey('__DEV_VERBOSE__', process.argv.includes('verbose'))
-
-const checkFlag = (flagList, checkFlagList) => flagList.find((flag) => checkFlagList.includes(flag))
-
-const argvFlag = (...checkFlagList) => checkFlag(process.argv, checkFlagList)
-
-const runMain = (main, logger, ...args) => {
+const runMain = (
+  main,
+  loggerOrTitle = process.argv.slice(2).join('+'),
+  ...args
+) => {
   const startTime = clock()
+  const logger = isString(loggerOrTitle)
+    ? getLogger(loggerOrTitle, argvFlag('quiet'))
+    : loggerOrTitle
   new Promise((resolve) => resolve(main(logger, ...args))).then(
     () => { logger.padLog(`done in ${time(clock() - startTime)}`) },
     (error) => {
@@ -36,12 +25,6 @@ const runMain = (main, logger, ...args) => {
 }
 
 export {
-  loadEnvKey,
-  saveEnvKey,
-  syncEnvKey,
-
-  __VERBOSE__,
-  checkFlag,
-  argvFlag,
-  runMain
+  runMain,
+  argvFlag // common import
 }

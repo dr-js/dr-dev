@@ -3,15 +3,14 @@ import { writeFileSync } from 'fs'
 
 // import { indentLine } from 'dr-js/library/common/string'
 
-import { runMain } from 'dr-dev/module/main'
-import { getLogger } from 'dr-dev/module/logger'
-import { collectSourceRouteMap } from 'dr-dev/module/ExportIndex/parseExport'
-import { generateExportInfo } from 'dr-dev/module/ExportIndex/generateInfo'
+import { collectSourceRouteMap } from 'source/node/export/parse'
+import { generateExportInfo } from 'source/node/export/generate'
 import {
-  getMarkdownHeaderLink,
+  autoAppendMarkdownHeaderLink,
   // renderMarkdownFileLink,
   renderMarkdownExportPath
-} from 'dr-dev/module/ExportIndex/renderMarkdown'
+} from 'source/node/export/renderMarkdown'
+import { runMain } from 'source/main'
 
 // import { formatUsage } from 'source-bin/option'
 
@@ -36,16 +35,13 @@ runMain(async (logger) => {
   writeFileSync(fromRoot('SPEC.md'), [
     '# Specification',
     '',
-    ...[
-      'Export Path'
-      // 'Bin Option Format'
-    ].map((text) => `* ${getMarkdownHeaderLink(text)}`),
-    '',
-    '#### Export Path',
-    ...renderMarkdownExportPath({ exportInfoMap, rootPath: PATH_ROOT }),
-    // '',
-    // '#### Bin Option Format',
-    // ...renderMarkdownBinOptionFormat(),
+    ...autoAppendMarkdownHeaderLink(
+      '#### Export Path',
+      ...renderMarkdownExportPath({ exportInfoMap, rootPath: PATH_ROOT }),
+      ''
+      // '#### Bin Option Format',
+      // ...renderMarkdownBinOptionFormat()
+    ),
     ''
   ].join('\n'))
-}, getLogger('generate-export'))
+}, 'generate-export')

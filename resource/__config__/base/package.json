@@ -25,12 +25,12 @@
     "script-generate-spec": "babel-node ./script/generateSpec"
   },
   "engines": {
-    "node": "^8.12 || >=10.12",
+    "node": ">=10.15",
     "npm": ">=6"
   },
   "dependencies": {
     "cross-env": "^5.2.0",
-    "terser": "^3.16.1"
+    "terser": "^3.17.0"
   },
   "sideEffects": false
 }

@@ -7,7 +7,7 @@ import { getFileList } from 'dr-js/module/node/file/Directory'
 import { runSync } from 'dr-js/module/node/system/Run'
 import { modify } from 'dr-js/module/node/file/Modify'
 
-import { __VERBOSE__ } from './main'
+import { __VERBOSE__ } from './node/env'
 
 const initOutput = async ({
   fromRoot,

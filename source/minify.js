@@ -5,7 +5,7 @@ import Terser from 'terser'
 import { clock } from 'dr-js/module/common/time'
 import { binary, time, padTable } from 'dr-js/module/common/format'
 
-import { __VERBOSE__ } from './main'
+import { __VERBOSE__ } from './node/env'
 
 const getTerserOption = ({
   isReadable = false, // should be much more readable // TODO: option `beautify` is being removed

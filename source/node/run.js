@@ -4,16 +4,16 @@ import { setTimeoutAsync } from 'dr-js/module/common/time'
 import { run } from 'dr-js/module/node/system/Run'
 import { getProcessList, getProcessPidMap, getProcessTree, findProcessTreeNode, checkProcessExist, tryKillProcessTreeNode } from 'dr-js/module/node/system/ProcessStatus'
 
-const tryExec = (command, option) => {
+const execString = (command, option) => {
   try {
-    return execSync(command, option).toString()
+    return execSync(command, { stdio: 'pipe', ...option }).toString().trim()
   } catch (error) {
-    console.warn(`[tryExec] failed for: ${command}, error: ${error}`)
+    console.warn(`[execString] failed for: ${command}, error: ${error}`)
     return ''
   }
 }
-const getGitBranch = () => tryExec('git symbolic-ref --short HEAD', { stdio: 'pipe' }).replace('\n', '').trim()
-const getGitCommitHash = () => tryExec('git log -1 --format="%H"', { stdio: 'pipe' }).replace('\n', '').trim()
+const getGitBranch = () => execString('git symbolic-ref --short HEAD')
+const getGitCommitHash = () => execString('git log -1 --format="%H"')
 
 const withRunBackground = async (option, task, setupDelay = 500) => {
   const { subProcess, promise } = run(option)
@@ -40,7 +40,6 @@ const withRunBackground = async (option, task, setupDelay = 500) => {
 }
 
 export {
-  tryExec,
   getGitBranch,
   getGitCommitHash,
 

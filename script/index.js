@@ -4,10 +4,9 @@ import { execSync, spawnSync } from 'child_process'
 import { binary } from 'dr-js/module/common/format'
 import { modify } from 'dr-js/module/node/file/Modify'
 
-import { argvFlag, runMain } from 'source/main'
-import { getLogger } from 'source/logger'
-import { getFileListFromPathList, getScriptFileListFromPathList } from 'source/fileList'
-import { initOutput, packOutput, verifyOutputBinVersion, verifyNoGitignore, getPublishFlag, checkPublishVersion, publishOutput } from 'source/commonOutput'
+import { getFileListFromPathList, getScriptFileListFromPathList } from 'source/node/fileList'
+import { runMain, argvFlag } from 'source/main'
+import { initOutput, packOutput, verifyOutputBinVersion, verifyNoGitignore, getPublishFlag, checkPublishVersion, publishOutput } from 'source/output'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor'
 import { getTerserOption, minifyFileListWithTerser } from 'source/minify'
 import { writeLicenseFile } from 'source/license'
@@ -105,4 +104,4 @@ runMain(async (logger) => {
     const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })
     await publishOutput({ flagList: process.argv, packageJSON, pathPackagePack, logger })
   }
-}, getLogger(process.argv.slice(2).join('+'), argvFlag('quiet')))
+})
