@@ -1,6 +1,6 @@
 {
   "peerDependencies": {
-    "react": "^16.8.4",
+    "react": "^16.8.6",
     "prop-types": "^15.7.2"
   }
 }
