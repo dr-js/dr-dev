@@ -23,13 +23,13 @@ runMain(async (logger) => {
     babelrc: false,
     cacheDirectory: isProduction,
     presets: [
-      [ '@babel/env', { targets: isProduction ? {} : { node: '8.8' }, forceAllTransforms: isProduction, modules: false } ],
+      [ '@babel/env', { targets: isProduction ? {} : { node: '10' }, forceAllTransforms: isProduction, modules: false } ],
       [ '@babel/react' ]
     ],
     plugins: [
-      [ 'babel-plugin-styled-components' ],
-      [ '@babel/plugin-proposal-class-properties', { loose: true } ],
-      isProduction && [ '@babel/plugin-proposal-object-rest-spread', { loose: true, useBuiltIns: true } ] // NOTE: for Edge(17.17134) support check: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#Spread_in_object_literals
+      [ 'styled-components' ],
+      [ '@babel/proposal-class-properties', { loose: true } ],
+      isProduction && [ '@babel/proposal-object-rest-spread', { loose: true, useBuiltIns: true } ] // NOTE: for Edge(17.17134) support check: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#Spread_in_object_literals
     ].filter(Boolean)
   }
 

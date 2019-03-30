@@ -24,7 +24,7 @@
 + 📄 [source/common/terminalColor.js](source/common/terminalColor.js)
   - `TerminalColor`, `shouldSupportColor`
 + 📄 [source/common/test.js](source/common/test.js)
-  - `TEST_RUN`, `TEST_SETUP`, `after`, `before`, `describe`, `it`
+  - `TEST_RUN`, `TEST_SETUP`, `after`, `before`, `describe`, `info`, `it`
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/fileList.js](source/node/fileList.js)
@@ -76,12 +76,14 @@
 >         sort keys in package.json
 >     --git-commit --G -G [OPTIONAL-CHECK] [ARGUMENT=0+]
 >         step up main version, and prepare a git commit
->   --test-root --T -T [OPTIONAL] [ARGUMENT=1]
+>   --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
 >       root path to look test file from, default to cwd
->     --test-file-suffix --TFS [OPTIONAL-CHECK] [ARGUMENT=1]
+>     --test-file-suffix --TFS [OPTIONAL-CHECK] [ARGUMENT=1+]
 >         pattern for test file, default to ".js"
 >     --test-require --TR [OPTIONAL-CHECK] [ARGUMENT=1+]
 >         module or file to require before test files, mostly for "@babel/register"
+>     --test-timeout --TT [OPTIONAL-CHECK] [ARGUMENT=1]
+>         timeout for each test, in msec, default to 10*1000 (10sec)
 > ENV Usage:
 >   "
 >     #!/usr/bin/env bash
@@ -101,9 +103,10 @@
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_SORT_KEY="[OPTIONAL-CHECK] [ARGUMENT=0+]"
 >     export DR_DEV_GIT_COMMIT="[OPTIONAL-CHECK] [ARGUMENT=0+]"
->     export DR_DEV_TEST_ROOT="[OPTIONAL] [ARGUMENT=1]"
->     export DR_DEV_TEST_FILE_SUFFIX="[OPTIONAL-CHECK] [ARGUMENT=1]"
+>     export DR_DEV_TEST_ROOT="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_TEST_FILE_SUFFIX="[OPTIONAL-CHECK] [ARGUMENT=1+]"
 >     export DR_DEV_TEST_REQUIRE="[OPTIONAL-CHECK] [ARGUMENT=1+]"
+>     export DR_DEV_TEST_TIMEOUT="[OPTIONAL-CHECK] [ARGUMENT=1]"
 >   "
 > CONFIG Usage:
 >   {
@@ -123,20 +126,21 @@
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "sortKey": [ "[OPTIONAL-CHECK] [ARGUMENT=0+]" ],
 >     "gitCommit": [ "[OPTIONAL-CHECK] [ARGUMENT=0+]" ],
->     "testRoot": [ "[OPTIONAL] [ARGUMENT=1]" ],
->     "testFileSuffix": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
+>     "testRoot": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "testFileSuffix": [ "[OPTIONAL-CHECK] [ARGUMENT=1+]" ],
 >     "testRequire": [ "[OPTIONAL-CHECK] [ARGUMENT=1+]" ],
+>     "testTimeout": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
 >   }
 > ```
 
 #### Resource package
 📄 [resource/](resource/)
 <table>
-<tr><td>@babel/cli</td><td>^7.2.3</td></tr>
-<tr><td>@babel/core</td><td>^7.4.0</td></tr>
+<tr><td>@babel/cli</td><td>^7.4.3</td></tr>
+<tr><td>@babel/core</td><td>^7.4.3</td></tr>
 <tr><td>@babel/node</td><td>^7.2.2</td></tr>
 <tr><td>@babel/plugin-proposal-class-properties</td><td>^7.4.0</td></tr>
-<tr><td>@babel/preset-env</td><td>^7.4.2</td></tr>
+<tr><td>@babel/preset-env</td><td>^7.4.4 || 7.4.2</td></tr>
 <tr><td>@babel/preset-react</td><td>^7.0.0</td></tr>
 <tr><td>@babel/register</td><td>^7.4.0</td></tr>
 <tr><td>babel-eslint</td><td>^10.0.1</td></tr>
@@ -148,9 +152,9 @@
 <tr><td>eslint</td><td>^5.16.0</td></tr>
 <tr><td>eslint-config-standard</td><td>^12.0.0</td></tr>
 <tr><td>eslint-config-standard-react</td><td>^7.0.2</td></tr>
-<tr><td>eslint-plugin-import</td><td>^2.16.0</td></tr>
+<tr><td>eslint-plugin-import</td><td>^2.17.2</td></tr>
 <tr><td>eslint-plugin-node</td><td>^8.0.1</td></tr>
-<tr><td>eslint-plugin-promise</td><td>^4.0.1</td></tr>
+<tr><td>eslint-plugin-promise</td><td>^4.1.1</td></tr>
 <tr><td>eslint-plugin-react</td><td>^7.12.4</td></tr>
 <tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
 <tr><td>prop-types</td><td>^15.7.2</td></tr>
@@ -158,5 +162,5 @@
 <tr><td>react</td><td>^16.8.6</td></tr>
 <tr><td>styled-components</td><td>^4.2.0</td></tr>
 <tr><td>terser</td><td>^3.17.0</td></tr>
-<tr><td>webpack</td><td>^4.29.6</td></tr>
+<tr><td>webpack</td><td>^4.30.0</td></tr>
 </table>

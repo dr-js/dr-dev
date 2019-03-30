@@ -18,9 +18,10 @@ const MODE_FORMAT_LIST = parseCompactList(
     'sort-key,K/T|sort keys in package.json',
     'git-commit,G/T|step up main version, and prepare a git commit'
   ) ],
-  [ 'test-root,T/SP,O|root path to look test file from, default to cwd', parseCompactList(
-    'test-file-suffix,TFS/SS,O|pattern for test file, default to ".js"',
-    'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"'
+  [ 'test-root,T/AP,O|root path to look test file from, default to cwd', parseCompactList(
+    'test-file-suffix,TFS/AS,O|pattern for test file, default to ".js"',
+    'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"',
+    'test-timeout,TT/SI,O|timeout for each test, in msec, default to 10*1000 (10sec)'
   ) ]
 )
 

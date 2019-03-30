@@ -7,14 +7,18 @@ import { TEST_SETUP, TEST_RUN, describe } from 'dr-dev/module/common/test'
 
 const doTestRoot = async ({
   testRoot = process.cwd(),
-  testFileSuffix = '.js',
-  testRequireList = []
+  testFileSuffixList = [ '.js' ],
+  testRequireList = [],
+  testTimeout = 10 * 1000
 }) => {
-  const fileList = await getFileList(testRoot, testFileSuffix
-    ? (fileList, { path }) => path.endsWith(testFileSuffix) && fileList.push(path)
+  const testPathFunc = (testFileSuffixList && testFileSuffixList.length)
+    ? (path) => testFileSuffixList.find((testFileSuffix) => path.endsWith(testFileSuffix))
+    : null
+  const fileList = await getFileList(testRoot, testPathFunc
+    ? (fileList, { path }) => testPathFunc(path) && fileList.push(path)
     : (fileList, { path }) => fileList.push(path)
   )
-  if (!fileList.length) throw new Error([ `no test file selected`, testFileSuffix && `with suffix "${testFileSuffix}"`, `from ${testRoot}` ].filter(Boolean).join(' '))
+  if (!fileList.length) throw new Error([ `no test file selected`, `with suffix "${testFileSuffixList.join(',')}"`, `from ${testRoot}` ].filter(Boolean).join(' '))
 
   for (const testRequire of testRequireList) { // load pre require, mostly `@babel/register`
     try { require(testRequire) } catch (error) {
@@ -23,7 +27,7 @@ const doTestRoot = async ({
     }
   }
 
-  TEST_SETUP()
+  TEST_SETUP({ timeout: testTimeout })
 
   for (const file of fileList) {
     try {
@@ -44,4 +48,23 @@ const doTestRoot = async ({
   if (failCount) throw new Error(`${failCount} of ${testCount} test fail from ${fileList.length} file`)
 }
 
-export { doTestRoot }
+const doTestRootList = async ({
+  testRootList = [ process.cwd() ],
+  testFileSuffixList = [ '.js' ],
+  testRequireList = [],
+  testTimeout = 10 * 1000
+}) => {
+  for (const testRoot of testRootList) {
+    await doTestRoot({
+      testRoot,
+      testFileSuffixList,
+      testRequireList,
+      testTimeout
+    })
+  }
+}
+
+export {
+  doTestRoot,
+  doTestRootList
+}

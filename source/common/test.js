@@ -109,7 +109,7 @@ let CONFIG
 const TEST_SETUP = ({
   log = console.log,
   logLevel = (level, ...args) => log(indentLine(args.join(' '), '  '.repeat(level))),
-  timeout = 10 * 1000, // 10 sec
+  timeout = 10 * 1000, // 10 sec, for each test
   isSkipGlobalAssign = false
 } = {}) => {
   ROOT_SCOPE = CURRENT_SCOPE = createScope(null, 0, 'root')
@@ -117,7 +117,7 @@ const TEST_SETUP = ({
   CONFIG = { log, logLevel, timeout }
 
   // inject global for test script
-  !isSkipGlobalAssign && Object.assign(getGlobal(), { describe, it, before, after })
+  !isSkipGlobalAssign && Object.assign(getGlobal(), { describe, it, before, after, info })
 
   CONFIG.log(colorMain('[TEST] setup'))
 }
@@ -174,7 +174,9 @@ const TEST_RUN = async () => {
   return RESULT
 }
 
+const info = (...args) => console.log(...args.map((v) => indentLine(String(v), '      > ')))
+
 export {
   TEST_SETUP, TEST_RUN,
-  describe, it, before, after
+  describe, it, before, after, info
 }

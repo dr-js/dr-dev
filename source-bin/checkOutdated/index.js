@@ -5,7 +5,7 @@ import { withTempDirectory } from 'dr-js/module/node/file/Modify'
 
 import { collectDependency } from './collectDependency'
 import { checkNpmOutdated } from './checkNpmOutdated'
-import { logResult } from './logResult'
+import { compareAndLogResult } from './compareAndLogResult'
 
 const doCheckOutdated = async ({
   pathInput,
@@ -22,7 +22,7 @@ const doCheckOutdated = async ({
   process.exit(outdatedCount)
 }
 
-const logCheckOutdatedResult = async (packageInfoMap, pathPackage) => logResult(
+const logCheckOutdatedResult = async (packageInfoMap, pathPackage) => compareAndLogResult(
   packageInfoMap,
   await checkNpmOutdated(pathPackage)
 )

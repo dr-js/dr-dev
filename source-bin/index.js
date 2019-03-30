@@ -3,7 +3,7 @@
 import { doCheckOutdated } from './checkOutdated'
 import { doPack } from './pack'
 import { doStepPackageVersion } from './stepPackageVersion'
-import { doTestRoot } from './testRoot'
+import { doTestRootList } from './testRoot'
 
 import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
 import { name as packageName, version as packageVersion } from '../package.json'
@@ -32,10 +32,11 @@ const runMode = async (modeName, { tryGet, getFirst, tryGetFirst }) => {
         isGitCommit: tryGet('git-commit')
       })
     case 'test-root':
-      return doTestRoot({
-        testRoot: tryGetFirst('test-root') || process.cwd(),
-        testFileSuffix: tryGetFirst('test-file-suffix') || '.js',
-        testRequireList: tryGet('test-require') || []
+      return doTestRootList({
+        testRootList: tryGet('test-root') || [ process.cwd() ],
+        testFileSuffixList: tryGet('test-file-suffix') || [ '.js' ],
+        testRequireList: tryGet('test-require') || [],
+        testTimeout: tryGet('test-timeout') || 10 * 1000
       })
   }
 }

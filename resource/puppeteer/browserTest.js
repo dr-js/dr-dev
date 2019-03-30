@@ -28,7 +28,7 @@ runMain(async (logger) => {
     configFile: false,
     babelrc: false,
     // cacheDirectory: isProduction,
-    presets: [ [ '@babel/env', { targets: { node: '8.8' }, modules: false } ] ]
+    presets: [ [ '@babel/env', { targets: { node: '10' }, modules: false } ] ]
   }
 
   const entryList = await getScriptFileListFromPathList([ 'source' ], fromRoot, (path) => path.endsWith('.test.js'))
