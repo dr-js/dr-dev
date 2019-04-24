@@ -136,13 +136,13 @@
 #### Resource package
 📄 [resource/](resource/)
 <table>
-<tr><td>@babel/cli</td><td>^7.4.3</td></tr>
-<tr><td>@babel/core</td><td>^7.4.3</td></tr>
+<tr><td>@babel/cli</td><td>^7.4.4</td></tr>
+<tr><td>@babel/core</td><td>^7.4.4</td></tr>
 <tr><td>@babel/node</td><td>^7.2.2</td></tr>
-<tr><td>@babel/plugin-proposal-class-properties</td><td>^7.4.0</td></tr>
-<tr><td>@babel/preset-env</td><td>^7.4.4 || 7.4.2</td></tr>
+<tr><td>@babel/plugin-proposal-class-properties</td><td>^7.4.4</td></tr>
+<tr><td>@babel/preset-env</td><td>^7.4.4</td></tr>
 <tr><td>@babel/preset-react</td><td>^7.0.0</td></tr>
-<tr><td>@babel/register</td><td>^7.4.0</td></tr>
+<tr><td>@babel/register</td><td>^7.4.4</td></tr>
 <tr><td>babel-eslint</td><td>^10.0.1</td></tr>
 <tr><td>babel-loader</td><td>^8.0.5</td></tr>
 <tr><td>babel-plugin-minify-replace</td><td>^0.5.0</td></tr>
@@ -158,7 +158,7 @@
 <tr><td>eslint-plugin-react</td><td>^7.12.4</td></tr>
 <tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
 <tr><td>prop-types</td><td>^15.7.2</td></tr>
-<tr><td>puppeteer</td><td>^1.14.0</td></tr>
+<tr><td>puppeteer</td><td>^1.15.0</td></tr>
 <tr><td>react</td><td>^16.8.6</td></tr>
 <tr><td>styled-components</td><td>^4.2.0</td></tr>
 <tr><td>terser</td><td>^3.17.0</td></tr>

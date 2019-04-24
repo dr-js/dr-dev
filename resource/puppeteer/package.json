@@ -6,6 +6,6 @@
     "test-puppeteer-dev": "babel-node ./script/browserTest development"
   },
   "dependencies": {
-    "puppeteer": "^1.14.0"
+    "puppeteer": "^1.15.0"
   }
 }
