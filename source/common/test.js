@@ -174,7 +174,7 @@ const TEST_RUN = async () => {
   return RESULT
 }
 
-const info = (...args) => console.log(...args.map((v) => indentLine(String(v), '      > ')))
+const info = (...args) => console.log(indentLine(args.join(' '), '      > '))
 
 export {
   TEST_SETUP, TEST_RUN,

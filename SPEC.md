@@ -153,14 +153,14 @@
 <tr><td>eslint-config-standard</td><td>^12.0.0</td></tr>
 <tr><td>eslint-config-standard-react</td><td>^7.0.2</td></tr>
 <tr><td>eslint-plugin-import</td><td>^2.17.2</td></tr>
-<tr><td>eslint-plugin-node</td><td>^8.0.1</td></tr>
+<tr><td>eslint-plugin-node</td><td>^9.0.1</td></tr>
 <tr><td>eslint-plugin-promise</td><td>^4.1.1</td></tr>
-<tr><td>eslint-plugin-react</td><td>^7.12.4</td></tr>
+<tr><td>eslint-plugin-react</td><td>^7.13.0</td></tr>
 <tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
 <tr><td>prop-types</td><td>^15.7.2</td></tr>
 <tr><td>puppeteer</td><td>^1.15.0</td></tr>
 <tr><td>react</td><td>^16.8.6</td></tr>
 <tr><td>styled-components</td><td>^4.2.0</td></tr>
 <tr><td>terser</td><td>^3.17.0</td></tr>
-<tr><td>webpack</td><td>^4.30.0</td></tr>
+<tr><td>webpack</td><td>^4.31.0</td></tr>
 </table>

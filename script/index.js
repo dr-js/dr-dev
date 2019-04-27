@@ -36,7 +36,7 @@ const buildOutput = async ({ logger: { padLog } }) => {
   execSync('npm run build-bin', execOptionRoot)
 }
 
-const processOutput = async ({ packageJSON, logger }) => {
+const processOutput = async ({ logger }) => {
   const { padLog } = logger
 
   padLog(`process output`)
@@ -45,6 +45,11 @@ const processOutput = async ({ packageJSON, logger }) => {
   const fileListModule = await getScriptFileListFromPathList([ 'module' ], fromOutput)
   let sizeReduce = 0
 
+  sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBrowserBin, option: getTerserOption(), rootPath: PATH_ROOT, logger })
+  sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
+  sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBrowserBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
+
+  // again, for maybe better result
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBrowserBin, option: getTerserOption(), rootPath: PATH_ROOT, logger })
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
   sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBrowserBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
@@ -91,7 +96,7 @@ runMain(async (logger) => {
   if (!argvFlag('pack')) return
 
   await buildOutput({ logger })
-  await processOutput({ packageJSON, logger })
+  await processOutput({ logger })
   await verifyOutputBinVersion({ fromOutput, packageJSON, logger })
 
   // will not pack both
