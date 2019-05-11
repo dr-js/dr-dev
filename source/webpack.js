@@ -1,12 +1,13 @@
 import { dirname } from 'path'
 import { writeFileSync } from 'fs'
-import webpack from 'webpack'
+import webpack, { BannerPlugin, DefinePlugin } from 'webpack'
 
 import { binary, time, padTable } from 'dr-js/module/common/format'
 import { createDirectory } from 'dr-js/module/node/file/File'
 import { addExitListenerSync } from 'dr-js/module/node/system/ExitListener'
 
 import { __VERBOSE__, argvFlag } from './node/env'
+import { getWebpackBabelConfig } from './babel'
 
 const getStatsCheck = (onError, onStats) => (error, statsData) => {
   if (error) return onError(error)
@@ -92,7 +93,44 @@ const commonFlag = async ({
   profileOutput && await createDirectory(dirname(profileOutput))
   assetMapOutput && await createDirectory(dirname(assetMapOutput))
   log(`compile flag: ${JSON.stringify({ mode, isWatch, isProduction, profileOutput, assetMapOutput }, null, '  ')}`)
-  return { mode, isWatch, isProduction, profileOutput, assetMapOutput }
+
+  const getCommonWebpackConfig = ({
+    babelOption = getWebpackBabelConfig({ isProduction }),
+    output, // = { path: fromOutput('library'), filename: '[name].js', library: 'LIBRARY', libraryTarget: 'umd' },
+    entry, // = { index: 'source/index' },
+    resolve = { alias: { source: fromRoot('source') } },
+    externals = undefined,
+    isNodeEnv = false,
+    isNodeBin = false, // add `#!/usr/bin/env node`
+    isMinimize = false,
+    extraPluginList = [],
+    extraDefine = {},
+    ...extraConfig
+  }) => ({
+    mode,
+    bail: isProduction,
+    target: isNodeEnv ? 'node' : 'web', // support node main modules like 'fs'
+    node: isNodeEnv ? false : undefined, // do not polyfill fake node environment when build for node
+    output,
+    entry,
+    resolve,
+    externals,
+    module: { rules: [ { test: /\.js$/, use: { loader: 'babel-loader', options: babelOption } } ] },
+    plugins: [
+      new DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(mode),
+        __DEV__: !isProduction,
+        ...extraDefine
+      }),
+      isNodeBin && new BannerPlugin({ banner: `#!/usr/bin/env node`, raw: true }),
+      ...extraPluginList
+    ].filter(Boolean),
+    optimization: { minimize: isMinimize },
+    performance: { hints: isMinimize }, // mute: `The following asset(s) exceed the recommended size limit (250 kB).`
+    ...extraConfig
+  })
+
+  return { mode, isWatch, isProduction, profileOutput, assetMapOutput, getCommonWebpackConfig }
 }
 
 export {

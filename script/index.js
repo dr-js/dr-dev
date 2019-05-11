@@ -9,7 +9,6 @@ import { runMain, argvFlag } from 'source/main'
 import { initOutput, packOutput, verifyOutputBinVersion, verifyNoGitignore, getPublishFlag, checkPublishVersion, publishOutput } from 'source/output'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor'
 import { getTerserOption, minifyFileListWithTerser } from 'source/minify'
-import { writeLicenseFile } from 'source/license'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const PATH_OUTPUT = resolve(__dirname, '../output-gitignore')
@@ -91,7 +90,6 @@ runMain(async (logger) => {
   await verifyNoGitignore({ path: fromRoot('source-bin'), logger })
 
   const packageJSON = await initOutput({ fromRoot, fromOutput, logger })
-  writeLicenseFile(fromRoot('LICENSE'), packageJSON.license, packageJSON.author)
 
   if (!argvFlag('pack')) return
 

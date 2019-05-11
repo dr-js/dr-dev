@@ -1,11 +1,11 @@
 {
-  "INSTALL": [ { "from": "browserTest.js", "to": "script/browserTest.js" } ],
+  "INSTALL": [ { "from": "testBrowser.js", "to": "script/testBrowser.js" } ],
   "scripts": {
     "// browser-test ================": "",
-    "test-puppeteer": "babel-node ./script/browserTest production",
-    "test-puppeteer-dev": "babel-node ./script/browserTest development"
+    "test-puppeteer": "babel-node ./script/testBrowser production",
+    "test-puppeteer-dev": "babel-node ./script/testBrowser development"
   },
   "dependencies": {
-    "puppeteer": "^1.15.0"
+    "puppeteer": "^1.17.0"
   }
 }

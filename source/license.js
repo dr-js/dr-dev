@@ -28,11 +28,12 @@ const GET_LICENSE_MAP = {
   MIT: getLicenseMIT
 }
 
-const writeLicenseFile = (path, type, author) => {
-  if (!type) return // allow skip by passing falsy license type
-  const getLicense = GET_LICENSE_MAP[ type.toUpperCase() ]
-  if (!getLicense) throw new Error(`License type <${type}> is not yet supported`)
-  writeFileSync(path, getLicense(author))
+const writeLicenseFile = (path, licenseType, licenseAuthor) => {
+  if (!licenseType) return // allow skip by passing falsy license type
+  if (!licenseAuthor) throw new Error(`invalid License author "${licenseAuthor}"`)
+  const getLicense = GET_LICENSE_MAP[ licenseType.toUpperCase() ]
+  if (!getLicense) throw new Error(`License type "${licenseType}" is not yet supported`)
+  writeFileSync(path, getLicense(licenseAuthor))
 }
 
 export { writeLicenseFile }

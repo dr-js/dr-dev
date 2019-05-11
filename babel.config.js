@@ -15,9 +15,10 @@ module.exports = {
     } ],
     [ 'module-resolver', {
       root: [ './' ],
-      alias: isModule ? undefined : [ {
-        '^dr-dev/module/(.+)': './library/\\1' // for source-bin, when build to output
-      }, { '^dr-([\\w-]+)/module/(.+)': 'dr-\\1/library/\\2' } ]
+      alias: isModule ? undefined : [
+        { '^dr-dev/module/(.+)': './library/\\1' }, // for source-bin, when build to output
+        { '^dr-([\\w-]+)/module/(.+)': 'dr-\\1/library/\\2' }
+      ]
     } ]
   ],
   comments: false

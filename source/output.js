@@ -8,12 +8,16 @@ import { runSync } from 'dr-js/module/node/system/Run'
 import { modify } from 'dr-js/module/node/file/Modify'
 
 import { __VERBOSE__ } from './node/env'
+import { writeLicenseFile } from './license'
 
 const initOutput = async ({
   fromRoot,
   fromOutput,
   deleteKeyList = [ 'private', 'scripts', 'devDependencies' ],
   copyPathList = [ 'LICENSE', 'README.md' ],
+  copyMapPathList = [],
+  replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip
+  pathLicenseFile = fromRoot('LICENSE'), // set to false to skip
   logger: { padLog, log }
 }) => {
   padLog('reset output')
@@ -29,19 +33,23 @@ const initOutput = async ({
   writeFileSync(fromOutput('package.json'), JSON.stringify(packageJSON))
 
   padLog(`init output file`)
-  for (const copyPath of copyPathList) {
-    if (copyPath === 'README.md') { // trim README.md NON_PACKAGE_CONTENT
-      writeFileSync(
-        fromOutput(copyPath),
-        readFileSync(fromRoot(copyPath)).toString()
-          .split(`[//]: # (NON_PACKAGE_CONTENT)`)[ 0 ]
-          .trim()
-      )
-      log(`copied: ${copyPath} (with NON_PACKAGE_CONTENT trimmed)`)
-    } else {
-      await modify.copy(fromRoot(copyPath), fromOutput(copyPath))
-      log(`copied: ${copyPath}`)
+  for (const [ pathFrom, pathTo ] of [ ...copyPathList.map((v) => [ v, v ]), ...copyMapPathList ]) {
+    if (replaceReadmeNonPackageContent && pathFrom.endsWith('README.md')) { // change README.md NON_PACKAGE_CONTENT
+      const packageContentList = readFileSync(fromRoot(pathFrom)).toString().split('[//]: # (NON_PACKAGE_CONTENT)')
+      if (packageContentList.length >= 2) {
+        writeFileSync(fromOutput(pathTo), `${packageContentList[ 0 ].trim()}${replaceReadmeNonPackageContent}`)
+        log(`copied: ${pathFrom} (with NON_PACKAGE_CONTENT replaced to: ${JSON.stringify(replaceReadmeNonPackageContent)})`)
+        continue
+      }
     }
+    await modify.copy(fromRoot(pathFrom), fromOutput(pathTo))
+    log(`copied: ${pathFrom}`)
+  }
+
+  const { license, author } = packageJSON
+  if (pathLicenseFile && license && author) {
+    padLog(`update license file`)
+    writeLicenseFile(pathLicenseFile, license, author)
   }
 
   return packageJSON
