@@ -72,7 +72,7 @@ const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
   configFileList.forEach((file) => {
     const { __EXTRA__: { name, description } } = require(file)
     logger.padLog(`pack package ${name}`)
-    spawnSync('node', [
+    const { status, error } = spawnSync('node', [
       './output-gitignore/bin',
       '--pack',
       '--path-input', file,
@@ -82,6 +82,7 @@ const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
       '--output-description', description,
       isPublish && (isDev ? '--publish-dev' : '--publish')
     ].filter(Boolean), execOptionRoot)
+    if (error || status !== 0) throw (error || new Error(`invalid exit status: ${status}`))
   })
 }
 

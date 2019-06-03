@@ -162,7 +162,7 @@
 <tr><td>prop-types</td><td>^15.7.2</td></tr>
 <tr><td>puppeteer</td><td>^1.17.0</td></tr>
 <tr><td>react</td><td>^16.8.6</td></tr>
-<tr><td>styled-components</td><td>^4.2.1</td></tr>
+<tr><td>styled-components</td><td>^4.3.0</td></tr>
 <tr><td>terser</td><td>^4.0.0</td></tr>
-<tr><td>webpack</td><td>^4.32.2</td></tr>
+<tr><td>webpack</td><td>^4.33.0</td></tr>
 </table>

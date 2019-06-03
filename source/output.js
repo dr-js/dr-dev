@@ -14,7 +14,7 @@ const initOutput = async ({
   fromRoot,
   fromOutput,
   deleteKeyList = [ 'private', 'scripts', 'devDependencies' ],
-  copyPathList = [ 'LICENSE', 'README.md' ],
+  copyPathList = [ 'README.md' ],
   copyMapPathList = [],
   replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip
   pathLicenseFile = fromRoot('LICENSE'), // set to false to skip

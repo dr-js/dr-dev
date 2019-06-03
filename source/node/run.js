@@ -2,18 +2,20 @@ import { execSync } from 'child_process'
 import { catchAsync } from 'dr-js/module/common/error'
 import { setTimeoutAsync } from 'dr-js/module/common/time'
 import { run } from 'dr-js/module/node/system/Run'
-import { getProcessList, getProcessPidMap, getProcessTree, findProcessTreeNode, checkProcessExist, tryKillProcessTreeNode } from 'dr-js/module/node/system/ProcessStatus'
+import {
+  getProcessListAsync,
+  toProcessPidMap,
+  toProcessTree, findProcessTreeInfo,
+  killProcessTreeInfoAsync,
+  isPidExist
+} from 'dr-js/module/node/system/ProcessStatus'
 
-const execString = (command, option) => {
+const getGitBranch = () => {
   try {
-    return execSync(command, { stdio: 'pipe', ...option }).toString().trim()
-  } catch (error) {
-    console.warn(`[execString] failed for: ${command}, error: ${error}`)
-    return ''
-  }
+    return String(execSync('git symbolic-ref --short', { stdio: 'pipe' })).trim()
+  } catch (error) { return `detached-HEAD/${String(execSync('git rev-parse --short HEAD')).trim()}` }
 }
-const getGitBranch = () => execString('git symbolic-ref --short HEAD')
-const getGitCommitHash = () => execString('git log -1 --format="%H"')
+const getGitCommitHash = () => String(execSync('git log -1 --format="%H"')).trim()
 
 const withRunBackground = async (option, task, setupDelay = 500) => {
   const { subProcess, promise } = run(option)
@@ -21,18 +23,18 @@ const withRunBackground = async (option, task, setupDelay = 500) => {
 
   // wait for process setup
   await setTimeoutAsync(setupDelay) // wait for a bit for the process to start (usually npm)
-  if (!await checkProcessExist({ pid: subProcess.pid })) throw new Error('process exit too early')
+  if (!isPidExist(subProcess.pid)) throw new Error('process exit too early')
 
   // capture process tree, for later process kill
-  const processList = await getProcessList()
-  const subProcessInfo = (await getProcessPidMap(processList))[ subProcess.pid ]
-  const { pid, command, subTree } = await findProcessTreeNode(subProcessInfo, await getProcessTree(processList)) // drops ppid since sub tree may get chopped
+  const processList = await getProcessListAsync()
+  const subProcessInfo = toProcessPidMap(processList)[ subProcess.pid ]
+  const { pid, command, subTree } = findProcessTreeInfo(subProcessInfo, toProcessTree(processList)) // drops ppid since sub tree may get chopped
   __DEV__ && console.log({ pid, command, subTree })
 
   const { result, error } = await catchAsync(task, { subProcess, promise, pid })
 
   // process kill
-  await tryKillProcessTreeNode({ pid, command, subTree })
+  await killProcessTreeInfoAsync({ pid, command, subTree })
   await exitPromise
 
   if (error) throw error

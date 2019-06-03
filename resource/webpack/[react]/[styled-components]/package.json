@@ -2,7 +2,7 @@
   "IMPORT": [ "../" ],
   "INSTALL": [ { "from": "webpack.js", "to": "script/webpack.js" } ],
   "dependencies": {
-    "styled-components": "^4.2.1",
+    "styled-components": "^4.3.0",
     "babel-plugin-styled-components": "^1.10.0"
   }
 }
