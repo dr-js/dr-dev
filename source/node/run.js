@@ -12,7 +12,7 @@ import {
 
 const getGitBranch = () => {
   try {
-    return String(execSync('git symbolic-ref --short', { stdio: 'pipe' })).trim()
+    return String(execSync('git symbolic-ref --short HEAD', { stdio: 'pipe' })).trim()
   } catch (error) { return `detached-HEAD/${String(execSync('git rev-parse --short HEAD')).trim()}` }
 }
 const getGitCommitHash = () => String(execSync('git log -1 --format="%H"')).trim()
