@@ -1,4 +1,6 @@
 import { relative } from 'path'
+import { padTable } from 'dr-js/module/common/format'
+import { indentLine } from 'dr-js/module/common/string'
 import { toPosixPath } from 'dr-js/module/node/file/function'
 import { HOIST_LIST_KEY, EXPORT_LIST_KEY, EXPORT_HOIST_LIST_KEY } from './generate'
 
@@ -25,7 +27,7 @@ const matchMarkdownHeader = (string) => {
   }
   return headerTextList
 }
-const autoAppendMarkdownHeaderLink = (...markdownStringList) => {
+const renderMarkdownAutoAppendHeaderLink = (...markdownStringList) => {
   const headerTextList = matchMarkdownHeader(markdownStringList.join('\n'))
   return headerTextList.length ? [
     ...headerTextList.map((text) => `* ${getMarkdownHeaderLink(text)}`),
@@ -35,13 +37,37 @@ const autoAppendMarkdownHeaderLink = (...markdownStringList) => {
 }
 
 const escapeMarkdownLink = (name) => name.replace(/_/g, '\\_')
-const renderMarkdownFileLink = (path) => `📄 [${escapeMarkdownLink(path)}](${path})`
-const renderMarkdownDirectoryLink = (path) => `📁 [${escapeMarkdownLink(path).replace(/\/*$/, '/')}](${path})`
+const getMarkdownFileLink = (path) => `📄 [${escapeMarkdownLink(path)}](${path})`
+const getMarkdownDirectoryLink = (path) => `📁 [${escapeMarkdownLink(path).replace(/\/*$/, '/')}](${path})`
+
+const renderMarkdownBlockQuote = (text) => [
+  '> ```',
+  indentLine(text, '> '),
+  '> ```'
+]
+
+const renderMarkdownTable = ({
+  headerRow = [],
+  cellRowList = [],
+  padFuncList = [],
+  table = [
+    headerRow,
+    headerRow.map((_, index) => {
+      const pad = padFuncList[ index ]
+      return pad === 'L' ? ':----' : pad === 'R' ? '----:' : ':---:'
+    }),
+    ...cellRowList
+  ]
+}) => [
+  '', // add empty line '' for better parser support
+  ...padTable({ table, padFuncList, cellPad: ' | ', rowPad: '\n' }).split('\n')
+    .map((text) => `| ${text} |`)
+]
 
 const renderMarkdownExportPath = ({ exportInfoMap, rootPath }) => Object.entries(exportInfoMap)
   .reduce((textList, [ path, value ]) => {
     value[ EXPORT_LIST_KEY ] && textList.push(
-      `+ ${renderMarkdownFileLink(`${toPosixPath(relative(rootPath, path))}.js`)}`,
+      `+ ${getMarkdownFileLink(`${toPosixPath(relative(rootPath, path))}.js`)}`,
       `  - ${value[ EXPORT_LIST_KEY ].map((text) => `\`${text}\``).join(', ')}`
     )
     return textList
@@ -60,14 +86,14 @@ const renderMarkdownExportTree = ({ exportInfo, routeList }) => Object.entries(e
     return textList
   }, [])
 
-export {
+export { // TODO: NOTE: all func name like `renderMarkdown*` should return Array, others should return String
   getMarkdownHeaderLink,
-  autoAppendMarkdownHeaderLink,
-
   escapeMarkdownLink,
-  renderMarkdownFileLink,
-  renderMarkdownDirectoryLink,
+  getMarkdownFileLink, getMarkdownDirectoryLink,
 
+  renderMarkdownAutoAppendHeaderLink,
+  renderMarkdownBlockQuote,
+  renderMarkdownTable,
   renderMarkdownExportPath,
   renderMarkdownExportTree
 }

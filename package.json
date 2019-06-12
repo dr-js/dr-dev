@@ -1,15 +1,10 @@
 {
   "private": true,
   "name": "dr-dev",
-  "version": "0.0.6-dev.4",
+  "version": "0.0.6-dev.5",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
-  "keywords": [
-    "Dr",
-    "Dr-js",
-    "JavaScript"
-  ],
   "repository": "github:dr-js/dr-dev",
   "bin": "bin/index.js",
   "scripts": {
@@ -40,10 +35,10 @@
     "npm": ">=6"
   },
   "dependencies": {
-    "dr-js": "^0.21.1 || ^0.21.1-dev.2"
+    "dr-js": "^0.21.1 || ^0.21.1-dev.3"
   },
   "devDependencies": {
-    "dr-dev-web": "0.0.6-dev.4"
+    "dr-dev-web": "0.0.6-dev.5"
   },
   "sideEffects": false
 }

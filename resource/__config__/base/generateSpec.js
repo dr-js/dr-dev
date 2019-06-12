@@ -1,13 +1,11 @@
 import { resolve } from 'path'
 import { writeFileSync } from 'fs'
 
-// import { indentLine } from 'dr-js/library/common/string'
-
 import { collectSourceRouteMap } from 'source/node/export/parse'
 import { generateExportInfo } from 'source/node/export/generate'
 import {
-  autoAppendMarkdownHeaderLink,
-  // renderMarkdownFileLink,
+  // getMarkdownFileLink, renderMarkdownBlockQuote,
+  renderMarkdownAutoAppendHeaderLink,
   renderMarkdownExportPath
 } from 'source/node/export/renderMarkdown'
 import { runMain } from 'source/main'
@@ -17,30 +15,22 @@ import { runMain } from 'source/main'
 const PATH_ROOT = resolve(__dirname, '..')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 
-// const renderMarkdownBinOptionFormat = () => [
-//   renderMarkdownFileLink('source-server/option.js'),
-//   '> ```',
-//   indentLine(formatUsage(), '> '),
-//   '> ```'
-// ]
-
 runMain(async (logger) => {
-  logger.log(`collect sourceRouteMap`)
+  logger.log(`generate exportInfoMap`)
   const sourceRouteMap = await collectSourceRouteMap({ pathRootList: [ fromRoot('source') ], logger })
-
-  logger.log(`generate exportInfo`)
   const exportInfoMap = generateExportInfo({ sourceRouteMap })
 
   logger.log(`output: SPEC.md`)
   writeFileSync(fromRoot('SPEC.md'), [
     '# Specification',
     '',
-    ...autoAppendMarkdownHeaderLink(
+    ...renderMarkdownAutoAppendHeaderLink(
       '#### Export Path',
       ...renderMarkdownExportPath({ exportInfoMap, rootPath: PATH_ROOT }),
       ''
       // '#### Bin Option Format',
-      // ...renderMarkdownBinOptionFormat()
+      // getMarkdownFileLink('source-bin/option.js'),
+      // ...renderMarkdownBlockQuote(formatUsage()),
     ),
     ''
   ].join('\n'))

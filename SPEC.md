@@ -40,7 +40,7 @@
 + 📄 [source/node/export/parse.js](source/node/export/parse.js)
   - `collectSourceRouteMap`, `createExportParser`
 + 📄 [source/node/export/renderMarkdown.js](source/node/export/renderMarkdown.js)
-  - `autoAppendMarkdownHeaderLink`, `escapeMarkdownLink`, `getMarkdownHeaderLink`, `renderMarkdownDirectoryLink`, `renderMarkdownExportPath`, `renderMarkdownExportTree`, `renderMarkdownFileLink`
+  - `escapeMarkdownLink`, `getMarkdownDirectoryLink`, `getMarkdownFileLink`, `getMarkdownHeaderLink`, `renderMarkdownAutoAppendHeaderLink`, `renderMarkdownBlockQuote`, `renderMarkdownExportPath`, `renderMarkdownExportTree`, `renderMarkdownTable`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)
@@ -137,32 +137,33 @@
 
 #### Resource package
 📄 [resource/](resource/)
-<table>
-<tr><td>@babel/cli</td><td>^7.4.4</td></tr>
-<tr><td>@babel/core</td><td>^7.4.5</td></tr>
-<tr><td>@babel/node</td><td>^7.4.5</td></tr>
-<tr><td>@babel/plugin-proposal-class-properties</td><td>^7.4.4</td></tr>
-<tr><td>@babel/preset-env</td><td>^7.4.5</td></tr>
-<tr><td>@babel/preset-react</td><td>^7.0.0</td></tr>
-<tr><td>@babel/register</td><td>^7.4.4</td></tr>
-<tr><td>babel-eslint</td><td>^10.0.1</td></tr>
-<tr><td>babel-loader</td><td>^8.0.6</td></tr>
-<tr><td>babel-plugin-minify-replace</td><td>^0.5.0</td></tr>
-<tr><td>babel-plugin-module-resolver</td><td>^3.2.0</td></tr>
-<tr><td>babel-plugin-styled-components</td><td>^1.10.0</td></tr>
-<tr><td>cross-env</td><td>^5.2.0</td></tr>
-<tr><td>eslint</td><td>^5.16.0</td></tr>
-<tr><td>eslint-config-standard</td><td>^12.0.0</td></tr>
-<tr><td>eslint-config-standard-react</td><td>^7.0.2</td></tr>
-<tr><td>eslint-plugin-import</td><td>^2.17.3</td></tr>
-<tr><td>eslint-plugin-node</td><td>^9.1.0</td></tr>
-<tr><td>eslint-plugin-promise</td><td>^4.1.1</td></tr>
-<tr><td>eslint-plugin-react</td><td>^7.13.0</td></tr>
-<tr><td>eslint-plugin-standard</td><td>^4.0.0</td></tr>
-<tr><td>prop-types</td><td>^15.7.2</td></tr>
-<tr><td>puppeteer</td><td>^1.17.0</td></tr>
-<tr><td>react</td><td>^16.8.6</td></tr>
-<tr><td>styled-components</td><td>^4.3.1</td></tr>
-<tr><td>terser</td><td>^4.0.0</td></tr>
-<tr><td>webpack</td><td>^4.33.0</td></tr>
-</table>
+
+| Package name                            | Version |
+| :----                                   |   ----: |
+| @babel/cli                              |  ^7.4.4 |
+| @babel/core                             |  ^7.4.5 |
+| @babel/node                             |  ^7.4.5 |
+| @babel/plugin-proposal-class-properties |  ^7.4.4 |
+| @babel/preset-env                       |  ^7.4.5 |
+| @babel/preset-react                     |  ^7.0.0 |
+| @babel/register                         |  ^7.4.4 |
+| babel-eslint                            | ^10.0.2 |
+| babel-loader                            |  ^8.0.6 |
+| babel-plugin-minify-replace             |  ^0.5.0 |
+| babel-plugin-module-resolver            |  ^3.2.0 |
+| babel-plugin-styled-components          | ^1.10.4 |
+| cross-env                               |  ^5.2.0 |
+| eslint                                  |  ^6.0.1 |
+| eslint-config-standard                  | ^12.0.0 |
+| eslint-config-standard-react            |  ^7.0.2 |
+| eslint-plugin-import                    | ^2.18.0 |
+| eslint-plugin-node                      |  ^9.1.0 |
+| eslint-plugin-promise                   |  ^4.2.1 |
+| eslint-plugin-react                     | ^7.14.2 |
+| eslint-plugin-standard                  |  ^4.0.0 |
+| prop-types                              | ^15.7.2 |
+| puppeteer                               | ^1.18.1 |
+| react                                   | ^16.8.6 |
+| styled-components                       |  ^4.3.2 |
+| terser                                  |  ^4.0.0 |
+| webpack                                 | ^4.35.0 |
