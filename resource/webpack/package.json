@@ -8,7 +8,7 @@
     "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json"
   },
   "dependencies": {
-    "webpack": "^4.35.2",
+    "webpack": "^4.35.3",
     "babel-loader": "^8.0.6"
   }
 }

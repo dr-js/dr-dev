@@ -98,6 +98,9 @@ runMain(async (logger) => {
   await processOutput({ logger })
   await verifyOutputBinVersion({ fromOutput, packageJSON, logger })
 
+  logger.padLog(`lint source`)
+  execSync(`npm run lint`, execOptionRoot)
+
   // will not pack both
   if (argvFlag('pack-package')) {
     logger.padLog(`pack-package: ${packageJSON.version}`)

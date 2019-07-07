@@ -18,7 +18,6 @@
   "repository": "github:dr-js/dev-dep",
   "scripts": {
     "// script ======================": "",
-    "script-base": "babel-node ./script quiet",
     "script-pack": "babel-node ./script quiet pack",
     "script-publish": "babel-node ./script pack publish",
     "script-publish-dev": "babel-node ./script pack publish-dev",
@@ -30,7 +29,7 @@
   },
   "dependencies": {
     "cross-env": "^5.2.0",
-    "terser": "^4.1.0"
+    "terser": "^4.1.2"
   },
   "sideEffects": false
 }

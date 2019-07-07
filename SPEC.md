@@ -141,10 +141,10 @@
 | Package name                            | Version |
 | :----                                   |   ----: |
 | @babel/cli                              |  ^7.5.0 |
-| @babel/core                             |  ^7.5.0 |
+| @babel/core                             |  ^7.5.4 |
 | @babel/node                             |  ^7.5.0 |
 | @babel/plugin-proposal-class-properties |  ^7.5.0 |
-| @babel/preset-env                       |  ^7.5.0 |
+| @babel/preset-env                       |  ^7.5.4 |
 | @babel/preset-react                     |  ^7.0.0 |
 | @babel/register                         |  ^7.4.4 |
 | babel-eslint                            | ^10.0.2 |
@@ -154,8 +154,8 @@
 | babel-plugin-styled-components          | ^1.10.6 |
 | cross-env                               |  ^5.2.0 |
 | eslint                                  |  ^6.0.1 |
-| eslint-config-standard                  | ^12.0.0 |
-| eslint-config-standard-react            |  ^7.0.2 |
+| eslint-config-standard                  | ^13.0.1 |
+| eslint-config-standard-react            |  ^8.0.0 |
 | eslint-plugin-import                    | ^2.18.0 |
 | eslint-plugin-node                      |  ^9.1.0 |
 | eslint-plugin-promise                   |  ^4.2.1 |
@@ -165,5 +165,5 @@
 | puppeteer                               | ^1.18.1 |
 | react                                   | ^16.8.6 |
 | styled-components                       |  ^4.3.2 |
-| terser                                  |  ^4.1.0 |
-| webpack                                 | ^4.35.2 |
+| terser                                  |  ^4.1.2 |
+| webpack                                 | ^4.35.3 |
