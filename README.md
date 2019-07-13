@@ -2,7 +2,6 @@
 
 [![i:npm]][l:npm]
 [![i:size]][l:size]
-[![i:lint]][l:lint]
 [![i:npm-dev]][l:npm]
 
 A collection of strange functions, for development
@@ -12,8 +11,6 @@ A collection of strange functions, for development
 [l:npm]: https://npm.im/dr-dev
 [i:size]: https://packagephobia.now.sh/badge?p=dr-dev
 [l:size]: https://packagephobia.now.sh/result?p=dr-dev
-[i:lint]: https://img.shields.io/badge/code_style-standard_ES6+-yellow.svg
-[l:lint]: https://standardjs.com
 
 - [![i:p-b]][l:p-b]
 - [![i:p-br]][l:p-br]

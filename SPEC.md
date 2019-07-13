@@ -154,13 +154,10 @@
 | babel-plugin-styled-components          | ^1.10.6 |
 | cross-env                               |  ^5.2.0 |
 | eslint                                  |  ^6.0.1 |
-| eslint-config-standard                  | ^13.0.1 |
-| eslint-config-standard-react            |  ^8.0.0 |
 | eslint-plugin-import                    | ^2.18.0 |
 | eslint-plugin-node                      |  ^9.1.0 |
 | eslint-plugin-promise                   |  ^4.2.1 |
 | eslint-plugin-react                     | ^7.14.2 |
-| eslint-plugin-standard                  |  ^4.0.0 |
 | prop-types                              | ^15.7.2 |
 | puppeteer                               | ^1.18.1 |
 | react                                   | ^16.8.6 |

@@ -1,6 +1,6 @@
 module.exports = {
-  extends: [ 'standard', 'standard-react' ],
-  parser: 'babel-eslint',
-  rules: { 'jsx-quotes': [ 2, 'prefer-double' ] },
-  globals: { __DEV__: false }
+  extends: [
+    './node_modules/dr-dev-{FLAVOR}/install/eslint-config-almost-standard-v13',
+    './node_modules/dr-dev-{FLAVOR}/install/eslint-config-almost-standard-jsx-v7'
+  ]
 }

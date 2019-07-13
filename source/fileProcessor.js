@@ -9,7 +9,7 @@ const processFileList = async ({ fileList, processor, rootPath = '', logger }) =
   logger.padLog(`process ${fileList.length} file`)
 
   const table = []
-  let totalTimeStart = clock()
+  const totalTimeStart = clock()
   let totalSizeSource = 0
   let totalSizeDelta = 0
   for (const filePath of fileList) {

@@ -1,8 +1,7 @@
 {
   "IMPORT": [ "../" ],
-  "INSTALL": [ ".eslintrc.js" ],
+  "INSTALL": [ ".eslintrc.js", "eslint-config-almost-standard-jsx-v7.js" ],
   "dependencies": {
-    "eslint-config-standard-react": "^8.0.0",
     "eslint-plugin-react": "^7.14.2"
   }
 }
