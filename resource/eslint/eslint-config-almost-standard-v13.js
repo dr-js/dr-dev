@@ -145,7 +145,7 @@ module.exports = {
     'no-whitespace-before-property': 'error',
     'no-with': 'error',
     'object-curly-spacing': [ 'error', 'always' ],
-    'object-property-newline': [ 'error', { allowMultiplePropertiesPerLine: true } ],
+    'object-property-newline': [ 'error', 'never' ], // 'object-property-newline': [ 'error', { allowMultiplePropertiesPerLine: true } ], // EDIT
     'one-var': [ 'error', { initialized: 'never' } ],
     'operator-linebreak': [ 'error', 'after', { overrides: { '?': 'before', ':': 'before' } } ],
     'padded-blocks': [ 'error', { blocks: 'never', switches: 'never', classes: 'never' } ],

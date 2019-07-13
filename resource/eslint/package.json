@@ -1,8 +1,8 @@
 {
   "INSTALL": [ ".eslintrc.js", "eslint-config-almost-standard-v13.js" ],
   "dependencies": {
-    "eslint": "^6.0.1",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "babel-eslint": "^10.0.2"
