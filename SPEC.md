@@ -163,4 +163,4 @@
 | react                                   | ^16.8.6 |
 | styled-components                       |  ^4.3.2 |
 | terser                                  |  ^4.1.2 |
-| webpack                                 | ^4.37.0 |
+| webpack                                 | ^4.39.0 |
