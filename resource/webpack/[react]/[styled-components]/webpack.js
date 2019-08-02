@@ -11,8 +11,8 @@ const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 const fromOutput = (...args) => resolve(PATH_OUTPUT, ...args)
 
 runMain(async (logger) => {
-  const { mode, isWatch, isProduction, profileOutput, assetMapOutput, getCommonWebpackConfig } = await commonFlag({
-    assetMapOutput: fromOutput('library/assetMap.json'),
+  const { mode, isWatch, isProduction, profileOutput, namedChunkGroupOutput, getCommonWebpackConfig } = await commonFlag({
+    namedChunkGroupOutput: fromOutput('library/namedChunkGroup.json'),
     fromRoot,
     logger
   })
@@ -28,5 +28,5 @@ runMain(async (logger) => {
   })
 
   logger.padLog(`compile with webpack mode: ${mode}, isWatch: ${Boolean(isWatch)}`)
-  await compileWithWebpack({ config, isWatch, profileOutput, assetMapOutput, logger })
+  await compileWithWebpack({ config, isWatch, profileOutput, namedChunkGroupOutput, logger })
 }, getLogger(`webpack`, argvFlag('quiet')))

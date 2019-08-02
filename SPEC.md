@@ -160,7 +160,7 @@
 | eslint-plugin-react                     | ^7.14.3 |
 | prop-types                              | ^15.7.2 |
 | puppeteer                               | ^1.19.0 |
-| react                                   | ^16.8.6 |
+| react                                   | ^16.9.0 |
 | styled-components                       |  ^4.3.2 |
-| terser                                  |  ^4.1.2 |
-| webpack                                 | ^4.39.0 |
+| terser                                  |  ^4.1.4 |
+| webpack                                 | ^4.39.2 |

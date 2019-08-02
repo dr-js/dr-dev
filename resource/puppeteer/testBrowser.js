@@ -20,7 +20,7 @@ const PATH_TEST_BROWSER_JS = fromTemp(`${NAME_TEST_BROWSER}.js`)
 runMain(async (logger) => {
   const mode = 'production'
   const isWatch = false
-  const { profileOutput, assetMapOutput, getCommonWebpackConfig } = await commonFlag({ mode, isWatch, fromRoot, logger })
+  const { profileOutput, namedChunkGroupOutput, getCommonWebpackConfig } = await commonFlag({ mode, isWatch, fromRoot, logger })
 
   const config = getCommonWebpackConfig({
     output: { path: PATH_TEMP, filename: '[name].js', library: 'TEST_BROWSER', libraryTarget: 'window' },
@@ -33,7 +33,7 @@ runMain(async (logger) => {
 
   logger.padLog(`compile with webpack mode: ${mode}, PATH_TEMP: ${PATH_TEMP}`)
   await createDirectory(PATH_TEMP)
-  await compileWithWebpack({ config, isWatch, profileOutput, assetMapOutput, logger })
+  await compileWithWebpack({ config, isWatch, profileOutput, namedChunkGroupOutput, logger })
   const testScriptString = await readFileAsync(PATH_TEST_BROWSER_JS)
   await modify.delete(PATH_TEST_BROWSER_JS)
 
