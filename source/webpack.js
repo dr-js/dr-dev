@@ -3,7 +3,7 @@ import { writeFileSync } from 'fs'
 import webpack from 'webpack'
 
 import { binary, time, padTable } from 'dr-js/module/common/format'
-import { createDirectory } from 'dr-js/module/node/file/File'
+import { createDirectory } from 'dr-js/module/node/file/Directory'
 import { addExitListenerSync } from 'dr-js/module/node/system/ExitListener'
 
 import { __VERBOSE__, argvFlag } from './node/env'

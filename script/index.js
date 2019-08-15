@@ -2,9 +2,9 @@ import { resolve } from 'path'
 import { execSync, spawnSync } from 'child_process'
 
 import { binary } from 'dr-js/module/common/format'
-import { modify } from 'dr-js/module/node/file/Modify'
+import { modifyDeleteForce } from 'dr-js/module/node/file/Modify'
 
-import { getFileListFromPathList, getScriptFileListFromPathList } from 'source/node/fileList'
+import { getFileListFromPathList, getScriptFileListFromPathList } from 'source/node/file'
 import { runMain, argvFlag } from 'source/main'
 import { initOutput, packOutput, verifyOutputBinVersion, verifyNoGitignore, getPublishFlag, checkPublishVersion, publishOutput } from 'source/output'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor'
@@ -66,7 +66,7 @@ const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
   }
 
   logger.padLog('clear pack')
-  await modify.delete(fromPackageOutput()).catch(logger.devLog)
+  await modifyDeleteForce(fromPackageOutput())
 
   const configFileList = await getFileListFromPathList([ './resource/__config__/' ], fromRoot, (path) => /dr-dev-[\w-]+\.json/.test(path))
   configFileList.forEach((file) => {

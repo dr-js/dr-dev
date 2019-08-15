@@ -3,7 +3,7 @@ import { execSync } from 'child_process'
 
 import { binary } from 'dr-js/module/common/format'
 import { getFileList } from 'dr-js/module/node/file/Directory'
-import { modify } from 'dr-js/module/node/file/Modify'
+import { modifyCopy } from 'dr-js/module/node/file/Modify'
 
 import { runMain, argvFlag } from 'dr-dev/module/main'
 import { initOutput, packOutput, verifyOutputBinVersion, publishOutput } from 'dr-dev/module/output'
@@ -25,7 +25,7 @@ runMain(async (logger) => {
   const packageJSON = await initOutput({ fromRoot, fromOutput, logger })
 
   padLog(`copy bin`)
-  await modify.copy(fromRoot('source-bin/index.js'), fromOutput('bin/index.js'))
+  await modifyCopy(fromRoot('source-bin/index.js'), fromOutput('bin/index.js'))
 
   if (!argvFlag('pack')) return
 

@@ -8,7 +8,7 @@ import {
   toProcessTree, findProcessTreeInfo,
   killProcessTreeInfoAsync,
   isPidExist
-} from 'dr-js/module/node/system/ProcessStatus'
+} from 'dr-js/module/node/system/Process'
 
 const getGitBranch = () => {
   try {

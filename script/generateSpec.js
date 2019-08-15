@@ -7,14 +7,14 @@ import { getMarkdownFileLink, renderMarkdownAutoAppendHeaderLink, renderMarkdown
 import { runMain } from 'source/main'
 
 import { formatUsage } from 'source-bin/option'
-import { collectDependency } from 'source-bin/checkOutdated/collectDependency'
+import { collectDependency } from 'source-bin/collectDependency'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 
 runMain(async (logger) => {
   logger.log(`collect dependencyMap`)
-  const { dependencyMap } = await collectDependency(fromRoot('resource'))
+  const packageInfoMap = await collectDependency(fromRoot('resource'), 'recursive')
 
   logger.log(`generate exportInfoMap`)
   const sourceRouteMap = await collectSourceRouteMap({ pathRootList: [ fromRoot('source') ], logger })
@@ -37,7 +37,7 @@ runMain(async (logger) => {
       ...renderMarkdownTable({
         headerRow: [ 'Package name', 'Version' ],
         padFuncList: [ 'L', 'R' ],
-        cellRowList: Object.entries(dependencyMap)
+        cellRowList: Object.entries(packageInfoMap).map(([ name, { version } ]) => [ name, version ])
       })
     ),
     ''

@@ -2,10 +2,9 @@ import { ok } from 'assert'
 import { execSync } from 'child_process'
 import { statSync, readFileSync, writeFileSync } from 'fs'
 import { binary } from 'dr-js/module/common/format'
-import { createDirectory } from 'dr-js/module/node/file/File'
-import { getFileList } from 'dr-js/module/node/file/Directory'
+import { createDirectory, getFileList } from 'dr-js/module/node/file/Directory'
+import { modifyMove, modifyCopy, modifyDeleteForce } from 'dr-js/module/node/file/Modify'
 import { runSync } from 'dr-js/module/node/system/Run'
-import { modify } from 'dr-js/module/node/file/Modify'
 
 import { __VERBOSE__ } from './node/env'
 import { writeLicenseFile } from './license'
@@ -21,7 +20,7 @@ const initOutput = async ({
   logger: { padLog, log }
 }) => {
   padLog('reset output')
-  await modify.delete(fromOutput()).catch(() => {})
+  await modifyDeleteForce(fromOutput())
   await createDirectory(fromOutput())
 
   padLog(`init output package.json`)
@@ -49,7 +48,7 @@ const initOutput = async ({
         continue
       }
     }
-    await modify.copy(fromRoot(pathFrom), fromOutput(pathTo))
+    await modifyCopy(fromRoot(pathFrom), fromOutput(pathTo))
     log(`copied: ${pathFrom}`)
   }
 
@@ -67,7 +66,7 @@ const packOutput = async ({
   log('move to root path')
   const packageJSON = require(fromOutput('package.json'))
   const packName = `${packageJSON.name.replace(/^@/, '').replace('/', '-')}-${packageJSON.version}.tgz`
-  await modify.move(fromOutput(packName), fromRoot(packName))
+  await modifyMove(fromOutput(packName), fromRoot(packName))
   padLog(`pack size: ${binary(statSync(fromRoot(packName)).size)}B`)
 
   return fromRoot(packName)

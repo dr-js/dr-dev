@@ -3,8 +3,8 @@ import { statSync, writeFileSync } from 'fs'
 import { execSync } from 'child_process'
 import { binary } from 'dr-js/module/common/format'
 import { objectMergeDeep } from 'dr-js/module/common/mutable/Object'
-import { createDirectory } from 'dr-js/module/node/file/File'
-import { modify } from 'dr-js/module/node/file/Modify'
+import { createDirectory } from 'dr-js/module/node/file/Directory'
+import { modifyCopy, modifyDeleteForce } from 'dr-js/module/node/file/Modify'
 import { runSync } from 'dr-js/module/node/system/Run'
 
 import { formatPackagePath, writePackageJSON } from './function'
@@ -58,7 +58,7 @@ const doPack = async ({
   if (outputVersion) packageJSON.version = outputVersion
   if (outputDescription) packageJSON.description = outputDescription
 
-  await modify.delete(pathOutput).catch(() => {})
+  await modifyDeleteForce(pathOutput)
   await createDirectory(pathOutput)
   await createDirectory(pathOutputInstall)
 
@@ -79,8 +79,8 @@ const doPack = async ({
     `[l:size]: https://packagephobia.now.sh/result?p=${packageJSON.name}`
   ].join('\n'))
 
-  for (const [ source, targetRelative ] of exportFilePairList) await modify.copy(source, resolve(pathOutput, targetRelative))
-  for (const [ source, targetRelative ] of installFilePairList) await modify.copy(source, resolve(pathOutputInstall, targetRelative))
+  for (const [ source, targetRelative ] of exportFilePairList) await modifyCopy(source, resolve(pathOutput, targetRelative))
+  for (const [ source, targetRelative ] of installFilePairList) await modifyCopy(source, resolve(pathOutputInstall, targetRelative))
 
   execSync('npm --no-update-notifier pack', { cwd: pathOutput, stdio: 'inherit', shell: true })
   const outputFileName = `${packageJSON.name}-${packageJSON.version}.tgz`

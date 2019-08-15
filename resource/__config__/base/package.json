@@ -18,10 +18,10 @@
   "repository": "github:dr-js/dev-dep",
   "scripts": {
     "// script ======================": "",
-    "script-pack": "babel-node ./script quiet pack",
-    "script-publish": "babel-node ./script pack publish",
-    "script-publish-dev": "babel-node ./script pack publish-dev",
-    "script-generate-spec": "babel-node ./script/generateSpec"
+    "script-pack": "node -r @babel/register ./script quiet pack",
+    "script-publish": "node -r @babel/register ./script pack publish",
+    "script-publish-dev": "node -r @babel/register ./script pack publish-dev",
+    "script-generate-spec": "node -r @babel/register ./script/generateSpec"
   },
   "engines": {
     "node": ">=10.15",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "cross-env": "^5.2.0",
-    "terser": "^4.1.4"
+    "terser": "^4.2.1"
   },
   "sideEffects": false
 }

@@ -1,13 +1,13 @@
 import { resolve } from 'path'
 
-import { getScriptFileListFromPathList } from 'dr-dev/module/node/fileList'
+import { getScriptFileListFromPathList } from 'dr-dev/module/node/file'
 import { runMain } from 'dr-dev/module/main'
 import { testWithPuppeteer } from 'dr-dev/module/puppeteer'
 import { compileWithWebpack, commonFlag } from 'dr-dev/module/webpack'
 
 import { readFileAsync } from 'dr-js/module/node/file/function'
-import { createDirectory } from 'dr-js/module/node/file/File'
-import { modify } from 'dr-js/module/node/file/Modify'
+import { createDirectory } from 'dr-js/module/node/file/Directory'
+import { modifyDelete } from 'dr-js/module/node/file/Modify'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const PATH_TEMP = resolve(__dirname, '../.temp-gitignore')
@@ -35,7 +35,7 @@ runMain(async (logger) => {
   await createDirectory(PATH_TEMP)
   await compileWithWebpack({ config, isWatch, profileOutput, namedChunkGroupOutput, logger })
   const testScriptString = await readFileAsync(PATH_TEST_BROWSER_JS)
-  await modify.delete(PATH_TEST_BROWSER_JS)
+  await modifyDelete(PATH_TEST_BROWSER_JS)
 
   await testWithPuppeteer({ testScriptString, logger })
 }, NAME_TEST_BROWSER)

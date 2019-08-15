@@ -29,8 +29,8 @@
   - `TEST_RUN`, `TEST_SETUP`, `after`, `before`, `describe`, `info`, `it`
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
-+ 📄 [source/node/fileList.js](source/node/fileList.js)
-  - `getFileListFromPathList`, `getScriptFileListFromPathList`
++ 📄 [source/node/file.js](source/node/file.js)
+  - `getFileListFromPathList`, `getScriptFileListFromPathList`, `withTempDirectory`
 + 📄 [source/node/logger.js](source/node/logger.js)
   - `getLogger`
 + 📄 [source/node/run.js](source/node/run.js)
@@ -142,18 +142,17 @@
 | :----                                   |   ----: |
 | @babel/cli                              |  ^7.5.5 |
 | @babel/core                             |  ^7.5.5 |
-| @babel/node                             |  ^7.5.5 |
 | @babel/plugin-proposal-class-properties |  ^7.5.5 |
 | @babel/preset-env                       |  ^7.5.5 |
 | @babel/preset-react                     |  ^7.0.0 |
 | @babel/register                         |  ^7.5.5 |
-| babel-eslint                            | ^10.0.2 |
+| babel-eslint                            | ^10.0.3 |
 | babel-loader                            |  ^8.0.6 |
 | babel-plugin-minify-replace             |  ^0.5.0 |
 | babel-plugin-module-resolver            |  ^3.2.0 |
 | babel-plugin-styled-components          | ^1.10.6 |
 | cross-env                               |  ^5.2.0 |
-| eslint                                  |  ^6.1.0 |
+| eslint                                  |  ^6.2.2 |
 | eslint-plugin-import                    | ^2.18.2 |
 | eslint-plugin-node                      |  ^9.1.0 |
 | eslint-plugin-promise                   |  ^4.2.1 |
@@ -162,5 +161,5 @@
 | puppeteer                               | ^1.19.0 |
 | react                                   | ^16.9.0 |
 | styled-components                       |  ^4.3.2 |
-| terser                                  |  ^4.1.4 |
+| terser                                  |  ^4.2.1 |
 | webpack                                 | ^4.39.2 |

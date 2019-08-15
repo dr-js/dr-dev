@@ -7,8 +7,6 @@ module.exports = {
     sourceType: 'module'
   },
 
-  parser: 'babel-eslint', // EDIT
-
   env: { es6: true, node: true },
 
   plugins: [ 'import', 'node', 'promise' ], // plugins: [ 'import', 'node', 'promise', 'standard' ], // EDIT

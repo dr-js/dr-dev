@@ -39,7 +39,7 @@ A collection of strange functions, for development
 - 📁 [source/](source/)
   - main source code, in output package will be:
     - `dr-dev/library`: for direct use, use `require() / exports.*=`
-    - `dr-dev/module`: for use with `babel-node`, keep `import / export` and readability
+    - `dr-dev/module`: for use with `node` + `@babel/register`, keep `import / export` and readability
 - 📁 [source-bin/](source-bin/)
   - bin source code, in output package will be `dr-dev/bin`
 - 📁 [resource/](resource/)

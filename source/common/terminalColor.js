@@ -42,6 +42,8 @@ const shouldSupportColor = () => {
     Number(tryRequire('os') && tryRequire('os').release().split('.')[ 0 ]) >= 10
   ) return true
 
+  __DEV__ && console.log('no color support')
+
   return false
 }
 

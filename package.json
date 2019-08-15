@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "dr-dev",
-  "version": "0.0.7-dev.0",
+  "version": "0.0.7-dev.1",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -9,18 +9,18 @@
   "bin": "bin/index.js",
   "scripts": {
     "// script ======================": "",
-    "script-pack": "babel-node ./script quiet pack",
-    "script-publish": "babel-node ./script pack publish",
-    "script-publish-dev": "babel-node ./script pack publish-dev",
-    "script-pack-package": "babel-node ./script verbose pack pack-package unsafe",
-    "script-pack-package-publish": "babel-node ./script pack pack-package publish",
-    "script-pack-package-publish-dev": "babel-node ./script pack pack-package publish-dev",
-    "script-generate-spec": "babel-node ./script/generateSpec",
+    "script-pack": "node -r @babel/register ./script quiet pack",
+    "script-publish": "node -r @babel/register ./script pack publish",
+    "script-publish-dev": "node -r @babel/register ./script pack publish-dev",
+    "script-pack-package": "node -r @babel/register ./script verbose pack pack-package unsafe",
+    "script-pack-package-publish": "node -r @babel/register ./script pack pack-package publish",
+    "script-pack-package-publish-dev": "node -r @babel/register ./script pack pack-package publish-dev",
+    "script-generate-spec": "node -r @babel/register ./script/generateSpec",
     "// build =======================": "",
     "build-library": "babel ./source --out-dir ./output-gitignore/library",
     "build-library-dev": "cross-env BABEL_ENV=dev npm run build-library -- --watch",
     "build-module": "cross-env BABEL_ENV=module babel ./source --out-dir ./output-gitignore/module",
-    "build-browser": "babel-node ./script/webpack production profile",
+    "build-browser": "node -r @babel/register ./script/webpack production profile",
     "build-bin": "babel ./source-bin --out-dir ./output-gitignore/bin",
     "build-bin-dev": "cross-env BABEL_ENV=dev npm run build-bin -- --watch",
     "// =============================": "",
@@ -35,10 +35,10 @@
     "npm": ">=6.10"
   },
   "dependencies": {
-    "dr-js": "^0.22.3 || ^0.22.3-dev.0"
+    "dr-js": "^0.23.0 || ^0.23.0-dev.1"
   },
   "devDependencies": {
-    "dr-dev-web": "0.0.7-dev.0"
+    "dr-dev-web": "0.0.7-dev.1"
   },
   "sideEffects": false
 }

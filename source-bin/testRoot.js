@@ -1,6 +1,6 @@
 import { relative } from 'path'
 
-import { toPosixPath } from 'dr-js/module/node/file/function'
+import { toPosixPath } from 'dr-js/module/node/file/Path'
 import { getFileList } from 'dr-js/module/node/file/Directory'
 
 import { TEST_SETUP, TEST_RUN, describe } from 'dr-dev/module/common/test'
