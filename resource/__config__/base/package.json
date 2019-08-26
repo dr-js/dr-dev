@@ -15,7 +15,7 @@
     "Dr-js",
     "JavaScript"
   ],
-  "repository": "github:dr-js/dev-dep",
+  "repository": "github:dr-js/dr-dev",
   "scripts": {
     "// script ======================": "",
     "script-pack": "node -r @babel/register ./script quiet pack",
@@ -24,11 +24,11 @@
     "script-generate-spec": "node -r @babel/register ./script/generateSpec"
   },
   "engines": {
-    "node": ">=10.15",
-    "npm": ">=6"
+    "node": ">=10.16",
+    "npm": ">=6.10"
   },
   "dependencies": {
-    "cross-env": "^5.2.0",
+    "cross-env": "^5.2.1",
     "terser": "^4.2.1"
   },
   "sideEffects": false

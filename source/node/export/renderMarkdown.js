@@ -11,10 +11,12 @@ import { HOIST_LIST_KEY, EXPORT_LIST_KEY, EXPORT_HOIST_LIST_KEY } from './genera
 // [Strange , , Format ALT](#strange---format-alt)
 const getMarkdownHeaderLink = (
   text,
-  link = text.trim().toLowerCase()
-    .replace(/[^\w\- ]+/g, '')
+  link = text.trim().toLowerCase() // from marked: https://github.com/markedjs/marked/blob/master/lib/marked.js#L1323
+    .replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, '')
     .replace(/\s/g, '-')
-    .replace(/-+$/, '')
+  //   .replace(/[^\w\- ]+/g, '')
+  //   .replace(/\s/g, '-')
+  //   .replace(/-+$/, '')
 ) => `[${text}](#${link})`
 
 const REGEXP_MARKDOWN_HEADER = /^#{1,6}(.+?)#*$/gm // TODO: will mis-match comment in bash, use `marked`?

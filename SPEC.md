@@ -151,10 +151,10 @@
 | babel-plugin-minify-replace             |  ^0.5.0 |
 | babel-plugin-module-resolver            |  ^3.2.0 |
 | babel-plugin-styled-components          | ^1.10.6 |
-| cross-env                               |  ^5.2.0 |
-| eslint                                  |  ^6.2.2 |
+| cross-env                               |  ^5.2.1 |
+| eslint                                  |  ^6.3.0 |
 | eslint-plugin-import                    | ^2.18.2 |
-| eslint-plugin-node                      |  ^9.1.0 |
+| eslint-plugin-node                      | ^10.0.0 |
 | eslint-plugin-promise                   |  ^4.2.1 |
 | eslint-plugin-react                     | ^7.14.3 |
 | prop-types                              | ^15.7.2 |
@@ -162,4 +162,4 @@
 | react                                   | ^16.9.0 |
 | styled-components                       |  ^4.3.2 |
 | terser                                  |  ^4.2.1 |
-| webpack                                 | ^4.39.2 |
+| webpack                                 | ^4.39.3 |
