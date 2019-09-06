@@ -6,11 +6,11 @@
     "build-library-dev": "cross-env BABEL_ENV=dev npm run build-library -- --watch"
   },
   "dependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/cli": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
+    "@babel/core": "^7.6.0",
+    "@babel/cli": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/register": "^7.5.5",
+    "@babel/register": "^7.6.0",
     "babel-plugin-minify-replace": "^0.5.0",
     "babel-plugin-module-resolver": "^3.2.0"
   }
