@@ -1,9 +1,9 @@
 import { resolve } from 'path'
 
-import { argvFlag, runMain } from 'dr-dev/module/main'
-import { getLogger } from 'dr-dev/module/logger'
-import { compileWithWebpack, commonFlag } from 'dr-dev/module/webpack'
-import { getWebpackBabelConfig } from 'dr-dev/module/babel'
+import { argvFlag, runMain } from '@dr-js/dev/module/main'
+import { getLogger } from '@dr-js/dev/module/logger'
+import { compileWithWebpack, commonFlag } from '@dr-js/dev/module/webpack'
+import { getWebpackBabelConfig } from '@dr-js/dev/module/babel'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const PATH_OUTPUT = resolve(__dirname, '../output-gitignore')

@@ -1,6 +1,6 @@
 {
   "__EXTRA__": {
-    "name": "dr-dev-web-puppeteer",
+    "name": "@dr-js/dev-web-puppeteer",
     "description": "Webpack + ESLint + Babel + Puppeteer"
   },
   "IMPORT": [

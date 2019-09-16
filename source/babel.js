@@ -30,7 +30,7 @@ const getBabelConfig = ({
       root: [ './' ],
       alias: isModule ? undefined : [
         ...extraModuleResolverList, // higher priority
-        { '^dr-([\\w-]+)/module/(.+)': 'dr-\\1/library/\\2' }
+        { '^@dr-js/([\\w-]+)/module/(.+)': '@dr-js/\\1/library/\\2' }
       ]
     } ]
   ].filter(Boolean),

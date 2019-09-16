@@ -1,16 +1,16 @@
 import { resolve, dirname } from 'path'
 import { writeFileSync } from 'fs'
 
-import { padTable } from 'dr-js/module/common/format'
-import { setTimeoutAsync } from 'dr-js/module/common/time'
-import { withTimeoutPromise } from 'dr-js/module/common/function'
-import { objectMap } from 'dr-js/module/common/immutable/Object'
-import { compareSemVer } from 'dr-js/module/common/module/SemVer'
-import { getPathStat } from 'dr-js/module/node/file/Path'
-import { runQuiet } from 'dr-js/module/node/system/Run'
-import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from 'dr-js/module/node/system/Process'
+import { padTable } from '@dr-js/core/module/common/format'
+import { setTimeoutAsync } from '@dr-js/core/module/common/time'
+import { withTimeoutPromise } from '@dr-js/core/module/common/function'
+import { objectMap } from '@dr-js/core/module/common/immutable/Object'
+import { compareSemVer } from '@dr-js/core/module/common/module/SemVer'
+import { getPathStat } from '@dr-js/core/module/node/file/Path'
+import { runQuiet } from '@dr-js/core/module/node/system/Run'
+import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from '@dr-js/core/module/node/system/Process'
 
-import { withTempDirectory } from 'dr-dev/module/node/file'
+import { withTempDirectory } from '@dr-js/dev/module/node/file'
 
 import { collectDependency } from './collectDependency'
 

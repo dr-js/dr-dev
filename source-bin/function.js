@@ -1,7 +1,7 @@
 import { resolve, dirname } from 'path'
 import { writeFileSync } from 'fs'
-import { binary } from 'dr-js/module/common/format'
-import { objectSortKey } from 'dr-js/module/common/mutable/Object'
+import { binary } from '@dr-js/core/module/common/format'
+import { objectSortKey } from '@dr-js/core/module/common/mutable/Object'
 
 const formatPackagePath = (packagePath) => {
   const packageFile = packagePath.endsWith('.json') ? packagePath : resolve(packagePath, 'package.json')

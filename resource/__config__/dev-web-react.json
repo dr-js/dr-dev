@@ -1,6 +1,6 @@
 {
   "__EXTRA__": {
-    "name": "dr-dev-web-react",
+    "name": "@dr-js/dev-web-react",
     "description": "ESLint + Babel + React"
   },
   "IMPORT": [

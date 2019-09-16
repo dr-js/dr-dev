@@ -1,12 +1,12 @@
-import { getGlobal } from 'dr-js/module/env/global'
+import { getGlobal } from '@dr-js/core/module/env/global'
 
-import { string, basicFunction } from 'dr-js/module/common/verify'
-import { catchSync, catchAsync } from 'dr-js/module/common/error'
-import { clock } from 'dr-js/module/common/time'
-import { time } from 'dr-js/module/common/format'
-import { indentLine } from 'dr-js/module/common/string'
-import { withTimeoutAsync } from 'dr-js/module/common/function'
-import { createTreeDepthFirstSearchAsync } from 'dr-js/module/common/data/Tree'
+import { string, basicFunction } from '@dr-js/core/module/common/verify'
+import { catchSync, catchAsync } from '@dr-js/core/module/common/error'
+import { clock } from '@dr-js/core/module/common/time'
+import { time } from '@dr-js/core/module/common/format'
+import { indentLine } from '@dr-js/core/module/common/string'
+import { withTimeoutAsync } from '@dr-js/core/module/common/function'
+import { createTreeDepthFirstSearchAsync } from '@dr-js/core/module/common/data/Tree'
 
 import { TerminalColor } from './terminalColor'
 

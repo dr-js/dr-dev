@@ -2,8 +2,8 @@ import { relative } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
 import Terser from 'terser'
 
-import { clock } from 'dr-js/module/common/time'
-import { binary, time, padTable } from 'dr-js/module/common/format'
+import { clock } from '@dr-js/core/module/common/time'
+import { binary, time, padTable } from '@dr-js/core/module/common/format'
 
 import { __VERBOSE__ } from './node/env'
 

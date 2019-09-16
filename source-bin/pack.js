@@ -1,11 +1,13 @@
 import { resolve } from 'path'
 import { statSync, writeFileSync } from 'fs'
 import { execSync } from 'child_process'
-import { binary } from 'dr-js/module/common/format'
-import { objectMergeDeep } from 'dr-js/module/common/mutable/Object'
-import { createDirectory } from 'dr-js/module/node/file/Directory'
-import { modifyCopy, modifyDeleteForce } from 'dr-js/module/node/file/Modify'
-import { runSync } from 'dr-js/module/node/system/Run'
+import { binary } from '@dr-js/core/module/common/format'
+import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object'
+import { createDirectory } from '@dr-js/core/module/node/file/Directory'
+import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
+import { runSync } from '@dr-js/core/module/node/system/Run'
+
+import { getPackageTgzName } from '@dr-js/dev/module/output'
 
 import { formatPackagePath, writePackageJSON } from './function'
 
@@ -83,7 +85,7 @@ const doPack = async ({
   for (const [ source, targetRelative ] of installFilePairList) await modifyCopy(source, resolve(pathOutputInstall, targetRelative))
 
   execSync('npm --no-update-notifier pack', { cwd: pathOutput, stdio: 'inherit', shell: true })
-  const outputFileName = `${packageJSON.name}-${packageJSON.version}.tgz`
+  const outputFileName = getPackageTgzName(packageJSON)
   const outputFilePath = resolve(pathOutput, outputFileName)
   console.log(`done pack: ${outputFileName} [${binary(statSync(outputFilePath).size)}B]`)
 
@@ -91,7 +93,7 @@ const doPack = async ({
   // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'config', 'get', 'userconfig' ] })
   // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'config', 'get', 'registry' ] })
   // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'whoami' ] })
-  if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'publish', outputFilePath, '--tag', isPublishDev ? 'dev' : 'latest' ] })
+  if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'publish', outputFilePath, '--tag', isPublishDev ? 'dev' : 'latest', '--access', 'public' ] })
 }
 
 export { doPack }

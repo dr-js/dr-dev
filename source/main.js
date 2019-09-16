@@ -1,6 +1,6 @@
-import { clock } from 'dr-js/module/common/time'
-import { time } from 'dr-js/module/common/format'
-import { isString } from 'dr-js/module/common/check'
+import { clock } from '@dr-js/core/module/common/time'
+import { time } from '@dr-js/core/module/common/format'
+import { isString } from '@dr-js/core/module/common/check'
 
 import { argvFlag } from './node/env'
 import { getLogger } from './node/logger'

@@ -1,6 +1,6 @@
 {
   "__EXTRA__": {
-    "name": "dr-dev-babel",
+    "name": "@dr-js/dev-babel",
     "description": "ESLint + Babel"
   },
   "IMPORT": [

@@ -1,6 +1,6 @@
 {
   "__EXTRA__": {
-    "name": "dr-dev-web",
+    "name": "@dr-js/dev-web",
     "description": "Webpack + ESLint + Babel"
   },
   "IMPORT": [

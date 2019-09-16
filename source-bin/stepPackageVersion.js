@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 
-import { runSync } from 'dr-js/module/node/system/Run'
+import { runSync } from '@dr-js/core/module/node/system/Run'
 
 import { formatPackagePath, writePackageJSON } from './function'
 

@@ -1,4 +1,4 @@
-import { Preset, getOptionalFormatFlag, prepareOption } from 'dr-js/module/node/module/Option/preset'
+import { Preset, getOptionalFormatFlag, prepareOption } from '@dr-js/core/module/node/module/Option/preset'
 
 const { Config, parseCompactList } = Preset
 

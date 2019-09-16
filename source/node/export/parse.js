@@ -1,10 +1,10 @@
 import { sep } from 'path'
 import { readFileSync } from 'fs'
 import { parse as parseAST } from '@babel/parser'
-import { compareString } from 'dr-js/module/common/compare'
-import { objectSortKey } from 'dr-js/module/common/mutable/Object'
-import { getPathStat, getPathTypeFromStat } from 'dr-js/module/node/file/Path'
-import { getDirectoryInfoTree, walkDirectoryInfoTree } from 'dr-js/module/node/file/Directory'
+import { compareString } from '@dr-js/core/module/common/compare'
+import { objectSortKey } from '@dr-js/core/module/common/mutable/Object'
+import { getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/file/Path'
+import { getDirectoryInfoTree, walkDirectoryInfoTree } from '@dr-js/core/module/node/file/Directory'
 
 const getExportListFromParsedAST = (fileString, sourceFilename, parserPluginList) => {
   const resultAST = parseAST(fileString, {

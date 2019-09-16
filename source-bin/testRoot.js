@@ -1,9 +1,9 @@
 import { relative } from 'path'
 
-import { toPosixPath } from 'dr-js/module/node/file/Path'
-import { getFileList } from 'dr-js/module/node/file/Directory'
+import { toPosixPath } from '@dr-js/core/module/node/file/Path'
+import { getFileList } from '@dr-js/core/module/node/file/Directory'
 
-import { TEST_SETUP, TEST_RUN, describe } from 'dr-dev/module/common/test'
+import { TEST_SETUP, TEST_RUN, describe } from '@dr-js/dev/module/common/test'
 
 const doTestRoot = async ({
   testRoot = process.cwd(),

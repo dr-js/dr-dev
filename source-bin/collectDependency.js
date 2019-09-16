@@ -1,7 +1,7 @@
 import { relative } from 'path'
 import { readFileSync } from 'fs'
-import { objectSortKey } from 'dr-js/module/common/mutable/Object'
-import { getFileList } from 'dr-js/module/node/file/Directory'
+import { objectSortKey } from '@dr-js/core/module/common/mutable/Object'
+import { getFileList } from '@dr-js/core/module/node/file/Directory'
 
 const loadPackage = (pathInput, path, collect) => {
   const packageSource = relative(pathInput, path)

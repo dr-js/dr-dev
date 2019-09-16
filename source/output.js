@@ -1,10 +1,10 @@
 import { ok } from 'assert'
 import { execSync } from 'child_process'
 import { statSync, readFileSync, writeFileSync } from 'fs'
-import { binary } from 'dr-js/module/common/format'
-import { createDirectory, getFileList } from 'dr-js/module/node/file/Directory'
-import { modifyMove, modifyCopy, modifyDeleteForce } from 'dr-js/module/node/file/Modify'
-import { runSync } from 'dr-js/module/node/system/Run'
+import { binary } from '@dr-js/core/module/common/format'
+import { createDirectory, getFileList } from '@dr-js/core/module/node/file/Directory'
+import { modifyMove, modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
+import { runSync } from '@dr-js/core/module/node/system/Run'
 
 import { __VERBOSE__ } from './node/env'
 import { writeLicenseFile } from './license'
@@ -55,6 +55,8 @@ const initOutput = async ({
   return packageJSON
 }
 
+const getPackageTgzName = (packageJSON) => `${packageJSON.name.replace(/^@/, '').replace('/', '-')}-${packageJSON.version}.tgz`
+
 const packOutput = async ({
   fromRoot,
   fromOutput,
@@ -64,8 +66,7 @@ const packOutput = async ({
   execSync('npm --no-update-notifier pack', { cwd: fromOutput(), stdio: __VERBOSE__ ? 'inherit' : [ 'ignore', 'ignore' ], shell: true })
 
   log('move to root path')
-  const packageJSON = require(fromOutput('package.json'))
-  const packName = `${packageJSON.name.replace(/^@/, '').replace('/', '-')}-${packageJSON.version}.tgz`
+  const packName = getPackageTgzName(require(fromOutput('package.json')))
   await modifyMove(fromOutput(packName), fromRoot(packName))
   padLog(`pack size: ${binary(statSync(fromRoot(packName)).size)}B`)
 
@@ -108,18 +109,21 @@ const publishOutput = async ({
   packageJSON,
   pathPackagePack, // the .tgz output of pack
   extraArgs = [],
+  isPublicScoped = false,
   logger
 }) => {
   const { isPublish, isDev } = getPublishFlag(flagList)
   if (!isPublish) return logger.padLog(`skipped publish output, no flag found`)
   if (!pathPackagePack || !pathPackagePack.endsWith('.tgz')) throw new Error(`[publishOutput] invalid pathPackagePack: ${pathPackagePack}`)
   if (!checkPublishVersion({ isDev, version: packageJSON.version })) throw new Error(`[publishOutput] invalid version: ${packageJSON.version}, isDev: ${isDev}`)
+  if (isPublicScoped) extraArgs.push('--access', 'public')
   logger.padLog(`${isDev ? 'publish-dev' : 'publish'}: ${packageJSON.version}`)
   runSync({ command: 'npm', argList: [ '--no-update-notifier', 'publish', pathPackagePack, '--tag', isDev ? 'dev' : 'latest', ...extraArgs ] })
 }
 
 export {
   initOutput,
+  getPackageTgzName,
   packOutput,
   verifyOutputBinVersion,
   verifyNoGitignore,

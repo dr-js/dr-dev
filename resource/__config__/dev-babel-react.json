@@ -1,6 +1,6 @@
 {
   "__EXTRA__": {
-    "name": "dr-dev-babel-react",
+    "name": "@dr-js/dev-babel-react",
     "description": "ESLint + Babel + React"
   },
   "IMPORT": [

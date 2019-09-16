@@ -1,11 +1,11 @@
-import { clock } from 'dr-js/module/common/time'
-import { time as formatTime } from 'dr-js/module/common/format'
+import { clock } from '@dr-js/core/module/common/time'
+import { time as formatTime } from '@dr-js/core/module/common/format'
 
 import { loadEnvKey, saveEnvKey, __VERBOSE__ } from './env'
 
 const EMPTY_FUNC = () => {}
 
-const getLogger = (title = 'dr-dev', quiet = false, padWidth = 120) => {
+const getLogger = (title = 'dev', quiet = false, padWidth = 120) => {
   const envTitle = loadEnvKey('__DEV_LOGGER_TITLE__')
   title = envTitle ? `${title}|${envTitle}` : title
   saveEnvKey('__DEV_LOGGER_TITLE__', title)

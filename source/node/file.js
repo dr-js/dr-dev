@@ -1,8 +1,8 @@
 import { resolve, relative, sep } from 'path'
-import { catchAsync } from 'dr-js/module/common/error'
-import { nearestExistPath } from 'dr-js/module/node/file/Path'
-import { createDirectory, getFileList } from 'dr-js/module/node/file/Directory'
-import { modifyDelete } from 'dr-js/module/node/file/Modify'
+import { catchAsync } from '@dr-js/core/module/common/error'
+import { nearestExistPath } from '@dr-js/core/module/node/file/Path'
+import { createDirectory, getFileList } from '@dr-js/core/module/node/file/Directory'
+import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
 
 const DEFAULT_RESOLVE_PATH = (path) => path
 

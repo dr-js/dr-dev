@@ -2,9 +2,9 @@ import { dirname } from 'path'
 import { writeFileSync } from 'fs'
 import webpack from 'webpack'
 
-import { binary, time, padTable } from 'dr-js/module/common/format'
-import { createDirectory } from 'dr-js/module/node/file/Directory'
-import { addExitListenerSync } from 'dr-js/module/node/system/ExitListener'
+import { binary, time, padTable } from '@dr-js/core/module/common/format'
+import { createDirectory } from '@dr-js/core/module/node/file/Directory'
+import { addExitListenerSync } from '@dr-js/core/module/node/system/ExitListener'
 
 import { __VERBOSE__, argvFlag } from './node/env'
 import { getWebpackBabelConfig } from './babel'

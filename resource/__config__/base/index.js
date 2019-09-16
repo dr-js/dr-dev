@@ -1,14 +1,14 @@
 import { resolve } from 'path'
 import { execSync } from 'child_process'
 
-import { binary } from 'dr-js/module/common/format'
-import { getFileList } from 'dr-js/module/node/file/Directory'
-import { modifyCopy } from 'dr-js/module/node/file/Modify'
+import { binary } from '@dr-js/core/module/common/format'
+import { getFileList } from '@dr-js/core/module/node/file/Directory'
+import { modifyCopy } from '@dr-js/core/module/node/file/Modify'
 
-import { runMain, argvFlag } from 'dr-dev/module/main'
-import { initOutput, packOutput, verifyOutputBinVersion, publishOutput } from 'dr-dev/module/output'
-import { processFileList, fileProcessorBabel } from 'dr-dev/module/fileProcessor'
-import { getTerserOption, minifyFileListWithTerser } from 'dr-dev/module/minify'
+import { runMain, argvFlag } from '@dr-js/dev/module/main'
+import { initOutput, packOutput, verifyOutputBinVersion, publishOutput } from '@dr-js/dev/module/output'
+import { processFileList, fileProcessorBabel } from '@dr-js/dev/module/fileProcessor'
+import { getTerserOption, minifyFileListWithTerser } from '@dr-js/dev/module/minify'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const PATH_OUTPUT = resolve(__dirname, '../output-gitignore')

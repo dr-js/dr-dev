@@ -1,4 +1,4 @@
-# dr-dev
+# @dr-js/dev
 
 [![i:npm]][l:npm]
 [![i:size]][l:size]
@@ -6,11 +6,11 @@
 
 A collection of strange functions, for development
 
-[i:npm]: https://img.shields.io/npm/v/dr-dev.svg
-[i:npm-dev]: https://img.shields.io/npm/v/dr-dev/dev.svg
-[l:npm]: https://npm.im/dr-dev
-[i:size]: https://packagephobia.now.sh/badge?p=dr-dev
-[l:size]: https://packagephobia.now.sh/result?p=dr-dev
+[i:npm]: https://img.shields.io/npm/v/@dr-js/dev.svg
+[i:npm-dev]: https://img.shields.io/npm/v/@dr-js/dev/dev.svg
+[l:npm]: https://npm.im/@dr-js/dev
+[i:size]: https://packagephobia.now.sh/badge?p=@dr-js/dev
+[l:size]: https://packagephobia.now.sh/result?p=@dr-js/dev
 
 - [![i:p-b]][l:p-b]
 - [![i:p-br]][l:p-br]
@@ -20,17 +20,17 @@ A collection of strange functions, for development
 - [![i:p-wrsc]][l:p-wrsc]
 
 [i:p-b]: https://img.shields.io/badge/dr--dev-babel-yellow.svg
-[l:p-b]: https://npm.im/dr-dev-babel
+[l:p-b]: https://npm.im/@dr-js/dev-babel
 [i:p-br]: https://img.shields.io/badge/dr--dev-babel--react-yellow.svg
-[l:p-br]: https://npm.im/dr-dev-babel-react
+[l:p-br]: https://npm.im/@dr-js/dev-babel-react
 [i:p-w]: https://img.shields.io/badge/dr--dev-web-blue.svg
-[l:p-w]: https://npm.im/dr-dev-web
+[l:p-w]: https://npm.im/@dr-js/dev-web
 [i:p-wp]: https://img.shields.io/badge/dr--dev-web--puppeteer-blue.svg
-[l:p-wp]: https://npm.im/dr-dev-web-puppeteer
+[l:p-wp]: https://npm.im/@dr-js/dev-web-puppeteer
 [i:p-wr]: https://img.shields.io/badge/dr--dev-web--react-blue.svg
-[l:p-wr]: https://npm.im/dr-dev-web-react
+[l:p-wr]: https://npm.im/@dr-js/dev-web-react
 [i:p-wrsc]: https://img.shields.io/badge/dr--dev-web--react--styled--components-blue.svg
-[l:p-wrsc]: https://npm.im/dr-dev-web-react-styled-components
+[l:p-wrsc]: https://npm.im/@dr-js/dev-web-react-styled-components
 
 [//]: # (NON_PACKAGE_CONTENT)
 
@@ -38,10 +38,10 @@ A collection of strange functions, for development
 
 - 📁 [source/](source/)
   - main source code, in output package will be:
-    - `dr-dev/library`: for direct use, use `require() / exports.*=`
-    - `dr-dev/module`: for use with `node` + `@babel/register`, keep `import / export` and readability
+    - `@dr-js/dev/library`: for direct use, use `require() / exports.*=`
+    - `@dr-js/dev/module`: for use with `node` + `@babel/register`, keep `import / export` and readability
 - 📁 [source-bin/](source-bin/)
-  - bin source code, in output package will be `dr-dev/bin`
+  - bin source code, in output package will be `@dr-js/dev/bin`
 - 📁 [resource/](resource/)
   - resource for pack sub package
 - 📁 [config/](config/)

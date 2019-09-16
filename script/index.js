@@ -1,8 +1,8 @@
 import { resolve } from 'path'
 import { execSync, spawnSync } from 'child_process'
 
-import { binary } from 'dr-js/module/common/format'
-import { modifyDeleteForce } from 'dr-js/module/node/file/Modify'
+import { binary } from '@dr-js/core/module/common/format'
+import { modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
 
 import { getFileListFromPathList, getScriptFileListFromPathList } from 'source/node/file'
 import { runMain, argvFlag } from 'source/main'
@@ -68,7 +68,7 @@ const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
   logger.padLog('clear pack')
   await modifyDeleteForce(fromPackageOutput())
 
-  const configFileList = await getFileListFromPathList([ './resource/__config__/' ], fromRoot, (path) => /dr-dev-[\w-]+\.json/.test(path))
+  const configFileList = await getFileListFromPathList([ './resource/__config__/' ], fromRoot, (path) => /dev-[\w-]+\.json/.test(path))
   configFileList.forEach((file) => {
     const { __EXTRA__: { name, description } } = require(file)
     logger.padLog(`pack package ${name}`)
@@ -109,6 +109,6 @@ runMain(async (logger) => {
     await packPackage({ isPublish, isDev, packageJSON, logger })
   } else {
     const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })
-    await publishOutput({ flagList: process.argv, packageJSON, pathPackagePack, logger })
+    await publishOutput({ flagList: process.argv, packageJSON, pathPackagePack, isPublicScoped: true, logger })
   }
 })

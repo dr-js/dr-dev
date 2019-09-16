@@ -1,14 +1,14 @@
 import { execSync } from 'child_process'
-import { catchAsync } from 'dr-js/module/common/error'
-import { setTimeoutAsync } from 'dr-js/module/common/time'
-import { run } from 'dr-js/module/node/system/Run'
+import { catchAsync } from '@dr-js/core/module/common/error'
+import { setTimeoutAsync } from '@dr-js/core/module/common/time'
+import { run } from '@dr-js/core/module/node/system/Run'
 import {
   getProcessListAsync,
   toProcessPidMap,
   toProcessTree, findProcessTreeInfo,
   killProcessTreeInfoAsync,
   isPidExist
-} from 'dr-js/module/node/system/Process'
+} from '@dr-js/core/module/node/system/Process'
 
 const getGitBranch = () => {
   try {

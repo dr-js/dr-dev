@@ -1,5 +1,5 @@
-import { getEnvironment } from 'dr-js/module/env/global'
-import { tryRequire } from 'dr-js/module/env/tryRequire'
+import { getEnvironment } from '@dr-js/core/module/env/global'
+import { tryRequire } from '@dr-js/core/module/env/tryRequire'
 
 // TODO: NOTE: code should do nothing in browser (but usable)
 

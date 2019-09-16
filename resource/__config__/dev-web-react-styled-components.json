@@ -1,6 +1,6 @@
 {
   "__EXTRA__": {
-    "name": "dr-dev-web-react-styled-components",
+    "name": "@dr-js/dev-web-react-styled-components",
     "description": "Webpack + ESLint + Babel + React + StyledComponents"
   },
   "IMPORT": [

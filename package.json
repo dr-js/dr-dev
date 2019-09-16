@@ -1,12 +1,15 @@
 {
   "private": true,
-  "name": "dr-dev",
-  "version": "0.0.7-dev.3",
+  "name": "@dr-js/dev",
+  "version": "0.0.0-dev.0",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
   "repository": "github:dr-js/dr-dev",
-  "bin": "bin/index.js",
+  "bin": {
+    "dr-dev": "bin/index.js",
+    "DD": "bin/index.js"
+  },
   "scripts": {
     "// script ======================": "",
     "script-pack": "node -r @babel/register ./script quiet pack",
@@ -35,10 +38,10 @@
     "npm": ">=6.10"
   },
   "dependencies": {
-    "dr-js": "^0.23.0 || ^0.23.0-dev.3"
+    "@dr-js/core": "^0.0.0 || ^0.0.0-dev.0"
   },
   "devDependencies": {
-    "dr-dev-web": "0.0.7-dev.3"
+    "@dr-js/dev-web": "0.0.0-dev.0"
   },
   "sideEffects": false
 }
