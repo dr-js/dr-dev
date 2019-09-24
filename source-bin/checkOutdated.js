@@ -7,7 +7,7 @@ import { withTimeoutPromise } from '@dr-js/core/module/common/function'
 import { objectMap } from '@dr-js/core/module/common/immutable/Object'
 import { compareSemVer } from '@dr-js/core/module/common/module/SemVer'
 import { getPathStat } from '@dr-js/core/module/node/file/Path'
-import { runQuiet } from '@dr-js/core/module/node/system/Run'
+import { run } from '@dr-js/core/module/node/system/Run'
 import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from '@dr-js/core/module/node/system/Process'
 
 import { withTempDirectory } from '@dr-js/dev/module/node/file'
@@ -15,17 +15,23 @@ import { withTempDirectory } from '@dr-js/dev/module/node/file'
 import { collectDependency } from './collectDependency'
 
 const runNpmOutdated = async (pathPackage) => {
-  const { promise, subProcess, stdoutBufferPromise, stderrBufferPromise } = runQuiet({
+  const { promise, subProcess, stdoutPromise, stderrPromise } = run({
     command: 'npm',
     argList: [ '--no-update-notifier', 'outdated' ],
-    option: { cwd: pathPackage }
+    option: { cwd: pathPackage, shell: true },
+    quiet: true
+  })
+
+  const promiseWithCatch = promise.catch((acceptableError) => {
+    __DEV__ && console.log('acceptableError:', acceptableError)
+    return acceptableError
   })
 
   await setTimeoutAsync(500) // wait for a bit for npm to start
   const processTreeInfo = findProcessTreeInfo({ pid: subProcess.pid }, toProcessTree(await getProcessListAsync()))
 
   const { code, signal } = await withTimeoutPromise(
-    promise.catch((acceptableError) => acceptableError),
+    promiseWithCatch,
     42 * 1000 // 42sec timeout
   ).catch(async (error) => {
     await killProcessTreeInfoAsync(processTreeInfo)
@@ -33,10 +39,10 @@ const runNpmOutdated = async (pathPackage) => {
   })
 
   __DEV__ && console.log(`code: ${code}, signal: ${signal}`)
-  __DEV__ && console.log(String(await stdoutBufferPromise))
-  __DEV__ && console.log(String(await stderrBufferPromise))
+  __DEV__ && console.log(String(await stdoutPromise))
+  __DEV__ && console.log(String(await stderrPromise))
 
-  return String(await stdoutBufferPromise)
+  return String(await stdoutPromise)
 }
 
 const compareAndLogResult = async (packageInfoMap, npmOutdatedOutputString) => {

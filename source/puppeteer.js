@@ -13,7 +13,7 @@ const puppeteerBrowserDisconnectListener = () => {
 const clearPuppeteerBrowser = ({ puppeteerBrowser }) => {
   puppeteerBrowser.removeListener('disconnected', puppeteerBrowserDisconnectListener)
   return puppeteerBrowser.close().catch((error) => {
-    __DEV__ && console.warn('[Puppeteer] puppeteerBrowser clear error:', error.toString())
+    __DEV__ && console.warn('[Puppeteer] puppeteerBrowser clear error:', String(error))
     process.exit(-1)
   })
 }
@@ -34,7 +34,7 @@ const initPuppeteerBrowser = async ({ logger }) => {
 }
 
 const clearPuppeteerPage = ({ puppeteerPage }) => puppeteerPage.close()
-  .catch((error) => { __DEV__ && console.warn('[Puppeteer] puppeteerPage clear error:', error.toString()) })
+  .catch((error) => { __DEV__ && console.warn('[Puppeteer] puppeteerPage clear error:', String(error)) })
 
 const initPuppeteerPage = async ({ puppeteerBrowser, logger }) => {
   logger.log('[Puppeteer|Page] init start')

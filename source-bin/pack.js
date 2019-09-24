@@ -93,7 +93,7 @@ const doPack = async ({
   // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'config', 'get', 'userconfig' ] })
   // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'config', 'get', 'registry' ] })
   // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'whoami' ] })
-  if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'publish', outputFilePath, '--tag', isPublishDev ? 'dev' : 'latest', '--access', 'public' ] })
+  if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'publish', outputFilePath, '--tag', isPublishDev ? 'dev' : 'latest', '--access', 'public' ], option: { shell: true } })
 }
 
 export { doPack }

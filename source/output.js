@@ -41,7 +41,7 @@ const initOutput = async ({
   padLog(`init output file`)
   for (const [ pathFrom, pathTo ] of [ ...copyPathList.map((v) => [ v, v ]), ...copyMapPathList ]) {
     if (replaceReadmeNonPackageContent && pathFrom.endsWith('README.md')) { // change README.md NON_PACKAGE_CONTENT
-      const packageContentList = readFileSync(fromRoot(pathFrom)).toString().split('[//]: # (NON_PACKAGE_CONTENT)')
+      const packageContentList = String(readFileSync(fromRoot(pathFrom))).split('[//]: # (NON_PACKAGE_CONTENT)')
       if (packageContentList.length >= 2) {
         writeFileSync(fromOutput(pathTo), `${packageContentList[ 0 ].trim()}${replaceReadmeNonPackageContent}`)
         log(`copied: ${pathFrom} (with NON_PACKAGE_CONTENT replaced to: ${JSON.stringify(replaceReadmeNonPackageContent)})`)
@@ -80,7 +80,7 @@ const verifyOutputBinVersion = async ({
   logger: { padLog, log }
 }) => {
   padLog('verify output bin working')
-  const outputBinTest = execSync('node bin --version', { cwd: fromOutput(), stdio: 'pipe', shell: true }).toString()
+  const outputBinTest = String(execSync('node bin --version', { cwd: fromOutput(), stdio: 'pipe', shell: true }))
   log(`bin test output: ${outputBinTest}`)
   for (const testString of matchStringList) ok(outputBinTest.includes(testString), `should output contain: ${testString}`)
 }
@@ -118,7 +118,7 @@ const publishOutput = async ({
   if (!checkPublishVersion({ isDev, version: packageJSON.version })) throw new Error(`[publishOutput] invalid version: ${packageJSON.version}, isDev: ${isDev}`)
   if (isPublicScoped) extraArgs.push('--access', 'public')
   logger.padLog(`${isDev ? 'publish-dev' : 'publish'}: ${packageJSON.version}`)
-  runSync({ command: 'npm', argList: [ '--no-update-notifier', 'publish', pathPackagePack, '--tag', isDev ? 'dev' : 'latest', ...extraArgs ] })
+  runSync({ command: 'npm', argList: [ '--no-update-notifier', 'publish', pathPackagePack, '--tag', isDev ? 'dev' : 'latest', ...extraArgs ], option: { shell: true } })
 }
 
 export {

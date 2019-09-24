@@ -55,8 +55,8 @@ const doStepPackageVersion = async ({
   ].join('\n')
 
   log(`[StepPackageVersion] git commit message: '${messageTitle}'`)
-  runSync({ command: 'git', argList: [ 'add', packageFile ], option: { cwd: packagePath, shell: false } })
-  runSync({ command: 'git', argList: [ 'commit', '-m', messageTitle, '-m', messageContent ], option: { cwd: packagePath, shell: false } })
+  runSync({ command: 'git', argList: [ 'add', packageFile ], option: { cwd: packagePath } })
+  runSync({ command: 'git', argList: [ 'commit', '-m', messageTitle, '-m', messageContent ], option: { cwd: packagePath } })
 }
 
 export { doStepPackageVersion }

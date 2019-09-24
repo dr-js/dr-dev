@@ -109,6 +109,6 @@ runMain(async (logger) => {
     await packPackage({ isPublish, isDev, packageJSON, logger })
   } else {
     const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })
-    await publishOutput({ flagList: process.argv, packageJSON, pathPackagePack, isPublicScoped: true, logger })
+    await publishOutput({ flagList: process.argv, isPublicScoped: true, packageJSON, pathPackagePack, logger })
   }
 })
