@@ -44,7 +44,5 @@ A collection of strange functions, for development
   - bin source code, in output package will be `@dr-js/dev/bin`
 - 📁 [resource/](resource/)
   - resource for pack sub package
-- 📁 [config/](config/)
-  - config for pack sub package
 - 📄 [SPEC.md](SPEC.md)
   - list of all directly accessible codes, sort of an API lockfile

@@ -5,18 +5,11 @@ import { tryRequire } from '@dr-js/core/module/env/tryRequire'
 
 // reduced code from: https://github.com/chalk/supports-color/blob/master/index.js
 const shouldSupportColor = () => {
-  if ( // node, not browser
-    !getEnvironment().isNode
-  ) return false
+  if (!getEnvironment().isNode) return false // node, not browser
 
-  { // check env for FORCE_COLOR
-    const { FORCE_COLOR } = process.env
-    if ( // FORCE_COLOR: true/on = force color
-      FORCE_COLOR && [ 'true', true ].includes(FORCE_COLOR)
-    ) return true
-    if ( // FORCE_COLOR: false/off = force no color
-      FORCE_COLOR && [ 'false', false ].includes(FORCE_COLOR)
-    ) return false
+  { // check env for FORCE_COLOR // FORCE_COLOR: false/off = force no color, other = force color
+    const FORCE_COLOR = String(process.env.FORCE_COLOR)
+    if (FORCE_COLOR !== 'undefined') return ![ 'false', 'off' ].includes(FORCE_COLOR)
   }
 
   if ( // stdout/stderr stream type
@@ -26,15 +19,8 @@ const shouldSupportColor = () => {
 
   { // check env for conventional keys
     const { CI, TERM } = process.env
-
-    if ( // CI = force color
-      CI
-    ) return true
-
-    if ( // TERM = test color
-      TERM &&
-      /^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(TERM)
-    ) return true
+    if (CI) return true // CI = force color
+    if (TERM && /^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(TERM)) return true // TERM = test color
   }
 
   if ( // Windows 10 = should support color
@@ -47,79 +33,55 @@ const shouldSupportColor = () => {
   return false
 }
 
-const TerminalColor = (() => {
-  // http://jafrog.com/2013/11/23/colors-in-terminal.html
-  // https://misc.flogisoft.com/bash/tip_colors_and_formatting
-  const getControlSequence = (...args) => `\u001B[${args.join(';')}m`
+// AES = ANSI escape code
+// https://en.wikipedia.org/wiki/ANSI_escape_code
+// http://jafrog.com/2013/11/23/colors-in-terminal.html
+// https://misc.flogisoft.com/bash/tip_colors_and_formatting
 
-  const ControlSequenceForeground = {
-    default: getControlSequence(39),
+// name|Foreground|Background
+const AES_DEFAULT_FG = 39
+const AES_DEFAULT_BG = 49
+const AES_CONFIG_TEXT = `
+black|30|40
+red|31|41
+green|32|42
+yellow|33|43
+blue|34|44
+magenta|35|45
+cyan|36|46
+lightGray|37|47
 
-    black: getControlSequence(30),
-    red: getControlSequence(31),
-    green: getControlSequence(32),
-    yellow: getControlSequence(33),
-    blue: getControlSequence(34),
-    magenta: getControlSequence(35),
-    cyan: getControlSequence(36),
-    lightGray: getControlSequence(37),
+default|${AES_DEFAULT_FG}|${AES_DEFAULT_BG}
 
-    darkGray: getControlSequence(90),
-    lightRed: getControlSequence(91),
-    lightGreen: getControlSequence(92),
-    lightYellow: getControlSequence(93),
-    lightBlue: getControlSequence(94),
-    lightMagenta: getControlSequence(95),
-    lightCyan: getControlSequence(96),
-    white: getControlSequence(97)
-  }
+darkGray|90|100
+lightRed|91|101
+lightGreen|92|102
+lightYellow|93|103
+lightBlue|94|104
+lightMagenta|95|105
+lightCyan|96|106
+white|97|107
+`
 
-  const ControlSequenceBackground = {
-    default: getControlSequence(49),
+const TerminalColor = (() => { // usage: TerminalColor.fg.red(string)
+  const toAES = (value) => `\x1b[${value}m`
+  const createWrapper = shouldSupportColor()
+    ? (setAES, clearAES) => (text) => `${setAES}${text}${clearAES}` // TODO: no nesting support
+    : () => (text) => text
 
-    black: getControlSequence(40),
-    red: getControlSequence(41),
-    green: getControlSequence(42),
-    yellow: getControlSequence(43),
-    blue: getControlSequence(44),
-    magenta: getControlSequence(45),
-    cyan: getControlSequence(46),
-    lightGray: getControlSequence(47),
-
-    darkGray: getControlSequence(100),
-    lightRed: getControlSequence(101),
-    lightGreen: getControlSequence(102),
-    lightYellow: getControlSequence(103),
-    lightBlue: getControlSequence(104),
-    lightMagenta: getControlSequence(105),
-    lightCyan: getControlSequence(106),
-    white: getControlSequence(107)
-  }
-
-  const isSupportColor = shouldSupportColor()
-  const createTerminalColor = (setColor, clearColor) => isSupportColor // TODO: no nesting support
-    ? (text) => `${setColor}${text}${clearColor}`
-    : (text) => text
-
-  const TerminalColorForeground = Object.entries(ControlSequenceForeground).reduce((o, [ key, controlSequence ]) => {
-    o[ key ] = createTerminalColor(controlSequence, ControlSequenceForeground.default)
-    return o
-  }, {})
-
-  const TerminalColorBackground = Object.entries(ControlSequenceBackground).reduce((o, [ key, controlSequence ]) => {
-    o[ key ] = createTerminalColor(controlSequence, ControlSequenceBackground.default)
-    return o
-  }, {})
+  const wrapperFg = {}
+  const wrapperBg = {}
+  AES_CONFIG_TEXT.split('\n').filter(Boolean).forEach((controlSequenceText) => {
+    const [ name, colorFg, colorBg ] = controlSequenceText.split('|')
+    wrapperFg[ name ] = createWrapper(toAES(colorFg), toAES(AES_DEFAULT_FG))
+    wrapperBg[ name ] = createWrapper(toAES(colorBg), toAES(AES_DEFAULT_BG))
+  })
 
   return {
-    foreground: TerminalColorForeground,
-    fg: TerminalColorForeground,
-    background: TerminalColorBackground,
-    bg: TerminalColorBackground
+    fg: wrapperFg,
+    bg: wrapperBg
   }
 })()
-
-// usage: TerminalColor.fg.red(string)
 
 export {
   shouldSupportColor,

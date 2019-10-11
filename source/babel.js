@@ -11,7 +11,7 @@ const getBabelConfig = ({
 } = {}) => ({
   presets: [
     [ '@babel/env', isAllTransform
-      ? { forceAllTransforms: true, modules: 'commonjs', loose: true }
+      ? { forceAllTransforms: true, modules: 'commonjs' }
       : { targets: { node: '10' }, modules: isModule ? false : 'commonjs' }
     ],
     ...extraPresetList
@@ -49,7 +49,7 @@ const getWebpackBabelConfig = ({
   cacheDirectory: isProduction,
   presets: [
     [ '@babel/env', isProduction && isAllTransform
-      ? { forceAllTransforms: true, modules: false, loose: true }
+      ? { forceAllTransforms: true, modules: false }
       : { targets: { node: '10' }, modules: false }
     ],
     ...extraPresetList
