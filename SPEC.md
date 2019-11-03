@@ -53,38 +53,38 @@
 >       show full help
 >   --version --v -v [OPTIONAL] [ARGUMENT=0+]
 >       show version
->   --path-input --i -i [OPTIONAL-CHECK] [ARGUMENT=1]
+>   --path-input --i -i [ARGUMENT=1]
 >       path to "package.json", or directory with "package.json" inside
 >   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0+]
 >       set to enable
->     --path-temp [OPTIONAL-CHECK] [ARGUMENT=1]
+>     --path-temp [ARGUMENT=1]
 >   --pack --p -p [OPTIONAL] [ARGUMENT=0+]
 >       set to enable
->     --path-output --o -o [OPTIONAL-CHECK] [ARGUMENT=1]
+>     --path-output --o -o [ARGUMENT=1]
 >         output path
->     --output-name [OPTIONAL-CHECK] [ARGUMENT=1]
+>     --output-name [ARGUMENT=1]
 >         output package name
->     --output-version [OPTIONAL-CHECK] [ARGUMENT=1]
+>     --output-version [ARGUMENT=1]
 >         output package version
->     --output-description [OPTIONAL-CHECK] [ARGUMENT=1]
+>     --output-description [ARGUMENT=1]
 >         output package description
->     --publish [OPTIONAL-CHECK] [ARGUMENT=0+]
+>     --publish [ARGUMENT=0+]
 >         run npm publish
->     --publish-dev [OPTIONAL-CHECK] [ARGUMENT=0+]
+>     --publish-dev [ARGUMENT=0+]
 >         run npm publish-dev
 >   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0+]
 >       step up package version (expect "0.0.0-dev.0-local.0" format)
->     --sort-key --K -K [OPTIONAL-CHECK] [ARGUMENT=0+]
+>     --sort-key --K -K [ARGUMENT=0+]
 >         sort keys in package.json
->     --git-commit --G -G [OPTIONAL-CHECK] [ARGUMENT=0+]
+>     --git-commit --G -G [ARGUMENT=0+]
 >         step up main version, and prepare a git commit
 >   --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
 >       root path to look test file from, default to cwd
->     --test-file-suffix --TFS [OPTIONAL-CHECK] [ARGUMENT=1+]
+>     --test-file-suffix --TFS [ARGUMENT=1+]
 >         pattern for test file, default to ".js"
->     --test-require --TR [OPTIONAL-CHECK] [ARGUMENT=1+]
+>     --test-require --TR [ARGUMENT=1+]
 >         module or file to require before test files, mostly for "@babel/register"
->     --test-timeout --TT [OPTIONAL-CHECK] [ARGUMENT=1]
+>     --test-timeout --TT [ARGUMENT=1]
 >         timeout for each test, in msec, default to 10*1000 (10sec)
 > ENV Usage:
 >   "
@@ -92,46 +92,46 @@
 >     export DR_DEV_CONFIG="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_HELP="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_VERSION="[OPTIONAL] [ARGUMENT=0+]"
->     export DR_DEV_PATH_INPUT="[OPTIONAL-CHECK] [ARGUMENT=1]"
+>     export DR_DEV_PATH_INPUT="[ARGUMENT=1]"
 >     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0+]"
->     export DR_DEV_PATH_TEMP="[OPTIONAL-CHECK] [ARGUMENT=1]"
+>     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
 >     export DR_DEV_PACK="[OPTIONAL] [ARGUMENT=0+]"
->     export DR_DEV_PATH_OUTPUT="[OPTIONAL-CHECK] [ARGUMENT=1]"
->     export DR_DEV_OUTPUT_NAME="[OPTIONAL-CHECK] [ARGUMENT=1]"
->     export DR_DEV_OUTPUT_VERSION="[OPTIONAL-CHECK] [ARGUMENT=1]"
->     export DR_DEV_OUTPUT_DESCRIPTION="[OPTIONAL-CHECK] [ARGUMENT=1]"
->     export DR_DEV_PUBLISH="[OPTIONAL-CHECK] [ARGUMENT=0+]"
->     export DR_DEV_PUBLISH_DEV="[OPTIONAL-CHECK] [ARGUMENT=0+]"
+>     export DR_DEV_PATH_OUTPUT="[ARGUMENT=1]"
+>     export DR_DEV_OUTPUT_NAME="[ARGUMENT=1]"
+>     export DR_DEV_OUTPUT_VERSION="[ARGUMENT=1]"
+>     export DR_DEV_OUTPUT_DESCRIPTION="[ARGUMENT=1]"
+>     export DR_DEV_PUBLISH="[ARGUMENT=0+]"
+>     export DR_DEV_PUBLISH_DEV="[ARGUMENT=0+]"
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0+]"
->     export DR_DEV_SORT_KEY="[OPTIONAL-CHECK] [ARGUMENT=0+]"
->     export DR_DEV_GIT_COMMIT="[OPTIONAL-CHECK] [ARGUMENT=0+]"
+>     export DR_DEV_SORT_KEY="[ARGUMENT=0+]"
+>     export DR_DEV_GIT_COMMIT="[ARGUMENT=0+]"
 >     export DR_DEV_TEST_ROOT="[OPTIONAL] [ARGUMENT=1+]"
->     export DR_DEV_TEST_FILE_SUFFIX="[OPTIONAL-CHECK] [ARGUMENT=1+]"
->     export DR_DEV_TEST_REQUIRE="[OPTIONAL-CHECK] [ARGUMENT=1+]"
->     export DR_DEV_TEST_TIMEOUT="[OPTIONAL-CHECK] [ARGUMENT=1]"
+>     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+]"
+>     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+]"
+>     export DR_DEV_TEST_TIMEOUT="[ARGUMENT=1]"
 >   "
 > CONFIG Usage:
 >   {
 >     "config": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "help": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "version": [ "[OPTIONAL] [ARGUMENT=0+]" ],
->     "pathInput": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
+>     "pathInput": [ "[ARGUMENT=1]" ],
 >     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0+]" ],
->     "pathTemp": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
+>     "pathTemp": [ "[ARGUMENT=1]" ],
 >     "pack": [ "[OPTIONAL] [ARGUMENT=0+]" ],
->     "pathOutput": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
->     "outputName": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
->     "outputVersion": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
->     "outputDescription": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
->     "publish": [ "[OPTIONAL-CHECK] [ARGUMENT=0+]" ],
->     "publishDev": [ "[OPTIONAL-CHECK] [ARGUMENT=0+]" ],
+>     "pathOutput": [ "[ARGUMENT=1]" ],
+>     "outputName": [ "[ARGUMENT=1]" ],
+>     "outputVersion": [ "[ARGUMENT=1]" ],
+>     "outputDescription": [ "[ARGUMENT=1]" ],
+>     "publish": [ "[ARGUMENT=0+]" ],
+>     "publishDev": [ "[ARGUMENT=0+]" ],
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0+]" ],
->     "sortKey": [ "[OPTIONAL-CHECK] [ARGUMENT=0+]" ],
->     "gitCommit": [ "[OPTIONAL-CHECK] [ARGUMENT=0+]" ],
+>     "sortKey": [ "[ARGUMENT=0+]" ],
+>     "gitCommit": [ "[ARGUMENT=0+]" ],
 >     "testRoot": [ "[OPTIONAL] [ARGUMENT=1+]" ],
->     "testFileSuffix": [ "[OPTIONAL-CHECK] [ARGUMENT=1+]" ],
->     "testRequire": [ "[OPTIONAL-CHECK] [ARGUMENT=1+]" ],
->     "testTimeout": [ "[OPTIONAL-CHECK] [ARGUMENT=1]" ],
+>     "testFileSuffix": [ "[ARGUMENT=1+]" ],
+>     "testRequire": [ "[ARGUMENT=1+]" ],
+>     "testTimeout": [ "[ARGUMENT=1]" ],
 >   }
 > ```
 
@@ -140,12 +140,12 @@
 
 | Package name                            |  Version |
 | :----                                   |    ----: |
-| @babel/cli                              |   ^7.6.4 |
-| @babel/core                             |   ^7.6.4 |
-| @babel/plugin-proposal-class-properties |   ^7.5.5 |
-| @babel/preset-env                       |   ^7.6.3 |
-| @babel/preset-react                     |   ^7.6.3 |
-| @babel/register                         |   ^7.6.2 |
+| @babel/cli                              |   ^7.7.0 |
+| @babel/core                             |   ^7.7.2 |
+| @babel/plugin-proposal-class-properties |   ^7.7.0 |
+| @babel/preset-env                       |   ^7.7.1 |
+| @babel/preset-react                     |   ^7.7.0 |
+| @babel/register                         |   ^7.7.0 |
 | babel-eslint                            |  ^10.0.3 |
 | babel-loader                            |   ^8.0.6 |
 | babel-plugin-minify-replace             |   ^0.5.0 |
