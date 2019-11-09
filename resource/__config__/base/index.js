@@ -14,23 +14,23 @@ const PATH_ROOT = resolve(__dirname, '..')
 const PATH_OUTPUT = resolve(__dirname, '../output-gitignore')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 const fromOutput = (...args) => resolve(PATH_OUTPUT, ...args)
-const execOptionRoot = { cwd: fromRoot(), stdio: argvFlag('quiet') ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit', shell: true }
+const execShell = (command) => execSync(command, { cwd: fromRoot(), stdio: argvFlag('quiet') ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit' })
 
 runMain(async (logger) => {
   const { padLog, log } = logger
 
   padLog('generate spec')
-  execSync(`npm run script-generate-spec`, execOptionRoot)
+  execShell('npm run script-generate-spec')
 
   const packageJSON = await initOutput({ fromRoot, fromOutput, logger })
 
-  padLog(`copy bin`)
+  padLog('copy bin')
   await modifyCopy(fromRoot('source-bin/index.js'), fromOutput('bin/index.js'))
 
   if (!argvFlag('pack')) return
 
-  padLog(`build library`)
-  execSync('npm run build-library', execOptionRoot)
+  padLog('build library')
+  execShell('npm run build-library')
 
   const fileListOutput = [
     ...await getFileList(fromOutput())
@@ -38,10 +38,10 @@ runMain(async (logger) => {
 
   let sizeCodeReduce = 0
 
-  padLog(`minify output`)
+  padLog('minify output')
   sizeCodeReduce += await minifyFileListWithTerser({ fileList: fileListOutput, option: getTerserOption(), rootPath: PATH_OUTPUT, logger })
 
-  padLog(`process code`)
+  padLog('process code')
   sizeCodeReduce += await processFileList({ fileList: fileListOutput, processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
 
   log(`total size reduce: ${binary(sizeCodeReduce)}B`)

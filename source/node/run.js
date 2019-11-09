@@ -1,4 +1,4 @@
-import { execSync } from 'child_process'
+import { spawnSync } from 'child_process'
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time'
 import { run } from '@dr-js/core/module/node/system/Run'
@@ -10,12 +10,10 @@ import {
   isPidExist
 } from '@dr-js/core/module/node/system/Process'
 
-const getGitBranch = () => {
-  try {
-    return String(execSync('git symbolic-ref --short HEAD', { stdio: 'pipe' })).trim()
-  } catch (error) { return `detached-HEAD/${String(execSync('git rev-parse --short HEAD')).trim()}` }
-}
-const getGitCommitHash = () => String(execSync('git log -1 --format="%H"')).trim()
+// TODO: copied from `@dr-js/node`, consider import directly?
+const gitSync = (...argList) => String(spawnSync('git', argList).stdout).replace(/\s/g, '')
+const getGitBranch = () => gitSync('symbolic-ref', '--short', 'HEAD') || `detached-HEAD/${gitSync('rev-parse', '--short', 'HEAD')}`
+const getGitCommitHash = () => gitSync('log', '-1', '--format=%H')
 
 const withRunBackground = async (option, task, setupDelay = 500) => {
   const { subProcess, promise } = run(option)

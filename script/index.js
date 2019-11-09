@@ -16,29 +16,29 @@ const PATH_PACKAGE_OUTPUT = resolve(__dirname, '../output-package-gitignore')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 const fromOutput = (...args) => resolve(PATH_OUTPUT, ...args)
 const fromPackageOutput = (...args) => resolve(PATH_PACKAGE_OUTPUT, ...args)
-const execOptionRoot = { cwd: fromRoot(), stdio: argvFlag('quiet') ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit' }
+const execShell = (command) => execSync(command, { cwd: fromRoot(), stdio: argvFlag('quiet') ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit' })
 
 const buildOutput = async ({ logger: { padLog } }) => {
   padLog('generate spec')
-  execSync(`npm run script-generate-spec`, execOptionRoot)
+  execShell('npm run script-generate-spec')
 
-  padLog(`build library`)
-  execSync('npm run build-library', execOptionRoot)
+  padLog('build library')
+  execShell('npm run build-library')
 
-  padLog(`build module`)
-  execSync('npm run build-module', execOptionRoot)
+  padLog('build module')
+  execShell('npm run build-module')
 
-  padLog(`build browser`)
-  execSync('npm run build-browser', execOptionRoot)
+  padLog('build browser')
+  execShell('npm run build-browser')
 
-  padLog(`build bin`)
-  execSync('npm run build-bin', execOptionRoot)
+  padLog('build bin')
+  execShell('npm run build-bin')
 }
 
 const processOutput = async ({ logger }) => {
   const { padLog } = logger
 
-  padLog(`process output`)
+  padLog('process output')
 
   const fileListLibraryBrowserBin = await getScriptFileListFromPathList([ 'library', 'browser', 'bin' ], fromOutput)
   const fileListModule = await getScriptFileListFromPathList([ 'module' ], fromOutput)
@@ -58,11 +58,11 @@ const processOutput = async ({ logger }) => {
 
 const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
   if (argvFlag('unsafe')) {
-    logger.padLog(`[unsafe] skipped check-outdated`)
-    if (isPublish) throw new Error(`[unsafe] should not be used with publish`)
+    logger.padLog('[unsafe] skipped check-outdated')
+    if (isPublish) throw new Error('[unsafe] should not be used with publish')
   } else {
     logger.padLog('run check-outdated')
-    execSync(`npm run check-outdated`, execOptionRoot)
+    execShell('npm run check-outdated')
   }
 
   logger.padLog('clear pack')
@@ -81,7 +81,7 @@ const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
       '--output-name', name,
       '--output-description', description,
       isPublish && (isDev ? '--publish-dev' : '--publish')
-    ].filter(Boolean), execOptionRoot)
+    ].filter(Boolean), { cwd: fromRoot(), stdio: 'inherit' })
     if (error || status !== 0) throw (error || new Error(`invalid exit status: ${status}`))
   })
 }
@@ -98,8 +98,8 @@ runMain(async (logger) => {
   await processOutput({ logger })
   await verifyOutputBinVersion({ fromOutput, packageJSON, logger })
 
-  logger.padLog(`lint source`)
-  execSync(`npm run lint`, execOptionRoot)
+  logger.padLog('lint source')
+  execShell('npm run lint')
 
   // will not pack both
   if (argvFlag('pack-package')) {

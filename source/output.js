@@ -63,7 +63,7 @@ const packOutput = async ({
   logger: { padLog, log }
 }) => {
   padLog('run pack output')
-  execSync('npm --no-update-notifier pack', { cwd: fromOutput(), stdio: __VERBOSE__ ? 'inherit' : [ 'ignore', 'ignore' ], shell: true })
+  execSync('npm --no-update-notifier pack', { cwd: fromOutput(), stdio: __VERBOSE__ ? 'inherit' : [ 'ignore', 'ignore' ] })
 
   log('move to root path')
   const packName = getPackageTgzName(require(fromOutput('package.json')))
@@ -80,7 +80,7 @@ const verifyOutputBinVersion = async ({
   logger: { padLog, log }
 }) => {
   padLog('verify output bin working')
-  const outputBinTest = String(execSync('node bin --version', { cwd: fromOutput(), stdio: 'pipe', shell: true }))
+  const outputBinTest = String(execSync('node bin --version', { cwd: fromOutput() }))
   log(`bin test output: ${outputBinTest}`)
   for (const testString of matchStringList) ok(outputBinTest.includes(testString), `should output contain: ${testString}`)
 }

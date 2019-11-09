@@ -84,7 +84,7 @@ const doPack = async ({
   for (const [ source, targetRelative ] of exportFilePairList) await modifyCopy(source, resolve(pathOutput, targetRelative))
   for (const [ source, targetRelative ] of installFilePairList) await modifyCopy(source, resolve(pathOutputInstall, targetRelative))
 
-  execSync('npm --no-update-notifier pack', { cwd: pathOutput, stdio: 'inherit', shell: true })
+  execSync('npm --no-update-notifier pack', { cwd: pathOutput, stdio: 'inherit' })
   const outputFileName = getPackageTgzName(packageJSON)
   const outputFilePath = resolve(pathOutput, outputFileName)
   console.log(`done pack: ${outputFileName} [${binary(statSync(outputFilePath).size)}B]`)
