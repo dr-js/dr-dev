@@ -2,11 +2,11 @@ import { resolve } from 'path'
 import { execSync, spawnSync } from 'child_process'
 
 import { binary } from '@dr-js/core/module/common/format'
-import { modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
+import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
 
-import { getFileListFromPathList, getScriptFileListFromPathList } from 'source/node/file'
+import { getFileListFromPathList, getScriptFileListFromPathList, resetDirectory } from 'source/node/file'
 import { runMain, argvFlag } from 'source/main'
-import { initOutput, packOutput, verifyOutputBinVersion, verifyNoGitignore, getPublishFlag, checkPublishVersion, publishOutput } from 'source/output'
+import { initOutput, packOutput, verifyOutputBin, verifyNoGitignore, getPublishFlag, publishOutput } from 'source/output'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor'
 import { getTerserOption, minifyFileListWithTerser } from 'source/minify'
 
@@ -36,37 +36,39 @@ const buildOutput = async ({ logger: { padLog } }) => {
 }
 
 const processOutput = async ({ logger }) => {
-  const { padLog } = logger
-
-  padLog('process output')
-
   const fileListLibraryBrowserBin = await getScriptFileListFromPathList([ 'library', 'browser', 'bin' ], fromOutput)
   const fileListModule = await getScriptFileListFromPathList([ 'module' ], fromOutput)
+
   let sizeReduce = 0
 
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBrowserBin, option: getTerserOption(), rootPath: PATH_ROOT, logger })
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
   sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBrowserBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
 
-  // again, for maybe better result
-  sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBrowserBin, option: getTerserOption(), rootPath: PATH_ROOT, logger })
-  sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
-  sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBrowserBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
-
-  padLog(`size reduce: ${binary(sizeReduce)}B`)
+  logger.padLog(`size reduce: ${binary(sizeReduce)}B`)
 }
 
-const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
-  if (argvFlag('unsafe')) {
-    logger.padLog('[unsafe] skipped check-outdated')
-    if (isPublish) throw new Error('[unsafe] should not be used with publish')
-  } else {
+const clearOutput = async ({ logger }) => {
+  logger.padLog('clear output')
+
+  logger.log('clear test')
+  const fileList = await getScriptFileListFromPathList([ '.' ], fromOutput, (path) => path.endsWith('.test.js'))
+  for (const filePath of fileList) await modifyDelete(filePath)
+}
+
+const packResource = async ({ packageJSON, logger }) => {
+  logger.padLog(`pack resource package: ${packageJSON.version}`)
+
+  const { isPublish, isPublishDev } = getPublishFlag(process.argv)
+
+  if (!argvFlag('unsafe')) {
     logger.padLog('run check-outdated')
     execShell('npm run check-outdated')
-  }
+  } else if (isPublish || isPublishDev) throw new Error('[unsafe] should not be used when publish')
+  else logger.padLog('[unsafe] skipped check-outdated')
 
   logger.padLog('clear pack')
-  await modifyDeleteForce(fromPackageOutput())
+  await resetDirectory(fromPackageOutput())
 
   const configFileList = await getFileListFromPathList([ './resource/__config__/' ], fromRoot, (path) => /dev-[\w-]+\.json/.test(path))
   configFileList.forEach((file) => {
@@ -80,7 +82,9 @@ const packPackage = async ({ isPublish, isDev, packageJSON, logger }) => {
       '--output-version', packageJSON.version,
       '--output-name', name,
       '--output-description', description,
-      isPublish && (isDev ? '--publish-dev' : '--publish')
+      isPublish && '--publish',
+      isPublishDev && '--publish-dev',
+      argvFlag('dry-run') && '--dry-run'
     ].filter(Boolean), { cwd: fromRoot(), stdio: 'inherit' })
     if (error || status !== 0) throw (error || new Error(`invalid exit status: ${status}`))
   })
@@ -95,20 +99,26 @@ runMain(async (logger) => {
   if (!argvFlag('pack')) return
 
   await buildOutput({ logger })
-  await processOutput({ logger })
-  await verifyOutputBinVersion({ fromOutput, packageJSON, logger })
 
-  logger.padLog('lint source')
-  execShell('npm run lint')
+  // do not run both
+  if (argvFlag('resource')) await packResource({ packageJSON, logger })
+  else {
+    await processOutput({ logger })
 
-  // will not pack both
-  if (argvFlag('pack-package')) {
-    logger.padLog(`pack-package: ${packageJSON.version}`)
-    const { isPublish, isDev } = getPublishFlag(process.argv)
-    if (isPublish && !checkPublishVersion({ isDev, version: packageJSON.version })) throw new Error(`[pack-package] invalid version: ${packageJSON.version}`)
-    await packPackage({ isPublish, isDev, packageJSON, logger })
-  } else {
+    if (argvFlag('test', 'publish', 'publish-dev')) {
+      logger.padLog('lint source')
+      execShell('npm run lint')
+
+      await processOutput({ logger }) // once more
+
+      logger.padLog('test output')
+      execShell('npm run test-output-library')
+      execShell('npm run test-output-module')
+    }
+
+    await clearOutput({ logger })
+    await verifyOutputBin({ fromOutput, packageJSON, logger })
     const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })
-    await publishOutput({ flagList: process.argv, isPublicScoped: true, packageJSON, pathPackagePack, logger })
+    await publishOutput({ flagList: process.argv, packageJSON, pathPackagePack, logger })
   }
 })

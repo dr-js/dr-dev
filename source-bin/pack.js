@@ -1,13 +1,12 @@
 import { resolve } from 'path'
-import { statSync, writeFileSync } from 'fs'
-import { execSync } from 'child_process'
-import { binary } from '@dr-js/core/module/common/format'
+import { writeFileSync } from 'fs'
 import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object'
 import { createDirectory } from '@dr-js/core/module/node/file/Directory'
-import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
-import { runSync } from '@dr-js/core/module/node/system/Run'
+import { modifyCopy } from '@dr-js/core/module/node/file/Modify'
 
-import { getPackageTgzName } from '@dr-js/dev/module/output'
+import { getLogger } from '@dr-js/dev/module/node/logger'
+import { resetDirectory } from '@dr-js/dev/module/node/file'
+import { packOutput, publishOutput } from '@dr-js/dev/module/output'
 
 import { formatPackagePath, writePackageJSON } from './function'
 
@@ -52,48 +51,47 @@ const doPack = async ({
   outputName,
   outputVersion,
   outputDescription,
-  isPublish,
-  isPublishDev
+  isPublish = false,
+  isPublishDev = false,
+  isDryRun = false
 }) => {
   const { packageJSON, exportFilePairList, installFilePairList } = loadPackage(pathInput)
   if (outputName) packageJSON.name = outputName
   if (outputVersion) packageJSON.version = outputVersion
   if (outputDescription) packageJSON.description = outputDescription
 
-  await modifyDeleteForce(pathOutput)
-  await createDirectory(pathOutput)
-  await createDirectory(pathOutputInstall)
+  const fromOutput = (...args) => resolve(pathOutput, ...args)
+  const logger = getLogger('pack')
 
-  await writePackageJSON({ path: resolve(pathOutput, 'package.json'), packageJSON })
-  writeFileSync(resolve(pathOutput, 'README.md'), [
-    `# ${packageJSON.name}\n`,
-    `[![i:npm]][l:npm]`,
-    `[![i:size]][l:size]`,
-    `[![i:npm-dev]][l:npm]`,
-    '',
-    `${packageJSON.description}`,
-    '',
-    // TODO: CHECK: may need custom url escape for name?
-    `[i:npm]: https://img.shields.io/npm/v/${packageJSON.name}.svg`,
-    `[i:npm-dev]: https://img.shields.io/npm/v/${packageJSON.name}/dev.svg`,
-    `[l:npm]: https://npm.im/${packageJSON.name}`,
-    `[i:size]: https://packagephobia.now.sh/badge?p=${packageJSON.name}`,
-    `[l:size]: https://packagephobia.now.sh/result?p=${packageJSON.name}`
-  ].join('\n'))
+  { // custom initOutput
+    await resetDirectory(pathOutput)
+    await createDirectory(pathOutputInstall)
 
-  for (const [ source, targetRelative ] of exportFilePairList) await modifyCopy(source, resolve(pathOutput, targetRelative))
-  for (const [ source, targetRelative ] of installFilePairList) await modifyCopy(source, resolve(pathOutputInstall, targetRelative))
+    const { name, description } = packageJSON
+    await writePackageJSON({ path: resolve(pathOutput, 'package.json'), packageJSON })
+    writeFileSync(resolve(pathOutput, 'README.md'), [
+      `# ${name}`,
+      '',
+      `[![i:npm]][l:npm]`,
+      `[![i:size]][l:size]`,
+      `[![i:npm-dev]][l:npm]`,
+      '',
+      `${description}`,
+      '',
+      // TODO: CHECK: may need custom url escape for name?
+      `[i:npm]: https://img.shields.io/npm/v/${name}.svg`,
+      `[i:npm-dev]: https://img.shields.io/npm/v/${name}/dev.svg`,
+      `[l:npm]: https://npm.im/${name}`,
+      `[i:size]: https://packagephobia.now.sh/badge?p=${name}`,
+      `[l:size]: https://packagephobia.now.sh/result?p=${name}`
+    ].join('\n'))
 
-  execSync('npm --no-update-notifier pack', { cwd: pathOutput, stdio: 'inherit' })
-  const outputFileName = getPackageTgzName(packageJSON)
-  const outputFilePath = resolve(pathOutput, outputFileName)
-  console.log(`done pack: ${outputFileName} [${binary(statSync(outputFilePath).size)}B]`)
+    for (const [ source, targetRelative ] of exportFilePairList) await modifyCopy(source, resolve(pathOutput, targetRelative))
+    for (const [ source, targetRelative ] of installFilePairList) await modifyCopy(source, resolve(pathOutputInstall, targetRelative))
+  }
 
-  // NOTE: if this process is run under yarn, the registry will be pointing to `https://registry.yarnpkg.com/`, and auth for publish will not work
-  // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'config', 'get', 'userconfig' ] })
-  // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'config', 'get', 'registry' ] })
-  // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'whoami' ] })
-  if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'publish', outputFilePath, '--tag', isPublishDev ? 'dev' : 'latest', '--access', 'public' ], option: { shell: true } })
+  const pathPackagePack = await packOutput({ fromOutput, logger })
+  await publishOutput({ extraArgs: isDryRun ? [ '--dry-run' ] : [], isPublish, isPublishDev, packageJSON, pathPackagePack, logger })
 }
 
 export { doPack }

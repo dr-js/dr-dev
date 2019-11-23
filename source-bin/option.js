@@ -12,7 +12,8 @@ const MODE_FORMAT_LIST = parseCompactList(
     'output-version/SS,O|output package version',
     'output-description/SS,O|output package description',
     'publish/T|run npm publish',
-    'publish-dev/T|run npm publish-dev'
+    'publish-dev/T|run npm publish-dev',
+    'dry-run/T|for testing publish procedure'
   ) ],
   [ 'step-package-version,S/T|step up package version (expect "0.0.0-dev.0-local.0" format)', parseCompactList(
     'sort-key,K/T|sort keys in package.json',

@@ -5,7 +5,7 @@ import { loadEnvKey, saveEnvKey, __VERBOSE__ } from './env'
 
 const EMPTY_FUNC = () => {}
 
-const getLogger = (title = 'dev', quiet = false, padWidth = 120) => {
+const getLogger = (title = 'dev', quiet = false, padWidth = 120, logFunc = console.log) => {
   const envTitle = loadEnvKey('__DEV_LOGGER_TITLE__')
   title = envTitle ? `${title}|${envTitle}` : title
   saveEnvKey('__DEV_LOGGER_TITLE__', title)
@@ -27,10 +27,10 @@ const getLogger = (title = 'dev', quiet = false, padWidth = 120) => {
   const padLog = (...args) => {
     const start = `## ${args.join(' ')} `
     const end = ` [${title}|${getPadTime()}]`
-    console.log(`\n${start.padEnd(padWidth - end.length, '-')}${end}`)
+    logFunc(`\n${start.padEnd(padWidth - end.length, '-')}${end}`)
   }
-  const stepLog = (...args) => console.log(`- (+${getStepTime()}) ${args.join(' ')}`)
-  const log = (...args) => console.log(`- ${args.join(' ')}`)
+  const stepLog = (...args) => logFunc(`- (+${getStepTime()}) ${args.join(' ')}`)
+  const log = (...args) => logFunc(`- ${args.join(' ')}`)
   const devLog = __VERBOSE__ ? log : EMPTY_FUNC
 
   return quiet

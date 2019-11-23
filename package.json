@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.1.2",
+  "version": "0.2.0-dev.0",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -13,11 +13,14 @@
   "scripts": {
     "// script ======================": "",
     "script-pack": "node -r @babel/register ./script quiet pack",
+    "script-pack-test": "node -r @babel/register ./script verbose pack test",
     "script-publish": "node -r @babel/register ./script pack publish",
     "script-publish-dev": "node -r @babel/register ./script pack publish-dev",
-    "script-pack-package": "node -r @babel/register ./script verbose pack pack-package unsafe",
-    "script-pack-package-publish": "node -r @babel/register ./script pack pack-package publish",
-    "script-pack-package-publish-dev": "node -r @babel/register ./script pack pack-package publish-dev",
+    "script-pack-resource": "node -r @babel/register ./script verbose pack resource unsafe",
+    "script-pack-resource-publish": "node -r @babel/register ./script pack resource publish",
+    "script-pack-resource-publish-dry-run": "node -r @babel/register ./script pack resource publish dry-run",
+    "script-pack-resource-publish-dev": "node -r @babel/register ./script pack resource publish-dev",
+    "script-pack-resource-publish-dev-dry-run": "node -r @babel/register ./script pack resource publish-dev dry-run",
     "script-generate-spec": "node -r @babel/register ./script/generateSpec",
     "// build =======================": "",
     "build-library": "babel ./source --out-dir ./output-gitignore/library",
@@ -26,11 +29,19 @@
     "build-browser": "node -r @babel/register ./script/webpack production profile",
     "build-bin": "babel ./source-bin --out-dir ./output-gitignore/bin",
     "build-bin-dev": "cross-env BABEL_ENV=dev npm run build-bin -- --watch",
+    "// test ========================": "",
+    "test-T": "node ./output-gitignore/bin --TFS .test.js -T",
+    "test-T-dev": "cross-env BABEL_ENV=dev node ./output-gitignore/bin --TR @babel/register --TFS .test.js -T",
+    "test-dev": "npm run test-T-dev -- source/output.test.js",
+    "test-source": "npm run test-T-dev -- source/",
+    "test-output-library": "npm run test-T -- output-gitignore/library/",
+    "test-output-module": "npm run test-T-dev -- output-gitignore/module/",
     "// =============================": "",
     "check-outdated": "node ./output-gitignore/bin -C -i ./resource",
     "check-outdated-self": "node ./output-gitignore/bin -C -i ./package.json",
     "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json output-gitignore/browser",
     "lint": "eslint ./source/ ./source-bin/ ./script/",
+    "test": "npm run script-pack-test",
     "prepack": "echo \"Error: pack with script-*\" && exit 1"
   },
   "engines": {
@@ -38,7 +49,7 @@
     "npm": ">=6.12"
   },
   "dependencies": {
-    "@dr-js/core": "^0.1.1 || ^0.1.2-dev.0"
+    "@dr-js/core": "^0.2.0 || ^0.2.0-dev.3"
   },
   "devDependencies": {
     "@dr-js/dev-web": "^0.1.2"

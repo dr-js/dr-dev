@@ -6,7 +6,7 @@ import { getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyCopy } from '@dr-js/core/module/node/file/Modify'
 
 import { runMain, argvFlag } from '@dr-js/dev/module/main'
-import { initOutput, packOutput, verifyOutputBinVersion, publishOutput } from '@dr-js/dev/module/output'
+import { initOutput, packOutput, verifyOutputBin, publishOutput } from '@dr-js/dev/module/output'
 import { processFileList, fileProcessorBabel } from '@dr-js/dev/module/fileProcessor'
 import { getTerserOption, minifyFileListWithTerser } from '@dr-js/dev/module/minify'
 
@@ -46,7 +46,7 @@ runMain(async (logger) => {
 
   log(`total size reduce: ${binary(sizeCodeReduce)}B`)
 
-  await verifyOutputBinVersion({ fromOutput, packageJSON, logger })
+  await verifyOutputBin({ fromOutput, packageJSON, logger })
 
   const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })
   await publishOutput({ flagList: process.argv, packageJSON, pathPackagePack, logger })

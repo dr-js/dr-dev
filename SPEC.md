@@ -16,7 +16,7 @@
 + 📄 [source/minify.js](source/minify.js)
   - `getTerserOption`, `minifyFileListWithTerser`, `minifyWithTerser`
 + 📄 [source/output.js](source/output.js)
-  - `checkPublishVersion`, `getPackageTgzName`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyNoGitignore`, `verifyOutputBinVersion`
+  - `getPackageTgzName`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
   - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteer`
 + 📄 [source/webpack.js](source/webpack.js)
@@ -30,7 +30,7 @@
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
-  - `getFileListFromPathList`, `getScriptFileListFromPathList`, `withTempDirectory`
+  - `getFileListFromPathList`, `getScriptFileListFromPathList`, `resetDirectory`, `withTempDirectory`
 + 📄 [source/node/logger.js](source/node/logger.js)
   - `getLogger`
 + 📄 [source/node/run.js](source/node/run.js)
@@ -72,6 +72,8 @@
 >         run npm publish
 >     --publish-dev [ARGUMENT=0+]
 >         run npm publish-dev
+>     --dry-run [ARGUMENT=0+]
+>         for testing publish procedure
 >   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0+]
 >       step up package version (expect "0.0.0-dev.0-local.0" format)
 >     --sort-key --K -K [ARGUMENT=0+]
@@ -102,6 +104,7 @@
 >     export DR_DEV_OUTPUT_DESCRIPTION="[ARGUMENT=1]"
 >     export DR_DEV_PUBLISH="[ARGUMENT=0+]"
 >     export DR_DEV_PUBLISH_DEV="[ARGUMENT=0+]"
+>     export DR_DEV_DRY_RUN="[ARGUMENT=0+]"
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_SORT_KEY="[ARGUMENT=0+]"
 >     export DR_DEV_GIT_COMMIT="[ARGUMENT=0+]"
@@ -125,6 +128,7 @@
 >     "outputDescription": [ "[ARGUMENT=1]" ],
 >     "publish": [ "[ARGUMENT=0+]" ],
 >     "publishDev": [ "[ARGUMENT=0+]" ],
+>     "dryRun": [ "[ARGUMENT=0+]" ],
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "sortKey": [ "[ARGUMENT=0+]" ],
 >     "gitCommit": [ "[ARGUMENT=0+]" ],
@@ -140,10 +144,10 @@
 
 | Package name                            |  Version |
 | :----                                   |    ----: |
-| @babel/cli                              |   ^7.7.4 |
-| @babel/core                             |   ^7.7.4 |
+| @babel/cli                              |   ^7.7.5 |
+| @babel/core                             |   ^7.7.5 |
 | @babel/plugin-proposal-class-properties |   ^7.7.4 |
-| @babel/preset-env                       |   ^7.7.4 |
+| @babel/preset-env                       |   ^7.7.5 |
 | @babel/preset-react                     |   ^7.7.4 |
 | @babel/register                         |   ^7.7.4 |
 | babel-eslint                            |  ^10.0.3 |
@@ -152,14 +156,14 @@
 | babel-plugin-module-resolver            |   ^3.2.0 |
 | babel-plugin-styled-components          |  ^1.10.6 |
 | cross-env                               |   ^6.0.3 |
-| eslint                                  |   ^6.7.0 |
+| eslint                                  |   ^6.7.2 |
 | eslint-plugin-import                    |  ^2.18.2 |
 | eslint-plugin-node                      |  ^10.0.0 |
 | eslint-plugin-promise                   |   ^4.2.1 |
-| eslint-plugin-react                     |  ^7.16.0 |
+| eslint-plugin-react                     |  ^7.17.0 |
 | prop-types                              |  ^15.7.2 |
 | puppeteer                               |   ^2.0.0 |
 | react                                   | ^16.12.0 |
 | styled-components                       |   ^4.4.1 |
-| terser                                  |   ^4.4.0 |
+| terser                                  |   ^4.4.2 |
 | webpack                                 |  ^4.41.2 |

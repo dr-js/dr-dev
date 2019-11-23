@@ -23,7 +23,8 @@ const runMode = async (modeName, { tryGet, getFirst, tryGetFirst }) => {
         outputVersion: tryGetFirst('output-version'),
         outputDescription: tryGetFirst('output-description'),
         isPublish: tryGet('publish'),
-        isPublishDev: tryGet('publish-dev')
+        isPublishDev: tryGet('publish-dev'),
+        isDryRun: tryGet('dry-run')
       })
     case 'step-package-version':
       return doStepPackageVersion({
