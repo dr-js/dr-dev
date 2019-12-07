@@ -1,9 +1,11 @@
 {
-  "INSTALL": [
-    "sample.gitignore",
-    "README.md",
-    { "from": "index.js", "to": "script/index.js" },
-    { "from": "generateSpec.js", "to": "script/generateSpec.js" }
+  "EXPORT": [
+    "INIT#script#generateSpec.js",
+    "INIT#script#index.js",
+    "INIT#.github#workflows#ci-test.yml",
+    "INIT#.gitignore",
+    "INIT#package.json",
+    "INIT#README.md"
   ],
   "name": "",
   "version": "",
@@ -16,13 +18,6 @@
     "JavaScript"
   ],
   "repository": "github:dr-js/dr-dev",
-  "scripts": {
-    "// script ======================": "",
-    "script-pack": "node -r @babel/register ./script quiet pack",
-    "script-publish": "node -r @babel/register ./script pack publish",
-    "script-publish-dev": "node -r @babel/register ./script pack publish-dev",
-    "script-generate-spec": "node -r @babel/register ./script/generateSpec"
-  },
   "engines": {
     "node": ">=12.13",
     "npm": ">=6.12"

@@ -1,4 +1,4 @@
 {
   "IMPORT": [ "../" ],
-  "INSTALL": [ { "from": "webpack.js", "to": "script/webpack.js" } ]
+  "EXPORT": [ "INIT#script#webpack.js" ]
 }

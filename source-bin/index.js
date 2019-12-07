@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-import { doCheckOutdated } from './checkOutdated'
-import { doPack } from './pack'
-import { doStepPackageVersion } from './stepPackageVersion'
-import { doTestRootList } from './testRoot'
+import { doCheckOutdated } from './mode/checkOutdated'
+import { doPack } from './mode/pack'
+import { doStepPackageVersion } from './mode/stepPackageVersion'
+import { doTestRootList } from './mode/testRoot'
+import { doInit } from './mode/init'
 
 import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
 import { name as packageName, version as packageVersion } from '../package.json'
@@ -38,6 +39,12 @@ const runMode = async (modeName, { tryGet, getFirst, tryGetFirst }) => {
         testFileSuffixList: tryGet('test-file-suffix') || [ '.js' ],
         testRequireList: tryGet('test-require') || [],
         testTimeout: tryGet('test-timeout') || 10 * 1000
+      })
+    case 'init':
+      return doInit({
+        pathOutput: tryGetFirst('init') || '.',
+        pathResourcePackage: tryGetFirst('init-resource-package') || '.',
+        isReset: tryGet('init-reset')
       })
   }
 }

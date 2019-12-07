@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "// build =======================": "",
+    "build-library": "babel ./source --out-dir ./library",
+    "build-library-dev": "cross-env BABEL_ENV=dev npm run build-library -- --watch"
+  }
+}

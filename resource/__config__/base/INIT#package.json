@@ -1,0 +1,24 @@
+{
+  "name": "{PACKAGE-NAME}",
+  "version": "{PACKAGE-VERSION}",
+  "author": "{PACKAGE-AUTHOR}",
+  "license": "MIT",
+  "description": "{PACKAGE-DESCRIPTION}",
+  "repository": "github:{GITHUB-USER}/{GITHUB-REPO}",
+  "scripts": {
+    "// script ======================": "",
+    "script-pack": "node -r @babel/register ./script quiet pack",
+    "script-publish": "node -r @babel/register ./script pack publish",
+    "script-publish-dev": "node -r @babel/register ./script pack publish-dev",
+    "script-generate-spec": "node -r @babel/register ./script/generateSpec"
+  },
+  "engines": {
+    "node": ">=12.13",
+    "npm": ">=6.12"
+  },
+  "dependencies": {
+    "@dr-js/dev": "{FLAVOR-VERSION}",
+    "@dr-js/dev-{FLAVOR}": "{FLAVOR-VERSION}"
+  },
+  "sideEffects": false
+}

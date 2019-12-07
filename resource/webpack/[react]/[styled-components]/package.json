@@ -1,6 +1,6 @@
 {
   "IMPORT": [ "../" ],
-  "INSTALL": [ { "from": "webpack.js", "to": "script/webpack.js" } ],
+  "EXPORT": [ "INIT#script#webpack.js" ],
   "dependencies": {
     "styled-components": "^4.4.1",
     "babel-plugin-styled-components": "^1.10.6"

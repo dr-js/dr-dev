@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "// browser-test ================": "",
+    "test-puppeteer": "node -r @babel/register ./script/testBrowser production",
+    "test-puppeteer-dev": "node -r @babel/register ./script/testBrowser development"
+  }
+}

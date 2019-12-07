@@ -7,18 +7,18 @@ import { getMarkdownFileLink, renderMarkdownAutoAppendHeaderLink, renderMarkdown
 import { runMain } from 'source/main'
 
 import { formatUsage } from 'source-bin/option'
-import { collectDependency } from 'source-bin/collectDependency'
+import { collectDependency } from 'source-bin/function'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 
 runMain(async (logger) => {
-  logger.log(`collect dependencyMap`)
-  const packageInfoMap = await collectDependency(fromRoot('resource'), 'recursive')
-
   logger.log(`generate exportInfoMap`)
   const sourceRouteMap = await collectSourceRouteMap({ pathRootList: [ fromRoot('source') ], logger })
   const exportInfoMap = generateExportInfo({ sourceRouteMap })
+
+  logger.log(`collect dependencyMap`)
+  const packageInfoMap = await collectDependency(fromRoot('resource'), 'recursive')
 
   logger.log(`output: SPEC.md`)
   writeFileSync(fromRoot('SPEC.md'), [

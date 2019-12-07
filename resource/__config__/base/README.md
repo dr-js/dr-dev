@@ -1,3 +1,0 @@
-# package-name
-
-Package description

@@ -7,8 +7,8 @@
 
 A collection of strange functions, for development
 
-[i:npm]: https://img.shields.io/npm/v/@dr-js/dev.svg
-[i:npm-dev]: https://img.shields.io/npm/v/@dr-js/dev/dev.svg
+[i:npm]: https://img.shields.io/npm/v/@dr-js/dev
+[i:npm-dev]: https://img.shields.io/npm/v/@dr-js/dev/dev
 [l:npm]: https://npm.im/@dr-js/dev
 [i:ci]: https://img.shields.io/github/workflow/status/dr-js/dr-dev/ci-test
 [l:ci]: https://github.com/dr-js/dr-dev/actions?query=workflow:ci-test
@@ -22,17 +22,17 @@ A collection of strange functions, for development
 - [![i:p-wr]][l:p-wr]
 - [![i:p-wrsc]][l:p-wrsc]
 
-[i:p-b]: https://img.shields.io/badge/@dr--js%2Fdev-babel-yellow.svg
+[i:p-b]: https://img.shields.io/badge/@dr--js%2Fdev-babel-yellow
 [l:p-b]: https://npm.im/@dr-js/dev-babel
-[i:p-br]: https://img.shields.io/badge/@dr--js%2Fdev-babel--react-yellow.svg
+[i:p-br]: https://img.shields.io/badge/@dr--js%2Fdev-babel--react-yellow
 [l:p-br]: https://npm.im/@dr-js/dev-babel-react
-[i:p-w]: https://img.shields.io/badge/@dr--js%2Fdev-web-blue.svg
+[i:p-w]: https://img.shields.io/badge/@dr--js%2Fdev-web-blue
 [l:p-w]: https://npm.im/@dr-js/dev-web
-[i:p-wp]: https://img.shields.io/badge/@dr--js%2Fdev-web--puppeteer-blue.svg
+[i:p-wp]: https://img.shields.io/badge/@dr--js%2Fdev-web--puppeteer-blue
 [l:p-wp]: https://npm.im/@dr-js/dev-web-puppeteer
-[i:p-wr]: https://img.shields.io/badge/@dr--js%2Fdev-web--react-blue.svg
+[i:p-wr]: https://img.shields.io/badge/@dr--js%2Fdev-web--react-blue
 [l:p-wr]: https://npm.im/@dr-js/dev-web-react
-[i:p-wrsc]: https://img.shields.io/badge/@dr--js%2Fdev-web--react--styled--components-blue.svg
+[i:p-wrsc]: https://img.shields.io/badge/@dr--js%2Fdev-web--react--styled--components-blue
 [l:p-wrsc]: https://npm.im/@dr-js/dev-web-react-styled-components
 
 [//]: # (NON_PACKAGE_CONTENT)

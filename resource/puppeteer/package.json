@@ -1,10 +1,8 @@
 {
-  "INSTALL": [ { "from": "testBrowser.js", "to": "script/testBrowser.js" } ],
-  "scripts": {
-    "// browser-test ================": "",
-    "test-puppeteer": "node -r @babel/register ./script/testBrowser production",
-    "test-puppeteer-dev": "node -r @babel/register ./script/testBrowser development"
-  },
+  "EXPORT": [
+    "INIT#script#testBrowser.js",
+    "INIT#package.json"
+  ],
   "dependencies": {
     "puppeteer": "^2.0.0"
   }

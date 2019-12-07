@@ -3,11 +3,8 @@ import { Preset, getOptionalFormatFlag, prepareOption } from '@dr-js/core/module
 const { Config, parseCompactList } = Preset
 
 const MODE_FORMAT_LIST = parseCompactList(
-  [ 'check-outdated,C/T', parseCompactList(
-    'path-temp/SP,O'
-  ) ],
-  [ 'pack,p/T', parseCompactList(
-    'path-output,o/SP|output path',
+  [ 'pack/T', parseCompactList(
+    'path-output/SP|output path',
     'output-name/SS,O|output package name',
     'output-version/SS,O|output package version',
     'output-description/SS,O|output package description',
@@ -15,14 +12,22 @@ const MODE_FORMAT_LIST = parseCompactList(
     'publish-dev/T|run npm publish-dev',
     'dry-run/T|for testing publish procedure'
   ) ],
+  [ 'check-outdated,C/T', parseCompactList(
+    'path-temp/SP,O'
+  ) ],
   [ 'step-package-version,S/T|step up package version (expect "0.0.0-dev.0-local.0" format)', parseCompactList(
     'sort-key,K/T|sort keys in package.json',
-    'git-commit,G/T|step up main version, and prepare a git commit'
+    'git-commit,G/T|step up patch version, and prepare a git commit'
   ) ],
-  [ 'test-root,T/AP,O|root path to look test file from, default to cwd', parseCompactList(
+  [ 'test-root,T/AP,O|root path to look test file from, default to "."', parseCompactList(
     'test-file-suffix,TFS/AS,O|pattern for test file, default to ".js"',
     'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"',
     'test-timeout,TT/SI,O|timeout for each test, in msec, default to 10*1000 (10sec)'
+  ) ],
+  [ 'init,I/AP,O/0-1|path to init a package, will not reset file, default to "."', parseCompactList(
+    `init-resource-package,P/SP,O|path to resource package, default search for "./node_modules/@dr-js/dev-*/"`,
+    'init-reset,R/T|allow reset file'
+    // 'init-verify,V/T|do common init file content check' // TODO: useful?
   ) ]
 )
 

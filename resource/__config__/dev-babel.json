@@ -1,5 +1,5 @@
 {
-  "__EXTRA__": {
+  "__FLAVOR__": {
     "name": "@dr-js/dev-babel",
     "description": "ESLint + Babel"
   },

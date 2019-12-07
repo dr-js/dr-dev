@@ -1,20 +1,14 @@
 import { resolve } from 'path'
 import { writeFileSync } from 'fs'
 import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory'
-import { modifyCopy } from '@dr-js/core/module/node/file/Modify'
 
 import { getLogger } from '@dr-js/dev/module/node/logger'
 import { resetDirectory } from '@dr-js/dev/module/node/file'
 import { packOutput, publishOutput } from '@dr-js/dev/module/output'
 
-import { formatPackagePath, writePackageJSON } from './function'
+import { formatPackagePath, copyAndSavePackExportInitJSON } from '../function'
 
-const GET_INITIAL_PACKAGE_INFO = () => ({
-  packageJSON: {},
-  exportFilePairList: [],
-  installFilePairList: []
-})
+const GET_INITIAL_PACKAGE_INFO = () => ({ packageJSON: {}, exportPairList: [] })
 
 const loadPackage = (inputPath, packageInfo = GET_INITIAL_PACKAGE_INFO(), loadedSet = new Set()) => {
   const { packageFile, packagePath } = formatPackagePath(inputPath)
@@ -23,19 +17,17 @@ const loadPackage = (inputPath, packageInfo = GET_INITIAL_PACKAGE_INFO(), loaded
   loadedSet.add(packageFile)
 
   const {
-    __EXTRA__, // drop __EXTRA__ for config
+    __FLAVOR__, // drop __FLAVOR__ from packageJSON
     IMPORT: importList,
     EXPORT: exportList,
-    INSTALL: installList,
     ...mergePackageJSON
   } = require(packageFile)
-  const { packageJSON, exportFilePairList, installFilePairList } = packageInfo
+  const { packageJSON, exportPairList } = packageInfo
 
   importList && importList.forEach((importPackagePath) => loadPackage(resolve(packagePath, importPackagePath), packageInfo, loadedSet))
 
   console.log(`[loadPackage] load: ${packageFile}`)
-  installList && installList.forEach((filePath) => installFilePairList.push(parseResourcePath(filePath, packagePath)))
-  exportList && exportList.forEach((filePath) => exportFilePairList.push(parseResourcePath(filePath, packagePath)))
+  exportList && exportList.forEach((filePath) => exportPairList.push(parseResourcePath(filePath, packagePath)))
   mergePackageJSON && objectMergeDeep(packageJSON, mergePackageJSON)
   return packageInfo
 }
@@ -47,7 +39,6 @@ const parseResourcePath = (resourcePath, packagePath) => typeof (resourcePath) =
 const doPack = async ({
   pathInput,
   pathOutput,
-  pathOutputInstall = resolve(pathOutput, 'install'),
   outputName,
   outputVersion,
   outputDescription,
@@ -55,7 +46,7 @@ const doPack = async ({
   isPublishDev = false,
   isDryRun = false
 }) => {
-  const { packageJSON, exportFilePairList, installFilePairList } = loadPackage(pathInput)
+  const { packageJSON, exportPairList } = loadPackage(pathInput)
   if (outputName) packageJSON.name = outputName
   if (outputVersion) packageJSON.version = outputVersion
   if (outputDescription) packageJSON.description = outputDescription
@@ -65,10 +56,9 @@ const doPack = async ({
 
   { // custom initOutput
     await resetDirectory(pathOutput)
-    await createDirectory(pathOutputInstall)
 
     const { name, description } = packageJSON
-    await writePackageJSON({ path: resolve(pathOutput, 'package.json'), packageJSON })
+    writeFileSync(resolve(pathOutput, 'package.json'), JSON.stringify(packageJSON))
     writeFileSync(resolve(pathOutput, 'README.md'), [
       `# ${name}`,
       '',
@@ -79,15 +69,14 @@ const doPack = async ({
       `${description}`,
       '',
       // TODO: CHECK: may need custom url escape for name?
-      `[i:npm]: https://img.shields.io/npm/v/${name}.svg`,
-      `[i:npm-dev]: https://img.shields.io/npm/v/${name}/dev.svg`,
+      `[i:npm]: https://img.shields.io/npm/v/${name}`,
+      `[i:npm-dev]: https://img.shields.io/npm/v/${name}/dev`,
       `[l:npm]: https://npm.im/${name}`,
       `[i:size]: https://packagephobia.now.sh/badge?p=${name}`,
       `[l:size]: https://packagephobia.now.sh/result?p=${name}`
     ].join('\n'))
 
-    for (const [ source, targetRelative ] of exportFilePairList) await modifyCopy(source, resolve(pathOutput, targetRelative))
-    for (const [ source, targetRelative ] of installFilePairList) await modifyCopy(source, resolve(pathOutputInstall, targetRelative))
+    await copyAndSavePackExportInitJSON(pathOutput, exportPairList)
   }
 
   const pathPackagePack = await packOutput({ fromOutput, logger })

@@ -12,7 +12,7 @@ import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTre
 
 import { withTempDirectory } from '@dr-js/dev/module/node/file'
 
-import { collectDependency } from './collectDependency'
+import { collectDependency } from '../function'
 
 const runNpmOutdated = async (pathPackage) => {
   const { promise, subProcess, stdoutPromise, stderrPromise } = run({
