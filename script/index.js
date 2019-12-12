@@ -21,16 +21,12 @@ const execShell = (command) => execSync(command, { cwd: fromRoot(), stdio: argvF
 const buildOutput = async ({ logger }) => {
   logger.padLog('generate spec')
   execShell('npm run script-generate-spec')
-
   logger.padLog('build library')
   execShell('npm run build-library')
-
   logger.padLog('build module')
   execShell('npm run build-module')
-
   logger.padLog('build browser')
   execShell('npm run build-browser')
-
   logger.padLog('build bin')
   execShell('npm run build-bin')
 }
@@ -38,19 +34,14 @@ const buildOutput = async ({ logger }) => {
 const processOutput = async ({ logger }) => {
   const fileListLibraryBrowserBin = await getScriptFileListFromPathList([ 'library', 'browser', 'bin' ], fromOutput)
   const fileListModule = await getScriptFileListFromPathList([ 'module' ], fromOutput)
-
   let sizeReduce = 0
-
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBrowserBin, option: getTerserOption(), rootPath: PATH_ROOT, logger })
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
   sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBrowserBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
-
   logger.padLog(`size reduce: ${sizeReduce}B`)
 }
 
 const clearOutput = async ({ logger }) => {
-  logger.padLog('clear output')
-
   logger.log('clear test')
   const fileList = await getScriptFileListFromPathList([ '.' ], fromOutput, (path) => path.endsWith('.test.js'))
   for (const filePath of fileList) await modifyDelete(filePath)
@@ -95,29 +86,21 @@ const packResource = async ({ packageJSON, logger }) => {
 runMain(async (logger) => {
   await verifyNoGitignore({ path: fromRoot('source'), logger })
   await verifyNoGitignore({ path: fromRoot('source-bin'), logger })
-
   const packageJSON = await initOutput({ fromRoot, fromOutput, logger })
-
   if (!argvFlag('pack')) return
-
   await buildOutput({ logger })
-
-  // do not run both
-  if (argvFlag('resource')) await packResource({ packageJSON, logger })
-  else {
+  if (argvFlag('resource')) { // do not run both
+    await packResource({ packageJSON, logger })
+  } else {
     await processOutput({ logger })
-
     if (argvFlag('test', 'publish', 'publish-dev')) {
       logger.padLog('lint source')
       execShell('npm run lint')
-
       await processOutput({ logger }) // once more
-
       logger.padLog('test output')
       execShell('npm run test-output-library')
       execShell('npm run test-output-module')
     }
-
     await clearOutput({ logger })
     await verifyGitStatusClean({ fromRoot, logger })
     await verifyOutputBin({ fromOutput, packageJSON, logger })

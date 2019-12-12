@@ -5,6 +5,9 @@ logs
 # Dependency directory
 node_modules
 
+# WebStorm configuration
+.idea
+
 # distribute file
 **/*-gitignore/**
 **/*-gitignore*

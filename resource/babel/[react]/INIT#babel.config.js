@@ -1,7 +1,7 @@
 const { getBabelConfig } = require('@dr-js/dev/library/babel')
 
 module.exports = getBabelConfig({
-  presetExtra: [
+  extraPresetList: [
     [ '@babel/react' ]
   ]
 })

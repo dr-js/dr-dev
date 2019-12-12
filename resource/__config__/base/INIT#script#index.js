@@ -21,11 +21,11 @@ const buildOutput = async ({ logger }) => {
 }
 
 const processOutput = async ({ logger }) => {
-  const fileListOutput = await getScriptFileListFromPathList([ '.' ], fromOutput)
-  let sizeCodeReduce = 0
-  sizeCodeReduce += await minifyFileListWithTerser({ fileList: fileListOutput, option: getTerserOption(), rootPath: PATH_OUTPUT, logger })
-  sizeCodeReduce += await processFileList({ fileList: fileListOutput, processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
-  logger.log(`total size reduce: ${sizeCodeReduce}B`)
+  const fileList = await getScriptFileListFromPathList([ '.' ], fromOutput)
+  let sizeReduce = 0
+  sizeReduce += await minifyFileListWithTerser({ fileList, option: getTerserOption(), rootPath: PATH_OUTPUT, logger })
+  sizeReduce += await processFileList({ fileList, processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
+  logger.log(`total size reduce: ${sizeReduce}B`)
 }
 
 runMain(async (logger) => {

@@ -94,6 +94,8 @@
 >         path to resource package, default search for "./node_modules/@dr-js/dev-*/"
 >     --init-reset --R -R [ARGUMENT=0+]
 >         allow reset file
+>     --init-verify --V -V [ARGUMENT=0+]
+>         do common init file content check, will skip file modify
 > ENV Usage:
 >   "
 >     #!/usr/bin/env bash
@@ -121,6 +123,7 @@
 >     export DR_DEV_INIT="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_INIT_RESOURCE_PACKAGE="[ARGUMENT=1]"
 >     export DR_DEV_INIT_RESET="[ARGUMENT=0+]"
+>     export DR_DEV_INIT_VERIFY="[ARGUMENT=0+]"
 >   "
 > CONFIG Usage:
 >   {
@@ -148,6 +151,7 @@
 >     "init": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "initResourcePackage": [ "[ARGUMENT=1]" ],
 >     "initReset": [ "[ARGUMENT=0+]" ],
+>     "initVerify": [ "[ARGUMENT=0+]" ],
 >   }
 > ```
 

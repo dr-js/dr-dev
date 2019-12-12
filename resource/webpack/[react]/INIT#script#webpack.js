@@ -16,7 +16,7 @@ runMain(async (logger) => {
   })
 
   const config = getCommonWebpackConfig({
-    babelOption: getWebpackBabelConfig({ isProduction, presetExtra: [ [ '@babel/react' ] ] }),
+    babelOption: getWebpackBabelConfig({ isProduction, extraPresetList: [ [ '@babel/react' ] ] }),
     output: { path: fromOutput('library'), filename: isProduction ? '[name].[chunkhash:8].js' : '[name].js', library: 'PACKAGE_NAME', libraryTarget: 'umd' },
     entry: { 'index': 'source/index' }
   })

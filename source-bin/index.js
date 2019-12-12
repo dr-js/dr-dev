@@ -44,7 +44,8 @@ const runMode = async (modeName, { tryGet, getFirst, tryGetFirst }) => {
       return doInit({
         pathOutput: tryGetFirst('init') || '.',
         pathResourcePackage: tryGetFirst('init-resource-package') || '.',
-        isReset: tryGet('init-reset')
+        isReset: tryGet('init-reset'),
+        isVerify: tryGet('init-verify')
       })
   }
 }

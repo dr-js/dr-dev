@@ -16,7 +16,7 @@
     "node": ">=12.13",
     "npm": ">=6.12"
   },
-  "dependencies": {
+  "devDependencies": {
     "@dr-js/dev": "{FLAVOR-VERSION}",
     "@dr-js/dev-{FLAVOR}": "{FLAVOR-VERSION}"
   },

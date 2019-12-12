@@ -26,8 +26,8 @@ const MODE_FORMAT_LIST = parseCompactList(
   ) ],
   [ 'init,I/AP,O/0-1|path to init a package, will not reset file, default to "."', parseCompactList(
     `init-resource-package,P/SP,O|path to resource package, default search for "./node_modules/@dr-js/dev-*/"`,
-    'init-reset,R/T|allow reset file'
-    // 'init-verify,V/T|do common init file content check' // TODO: useful?
+    'init-reset,R/T|allow reset file',
+    'init-verify,V/T|do common init file content check, will skip file modify'
   ) ]
 )
 
