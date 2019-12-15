@@ -16,8 +16,8 @@ const execShell = (command) => execSync(command, { cwd: fromRoot(), stdio: argvF
 const buildOutput = async ({ logger }) => {
   logger.padLog('generate spec doc')
   execShell('npm run script-generate-spec')
-  logger.padLog('build')
-  execShell('npm run build')
+  logger.padLog('build library')
+  execShell('npm run build-library')
 }
 
 const processOutput = async ({ logger }) => {
@@ -38,6 +38,13 @@ runMain(async (logger) => {
   if (!argvFlag('pack')) return
   await buildOutput({ logger })
   await processOutput({ logger })
+  if (argvFlag('test', 'publish', 'publish-dev')) {
+    logger.padLog('lint source')
+    execShell('npm run lint')
+    await processOutput({ logger }) // once more
+    logger.padLog('test output')
+    execShell('npm run test-output')
+  }
   await verifyOutputBin({ fromOutput, packageJSON, logger })
   await verifyGitStatusClean({ fromRoot, logger })
   const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })

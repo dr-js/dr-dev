@@ -45,7 +45,8 @@ const runMode = async (modeName, { tryGet, getFirst, tryGetFirst }) => {
         pathOutput: tryGetFirst('init') || '.',
         pathResourcePackage: tryGetFirst('init-resource-package') || '.',
         isReset: tryGet('init-reset'),
-        isVerify: tryGet('init-verify')
+        isVerify: tryGet('init-verify'),
+        pathVerifyRule: tryGetFirst('init-verify-rule')
       })
   }
 }

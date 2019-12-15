@@ -76,7 +76,7 @@ const doPack = async ({
       `[l:size]: https://packagephobia.now.sh/result?p=${name}`
     ].join('\n'))
 
-    await copyAndSavePackExportInitJSON(pathOutput, exportPairList)
+    await copyAndSavePackExportInitJSON({ pathPackage: pathOutput, exportPairList })
   }
 
   const pathPackagePack = await packOutput({ fromOutput, logger })

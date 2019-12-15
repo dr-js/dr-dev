@@ -91,10 +91,12 @@ const collectDependency = async (pathInput, isRecursive) => {
 const NAME_PACK_EXPORT = 'EXPORT'
 const NAME_PACK_EXPORT_INIT_JSON = 'INIT.json'
 
-const copyAndSavePackExportInitJSON = async (
-  pathPackage,
+const getFromPackExport = (pathPackage) => (...args) => resolve(pathPackage, NAME_PACK_EXPORT, ...args)
+
+const copyAndSavePackExportInitJSON = async ({
+  pathPackage, fromPackExport = getFromPackExport(pathPackage),
   exportPairList
-) => {
+}) => {
   const targetFileMap = {} // deduplicate
   const targetPackageJSONMap = {} // merge
   for (const [ source, targetRelative ] of exportPairList) {
@@ -105,12 +107,12 @@ const copyAndSavePackExportInitJSON = async (
     } else targetFileMap[ targetRelative ] = source
   }
 
-  for (const [ targetRelative, source ] of Object.entries(targetFileMap)) await modifyCopy(source, resolve(pathPackage, NAME_PACK_EXPORT, targetRelative))
-  for (const [ targetRelative, packageJSON ] of Object.entries(targetPackageJSONMap)) writePackageJSON({ path: resolve(pathPackage, NAME_PACK_EXPORT, targetRelative), packageJSON })
+  for (const [ targetRelative, source ] of Object.entries(targetFileMap)) await modifyCopy(source, fromPackExport(targetRelative))
+  for (const [ targetRelative, packageJSON ] of Object.entries(targetPackageJSONMap)) writePackageJSON({ path: fromPackExport(targetRelative), packageJSON })
 
-  const initFilePrefix = resolve(pathPackage, NAME_PACK_EXPORT, 'INIT#')
+  const initFilePrefix = fromPackExport('INIT#')
   writeFileSync(
-    resolve(pathPackage, NAME_PACK_EXPORT, NAME_PACK_EXPORT_INIT_JSON),
+    fromPackExport(NAME_PACK_EXPORT_INIT_JSON),
     JSON.stringify((await getFileList(resolve(pathPackage, NAME_PACK_EXPORT)))
       .filter((path) => path.startsWith(initFilePrefix))
       .map((path) => [
@@ -120,12 +122,12 @@ const copyAndSavePackExportInitJSON = async (
   )
 }
 
-const loadAndCopyPackExportInitJSON = async (
-  pathPackage,
+const loadAndCopyPackExportInitJSON = async ({
+  pathPackage, fromPackExport = getFromPackExport(pathPackage),
   pathOutput,
   isReset = false
-) => {
-  const initPairList = JSON.parse(String(readFileSync(resolve(pathPackage, NAME_PACK_EXPORT, NAME_PACK_EXPORT_INIT_JSON)))) // get init list
+}) => {
+  const initPairList = JSON.parse(String(readFileSync(fromPackExport(NAME_PACK_EXPORT_INIT_JSON)))) // get init list
 
   if (!isReset) { // check if file overwrite will happen
     for (const [ , relativeInitPath ] of initPairList) {
@@ -134,7 +136,7 @@ const loadAndCopyPackExportInitJSON = async (
   }
 
   for (const [ sourceName, relativeInitPath ] of initPairList) { // put/reset file to output path
-    const sourcePath = resolve(pathPackage, NAME_PACK_EXPORT, sourceName)
+    const sourcePath = fromPackExport(sourceName)
     const initPath = resolve(pathOutput, relativeInitPath)
     await modifyDeleteForce(initPath)
     await modifyCopy(sourcePath, initPath)
@@ -152,6 +154,7 @@ export {
   formatPackagePath,
   writePackageJSON,
   collectDependency,
+  getFromPackExport,
   copyAndSavePackExportInitJSON,
   loadAndCopyPackExportInitJSON
 }

@@ -104,6 +104,8 @@ describe('Output', () => {
     const packageJSON = await initOutput({ fromOutput, fromRoot, logger })
     const pathPackagePack = await packOutput({ fromOutput, fromRoot: fromTestRoot, logger })
 
+    packageJSON.version = '0.0.0-dev.0' // reset for test
+
     // should do nothing
     await publishOutput({ isPublish: false, isPublishDev: false, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], logger })
     verifyLog('skipped publish output, no flag found')

@@ -89,13 +89,15 @@
 >     --test-timeout --TT [ARGUMENT=1]
 >         timeout for each test, in msec, default to 10*1000 (10sec)
 >   --init --I -I [OPTIONAL] [ARGUMENT=0-1]
->       path to init a package, will not reset file, default to "."
+>       path for init a package, will not reset existing file, default to "."
 >     --init-resource-package --P -P [ARGUMENT=1]
 >         path to resource package, default search for "./node_modules/@dr-js/dev-*/"
 >     --init-reset --R -R [ARGUMENT=0+]
->         allow reset file
+>         allow init to reset existing file
 >     --init-verify --V -V [ARGUMENT=0+]
 >         do common init file content check, will skip file modify
+>     --init-verify-rule --IVR [ARGUMENT=1+]
+>         path to verify rule, default search in "init-resource-package"
 > ENV Usage:
 >   "
 >     #!/usr/bin/env bash
@@ -124,6 +126,7 @@
 >     export DR_DEV_INIT_RESOURCE_PACKAGE="[ARGUMENT=1]"
 >     export DR_DEV_INIT_RESET="[ARGUMENT=0+]"
 >     export DR_DEV_INIT_VERIFY="[ARGUMENT=0+]"
+>     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+]"
 >   "
 > CONFIG Usage:
 >   {
@@ -152,6 +155,7 @@
 >     "initResourcePackage": [ "[ARGUMENT=1]" ],
 >     "initReset": [ "[ARGUMENT=0+]" ],
 >     "initVerify": [ "[ARGUMENT=0+]" ],
+>     "initVerifyRule": [ "[ARGUMENT=1+]" ],
 >   }
 > ```
 
@@ -181,5 +185,5 @@
 | puppeteer                               |   ^2.0.0 |
 | react                                   | ^16.12.0 |
 | styled-components                       |   ^4.4.1 |
-| terser                                  |   ^4.4.2 |
-| webpack                                 |  ^4.41.2 |
+| terser                                  |   ^4.4.3 |
+| webpack                                 |  ^4.41.3 |
