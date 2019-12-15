@@ -32,7 +32,7 @@ const VERIFY_RULE_LIST = [ {
   selectPathList: [ 'babel.config.js', 'script/' ],
   selectFileExtension: '.js',
   verifyPreNoList: [ 'getBabelConfig', 'getWebpackBabelConfig' ],
-  verifyNoList: [ 'extraPresetList', 'extraPluginList' ]
+  verifyNoList: [ 'presetExtra', 'pluginExtra' ]
 }, {
   message: 'use `execShell` instead of `execOptionRoot`, suggested in `@dr-js/dev@0.1.1`',
   selectPathList: [ 'script/' ],
