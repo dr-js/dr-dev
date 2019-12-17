@@ -1,15 +1,27 @@
 #!/usr/bin/env node
 
+import { readFileSync } from 'fs'
+
 import { doCheckOutdated } from './mode/checkOutdated'
 import { doPack } from './mode/pack'
 import { doStepPackageVersion } from './mode/stepPackageVersion'
 import { doTestRootList } from './mode/testRoot'
 import { doInit } from './mode/init'
 
+import { run } from '@dr-js/core/module/node/system/Run'
+
+import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from '@dr-js/dev/module/node/npm/parseScript'
+import { comboCommand } from '@dr-js/dev/module/node/npm/comboCommand'
+import { npxLazy } from '@dr-js/dev/module/node/npm/npxLazy'
+
 import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
 import { name as packageName, version as packageVersion } from '../package.json'
 
-const runMode = async (modeName, { tryGet, getFirst, tryGetFirst }) => {
+const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
+  const modeArgList = get(modeName)
+  const tabLog = tryGet('debug')
+    ? (level, ...args) => console.log(`${'  '.repeat(level)}${args.join(' ')}`)
+    : () => {}
   switch (modeName) {
     case 'check-outdated' :
       return doCheckOutdated({
@@ -35,19 +47,43 @@ const runMode = async (modeName, { tryGet, getFirst, tryGetFirst }) => {
       })
     case 'test-root':
       return doTestRootList({
-        testRootList: tryGet('test-root') || [ process.cwd() ],
+        testRootList: modeArgList || [ process.cwd() ],
         testFileSuffixList: tryGet('test-file-suffix') || [ '.js' ],
         testRequireList: tryGet('test-require') || [],
         testTimeout: tryGet('test-timeout') || 10 * 1000
       })
     case 'init':
       return doInit({
-        pathOutput: tryGetFirst('init') || '.',
+        pathOutput: modeArgList[ 0 ] || '.',
         pathResourcePackage: tryGetFirst('init-resource-package') || '.',
         isReset: tryGet('init-reset'),
         isVerify: tryGet('init-verify'),
         pathVerifyRule: tryGetFirst('init-verify-rule')
       })
+    case 'parse-script':
+    case 'parse-script-list':
+    case 'run-script':
+    case 'run-script-list': {
+      const packageJSON = JSON.parse(String(readFileSync('package.json'))) // TODO: NOTE: relative to cwd
+      let command
+      if (modeName.endsWith('-list')) {
+        command = warpBashSubShell(modeArgList
+          .map((scriptName) => parsePackageScript(packageJSON, scriptName, '', 0, tabLog))
+          .join('\n')
+        )
+      } else {
+        const [ scriptName, ...extraArgs ] = modeArgList
+        command = parsePackageScript(packageJSON, scriptName, wrapJoinBashArgs(extraArgs), 0, tabLog)
+      }
+      if (modeName.startsWith('parse-script')) return console.log(command)
+      return run({ command: 'bash', argList: [ '-c', command ] }).promise
+    }
+    case 'npm-combo': {
+      for (const name of modeArgList) await comboCommand(name, tabLog)
+      return
+    }
+    case 'npx-lazy':
+      return npxLazy(modeArgList, tabLog)
   }
 }
 

@@ -41,6 +41,14 @@
   - `collectSourceRouteMap`, `createExportParser`
 + 📄 [source/node/export/renderMarkdown.js](source/node/export/renderMarkdown.js)
   - `escapeMarkdownLink`, `getMarkdownDirectoryLink`, `getMarkdownFileLink`, `getMarkdownHeaderLink`, `renderMarkdownAutoAppendHeaderLink`, `renderMarkdownBlockQuote`, `renderMarkdownExportPath`, `renderMarkdownExportTree`, `renderMarkdownTable`
++ 📄 [source/node/npm/comboCommand.js](source/node/npm/comboCommand.js)
+  - `COMBO_COMMAND_CONFIG_MAP`, `comboCommand`
++ 📄 [source/node/npm/npxLazy.js](source/node/npm/npxLazy.js)
+  - `npxLazy`, `parsePackageNameAndVersion`, `runNpx`
++ 📄 [source/node/npm/parseScript.js](source/node/npm/parseScript.js)
+  - `parseCommand`, `parsePackageScript`, `warpBashSubShell`, `wrapJoinBashArgs`
++ 📄 [source/node/npm/path.js](source/node/npm/path.js)
+  - `findUpPackageRoot`, `fromPathGlobalNodeModules`, `getPathGlobalNpmNodeModules`, `tryRequireGlobal`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)
@@ -53,6 +61,8 @@
 >       show full help
 >   --version --v -v [OPTIONAL] [ARGUMENT=0+]
 >       show version
+>   --debug --D -D [OPTIONAL] [ARGUMENT=0+]
+>       more debug log
 >   --path-input --i -i [ARGUMENT=1]
 >       path to "package.json", or directory with "package.json" inside
 >   --pack [OPTIONAL] [ARGUMENT=0+]
@@ -98,12 +108,25 @@
 >         do common init file content check, will skip file modify
 >     --init-verify-rule --IVR [ARGUMENT=1+]
 >         path to verify rule, default search in "init-resource-package"
+>   --parse-script --ps [OPTIONAL] [ARGUMENT=1+]
+>       parse and echo: $@=scriptName,...extraArgs
+>   --parse-script-list --psl [OPTIONAL] [ARGUMENT=1+]
+>       combine multi-script, but no extraArgs: $@=...scriptNameList
+>   --run-script --rs [OPTIONAL] [ARGUMENT=1+]
+>       parse and run: $@=scriptName,...extraArgs
+>   --run-script-list --rsl [OPTIONAL] [ARGUMENT=1+]
+>       combine multi-script, but no extraArgs: $@=...scriptNameList
+>   --npm-combo --nc --M -M [OPTIONAL] [ARGUMENT=1+]
+>       useful npm combo, one of: config, install-offline, package-dedupe, c, io, pd
+>   --npx-lazy --npx --nl --X -X [OPTIONAL] [ARGUMENT=1+]
+>       skip npx re-install if package version fit: $@=package@version,...extraArgs
 > ENV Usage:
 >   "
 >     #!/usr/bin/env bash
 >     export DR_DEV_CONFIG="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_HELP="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_VERSION="[OPTIONAL] [ARGUMENT=0+]"
+>     export DR_DEV_DEBUG="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_PATH_INPUT="[ARGUMENT=1]"
 >     export DR_DEV_PACK="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_PATH_OUTPUT="[ARGUMENT=1]"
@@ -127,12 +150,19 @@
 >     export DR_DEV_INIT_RESET="[ARGUMENT=0+]"
 >     export DR_DEV_INIT_VERIFY="[ARGUMENT=0+]"
 >     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+]"
+>     export DR_DEV_PARSE_SCRIPT="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_PARSE_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_RUN_SCRIPT="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_RUN_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_NPM_COMBO="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_NPX_LAZY="[OPTIONAL] [ARGUMENT=1+]"
 >   "
 > CONFIG Usage:
 >   {
 >     "config": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "help": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "version": [ "[OPTIONAL] [ARGUMENT=0+]" ],
+>     "debug": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "pathInput": [ "[ARGUMENT=1]" ],
 >     "pack": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "pathOutput": [ "[ARGUMENT=1]" ],
@@ -156,6 +186,12 @@
 >     "initReset": [ "[ARGUMENT=0+]" ],
 >     "initVerify": [ "[ARGUMENT=0+]" ],
 >     "initVerifyRule": [ "[ARGUMENT=1+]" ],
+>     "parseScript": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "parseScriptList": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "runScript": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "runScriptList": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "npmCombo": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "npxLazy": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >   }
 > ```
 
