@@ -117,7 +117,7 @@
 >   --run-script-list --rsl [OPTIONAL] [ARGUMENT=1+]
 >       combine multi-script, but no extraArgs: $@=...scriptNameList
 >   --npm-combo --nc --M -M [OPTIONAL] [ARGUMENT=1+]
->       useful npm combo, one of: config, install-offline, package-dedupe, c, io, pd
+>       useful npm combo, one of: config|c|install-offline|io|install-clear|ic|package-dedupe|ddp|pd|package-reset|pr
 >   --npx-lazy --npx --nl --X -X [OPTIONAL] [ARGUMENT=1+]
 >       skip npx re-install if package version fit: $@=package@version,...extraArgs
 > ENV Usage:

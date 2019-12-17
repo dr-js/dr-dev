@@ -36,7 +36,7 @@ const MODE_FORMAT_LIST = parseCompactList(
   'parse-script-list,psl/AS,O|combine multi-script, but no extraArgs: $@=...scriptNameList',
   'run-script,rs/AS,O|parse and run: $@=scriptName,...extraArgs',
   'run-script-list,rsl/AS,O|combine multi-script, but no extraArgs: $@=...scriptNameList',
-  `npm-combo,nc,M/AS,O|useful npm combo, one of: ${Object.keys(COMBO_COMMAND_CONFIG_MAP).join(', ')}`,
+  `npm-combo,nc,M/AS,O|useful npm combo, one of: ${Object.keys(COMBO_COMMAND_CONFIG_MAP).join('|')}`,
   'npx-lazy,npx,nl,X/AS,O|skip npx re-install if package version fit: $@=package@version,...extraArgs'
 )
 

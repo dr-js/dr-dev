@@ -43,7 +43,7 @@ const processOutput = async ({ logger }) => {
 
 const clearOutput = async ({ logger }) => {
   logger.log('clear test')
-  const fileList = await getScriptFileListFromPathList([ '.' ], fromOutput, (path) => path.endsWith('.test.js'))
+  const fileList = await getScriptFileListFromPathList([ '.' ], fromOutput, (path) => path.endsWith('.test.js') || (path.endsWith('.md') && path.endsWith('README.md')))
   for (const filePath of fileList) await modifyDelete(filePath)
 }
 

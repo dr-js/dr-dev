@@ -79,11 +79,11 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
       return run({ command: 'bash', argList: [ '-c', command ] }).promise
     }
     case 'npm-combo': {
-      for (const name of modeArgList) await comboCommand(name, tabLog)
+      for (const name of modeArgList) await comboCommand({ name, tabLog })
       return
     }
     case 'npx-lazy':
-      return npxLazy(modeArgList, tabLog)
+      return npxLazy({ argList: modeArgList, tabLog })
   }
 }
 

@@ -31,10 +31,10 @@ const runNpx = async (
   ], pathNpmCli))
 }
 
-const npxLazy = async (
-  [ command, ...extraArgs ],
+const npxLazy = async ({
+  argList: [ command, ...extraArgs ],
   tabLog = (level, ...args) => {}
-) => {
+}) => {
   const [ packageName, version ] = parsePackageNameAndVersion(command)
   if (version) {
     const { satisfies } = tryRequireGlobal('npm/node_modules/semver') // borrow package from npm
