@@ -24,8 +24,8 @@ const doInit = async ({
     pathResourcePackage
   )
   console.log(`[init] pathPackage: ${pathPackage}`)
-  const fromPackExport = getFromPackExport(pathPackage)
   if (isVerify) {
+    const fromPackExport = getFromPackExport(pathPackage)
     if (!pathVerifyRule) pathVerifyRule = fromPackExport(NAME_PACK_EXPORT_INIT_VERIFY_RULE)
     console.log(`[initVerify] pathVerifyRule: ${pathVerifyRule}`)
     try {
@@ -36,7 +36,7 @@ const doInit = async ({
       throw error
     }
   }
-  await loadAndCopyPackExportInitJSON({ fromPackExport, pathOutput, isReset })
+  await loadAndCopyPackExportInitJSON({ pathPackage, pathOutput, isReset })
 }
 
 const initVerify = async (pathRoot, VERIFY_RULE_LIST) => {

@@ -94,9 +94,10 @@ const NAME_PACK_EXPORT_INIT_JSON = 'INIT.json'
 const getFromPackExport = (pathPackage) => (...args) => resolve(pathPackage, NAME_PACK_EXPORT, ...args)
 
 const copyAndSavePackExportInitJSON = async ({
-  pathPackage, fromPackExport = getFromPackExport(pathPackage),
+  pathPackage,
   exportPairList
 }) => {
+  const fromPackExport = getFromPackExport(pathPackage)
   const targetFileMap = {} // deduplicate
   const targetPackageJSONMap = {} // merge
   for (const [ source, targetRelative ] of exportPairList) {
@@ -113,7 +114,7 @@ const copyAndSavePackExportInitJSON = async ({
   const initFilePrefix = fromPackExport('INIT#')
   writeFileSync(
     fromPackExport(NAME_PACK_EXPORT_INIT_JSON),
-    JSON.stringify((await getFileList(resolve(pathPackage, NAME_PACK_EXPORT)))
+    JSON.stringify((await getFileList(fromPackExport()))
       .filter((path) => path.startsWith(initFilePrefix))
       .map((path) => [
         basename(path), // relative source
@@ -123,10 +124,11 @@ const copyAndSavePackExportInitJSON = async ({
 }
 
 const loadAndCopyPackExportInitJSON = async ({
-  pathPackage, fromPackExport = getFromPackExport(pathPackage),
+  pathPackage,
   pathOutput,
   isReset = false
 }) => {
+  const fromPackExport = getFromPackExport(pathPackage)
   const initPairList = JSON.parse(String(readFileSync(fromPackExport(NAME_PACK_EXPORT_INIT_JSON)))) // get init list
 
   if (!isReset) { // check if file overwrite will happen
