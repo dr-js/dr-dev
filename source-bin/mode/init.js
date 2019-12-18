@@ -45,7 +45,8 @@ const initVerify = async (pathRoot, VERIFY_RULE_LIST) => {
     for (const selectPath of rule.selectPathList) {
       if (!ruleSelectBundleMap.has(selectPath)) {
         const fileList = await getFileList(resolve(pathRoot, selectPath)).catch((error) => {
-          console.warn(`[initVerify] invalid selectPAth: ${selectPath}`, error)
+          console.warn(`[initVerify] invalid selectPath: ${selectPath}`)
+          __DEV__ && console.warn(`[initVerify]`, error)
           return []
         })
         ruleSelectBundleMap.set(selectPath, { fileList, ruleList: [ rule ] })

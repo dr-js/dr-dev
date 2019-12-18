@@ -14,7 +14,7 @@ const fromOutput = (...args) => resolve(PATH_OUTPUT, ...args)
 const execShell = (command) => execSync(command, { cwd: fromRoot(), stdio: argvFlag('quiet') ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit' })
 
 const buildOutput = async ({ logger }) => {
-  logger.padLog('generate spec doc')
+  logger.padLog('generate spec')
   execShell('npm run script-generate-spec')
   logger.padLog('build library')
   execShell('npm run build-library')
@@ -24,8 +24,8 @@ const processOutput = async ({ logger }) => {
   const fileList = await getScriptFileListFromPathList([ '.' ], fromOutput)
   let sizeReduce = 0
   sizeReduce += await minifyFileListWithTerser({ fileList, option: getTerserOption(), rootPath: PATH_OUTPUT, logger })
-  sizeReduce += await processFileList({ fileList, processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
-  logger.log(`total size reduce: ${sizeReduce}B`)
+  sizeReduce += await processFileList({ fileList, processor: fileProcessorBabel, rootPath: PATH_OUTPUT, logger })
+  logger.log(`size reduce: ${sizeReduce}B`)
 }
 
 runMain(async (logger) => {
