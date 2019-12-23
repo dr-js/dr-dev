@@ -200,12 +200,12 @@
 
 | Package name                            |  Version |
 | :----                                   |    ----: |
-| @babel/cli                              |   ^7.7.7 |
-| @babel/core                             |   ^7.7.7 |
-| @babel/plugin-proposal-class-properties |   ^7.7.4 |
-| @babel/preset-env                       |   ^7.7.7 |
-| @babel/preset-react                     |   ^7.7.4 |
-| @babel/register                         |   ^7.7.7 |
+| @babel/cli                              |   ^7.8.3 |
+| @babel/core                             |   ^7.8.3 |
+| @babel/plugin-proposal-class-properties |   ^7.8.3 |
+| @babel/preset-env                       |   ^7.8.3 |
+| @babel/preset-react                     |   ^7.8.3 |
+| @babel/register                         |   ^7.8.3 |
 | babel-eslint                            |  ^10.0.3 |
 | babel-loader                            |   ^8.0.6 |
 | babel-plugin-minify-replace             |   ^0.5.0 |
@@ -213,13 +213,13 @@
 | babel-plugin-styled-components          |  ^1.10.6 |
 | cross-env                               |   ^6.0.3 |
 | eslint                                  |   ^6.8.0 |
-| eslint-plugin-import                    |  ^2.19.1 |
-| eslint-plugin-node                      |  ^10.0.0 |
+| eslint-plugin-import                    |  ^2.20.0 |
+| eslint-plugin-node                      |  ^11.0.0 |
 | eslint-plugin-promise                   |   ^4.2.1 |
 | eslint-plugin-react                     |  ^7.17.0 |
 | prop-types                              |  ^15.7.2 |
 | puppeteer                               |   ^2.0.0 |
 | react                                   | ^16.12.0 |
-| styled-components                       |   ^4.4.1 |
-| terser                                  |   ^4.4.3 |
-| webpack                                 |  ^4.41.4 |
+| styled-components                       |   ^5.0.0 |
+| terser                                  |   ^4.6.3 |
+| webpack                                 |  ^4.41.5 |

@@ -89,22 +89,18 @@ runMain(async (logger) => {
   const packageJSON = await initOutput({ fromRoot, fromOutput, logger })
   if (!argvFlag('pack')) return
   await buildOutput({ logger })
-  if (argvFlag('resource')) { // do not run both
-    await packResource({ packageJSON, logger })
-  } else {
-    await processOutput({ logger })
-    if (argvFlag('test', 'publish', 'publish-dev')) {
-      logger.padLog('lint source')
-      execShell('npm run lint')
-      await processOutput({ logger }) // once more
-      logger.padLog('test output')
-      execShell('npm run test-output-library')
-      execShell('npm run test-output-module')
-    }
-    await clearOutput({ logger })
-    await verifyGitStatusClean({ fromRoot, logger })
-    await verifyOutputBin({ fromOutput, packageJSON, logger })
-    const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })
-    await publishOutput({ flagList: process.argv, packageJSON, pathPackagePack, logger })
-  }
+  if (argvFlag('resource')) return packResource({ packageJSON, logger }) // do not run both
+  await processOutput({ logger })
+  const isTest = argvFlag('test', 'publish', 'publish-dev')
+  isTest && logger.padLog('lint source')
+  isTest && execShell('npm run lint')
+  isTest && await processOutput({ logger }) // once more
+  isTest && logger.padLog('test output')
+  isTest && execShell('npm run test-output-library')
+  isTest && execShell('npm run test-output-module')
+  await clearOutput({ logger })
+  await verifyOutputBin({ fromOutput, packageJSON, logger })
+  isTest && await verifyGitStatusClean({ fromRoot, logger })
+  const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })
+  await publishOutput({ flagList: process.argv, packageJSON, pathPackagePack, logger })
 })

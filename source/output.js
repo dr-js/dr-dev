@@ -112,7 +112,7 @@ const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger: { padL
   const { promise, stdoutPromise } = run({ command: 'git', argList: [ 'status' ], option: { cwd }, quiet: true })
   await promise
   const outputGitStatus = String(await stdoutPromise)
-  ok(outputGitStatus.includes('nothing to commit, working tree clean'), `git has something to commit: ${outputGitStatus}`)
+  ok(outputGitStatus.includes('nothing to commit, working tree clean'), `git change to commit: ${outputGitStatus}`)
 }
 
 const publishOutput = async ({

@@ -52,7 +52,10 @@ const doStepPackageVersion = async ({
     `[WIP] ${name}@${nextVersion}`,
     'notable change:',
     '- break: use `NEW` instead of `OLD`',
-    '- fix: some strange bug in code',
+    '- deprecate: `OLD`, use `NEW`',
+    '- fix: some strange bug in `PATH`',
+    '- add: `FUNC` to `PATH`',
+    '- script sort',
     '- package update'
   ].join('\n')
 

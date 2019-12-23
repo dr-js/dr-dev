@@ -26,7 +26,7 @@ const normalizeRule = ({
     : (selectFileExtension ? (path) => path.endsWith(selectFileExtension) && !path.includes('node_modules') : (path) => !path.includes('node_modules')),
   verifyPreNoList,
   verifyNoList,
-  verifyFunc = buildVerifyFunc({ verifyNoList, verifyPreNoList })
+  verifyFunc = buildVerifyFunc({ verifyPreNoList, verifyNoList })
 }) => {
   messageSuggestIn && messageList.push(`suggested in \`${messageSuggestIn}\``)
   messageBreakIn && messageList.push(`break change in \`${messageBreakIn}\``)
@@ -74,6 +74,18 @@ const VERIFY_RULE_LIST = [ {
   selectPathList: [ 'script/', 'source/', 'source-bin/' ],
   selectFileExtension: '.js',
   verifyNoList: [ 'path:move', 'PATH_MOVE' ]
+}, {
+  messageList: [ 'add `isTest` before `verifyGitStatusClean` to allow dev packing' ],
+  messageSuggestIn: '@dr-js/dev@0.2.3-dev.0',
+  selectPathList: [ 'script/' ],
+  selectFileExtension: '.js',
+  verifyNoList: [ '  await verifyGitStatusClean({ fromRoot, logger })' ]
+}, {
+  messageList: [ 'use `resolve(...)` instead of `resolve(process.cwd(), ...)`' ],
+  messageSuggestIn: '@dr-js/dev@0.2.3-dev.0',
+  selectPathList: [ 'script/', 'source/', 'source-bin/' ],
+  selectFileExtension: '.js',
+  verifyNoList: [ 'resolve(process.cwd()' ]
 } ].map(normalizeRule)
 
 module.exports = { VERIFY_RULE_LIST }
