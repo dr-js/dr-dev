@@ -18,7 +18,7 @@
 + 📄 [source/output.js](source/output.js)
   - `getPackageTgzName`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
-  - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteer`
+  - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
 + 📄 [source/webpack.js](source/webpack.js)
   - `commonFlag`, `compileWithWebpack`
 + 📄 [source/common/dev.js](source/common/dev.js)
@@ -55,8 +55,8 @@
 > ```
 > CLI Usage:
 >   --config --c -c [OPTIONAL] [ARGUMENT=1]
->       from ENV: set to "env"
->       from JS/JSON file: set to "path/to/config.js|json"
+>       from ENV: set to "env" to enable, not using be default
+>       from JS/JSON file: set to "path/to/file.config.js|json"
 >   --help --h -h [OPTIONAL] [ARGUMENT=0+]
 >       show full help
 >   --version --v -v [OPTIONAL] [ARGUMENT=0+]
@@ -216,7 +216,7 @@
 | eslint-plugin-import                    |  ^2.20.0 |
 | eslint-plugin-node                      |  ^11.0.0 |
 | eslint-plugin-promise                   |   ^4.2.1 |
-| eslint-plugin-react                     |  ^7.17.0 |
+| eslint-plugin-react                     |  ^7.18.0 |
 | prop-types                              |  ^15.7.2 |
 | puppeteer                               |   ^2.0.0 |
 | react                                   | ^16.12.0 |

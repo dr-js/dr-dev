@@ -86,6 +86,18 @@ const VERIFY_RULE_LIST = [ {
   selectPathList: [ 'script/', 'source/', 'source-bin/' ],
   selectFileExtension: '.js',
   verifyNoList: [ 'resolve(process.cwd()' ]
+}, {
+  messageList: [ 'mass code sort in `node/data/Stream`' ],
+  messageBreakIn: '@dr-js/dev@0.3.0-dev.0',
+  selectPathList: [ 'script/', 'source/', 'source-bin/' ],
+  selectFileExtension: '.js',
+  verifyNoList: [ 'receiveBufferAsync', 'sendBufferAsync', 'pipeStreamAsync', 'createReadlineFromStreamAsync' ]
+}, {
+  messageList: [ 'deprecated' ],
+  messageBreakIn: '@dr-js/dev@0.3.0-dev.1',
+  selectPathList: [ 'script/', 'source/', 'source-bin/' ],
+  selectFileExtension: '.js',
+  verifyNoList: [ 'objectDeleteUndefined', 'requestAsync' ]
 } ].map(normalizeRule)
 
 module.exports = { VERIFY_RULE_LIST }

@@ -39,13 +39,13 @@ const clearPuppeteerPage = ({ puppeteerPage }) => puppeteerPage.close()
 const initPuppeteerPage = async ({ puppeteerBrowser, logger }) => {
   logger.log('[Puppeteer|Page] init start')
   const puppeteerPage = await puppeteerBrowser.newPage()
-  puppeteerPage.on('error', (error) => logger.log('[Puppeteer|Page] error:', error)) // Emitted when the puppeteerPage crashes.
-  puppeteerPage.on('pageerror', (exceptionMessage) => logger.log('[Puppeteer|Page] page error:', exceptionMessage)) // Emitted when an uncaught exception happens within the puppeteerPage.
-  puppeteerPage.on('requestfailed', (request) => logger.log('[Puppeteer|Page] request failed:', { method: request.method(), url: request.url() }))
-  puppeteerPage.on('response', (response) => response.status() >= 400 && logger.add('[Puppeteer|Page] abnormal response:', { status: response.status(), url: response.url() }))
-  // __DEV__ && puppeteerPage.on('console', (consoleMessage) => logger.log('[Puppeteer|Page] console:', consoleMessage.type(), consoleMessage.text()))
-  // __DEV__ && puppeteerPage.on('request', (request) => logger.log('[Puppeteer|Page] request:', { method: request.method(), url: request.url() }))
-  // __DEV__ && puppeteerPage.on('response', (response) => logger.log('[Puppeteer|Page] response:', { status: response.status(), url: response.url() }))
+  puppeteerPage.on('error', (error) => logger.log(`[Puppeteer|Page] error: ${error.stack || error}`)) // Emitted when the puppeteerPage crashes.
+  puppeteerPage.on('pageerror', (exceptionMessage) => logger.log(`[Puppeteer|Page] page error: ${exceptionMessage}`)) // Emitted when an uncaught exception happens within the puppeteerPage.
+  puppeteerPage.on('requestfailed', (request) => logger.log(`[Puppeteer|Page] request failed with errorText: ${request.failure().errorText}, method: ${request.method()}, url: ${request.url()}`))
+  puppeteerPage.on('response', (response) => response.status() >= 400 && logger.log(`[Puppeteer|Page] abnormal response status: ${response.status()}, url: ${response.url()}`))
+  // __DEV__ && puppeteerPage.on('console', (consoleMessage) => logger.log(`[Puppeteer|Page] console [${consoleMessage.type()}] ${consoleMessage.text()} `))
+  // __DEV__ && puppeteerPage.on('request', (request) => logger.log(`[Puppeteer|Page] request method: ${request.method()}, url: ${request.url()}`))
+  // __DEV__ && puppeteerPage.on('response', (response) => logger.log(`[Puppeteer|Page] response status: ${response.status()}, url: ${response.url()}`))
   logger.log('[Puppeteer|Page] init complete')
   return puppeteerPage
 }
@@ -65,30 +65,41 @@ const runWithPuppeteer = async ({
   return result
 }
 
+const DEFAULT_TIMEOUT_PAGE = 10 * 1000
+const DEFAULT_TIMEOUT_TEST = 60 * 1000 // should done test in 1min
+
+const wrapTestScriptStringToHTML = async ({
+  testScriptString,
+  testTag,
+  timeoutTest = DEFAULT_TIMEOUT_TEST
+}) => [
+  `<!DOCTYPE html>`,
+  `<meta charset="utf-8">`,
+  `<link rel="icon" href="data:,">`, // stop fetch favicon
+  `<title>${testTag}</title>`,
+  `<script>${await readFileAsync(require.resolve('@dr-js/dev/browser/test.js'))}</script>`,
+  `<script>window.DrDevTest.TEST_SETUP({ timeout: ${timeoutTest} })</script>`,
+  `<script>${testScriptString}</script>`,
+  `<script>window.addEventListener('load', () => window.DrDevTest.TEST_RUN().then(({ failList }) => { console.log(JSON.stringify({ "${testTag}": { failCount: failList.length } })) }))</script>`
+].join('\n')
+
 const testWithPuppeteer = async ({
   testScriptString,
-  timeoutPage = 10 * 1000,
-  timeoutTest = 60 * 1000, // should done test in 1min
+  testUrl,
+  testTag = `BROWSER_TEST[${new Date().toISOString()}]`, // string mark for test complete
+
+  timeoutPage = DEFAULT_TIMEOUT_PAGE,
+  timeoutTest = DEFAULT_TIMEOUT_TEST,
   logger
 }) => runWithPuppeteer({
   taskFunc: async ({ puppeteerPage }) => {
     const { padLog, log } = logger
     padLog(`[testWithPuppeteer] timeoutPage: ${time(timeoutPage)}, timeoutTest: ${time(timeoutTest)}`)
 
-    log('[test] init')
-    const testTag = `BROWSER_TEST[${new Date().toISOString()}]`
-    const testHTML = [
-      `<!DOCTYPE html>`,
-      `<meta charset="utf-8">`,
-      `<link rel="icon" href="data:,">`, // stop fetch favicon
-      `<title>${testTag}</title>`,
-      `<script>${await readFileAsync(require.resolve('@dr-js/dev/browser/test.js'))}</script>`,
-      `<script>window.DrDevTest.TEST_SETUP({ timeout: ${timeoutTest} })</script>`,
-      `<script>${testScriptString}</script>`,
-      `<script>window.addEventListener('load', () => window.DrDevTest.TEST_RUN().then(({ failList }) => { console.log(JSON.stringify({ "${testTag}": { failCount: failList.length } })) }))</script>`
-    ].join('\n')
-    // await writeFileAsync(PATH_BROWSER_TEST_HTML, testHTML) // extra output
+    await puppeteerPage.setDefaultTimeout(timeoutPage) // for all page operation
+    await puppeteerPage.setViewport({ width: 0, height: 0 }) // TODO: CHECK: if this will save render time
 
+    log('[test] init')
     const { promise, resolve, reject } = createInsideOutPromise()
     puppeteerPage.on('console', (consoleMessage) => {
       const logType = consoleMessage.type()
@@ -100,11 +111,17 @@ const testWithPuppeteer = async ({
         ? reject(new Error(`${failCount} test failed`))
         : resolve()
     })
-    await puppeteerPage.setDefaultTimeout(timeoutPage) // for all page operation
-    await puppeteerPage.setViewport({ width: 0, height: 0 }) // TODO: CHECK: if this will save render time
-    log('[test] load')
 
-    await puppeteerPage.setContent(testHTML, { waitUntil: 'load' })
+    log('[test] load')
+    if (testUrl) {
+      const response = await puppeteerPage.goto(testUrl)
+      log('[test] page navigate status:', response.status())
+    } else if (testScriptString) {
+      const testHTML = await wrapTestScriptStringToHTML({ testScriptString, testTag, timeoutTest })
+      await puppeteerPage.setContent(testHTML)
+    } else throw new Error('expect set either `testUrl` or `testScriptString`')
+
+    log('[test] loaded')
     const timeoutToken = setTimeout(() => reject(new Error(`${testTag} test timeout`)), timeoutTest)
     await promise
     clearTimeout(timeoutToken)
@@ -120,5 +137,5 @@ export {
   initPuppeteerPage,
   runWithPuppeteer,
 
-  testWithPuppeteer
+  testWithPuppeteer, wrapTestScriptStringToHTML
 }
