@@ -2,7 +2,7 @@
   "IMPORT": [ "../" ],
   "EXPORT": [ "INIT#script#webpack.js" ],
   "dependencies": {
-    "styled-components": "^5.0.0",
-    "babel-plugin-styled-components": "^1.10.6"
+    "styled-components": "^5.0.1",
+    "babel-plugin-styled-components": "^1.10.7"
   }
 }
