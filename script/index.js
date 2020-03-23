@@ -4,7 +4,9 @@ import { execSync } from 'child_process'
 import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
 import { runSync } from '@dr-js/core/module/node/system/Run'
 
-import { getFileListFromPathList, getScriptFileListFromPathList, resetDirectory } from 'source/node/file'
+import { getFileListFromPathList, resetDirectory } from 'source/node/file'
+import { FILTER_TEST_PATH } from 'source/node/preset'
+import { getSourceJsFileListFromPathList } from 'source/node/filePreset'
 import { initOutput, packOutput, verifyOutputBin, verifyNoGitignore, verifyGitStatusClean, getPublishFlag, publishOutput } from 'source/output'
 import { getTerserOption, minifyFileListWithTerser } from 'source/minify'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor'
@@ -32,8 +34,8 @@ const buildOutput = async ({ logger }) => {
 }
 
 const processOutput = async ({ logger }) => {
-  const fileListLibraryBrowserBin = await getScriptFileListFromPathList([ 'library', 'browser', 'bin' ], fromOutput)
-  const fileListModule = await getScriptFileListFromPathList([ 'module' ], fromOutput)
+  const fileListLibraryBrowserBin = await getSourceJsFileListFromPathList([ 'library', 'browser', 'bin' ], fromOutput)
+  const fileListModule = await getSourceJsFileListFromPathList([ 'module' ], fromOutput)
   let sizeReduce = 0
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBrowserBin, option: getTerserOption(), rootPath: PATH_ROOT, logger })
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
@@ -43,7 +45,7 @@ const processOutput = async ({ logger }) => {
 
 const clearOutput = async ({ logger }) => {
   logger.log('clear test')
-  const fileList = await getScriptFileListFromPathList([ '.' ], fromOutput, (path) => path.endsWith('.test.js') || (path.endsWith('.md') && path.endsWith('README.md')))
+  const fileList = await getFileListFromPathList([ '.' ], fromOutput, FILTER_TEST_PATH)
   for (const filePath of fileList) await modifyDelete(filePath)
 }
 

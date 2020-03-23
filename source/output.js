@@ -17,7 +17,7 @@ const initOutput = async ({
   copyPathList = [ 'README.md' ],
   copyMapPathList = [],
   replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip
-  pathLicenseFile = fromRoot('LICENSE'), // set to false, or do not set `packageJSON.license` to skip
+  pathAutoLicenseFile = 'LICENSE', // set to false, or do not set `packageJSON.license` to skip
   logger: { padLog, log }
 }) => {
   padLog('reset output')
@@ -32,10 +32,10 @@ const initOutput = async ({
   writeFileSync(fromOutput('package.json'), JSON.stringify(packageJSON))
 
   const { license, author } = packageJSON
-  if (pathLicenseFile && license && author) {
+  if (pathAutoLicenseFile && license && author) {
     padLog('update source license file')
-    writeLicenseFile(pathLicenseFile, license, author)
-    copyPathList.push('LICENSE')
+    writeLicenseFile(fromRoot(pathAutoLicenseFile), license, author)
+    copyPathList.push(pathAutoLicenseFile)
   }
 
   padLog('init output file')

@@ -4,7 +4,6 @@ import { parse as parseAST } from '@babel/parser'
 import { compareString } from '@dr-js/core/module/common/compare'
 import { objectSortKey } from '@dr-js/core/module/common/mutable/Object'
 import { getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/file/Path'
-import { getDirectoryInfoTree, walkDirectoryInfoTree } from '@dr-js/core/module/node/file/Directory'
 
 const getExportListFromParsedAST = (fileString, sourceFilename, parserPluginList) => {
   const resultAST = parseAST(fileString, {
@@ -80,18 +79,4 @@ const createExportParser = ({ parserPluginList, logger }) => {
   }
 }
 
-const collectSourceRouteMap = async ({
-  pathRootList = [],
-  pathInfoFilter = (info) => true, // return true to keep
-  logger
-}) => {
-  const { parseExport, getSourceRouteMap } = createExportParser({ logger })
-  const parseWalkExport = (info) => pathInfoFilter(info) && parseExport(info.path)
-  for (const pathRoot of pathRootList) await walkDirectoryInfoTree(await getDirectoryInfoTree(pathRoot), parseWalkExport)
-  return getSourceRouteMap()
-}
-
-export {
-  createExportParser,
-  collectSourceRouteMap
-}
+export { createExportParser }

@@ -15,15 +15,15 @@ const buildVerifyFunc = ({ verifyPreNoList, verifyNoList }) => {
   )
 }
 const normalizeRule = ({
-  messageBreakIn,
-  messageSuggestIn,
+  messageBreakIn = '',
+  messageSuggestIn = '',
   messageList = [],
-  selectPathList = [],
-  selectFileExtension,
-  selectFileAllowNodeModule = false,
-  selectFilterFile = selectFileAllowNodeModule
-    ? (selectFileExtension ? (path) => path.endsWith(selectFileExtension) : undefined)
-    : (selectFileExtension ? (path) => path.endsWith(selectFileExtension) && !path.includes('node_modules') : (path) => !path.includes('node_modules')),
+  selectPathList = [ '.' ],
+  selectFileExtension = '.js',
+  selectFileExcludeRegexp = /(?:node_modules|-gitignore)/, // not check `node_modules` or `*-gitignore`
+  selectFilterFile = selectFileExcludeRegexp
+    ? (selectFileExtension ? (path) => path.endsWith(selectFileExtension) && !selectFileExcludeRegexp.test(path) : (path) => !selectFileExcludeRegexp.test(path))
+    : (selectFileExtension ? (path) => path.endsWith(selectFileExtension) : undefined),
   verifyPreNoList,
   verifyNoList,
   verifyFunc = buildVerifyFunc({ verifyPreNoList, verifyNoList })
@@ -37,67 +37,75 @@ const normalizeRule = ({
   }
 }
 
-const VERIFY_RULE_LIST = [ {
-  messageList: [ 'use `extraPresetList/extraPluginList` instead of `presetExtra/pluginExtra` for `getBabelConfig/getWebpackBabelConfig`' ],
+const VERIFY_RULE_LIST = [ { // @dr-js/core break change
+  messageBreakIn: '@dr-js/core@0.2.0-dev.0',
+  messageList: [ 'use `applyReceiveFileListListener` instead of `applyDragFileListListener` from `browser/DOM`' ],
+  verifyNoList: [ 'applyDragFileListListener' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.2.0-dev.5',
+  messageList: [ 'use `modifyRename/renamePath/renameDirectoryInfoTree` instead of `modifyMove/movePath/moveDirectoryInfoTree`' ],
+  verifyNoList: [ 'modifyMove', 'movePath', 'moveDirectoryInfoTree' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.0',
+  messageList: [ 'mass code sort in `node/data/Stream`' ],
+  verifyNoList: [ 'receiveBufferAsync', 'sendBufferAsync', 'pipeStreamAsync', 'createReadlineFromStreamAsync' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.1',
+  messageList: [ 'use `requestHttp` instead of `requestAsync` from `node/net`' ],
+  verifyNoList: [ 'requestAsync' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.1',
+  messageList: [ 'use `objectFilter` instead of `objectDeleteUndefined`' ],
+  verifyNoList: [ 'objectDeleteUndefined' ]
+}, { // @dr-js/node break change
+  messageBreakIn: '@dr-js/node@0.2.0-dev.4',
+  messageList: [ 'use `path:rename/PATH_RENAME` instead of `path:move/PATH_MOVE`' ],
+  verifyNoList: [ 'path:move', 'PATH_MOVE' ]
+}, {
+  messageBreakIn: '@dr-js/node@0.3.0-dev.0',
+  messageList: [ ' `fileTLS*` option of `configureServerPack` from `module/ServerPack`, use `TLSSNIConfig|TLSDHParam` instead' ],
+  verifyNoList: [ 'fileTLS' ]
+}, { // @dr-js/dev break change
   messageBreakIn: 'dr-dev@0.0.6-dev.1',
+  messageList: [ 'use `extraPresetList/extraPluginList` instead of `presetExtra/pluginExtra` for `getBabelConfig/getWebpackBabelConfig`' ],
   selectPathList: [ 'babel.config.js', 'script/' ],
-  selectFileExtension: '.js',
   verifyPreNoList: [ 'getBabelConfig', 'getWebpackBabelConfig' ],
   verifyNoList: [ 'presetExtra', 'pluginExtra' ]
 }, {
-  messageList: [ 'use `execShell` instead of `execOptionRoot`' ],
+  messageBreakIn: '@dr-js/dev@0.3.0-dev.2',
+  messageList: [ 'use `pathAutoLicenseFile` instead of `pathLicenseFile`' ],
+  verifyNoList: [ 'pathLicenseFile' ]
+}, {
+  messageBreakIn: '@dr-js/dev@0.3.0-dev.2',
+  messageList: [ 'use `getSourceJsFileListFromPathList` instead of `getScriptFileListFromPathList`' ],
+  verifyNoList: [ 'getScriptFileListFromPathList' ]
+}, {
+  messageBreakIn: '@dr-js/dev@0.3.0-dev.2',
+  messageList: [ 'use `collectSourceJsRouteMap` instead of `collectSourceRouteMap`' ],
+  verifyNoList: [ 'collectSourceRouteMap' ]
+}, { // suggest
   messageSuggestIn: '@dr-js/dev@0.1.1',
+  messageList: [ 'use `execShell` instead of `execOptionRoot`' ],
   selectPathList: [ 'script/' ],
-  selectFileExtension: '.js',
   verifyNoList: [ 'execOptionRoot' ]
 }, {
-  messageList: [ 'use `logger` directly instead of `logger: { padLog }`' ],
   messageSuggestIn: '@dr-js/dev@0.1.1',
+  messageList: [ 'use `logger` directly instead of `logger: { padLog }`' ],
   selectPathList: [ 'script/' ],
-  selectFileExtension: '.js',
   verifyNoList: [ 'logger: { padLog' ]
 }, {
-  messageList: [ 'use `JSON.parse(String(readFile()))` instead of `JSON.parse(readFile())`' ],
   messageSuggestIn: '@dr-js/dev@0.2.0-dev.1',
-  selectPathList: [ 'script/', 'source/', 'source-bin/' ],
-  selectFileExtension: '.js',
+  messageList: [ 'use `JSON.parse(String(readFile()))` instead of `JSON.parse(readFile())`' ],
   verifyNoList: [ 'JSON.parse(readFile', 'JSON.parse(await readFile' ]
 }, {
-  messageList: [ 'use `modifyRename/renamePath/renameDirectoryInfoTree` instead of `modifyMove/movePath/moveDirectoryInfoTree`' ],
-  messageBreakIn: '@dr-js/core@0.2.0-dev.5',
-  selectPathList: [ 'script/', 'source/', 'source-bin/' ],
-  selectFileExtension: '.js',
-  verifyNoList: [ 'modifyMove', 'movePath', 'moveDirectoryInfoTree' ]
-}, {
-  messageList: [ 'use `path:rename/PATH_RENAME` instead of `path:move/PATH_MOVE`' ],
-  messageBreakIn: '@dr-js/node@0.2.0-dev.4',
-  selectPathList: [ 'script/', 'source/', 'source-bin/' ],
-  selectFileExtension: '.js',
-  verifyNoList: [ 'path:move', 'PATH_MOVE' ]
-}, {
-  messageList: [ 'add `isTest` before `verifyGitStatusClean` to allow dev packing' ],
   messageSuggestIn: '@dr-js/dev@0.2.3-dev.0',
+  messageList: [ 'add `isTest` before `verifyGitStatusClean` to allow dev packing' ],
   selectPathList: [ 'script/' ],
-  selectFileExtension: '.js',
   verifyNoList: [ '  await verifyGitStatusClean({ fromRoot, logger })' ]
 }, {
-  messageList: [ 'use `resolve(...)` instead of `resolve(process.cwd(), ...)`' ],
   messageSuggestIn: '@dr-js/dev@0.2.3-dev.0',
-  selectPathList: [ 'script/', 'source/', 'source-bin/' ],
-  selectFileExtension: '.js',
+  messageList: [ 'use `resolve(...)` instead of `resolve(process.cwd(), ...)`' ],
   verifyNoList: [ 'resolve(process.cwd()' ]
-}, {
-  messageList: [ 'mass code sort in `node/data/Stream`' ],
-  messageBreakIn: '@dr-js/dev@0.3.0-dev.0',
-  selectPathList: [ 'script/', 'source/', 'source-bin/' ],
-  selectFileExtension: '.js',
-  verifyNoList: [ 'receiveBufferAsync', 'sendBufferAsync', 'pipeStreamAsync', 'createReadlineFromStreamAsync' ]
-}, {
-  messageList: [ 'deprecated' ],
-  messageBreakIn: '@dr-js/dev@0.3.0-dev.1',
-  selectPathList: [ 'script/', 'source/', 'source-bin/' ],
-  selectFileExtension: '.js',
-  verifyNoList: [ 'objectDeleteUndefined', 'requestAsync' ]
 } ].map(normalizeRule)
 
 module.exports = { VERIFY_RULE_LIST }

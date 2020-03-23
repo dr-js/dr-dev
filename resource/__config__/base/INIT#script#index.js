@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { execSync } from 'child_process'
 
-import { getScriptFileListFromPathList } from '@dr-js/dev/module/node/file'
+import { getSourceJsFileListFromPathList } from '@dr-js/dev/module/node/filePreset'
 import { initOutput, packOutput, verifyNoGitignore, verifyGitStatusClean, verifyOutputBin, publishOutput } from '@dr-js/dev/module/output'
 import { getTerserOption, minifyFileListWithTerser } from '@dr-js/dev/module/minify'
 import { processFileList, fileProcessorBabel } from '@dr-js/dev/module/fileProcessor'
@@ -21,7 +21,7 @@ const buildOutput = async ({ logger }) => {
 }
 
 const processOutput = async ({ logger }) => {
-  const fileList = await getScriptFileListFromPathList([ '.' ], fromOutput)
+  const fileList = await getSourceJsFileListFromPathList([ '.' ], fromOutput)
   let sizeReduce = 0
   sizeReduce += await minifyFileListWithTerser({ fileList, option: getTerserOption(), rootPath: PATH_OUTPUT, logger })
   sizeReduce += await processFileList({ fileList, processor: fileProcessorBabel, rootPath: PATH_OUTPUT, logger })

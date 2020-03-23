@@ -30,15 +30,21 @@
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
-  - `findPathFragList`, `getFileListFromPathList`, `getScriptFileListFromPathList`, `resetDirectory`, `withTempDirectory`
+  - `findPathFragList`, `getFileListFromPathList`, `resetDirectory`, `withTempDirectory`
++ 📄 [source/node/filePreset.js](source/node/filePreset.js)
+  - `getSourceJsFileListFromPathList`
 + 📄 [source/node/logger.js](source/node/logger.js)
   - `getLogger`
++ 📄 [source/node/preset.js](source/node/preset.js)
+  - `FILTER_JS_FILE`, `FILTER_SOURCE_JS_FILE`, `FILTER_SOURCE_PATH`, `FILTER_TEST_JS_FILE`, `FILTER_TEST_PATH`
 + 📄 [source/node/run.js](source/node/run.js)
   - `getGitBranch`, `getGitCommitHash`, `withRunBackground`
 + 📄 [source/node/export/generate.js](source/node/export/generate.js)
   - `EXPORT_HOIST_LIST_KEY`, `EXPORT_LIST_KEY`, `HOIST_LIST_KEY`, `generateExportInfo`, `generateIndexScript`
 + 📄 [source/node/export/parse.js](source/node/export/parse.js)
-  - `collectSourceRouteMap`, `createExportParser`
+  - `createExportParser`
++ 📄 [source/node/export/parsePreset.js](source/node/export/parsePreset.js)
+  - `collectSourceJsRouteMap`
 + 📄 [source/node/export/renderMarkdown.js](source/node/export/renderMarkdown.js)
   - `escapeMarkdownLink`, `getMarkdownDirectoryLink`, `getMarkdownFileLink`, `getMarkdownHeaderLink`, `renderMarkdownAutoAppendHeaderLink`, `renderMarkdownBlockQuote`, `renderMarkdownExportPath`, `renderMarkdownExportTree`, `renderMarkdownTable`
 + 📄 [source/node/npm/comboCommand.js](source/node/npm/comboCommand.js)
@@ -203,8 +209,8 @@
 | @babel/cli                              |   ^7.8.4 |
 | @babel/core                             |   ^7.9.0 |
 | @babel/plugin-proposal-class-properties |   ^7.8.3 |
-| @babel/preset-env                       |   ^7.9.0 |
-| @babel/preset-react                     |   ^7.9.1 |
+| @babel/preset-env                       |   ^7.9.5 |
+| @babel/preset-react                     |   ^7.9.4 |
 | @babel/register                         |   ^7.9.0 |
 | babel-eslint                            |  ^10.1.0 |
 | babel-loader                            |   ^8.1.0 |
@@ -213,13 +219,13 @@
 | babel-plugin-styled-components          |  ^1.10.7 |
 | cross-env                               |   ^7.0.2 |
 | eslint                                  |   ^6.8.0 |
-| eslint-plugin-import                    |  ^2.20.1 |
-| eslint-plugin-node                      |  ^11.0.0 |
+| eslint-plugin-import                    |  ^2.20.2 |
+| eslint-plugin-node                      |  ^11.1.0 |
 | eslint-plugin-promise                   |   ^4.2.1 |
 | eslint-plugin-react                     |  ^7.19.0 |
 | prop-types                              |  ^15.7.2 |
 | puppeteer                               |   ^2.1.1 |
 | react                                   | ^16.13.1 |
-| styled-components                       |   ^5.0.1 |
-| terser                                  |   ^4.6.7 |
-| webpack                                 |  ^4.42.0 |
+| styled-components                       |   ^5.1.0 |
+| terser                                  |  ^4.6.11 |
+| webpack                                 |  ^4.42.1 |

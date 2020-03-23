@@ -55,7 +55,7 @@ describe('Output', () => {
       // copyPathList = [ 'README.md' ],
       copyMapPathList: [ [ '.gitignore', '.gitignore-map-0' ], [ '.gitignore', '.gitignore-map-1' ] ],
       replaceReadmeNonPackageContent, // set to false to skip
-      // pathLicenseFile = fromRoot('LICENSE'), // set to false, or do not set `packageJSON.license` to skip
+      // pathAutoLicenseFile = fromRoot('LICENSE'), // set to false, or do not set `packageJSON.license` to skip
       logger
     })
 

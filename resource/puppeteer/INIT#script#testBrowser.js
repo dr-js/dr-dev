@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
 
-import { getScriptFileListFromPathList } from '@dr-js/dev/module/node/file'
+import { getFileListFromPathList } from '@dr-js/dev/module/node/file'
 import { compileWithWebpack, commonFlag } from '@dr-js/dev/module/webpack'
 import { testWithPuppeteer } from '@dr-js/dev/module/puppeteer'
 import { runMain } from '@dr-js/dev/module/main'
@@ -22,7 +22,7 @@ runMain(async (logger) => {
   const config = getCommonWebpackConfig({
     output: { path: PATH_TEMP, filename: '[name].js', library: 'TEST_BROWSER', libraryTarget: 'window' },
     entry: {
-      [ NAME_TEST_BROWSER ]: await getScriptFileListFromPathList([
+      [ NAME_TEST_BROWSER ]: await getFileListFromPathList([
         'source'
       ], fromRoot, (path) => path.endsWith('.test.js'))
     }

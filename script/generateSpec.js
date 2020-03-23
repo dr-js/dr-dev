@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { writeFileSync } from 'fs'
 
-import { collectSourceRouteMap } from 'source/node/export/parse'
+import { collectSourceJsRouteMap } from 'source/node/export/parsePreset'
 import { generateExportInfo } from 'source/node/export/generate'
 import { getMarkdownFileLink, renderMarkdownAutoAppendHeaderLink, renderMarkdownBlockQuote, renderMarkdownTable, renderMarkdownExportPath } from 'source/node/export/renderMarkdown'
 import { runMain } from 'source/main'
@@ -14,7 +14,7 @@ const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 
 runMain(async (logger) => {
   logger.log('generate exportInfoMap')
-  const sourceRouteMap = await collectSourceRouteMap({ pathRootList: [ fromRoot('source') ], logger })
+  const sourceRouteMap = await collectSourceJsRouteMap({ pathRootList: [ fromRoot('source') ], logger })
   const exportInfoMap = generateExportInfo({ sourceRouteMap })
 
   logger.log('collect dependencyMap')

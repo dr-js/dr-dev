@@ -9,8 +9,6 @@ import { modifyDelete, modifyDeleteForce } from '@dr-js/core/module/node/file/Mo
 
 const DEFAULT_RESOLVE_PATH = (path) => path
 
-const DEFAULT_FILTER_SCRIPT_FILE = (path) => path.endsWith('.js') && !path.endsWith('.test.js')
-
 const getFileListFromPathList = async (
   pathList = [],
   resolvePath = DEFAULT_RESOLVE_PATH,
@@ -21,12 +19,6 @@ const getFileListFromPathList = async (
   if (filterFile) resultFileList = resultFileList.filter(filterFile)
   return resultFileList
 }
-
-const getScriptFileListFromPathList = async (
-  pathList = [],
-  resolvePath = DEFAULT_RESOLVE_PATH,
-  filterFile = DEFAULT_FILTER_SCRIPT_FILE
-) => getFileListFromPathList(pathList, resolvePath, filterFile)
 
 const findPathFragList = async (root, pathFragList = []) => {
   const foundFragList = [ root ]
@@ -66,7 +58,6 @@ const resetDirectory = async (path) => {
 
 export {
   getFileListFromPathList,
-  getScriptFileListFromPathList,
   findPathFragList,
   withTempDirectory,
   resetDirectory
