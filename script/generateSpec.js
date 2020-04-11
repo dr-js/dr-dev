@@ -13,14 +13,14 @@ const PATH_ROOT = resolve(__dirname, '..')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 
 runMain(async (logger) => {
-  logger.log('generate exportInfoMap')
+  logger.padLog('generate exportInfoMap')
   const sourceRouteMap = await collectSourceJsRouteMap({ pathRootList: [ fromRoot('source') ], logger })
   const exportInfoMap = generateExportInfo({ sourceRouteMap })
 
-  logger.log('collect dependencyMap')
+  logger.padLog('collect dependencyMap')
   const packageInfoMap = await collectDependency(fromRoot('resource'), 'recursive')
 
-  logger.log('output: SPEC.md')
+  logger.padLog('output: SPEC.md')
   writeFileSync(fromRoot('SPEC.md'), [
     '# Specification',
     '',

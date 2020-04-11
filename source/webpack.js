@@ -56,8 +56,8 @@ const getLogStats = (isWatch, { padLog, log }) => {
   return (stats) => {
     if (stats.compilation) return logSingleStats(stats) // Stats (for single config)
     if (stats.stats) return stats.stats.map(logSingleStats) // MultiStats (for more than one config)
-    console.warn(`[getLogStats] unexpected statData`, stats)
-    throw new Error(`[getLogStats] unexpected statData`)
+    console.warn('[getLogStats] unexpected statData', stats)
+    throw new Error('[getLogStats] unexpected statData')
   }
 }
 const formatSize = (size) => `${binary(size)}B`
@@ -66,7 +66,7 @@ const formatTag = (tagMap) => Object.entries(tagMap).map(([ k, v ]) => v && k).f
 const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGroupOutput, logger }) => {
   const { log } = logger
   if (profileOutput) {
-    isWatch && console.warn(`[watch] warning: skipped generate profileOutput`)
+    isWatch && console.warn('[watch] warning: skipped generate profileOutput')
     config.profile = true
   }
 
@@ -74,11 +74,11 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGr
   const logStats = getLogStats(isWatch, logger)
 
   if (isWatch) {
-    log(`[watch] start`)
+    log('[watch] start')
     compiler.watch({ aggregateTimeout: 512, poll: undefined }, getStatsCheck((error) => log(`error: ${error}`), logStats))
     addExitListenerSync((exitState) => log(`[watch] exit with state: ${JSON.stringify(exitState)}`))
   } else {
-    log(`[compile] start`)
+    log('[compile] start')
     const stats = await new Promise((resolve, reject) => compiler.run(getStatsCheck(reject, resolve)))
     logStats(stats)
     let statsJSON
@@ -144,7 +144,7 @@ const commonFlag = async ({
         __DEV__: !isProduction,
         ...extraDefine
       }),
-      isNodeBin && new webpack.BannerPlugin({ banner: `#!/usr/bin/env node`, raw: true }),
+      isNodeBin && new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
       ...extraPluginList
     ].filter(Boolean),
     optimization: { minimize: isMinimize },

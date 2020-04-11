@@ -1,7 +1,7 @@
 {
   "EXPORT": [
     "INIT#.eslintrc.js",
-    "eslint-config-almost-standard-v13.js"
+    "eslint-config-almost-standard-v14.js"
   ],
   "dependencies": {
     "eslint": "^6.8.0",

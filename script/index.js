@@ -59,7 +59,7 @@ const packResource = async ({ packageJSON, logger }) => {
   } else if (isPublish || isPublishDev) throw new Error('[unsafe] should not be used when publish')
   else logger.padLog('[unsafe] skipped check-outdated')
 
-  logger.padLog('clear pack')
+  logger.log('clear pack')
   await resetDirectory(fromPackageOutput())
 
   const configFileList = await getFileListFromPathList([ './resource/__config__/' ], fromRoot, (path) => /dev-[\w-]+\.json/.test(path))

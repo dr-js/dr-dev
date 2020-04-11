@@ -25,7 +25,7 @@ const processOutput = async ({ logger }) => {
   let sizeReduce = 0
   sizeReduce += await minifyFileListWithTerser({ fileList, option: getTerserOption(), rootPath: PATH_OUTPUT, logger })
   sizeReduce += await processFileList({ fileList, processor: fileProcessorBabel, rootPath: PATH_OUTPUT, logger })
-  logger.log(`size reduce: ${sizeReduce}B`)
+  logger.padLog(`size reduce: ${sizeReduce}B`)
 }
 
 runMain(async (logger) => {

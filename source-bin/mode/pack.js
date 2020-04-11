@@ -62,9 +62,9 @@ const doPack = async ({
     writeFileSync(resolve(pathOutput, 'README.md'), [
       `# ${name}`,
       '',
-      `[![i:npm]][l:npm]`,
-      `[![i:size]][l:size]`,
-      `[![i:npm-dev]][l:npm]`,
+      '[![i:npm]][l:npm]',
+      '[![i:size]][l:size]',
+      '[![i:npm-dev]][l:npm]',
       '',
       `${description}`,
       '',

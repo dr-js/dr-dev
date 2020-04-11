@@ -51,7 +51,7 @@ const parseCommand = (
 
     const subCommandList = scriptString.split(' && ')
     return warpBashSubShell(subCommandList.map((command) => parseCommand(packageJSON, command, level + 1, tabLog) || command).join('\n'))
-  } else tabLog(level, `? not combo command, I guess`)
+  } else tabLog(level, '? not combo command, I guess')
 
   if (SIMPLE_BASH_COMMAND_SET.has(scriptLeadingCommand)) {
     tabLog(level, '- directly executable simple command, return')
@@ -63,7 +63,7 @@ const parseCommand = (
     tabLog(level, '- env prefixing command, return')
 
     return scriptString
-  } else tabLog(level, `? not env prefixing command, I guess`)
+  } else tabLog(level, '? not env prefixing command, I guess')
 
   // TODO: consider allow package dependency command
   // TODO: consider allow package dependency command

@@ -1,4 +1,4 @@
 module.exports = {
-  extends: [ './node_modules/@dr-js/dev-web/EXPORT/eslint-config-almost-standard-v13' ],
+  extends: [ './resource/eslint/eslint-config-almost-standard-v14' ],
   globals: { __ENV_NODE__: false }
 }

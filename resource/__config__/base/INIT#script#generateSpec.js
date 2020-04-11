@@ -16,7 +16,7 @@ runMain(async (logger) => {
   const sourceRouteMap = await collectSourceJsRouteMap({ pathRootList: [ fromRoot('source') ], logger })
   const exportInfoMap = generateExportInfo({ sourceRouteMap })
 
-  logger.log('output: SPEC.md')
+  logger.padLog('output: SPEC.md')
   writeFileSync(fromRoot('SPEC.md'), [
     '# Specification',
     '',

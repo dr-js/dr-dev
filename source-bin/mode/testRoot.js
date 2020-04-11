@@ -18,7 +18,7 @@ const doTestRoot = async ({
     ? (fileList, { path }) => testPathFunc(path) && fileList.push(path)
     : (fileList, { path }) => fileList.push(path)
   )
-  if (!fileList.length) throw new Error([ `no test file selected`, `with suffix "${testFileSuffixList.join(',')}"`, `from ${testRoot}` ].filter(Boolean).join(' '))
+  if (!fileList.length) throw new Error([ 'no test file selected', `with suffix "${testFileSuffixList.join(',')}"`, `from ${testRoot}` ].filter(Boolean).join(' '))
 
   for (const testRequire of testRequireList) { // load pre require, mostly `@babel/register`
     try { require(testRequire) } catch (error) {

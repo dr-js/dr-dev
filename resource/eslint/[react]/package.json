@@ -2,7 +2,7 @@
   "IMPORT": [ "../" ],
   "EXPORT": [
     "INIT#.eslintrc.js",
-    "eslint-config-almost-standard-jsx-v7.js"
+    "eslint-config-almost-standard-jsx-v8.js"
   ],
   "dependencies": {
     "eslint-plugin-react": "^7.19.0",

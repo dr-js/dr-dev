@@ -22,8 +22,8 @@ const runNpx = async (
 ) => {
   const npx = tryRequireGlobal('npm/node_modules/libnpx') // borrow package from npm
   const pathNpmCli = fromPathGlobalNodeModules('npm/bin/npm-cli.js') // optional, something like `path.join(__dirname, 'node_modules', 'npm', 'bin', 'npm-cli.js')`
-  tabLog(1, `args:`, ...args)
-  tabLog(1, `pathNpmCli:`, pathNpmCli)
+  tabLog(1, 'args:', ...args)
+  tabLog(1, 'pathNpmCli:', pathNpmCli)
   return npx(npx.parseArgs([
     process.argv[ 0 ], // node
     process.argv[ 1 ], // this script

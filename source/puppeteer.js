@@ -73,9 +73,9 @@ const wrapTestScriptStringToHTML = async ({
   testTag,
   timeoutTest = DEFAULT_TIMEOUT_TEST
 }) => [
-  `<!DOCTYPE html>`,
-  `<meta charset="utf-8">`,
-  `<link rel="icon" href="data:,">`, // stop fetch favicon
+  '<!DOCTYPE html>',
+  '<meta charset="utf-8">',
+  '<link rel="icon" href="data:,">', // stop fetch favicon
   `<title>${testTag}</title>`,
   `<script>${await readFileAsync(require.resolve('@dr-js/dev/browser/test.js'))}</script>`,
   `<script>window.DrDevTest.TEST_SETUP({ timeout: ${timeoutTest} })</script>`,

@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 
-import { runMain } from 'source/main'
 import { compileWithWebpack, commonFlag } from 'source/webpack'
+import { runMain } from 'source/main'
 
 const PATH_ROOT = resolve(__dirname, '..')
 const PATH_OUTPUT = resolve(__dirname, '../output-gitignore')

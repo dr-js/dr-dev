@@ -46,13 +46,14 @@ const initVerify = async (pathRoot, VERIFY_RULE_LIST) => {
       if (!ruleSelectBundleMap.has(selectPath)) {
         const fileList = await getFileList(resolve(pathRoot, selectPath)).catch((error) => {
           console.warn(`[initVerify] invalid selectPath: ${selectPath}`)
-          __DEV__ && console.warn(`[initVerify]`, error)
+          __DEV__ && console.warn('[initVerify]', error)
           return []
         })
         ruleSelectBundleMap.set(selectPath, { fileList, ruleList: [ rule ] })
       } else ruleSelectBundleMap.get(selectPath).ruleList.push(rule)
     }
   }
+  let verifyFileCount = 0
   const failedFileInfoMap = new Map()
   __DEV__ && console.log(`ruleSelectBundleMap.size: ${ruleSelectBundleMap.size}`)
   for (const [ selectPath, { fileList, ruleList } ] of ruleSelectBundleMap) {
@@ -64,13 +65,14 @@ const initVerify = async (pathRoot, VERIFY_RULE_LIST) => {
         if (!selectFilterFile(file)) continue // filtered
         __DEV__ && console.log(`      - check: ${messageList.join(' ')}`)
         const { result, error } = await catchAsync(verifyFunc, fileString)
+        verifyFileCount++
         if (result) continue
         if (!failedFileInfoMap.has(file)) failedFileInfoMap.set(file, [ { messageList, error } ])
         else failedFileInfoMap.get(file).push({ messageList, error })
       }
     }
   }
-  console.log(`[initVerify] failed file: ${failedFileInfoMap.size}`)
+  console.log(`[initVerify] failed: ${failedFileInfoMap.size} of total: ${verifyFileCount} file`)
   for (const [ file, failedList ] of failedFileInfoMap) {
     console.warn(`  - FAILED: ${file}`)
     for (const { messageList, error } of failedList) {

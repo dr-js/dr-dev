@@ -1,8 +1,9 @@
+// UPDATE: https://github.com/standard/eslint-config-standard/compare/v13.0.1...v14.1.1#diff-1761f4f4ee815f0c4156b931d737ff32
 // EDIT: from https://github.com/standard/eslint-config-standard/blob/v13.0.1/eslintrc.json
 
 module.exports = {
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     ecmaFeatures: { jsx: true },
     sourceType: 'module'
   },
@@ -11,7 +12,7 @@ module.exports = {
 
   plugins: [ 'import', 'node', 'promise' ], // plugins: [ 'import', 'node', 'promise', 'standard' ], // EDIT
 
-  globals: { document: false, navigator: false, window: false, __DEV__: false }, // globals: { document: false, navigator: false, window: false },
+  globals: { document: 'readonly', navigator: 'readonly', window: 'readonly', __DEV__: 'readonly' }, // globals: { document: 'readonly', navigator: 'readonly', window: 'readonly' }, // EDIT
 
   rules: {
     'accessor-pairs': 'error',
@@ -27,6 +28,7 @@ module.exports = {
     'constructor-super': 'error',
     'curly': [ 'error', 'multi-line' ],
     'dot-location': [ 'error', 'property' ],
+    // 'dot-notation': [ 'error', { allowKeywords: true } ], // EDIT
     'eol-last': 'error',
     'eqeqeq': [ 'error', 'always', { null: 'ignore' } ],
     'func-call-spacing': [ 'error', 'never' ],
@@ -44,16 +46,18 @@ module.exports = {
       ObjectExpression: 1,
       ImportDeclaration: 1,
       flatTernaryExpressions: false,
-      ignoreComments: false
+      ignoreComments: false,
+      ignoredNodes: [ 'TemplateLiteral *' ]
     } ],
     'key-spacing': [ 'error', { beforeColon: false, afterColon: true } ],
     'keyword-spacing': [ 'error', { before: true, after: true } ],
-    'lines-between-class-members': [ 'error', 'always' ],
-    'new-cap': [ 'error', { newIsCap: true, capIsNew: false } ],
+    'lines-between-class-members': [ 'error', 'always', { exceptAfterSingleLine: true } ],
+    'new-cap': [ 'error', { newIsCap: true, capIsNew: false, properties: true } ],
     'new-parens': 'error',
     'no-array-constructor': 'error',
     'no-async-promise-executor': 'error',
     'no-caller': 'error',
+    'no-case-declarations': 'error',
     'no-class-assign': 'error',
     'no-compare-neg-zero': 'error',
     'no-cond-assign': 'error',
@@ -83,7 +87,6 @@ module.exports = {
     'no-invalid-regexp': 'error',
     'no-irregular-whitespace': 'error',
     'no-iterator': 'error',
-    'no-label-var': 'error',
     'no-labels': [ 'error', { allowLoop: false, allowSwitch: false } ],
     'no-lone-blocks': 'error',
     'no-misleading-character-class': 'error',
@@ -112,8 +115,7 @@ module.exports = {
     'no-redeclare': [ 'error', { builtinGlobals: false } ],
     'no-regex-spaces': 'error',
     'no-return-assign': [ 'error', 'except-parens' ],
-    'no-return-await': 'error',
-    'no-self-assign': 'error',
+    'no-self-assign': [ 'error', { props: true } ],
     'no-self-compare': 'error',
     'no-sequences': 'error',
     'no-shadow-restricted-names': 'error',
@@ -140,17 +142,19 @@ module.exports = {
     'no-useless-escape': 'error',
     'no-useless-rename': 'error',
     'no-useless-return': 'error',
+    'no-void': 'error',
     'no-whitespace-before-property': 'error',
     'no-with': 'error',
+    'object-curly-newline': [ 'error', { multiline: true, consistent: true } ],
     'object-curly-spacing': [ 'error', 'always' ],
     // 'object-property-newline': [ 'error', { allowMultiplePropertiesPerLine: true } ], // EDIT
     'one-var': [ 'error', { initialized: 'never' } ],
-    'operator-linebreak': [ 'error', 'after', { overrides: { '?': 'before', ':': 'before' } } ],
+    'operator-linebreak': [ 'error', 'after', { overrides: { '?': 'before', ':': 'before', '|>': 'before' } } ],
     'padded-blocks': [ 'error', { blocks: 'never', switches: 'never', classes: 'never' } ],
     'prefer-const': [ 'error', { destructuring: 'all' } ],
     'prefer-promise-reject-errors': 'error',
     'quote-props': [ 'error', 'as-needed', { unnecessary: false } ], // 'quote-props': [ 'error', 'as-needed' ], // EDIT
-    'quotes': [ 'error', 'single', { avoidEscape: true, allowTemplateLiterals: true } ],
+    'quotes': [ 'error', 'single', { avoidEscape: true, allowTemplateLiterals: false } ],
     'rest-spread-spacing': [ 'error', 'never' ],
     'semi': [ 'error', 'never' ],
     'semi-spacing': [ 'error', { before: false, after: true } ],
@@ -175,6 +179,7 @@ module.exports = {
 
     'import/export': 'error',
     'import/first': 'error',
+    'import/no-absolute-path': [ 'error', { esmodule: true, commonjs: true, amd: false } ],
     'import/no-duplicates': 'error',
     'import/no-named-default': 'error',
     'import/no-webpack-loader-syntax': 'error',
