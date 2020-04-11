@@ -90,9 +90,9 @@ const VERIFY_RULE_LIST = [ { // @dr-js/core break change
   verifyNoList: [ 'execOptionRoot' ]
 }, {
   messageSuggestIn: '@dr-js/dev@0.1.1',
-  messageList: [ 'use `logger` directly instead of `logger: { padLog }`' ],
+  messageList: [ 'use `logger` directly instead of `logger: { ... }` or `const { ... } = logger`' ],
   selectPathList: [ 'script/' ],
-  verifyNoList: [ 'logger: { padLog' ]
+  verifyNoList: [ 'logger: { padLog', 'logger: { log', '} = logger' ]
 }, {
   messageSuggestIn: '@dr-js/dev@0.2.0-dev.1',
   messageList: [ 'use `JSON.parse(String(readFile()))` instead of `JSON.parse(readFile())`' ],

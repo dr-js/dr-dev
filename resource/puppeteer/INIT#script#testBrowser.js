@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
 
+import { FILTER_TEST_JS_FILE } from '@dr-js/dev/module/node/preset'
 import { getFileListFromPathList } from '@dr-js/dev/module/node/file'
 import { compileWithWebpack, commonFlag } from '@dr-js/dev/module/webpack'
 import { testWithPuppeteer } from '@dr-js/dev/module/puppeteer'
@@ -24,7 +25,7 @@ runMain(async (logger) => {
     entry: {
       [ NAME_TEST_BROWSER ]: await getFileListFromPathList([
         'source'
-      ], fromRoot, (path) => path.endsWith('.test.js'))
+      ], fromRoot, FILTER_TEST_JS_FILE)
     }
   })
 

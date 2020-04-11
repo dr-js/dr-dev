@@ -2,7 +2,7 @@ import { resolve } from 'path'
 import { execSync } from 'child_process'
 
 import { getSourceJsFileListFromPathList } from '@dr-js/dev/module/node/filePreset'
-import { initOutput, packOutput, verifyNoGitignore, verifyGitStatusClean, verifyOutputBin, publishOutput } from '@dr-js/dev/module/output'
+import { initOutput, packOutput, clearOutput, verifyNoGitignore, verifyGitStatusClean, verifyOutputBin, publishOutput } from '@dr-js/dev/module/output'
 import { getTerserOption, minifyFileListWithTerser } from '@dr-js/dev/module/minify'
 import { processFileList, fileProcessorBabel } from '@dr-js/dev/module/fileProcessor'
 import { runMain, argvFlag } from '@dr-js/dev/module/main'
@@ -44,6 +44,7 @@ runMain(async (logger) => {
   isTest && await processOutput({ logger }) // once more
   isTest && logger.padLog('test output')
   isTest && execShell('npm run test-output')
+  await clearOutput({ fromOutput, logger })
   await verifyOutputBin({ fromOutput, packageJSON, logger })
   isTest && await verifyGitStatusClean({ fromRoot, logger })
   const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })

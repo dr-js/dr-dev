@@ -64,7 +64,6 @@ const formatSize = (size) => `${binary(size)}B`
 const formatTag = (tagMap) => Object.entries(tagMap).map(([ k, v ]) => v && k).filter(Boolean).join(',')
 
 const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGroupOutput, logger }) => {
-  const { log } = logger
   if (profileOutput) {
     isWatch && console.warn('[watch] warning: skipped generate profileOutput')
     config.profile = true
@@ -74,11 +73,11 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGr
   const logStats = getLogStats(isWatch, logger)
 
   if (isWatch) {
-    log('[watch] start')
-    compiler.watch({ aggregateTimeout: 512, poll: undefined }, getStatsCheck((error) => log(`error: ${error}`), logStats))
-    addExitListenerSync((exitState) => log(`[watch] exit with state: ${JSON.stringify(exitState)}`))
+    logger.log('[watch] start')
+    compiler.watch({ aggregateTimeout: 512, poll: undefined }, getStatsCheck((error) => logger.log(`error: ${error}`), logStats))
+    addExitListenerSync((exitState) => logger.log(`[watch] exit with state: ${JSON.stringify(exitState)}`))
   } else {
-    log('[compile] start')
+    logger.log('[compile] start')
     const stats = await new Promise((resolve, reject) => compiler.run(getStatsCheck(reject, resolve)))
     logStats(stats)
     let statsJSON
@@ -89,7 +88,7 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGr
     if (profileOutput) {
       await createDirectory(dirname(profileOutput))
       writeFileSync(profileOutput, JSON.stringify(getStatsJSON()))
-      log(`[compile] generated profileOutput at: ${profileOutput}`)
+      logger.log(`[compile] generated profileOutput at: ${profileOutput}`)
     }
     if (namedChunkGroupOutput) {
       await createDirectory(dirname(namedChunkGroupOutput))
@@ -99,7 +98,7 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGr
         (children && children.map(({ name, namedChunkGroups }) => ({ name, namedChunkGroups }))) ||
         {}
       ))
-      log(`[compile] generated namedChunkGroupOutput at: ${namedChunkGroupOutput}`)
+      logger.log(`[compile] generated namedChunkGroupOutput at: ${namedChunkGroupOutput}`)
     }
     return stats
   }
@@ -112,9 +111,9 @@ const commonFlag = async ({
   isProduction = mode === 'production',
   profileOutput = argvFlag('profile') ? fromRoot('.temp-gitignore/profile-stat.json') : null,
   namedChunkGroupOutput = '',
-  logger: { log }
+  logger
 }) => {
-  log(`compile flag: ${JSON.stringify({ mode, isWatch, isProduction, profileOutput, namedChunkGroupOutput }, null, '  ')}`)
+  logger.log(`compile flag: ${JSON.stringify({ mode, isWatch, isProduction, profileOutput, namedChunkGroupOutput }, null, '  ')}`)
 
   const getCommonWebpackConfig = ({
     babelOption = getWebpackBabelConfig({ isProduction }),

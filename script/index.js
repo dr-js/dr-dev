@@ -1,13 +1,11 @@
 import { resolve } from 'path'
 import { execSync } from 'child_process'
 
-import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
 import { runSync } from '@dr-js/core/module/node/system/Run'
 
 import { getFileListFromPathList, resetDirectory } from 'source/node/file'
-import { FILTER_TEST_PATH } from 'source/node/preset'
 import { getSourceJsFileListFromPathList } from 'source/node/filePreset'
-import { initOutput, packOutput, verifyOutputBin, verifyNoGitignore, verifyGitStatusClean, getPublishFlag, publishOutput } from 'source/output'
+import { initOutput, packOutput, clearOutput, verifyOutputBin, verifyNoGitignore, verifyGitStatusClean, getPublishFlag, publishOutput } from 'source/output'
 import { getTerserOption, minifyFileListWithTerser } from 'source/minify'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor'
 import { runMain, argvFlag } from 'source/main'
@@ -41,12 +39,6 @@ const processOutput = async ({ logger }) => {
   sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: PATH_ROOT, logger })
   sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBrowserBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: PATH_ROOT, logger })
   logger.padLog(`size reduce: ${sizeReduce}B`)
-}
-
-const clearOutput = async ({ logger }) => {
-  logger.log('clear test')
-  const fileList = await getFileListFromPathList([ '.' ], fromOutput, FILTER_TEST_PATH)
-  for (const filePath of fileList) await modifyDelete(filePath)
 }
 
 const packResource = async ({ packageJSON, logger }) => {
@@ -100,7 +92,7 @@ runMain(async (logger) => {
   isTest && logger.padLog('test output')
   isTest && execShell('npm run test-output-library')
   isTest && execShell('npm run test-output-module')
-  await clearOutput({ logger })
+  await clearOutput({ fromOutput, logger })
   await verifyOutputBin({ fromOutput, packageJSON, logger })
   isTest && await verifyGitStatusClean({ fromRoot, logger })
   const pathPackagePack = await packOutput({ fromRoot, fromOutput, logger })

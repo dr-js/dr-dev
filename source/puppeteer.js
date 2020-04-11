@@ -93,18 +93,17 @@ const testWithPuppeteer = async ({
   logger
 }) => runWithPuppeteer({
   taskFunc: async ({ puppeteerPage }) => {
-    const { padLog, log } = logger
-    padLog(`[testWithPuppeteer] timeoutPage: ${time(timeoutPage)}, timeoutTest: ${time(timeoutTest)}`)
+    logger.padLog(`[testWithPuppeteer] timeoutPage: ${time(timeoutPage)}, timeoutTest: ${time(timeoutTest)}`)
 
     await puppeteerPage.setDefaultTimeout(timeoutPage) // for all page operation
     await puppeteerPage.setViewport({ width: 0, height: 0 }) // TODO: CHECK: if this will save render time
 
-    log('[test] init')
+    logger.log('[test] init')
     const { promise, resolve, reject } = createInsideOutPromise()
     puppeteerPage.on('console', (consoleMessage) => {
       const logType = consoleMessage.type()
       const logText = consoleMessage.text()
-      log(`[test|${logType}] ${logText}`)
+      logger.log(`[test|${logType}] ${logText}`)
       if (!logText.includes(testTag)) return
       const { [ testTag ]: { failCount } } = JSON.parse(logText)
       failCount
@@ -112,20 +111,20 @@ const testWithPuppeteer = async ({
         : resolve()
     })
 
-    log('[test] load')
+    logger.log('[test] load')
     if (testUrl) {
       const response = await puppeteerPage.goto(testUrl)
-      log('[test] page navigate status:', response.status())
+      logger.log('[test] page navigate status:', response.status())
     } else if (testScriptString) {
       const testHTML = await wrapTestScriptStringToHTML({ testScriptString, testTag, timeoutTest })
       await puppeteerPage.setContent(testHTML)
     } else throw new Error('expect set either `testUrl` or `testScriptString`')
 
-    log('[test] loaded')
+    logger.log('[test] loaded')
     const timeoutToken = setTimeout(() => reject(new Error(`${testTag} test timeout`)), timeoutTest)
     await promise
     clearTimeout(timeoutToken)
-    log('[test] done')
+    logger.log('[test] done')
   },
   logger
 })

@@ -1,10 +1,10 @@
 import { getDirectoryInfoTree, walkDirectoryInfoTree } from '@dr-js/core/module/node/file/Directory'
-import { FILTER_SOURCE_JS_FILE } from '../preset'
+import { FILTER_SOURCE_PATH } from '../preset'
 import { createExportParser } from './parse'
 
 const collectSourceJsRouteMap = async ({
   pathRootList = [],
-  pathInfoFilter = (info) => FILTER_SOURCE_JS_FILE(info.path), // return true to keep
+  pathInfoFilter = (info) => FILTER_SOURCE_PATH(info.path), // return true to keep
   logger
 }) => {
   const { parseExport, getSourceRouteMap } = createExportParser({ logger })

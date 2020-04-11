@@ -3,11 +3,12 @@ import { statSync, readFileSync, writeFileSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format'
 import { isBasicObject } from '@dr-js/core/module/common/check'
 import { getFileList } from '@dr-js/core/module/node/file/Directory'
-import { modifyCopy, modifyRename } from '@dr-js/core/module/node/file/Modify'
+import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/file/Modify'
 import { run } from '@dr-js/core/module/node/system/Run'
 
 import { __VERBOSE__ } from './node/env'
-import { resetDirectory } from './node/file'
+import { FILTER_TEST_PATH } from './node/preset'
+import { getFileListFromPathList, resetDirectory } from './node/file'
 import { writeLicenseFile } from './license'
 
 const initOutput = async ({
@@ -18,38 +19,38 @@ const initOutput = async ({
   copyMapPathList = [],
   replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip
   pathAutoLicenseFile = 'LICENSE', // set to false, or do not set `packageJSON.license` to skip
-  logger: { padLog, log }
+  logger
 }) => {
-  padLog('reset output')
+  logger.padLog('reset output')
   await resetDirectory(fromOutput())
 
-  padLog('init output package.json')
+  logger.padLog('init output package.json')
   const packageJSON = require(fromRoot('package.json'))
   for (const deleteKey of deleteKeyList) {
     delete packageJSON[ deleteKey ]
-    log(`dropped key: ${deleteKey}`)
+    logger.log(`dropped key: ${deleteKey}`)
   }
   writeFileSync(fromOutput('package.json'), JSON.stringify(packageJSON))
 
   const { license, author } = packageJSON
   if (pathAutoLicenseFile && license && author) {
-    padLog('update source license file')
+    logger.padLog('update source license file')
     writeLicenseFile(fromRoot(pathAutoLicenseFile), license, author)
     copyPathList.push(pathAutoLicenseFile)
   }
 
-  padLog('init output file')
+  logger.padLog('init output file')
   for (const [ pathFrom, pathTo ] of [ ...copyPathList.map((v) => [ v, v ]), ...copyMapPathList ]) {
     if (replaceReadmeNonPackageContent && pathFrom.endsWith('README.md')) { // change README.md NON_PACKAGE_CONTENT
       const packageContentList = String(readFileSync(fromRoot(pathFrom))).split('[//]: # (NON_PACKAGE_CONTENT)')
       if (packageContentList.length >= 2) {
         writeFileSync(fromOutput(pathTo), `${packageContentList[ 0 ].trim()}${replaceReadmeNonPackageContent}`)
-        log(`copied: ${pathFrom} (with NON_PACKAGE_CONTENT replaced to: ${JSON.stringify(replaceReadmeNonPackageContent)})`)
+        logger.log(`copied: ${pathFrom} (with NON_PACKAGE_CONTENT replaced to: ${JSON.stringify(replaceReadmeNonPackageContent)})`)
         continue
       }
     }
     await modifyCopy(fromRoot(pathFrom), fromOutput(pathTo))
-    log(`copied: ${pathFrom}`)
+    logger.log(`copied: ${pathFrom}`)
   }
 
   return packageJSON
@@ -58,9 +59,9 @@ const initOutput = async ({
 const packOutput = async ({
   fromOutput,
   fromRoot = fromOutput, // OPTIONAL, for move output .tgz file to root
-  logger: { padLog, log }
+  logger
 }) => {
-  padLog('run pack output')
+  logger.padLog('run pack output')
   await run({
     command: 'npm',
     argList: [ '--no-update-notifier', 'pack' ],
@@ -69,25 +70,31 @@ const packOutput = async ({
 
   const packName = getPackageTgzName(require(fromOutput('package.json')))
   if (fromRoot !== fromOutput) {
-    log('move to root path')
+    logger.log('move to root path')
     await modifyRename(fromOutput(packName), fromRoot(packName))
   }
-  padLog(`pack size: ${binary(statSync(fromRoot(packName)).size)}B`)
+  logger.padLog(`pack size: ${binary(statSync(fromRoot(packName)).size)}B`)
 
   return fromRoot(packName)
 }
 const getPackageTgzName = (packageJSON) => `${packageJSON.name.replace(/^@/, '').replace('/', '-')}-${packageJSON.version}.tgz`
+
+const clearOutput = async ({ fromOutput, pathList = [ '.' ], filterFile = FILTER_TEST_PATH, logger }) => {
+  logger.padLog('clear output')
+  const fileList = await getFileListFromPathList(pathList, fromOutput, filterFile)
+  for (const filePath of fileList) await modifyDelete(filePath)
+}
 
 const verifyOutputBin = async ({
   fromOutput,
   versionArgList = [ '--version' ], // DEFAULT: request version
   packageJSON: { name, version, bin },
   matchStringList = [ name, version ], // DEFAULT: expect output with full package name & version
-  logger: { padLog, log }
+  logger
 }) => {
   let pathBin = bin || './bin'
   if (isBasicObject(pathBin)) pathBin = pathBin[ Object.keys(pathBin)[ 0 ] ]
-  padLog('verify output bin working')
+  logger.padLog('verify output bin working')
   const { promise, stdoutPromise } = run({
     command: 'node',
     argList: [ pathBin, ...versionArgList ],
@@ -96,19 +103,19 @@ const verifyOutputBin = async ({
   })
   await promise
   const outputBinTest = String(await stdoutPromise)
-  log(`bin test output: ${outputBinTest}`)
+  logger.log(`bin test output: ${outputBinTest}`)
   for (const testString of matchStringList) ok(outputBinTest.includes(testString), `should output contain: ${testString}`)
 }
 
-const verifyNoGitignore = async ({ path, logger: { padLog, log } }) => {
-  padLog('verify no gitignore file left')
+const verifyNoGitignore = async ({ path, logger }) => {
+  logger.padLog('verify no gitignore file left')
   const badFileList = (await getFileList(path)).filter((path) => path.includes('gitignore'))
-  badFileList.length && log(`found gitignore file:\n  - ${badFileList.join('\n  - ')}`)
+  badFileList.length && logger.log(`found gitignore file:\n  - ${badFileList.join('\n  - ')}`)
   ok(badFileList.length === 0, `${badFileList.length} gitignore file found`)
 }
 
-const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger: { padLog } }) => {
-  padLog('verify git has nothing to commit')
+const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger }) => {
+  logger.padLog('verify git has nothing to commit')
   const { promise, stdoutPromise } = run({ command: 'git', argList: [ 'status' ], option: { cwd }, quiet: true })
   await promise
   const outputGitStatus = String(await stdoutPromise)
@@ -122,9 +129,9 @@ const publishOutput = async ({
   packageJSON: { name, version },
   pathPackagePack, // the .tgz output of pack
   extraArgs = [],
-  logger: { padLog }
+  logger
 }) => {
-  if (!isPublish && !isPublishDev) return padLog('skipped publish output, no flag found')
+  if (!isPublish && !isPublishDev) return logger.padLog('skipped publish output, no flag found')
   if (!pathPackagePack || !pathPackagePack.endsWith('.tgz')) throw new Error(`[publishOutput] invalid pathPackagePack: ${pathPackagePack}`)
   verifyPublishVersion({ version, isPublishDev })
 
@@ -136,7 +143,7 @@ const publishOutput = async ({
   // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'config', 'get', 'registry' ] })
   // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'whoami' ] })
 
-  padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
+  logger.padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
   await run({
     command: 'npm',
     argList: [
@@ -167,6 +174,7 @@ const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0
 export {
   initOutput,
   packOutput, getPackageTgzName,
+  clearOutput,
   verifyOutputBin,
   verifyNoGitignore, verifyGitStatusClean,
   publishOutput, getPublishFlag, verifyPublishVersion

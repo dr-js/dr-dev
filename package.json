@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.3.0-dev.3",
+  "version": "0.3.0-dev.4",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "check-outdated-self": "node ./output-gitignore/bin -C -i ./package.json",
     "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json output-gitignore/browser",
     "lint": "eslint ./source/ ./source-bin/ ./script/",
-    "test": "npm run script-pack-resource-test && npm run script-pack-test",
+    "test": "npm run script-pack-test && npm run script-pack-resource-test",
     "prepack": "echo \"Error: pack with script-*\" && exit 1"
   },
   "engines": {
@@ -53,7 +53,7 @@
     "@dr-js/core": "^0.3.0 || ^0.3.0-dev.2"
   },
   "devDependencies": {
-    "@dr-js/dev-web": "0.3.0-dev.2"
+    "@dr-js/dev-web": "0.3.0-dev.3"
   },
   "sideEffects": false
 }
