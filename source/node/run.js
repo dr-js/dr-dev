@@ -2,6 +2,7 @@ import { spawnSync } from 'child_process'
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time'
 import { run } from '@dr-js/core/module/node/system/Run'
+import { resolveCommandAsync } from '@dr-js/core/module/node/system/ResolveCommand'
 import {
   getProcessListAsync,
   toProcessPidMap,
@@ -39,9 +40,29 @@ const withRunBackground = async (option, task, setupDelay = 500) => {
   return result
 }
 
+// do not support shell internal command (shell: false)
+// after this should execute no more code
+// borrowed logic: https://github.com/babel/babel/blob/v7.9.5/packages/babel-node/src/babel-node.js#L86-L99
+const runAndHandover = async ({ command, argList, option }) => {
+  command = await resolveCommandAsync(command, option && option.cwd) // find full path, especially for win32
+  if (option) option = { ...option, stdio: 'inherit', shell: false } // force reset to inherit stdio and no shell
+  const { promise, subProcess } = run({ command, argList, option })
+  SOFT_SIGNAL_LIST.forEach((signal) => process.on(signal, () => subProcess.kill(signal)))
+  const { code } = await promise.catch((error) => error)
+  if (code) process.exitCode = code
+}
+const SOFT_SIGNAL_LIST = [
+  'SIGINT', // 1, soft
+  'SIGHUP', // 2, soft, ~10sec kill delay in Windows
+  'SIGQUIT', // 3, soft
+  // 'SIGKILL', // 9, hard, cannot have a listener installed
+  'SIGTERM' // 15, soft
+]
+
 export {
   getGitBranch,
   getGitCommitHash,
 
-  withRunBackground
+  withRunBackground,
+  runAndHandover
 }

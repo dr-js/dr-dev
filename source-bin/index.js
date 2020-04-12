@@ -7,6 +7,7 @@ import { doPack } from './mode/pack'
 import { doStepPackageVersion } from './mode/stepPackageVersion'
 import { doTestRootList } from './mode/testRoot'
 import { doInit } from './mode/init'
+import { doExec, doExecLoad } from './mode/exec'
 
 import { run } from '@dr-js/core/module/node/system/Run'
 
@@ -59,6 +60,19 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
         isReset: tryGet('init-reset'),
         isVerify: tryGet('init-verify'),
         pathVerifyRule: tryGetFirst('init-verify-rule')
+      })
+    case 'exec':
+      return doExec({
+        command: modeArgList[ 0 ],
+        argList: modeArgList.slice(1),
+        env: tryGetFirst('exec-env'),
+        cwd: tryGetFirst('exec-cwd')
+      })
+    case 'exec-load':
+      return doExecLoad({
+        pathInput: tryGetFirst('path-input') || '.',
+        name: modeArgList[ 0 ],
+        extraArgList: modeArgList.slice(1)
       })
     case 'parse-script':
     case 'parse-script-list':

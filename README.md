@@ -15,6 +15,7 @@ A collection of strange functions, for development
 [i:size]: https://packagephobia.now.sh/badge?p=@dr-js/dev
 [l:size]: https://packagephobia.now.sh/result?p=@dr-js/dev
 
+- [![i:p-e]][l:p-e]
 - [![i:p-b]][l:p-b]
 - [![i:p-br]][l:p-br]
 - [![i:p-w]][l:p-w]
@@ -22,6 +23,8 @@ A collection of strange functions, for development
 - [![i:p-wr]][l:p-wr]
 - [![i:p-wrsc]][l:p-wrsc]
 
+[i:p-e]: https://img.shields.io/badge/@dr--js%2Fdev-eslint-slateblue
+[l:p-e]: https://npm.im/@dr-js/dev-eslint
 [i:p-b]: https://img.shields.io/badge/@dr--js%2Fdev-babel-yellow
 [l:p-b]: https://npm.im/@dr-js/dev-babel
 [i:p-br]: https://img.shields.io/badge/@dr--js%2Fdev-babel--react-yellow

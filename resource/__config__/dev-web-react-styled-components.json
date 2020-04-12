@@ -5,9 +5,10 @@
   },
   "IMPORT": [
     "base",
-    "../eslint/[react]",
-    "../babel/[react]",
+    "../react/[styled-components]",
+    "../babel/[react]/[styled-components]",
     "../webpack/[react]/[styled-components]",
-    "../react"
+    "../eslint/[react]",
+    "base-last"
   ]
 }

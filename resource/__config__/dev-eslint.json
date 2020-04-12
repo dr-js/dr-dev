@@ -1,0 +1,10 @@
+{
+  "__FLAVOR__": {
+    "name": "@dr-js/dev-eslint",
+    "description": "ESLint"
+  },
+  "IMPORT": [
+    "base",
+    "../eslint"
+  ]
+}

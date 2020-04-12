@@ -57,6 +57,14 @@ const VERIFY_RULE_LIST = [ { // @dr-js/core break change
   messageBreakIn: '@dr-js/core@0.3.0-dev.1',
   messageList: [ 'use `objectFilter` instead of `objectDeleteUndefined`' ],
   verifyNoList: [ 'objectDeleteUndefined' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.5',
+  messageList: [ 'use `AsyncLane` with `AsyncTaskQueue` support instead of `AsyncTaskLane`' ],
+  verifyNoList: [ 'AsyncTaskLane' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.5',
+  messageList: [ 'use `AsyncTaskQueue + AsyncLane` instead of `AsyncTaskRunnerCluster`' ],
+  verifyNoList: [ 'AsyncTaskRunner' ]
 }, { // @dr-js/node break change
   messageBreakIn: '@dr-js/node@0.2.0-dev.4',
   messageList: [ 'use `path:rename/PATH_RENAME` instead of `path:move/PATH_MOVE`' ],

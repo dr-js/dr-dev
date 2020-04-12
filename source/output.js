@@ -14,7 +14,7 @@ import { writeLicenseFile } from './license'
 const initOutput = async ({
   fromOutput,
   fromRoot,
-  deleteKeyList = [ 'private', 'scripts', 'devDependencies' ],
+  deleteKeyList = [ 'private', 'scripts', 'devExecCommands', 'devDependencies' ],
   copyPathList = [ 'README.md' ],
   copyMapPathList = [],
   replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip

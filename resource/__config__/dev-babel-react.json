@@ -5,8 +5,9 @@
   },
   "IMPORT": [
     "base",
-    "../eslint/[react]",
+    "../react",
     "../babel/[react]",
-    "../react"
+    "../eslint/[react]",
+    "base-last"
   ]
 }

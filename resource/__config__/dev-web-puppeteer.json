@@ -5,9 +5,10 @@
   },
   "IMPORT": [
     "base",
-    "../eslint",
     "../babel",
+    "../webpack",
     "../puppeteer",
-    "../webpack"
+    "../eslint",
+    "base-last"
   ]
 }

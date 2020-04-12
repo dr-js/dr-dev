@@ -38,7 +38,7 @@
 + 📄 [source/node/preset.js](source/node/preset.js)
   - `FILTER_JS_FILE`, `FILTER_SOURCE_JS_FILE`, `FILTER_SOURCE_PATH`, `FILTER_TEST_JS_FILE`, `FILTER_TEST_PATH`
 + 📄 [source/node/run.js](source/node/run.js)
-  - `getGitBranch`, `getGitCommitHash`, `withRunBackground`
+  - `getGitBranch`, `getGitCommitHash`, `runAndHandover`, `withRunBackground`
 + 📄 [source/node/export/generate.js](source/node/export/generate.js)
   - `EXPORT_HOIST_LIST_KEY`, `EXPORT_LIST_KEY`, `HOIST_LIST_KEY`, `generateExportInfo`, `generateIndexScript`
 + 📄 [source/node/export/parse.js](source/node/export/parse.js)
@@ -114,6 +114,14 @@
 >         do common init file content check, will skip file modify
 >     --init-verify-rule --IVR [ARGUMENT=1+]
 >         path to verify rule, default search in "init-resource-package"
+>   --exec --E -E [OPTIONAL] [ARGUMENT=1+]
+>       exec command, allow set env and cwd: $@=command, ...argList
+>     --exec-env --EE [ARGUMENT=0-1]
+>         use URLSearchParams format String, or key-value Object
+>     --exec-cwd --EC [ARGUMENT=0-1]
+>         reset cwd to path
+>   --exec-load --EL [OPTIONAL] [ARGUMENT=1+]
+>       load and exec command from package.json[ "devExecCommands" ]: $@=commandName, ...extraArgList
 >   --parse-script --ps [OPTIONAL] [ARGUMENT=1+]
 >       parse and echo: $@=scriptName,...extraArgs
 >   --parse-script-list --psl [OPTIONAL] [ARGUMENT=1+]
@@ -156,6 +164,10 @@
 >     export DR_DEV_INIT_RESET="[ARGUMENT=0+]"
 >     export DR_DEV_INIT_VERIFY="[ARGUMENT=0+]"
 >     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+]"
+>     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1]"
+>     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1]"
+>     export DR_DEV_EXEC_LOAD="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_PARSE_SCRIPT="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_PARSE_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_RUN_SCRIPT="[OPTIONAL] [ARGUMENT=1+]"
@@ -192,6 +204,10 @@
 >     "initReset": [ "[ARGUMENT=0+]" ],
 >     "initVerify": [ "[ARGUMENT=0+]" ],
 >     "initVerifyRule": [ "[ARGUMENT=1+]" ],
+>     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "execEnv": [ "[ARGUMENT=0-1]" ],
+>     "execCwd": [ "[ARGUMENT=0-1]" ],
+>     "execLoad": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "parseScript": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "parseScriptList": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "runScript": [ "[OPTIONAL] [ARGUMENT=1+]" ],
@@ -224,7 +240,7 @@
 | eslint-plugin-promise                   |   ^4.2.1 |
 | eslint-plugin-react                     |  ^7.19.0 |
 | prop-types                              |  ^15.7.2 |
-| puppeteer                               |   ^2.1.1 |
+| puppeteer                               |   ^3.0.0 |
 | react                                   | ^16.13.1 |
 | styled-components                       |   ^5.1.0 |
 | terser                                  |  ^4.6.11 |

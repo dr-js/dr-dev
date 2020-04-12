@@ -5,7 +5,8 @@
   },
   "IMPORT": [
     "base",
+    "../babel",
     "../eslint",
-    "../babel"
+    "base-last"
   ]
 }

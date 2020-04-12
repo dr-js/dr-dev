@@ -1,6 +1,7 @@
 import { Preset, getOptionalFormatFlag, prepareOption } from '@dr-js/core/module/node/module/Option/preset'
 
 import { COMBO_COMMAND_CONFIG_MAP } from '@dr-js/dev/module/node/npm/comboCommand'
+import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from './function'
 
 const { Config, parseCompactList } = Preset
 
@@ -32,6 +33,11 @@ const MODE_FORMAT_LIST = parseCompactList(
     'init-verify,V/T|do common init file content check, will skip file modify',
     'init-verify-rule,IVR/AP,O|path to verify rule, default search in "init-resource-package"'
   ) ],
+  [ 'exec,E/AS,O|exec command, allow set env and cwd: $@=command, ...argList', parseCompactList(
+    'exec-env,EE/O/0-1|use URLSearchParams format String, or key-value Object',
+    'exec-cwd,EC/P,O/0-1|reset cwd to path'
+  ) ],
+  `exec-load,EL/AS,O|load and exec command from package.json[ "${PACKAGE_KEY_DEV_EXEC_COMMAND_MAP}" ]: $@=commandName, ...extraArgList`,
   'parse-script,ps/AS,O|parse and echo: $@=scriptName,...extraArgs',
   'parse-script-list,psl/AS,O|combine multi-script, but no extraArgs: $@=...scriptNameList',
   'run-script,rs/AS,O|parse and run: $@=scriptName,...extraArgs',

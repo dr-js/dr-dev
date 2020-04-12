@@ -6,6 +6,8 @@ import { visibleAsync } from '@dr-js/core/module/node/file/function'
 import { getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
 
+const PACKAGE_KEY_DEV_EXEC_COMMAND_MAP = 'devExecCommands'
+
 const formatPackagePath = (packagePath) => {
   const packageFile = packagePath.endsWith('.json') ? packagePath : resolve(packagePath, 'package.json')
   if (packagePath.endsWith('.json')) packagePath = dirname(packagePath)
@@ -28,7 +30,9 @@ const PACKAGE_KEY_ORDER = [
   'repository', 'homepage', 'bugs',
   'main', 'bin', 'browser',
   'man', 'files', 'directories',
-  'scripts', 'config', 'publishConfig',
+  'scripts',
+  PACKAGE_KEY_DEV_EXEC_COMMAND_MAP, // extend from this package
+  'config', 'publishConfig',
   'os', 'cpu', 'engines', 'engineStrict',
   ...PACKAGE_KEY_SORT_REQUIRED
 ]
@@ -153,6 +157,7 @@ const loadAndCopyPackExportInitJSON = async ({
 const REGEXP_TEXT_FILE = /\.(js|json|md|ya?ml|gitignore)$/
 
 export {
+  PACKAGE_KEY_DEV_EXEC_COMMAND_MAP,
   formatPackagePath,
   writePackageJSON,
   collectDependency,

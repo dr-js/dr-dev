@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "scripts": {
+    "// =============================": "",
+    "prepack": "echo \"Error: pack with script-*\" && exit 1"
+  }
+}
