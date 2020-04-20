@@ -1,0 +1,7 @@
+{
+  "EXPORT": [
+    "INIT#script#generateSpec.js",
+    "INIT#script#index.js",
+    "INIT#package.json"
+  ]
+}

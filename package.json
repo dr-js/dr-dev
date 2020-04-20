@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.3.0-dev.5",
+  "version": "0.3.0-dev.6",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -22,17 +22,17 @@
     "script-pack-resource-publish-dry-run": "node -r @babel/register ./script pack resource publish dry-run",
     "script-pack-resource-publish-dev": "node -r @babel/register ./script pack resource publish-dev",
     "script-pack-resource-publish-dev-dry-run": "node -r @babel/register ./script pack resource publish-dev dry-run",
-    "script-generate-spec": "cross-env BABEL_ENV=use-source node -r @babel/register ./script/generateSpec",
+    "script-generate-spec": "dr-dev --EE BABEL_ENV=use-source -E -- node -r @babel/register ./script/generateSpec",
     "// build =======================": "",
     "build-library": "babel ./source --out-dir ./output-gitignore/library",
-    "build-library-dev": "cross-env BABEL_ENV=dev npm run build-library -- --watch",
-    "build-module": "cross-env BABEL_ENV=module babel ./source --out-dir ./output-gitignore/module",
+    "build-library-dev": "dr-dev --EE BABEL_ENV=dev -E -- npm run build-library -- --watch",
+    "build-module": "dr-dev --EE BABEL_ENV=module -E -- babel ./source --out-dir ./output-gitignore/module",
     "build-browser": "node -r @babel/register ./script/webpack production profile",
     "build-bin": "babel ./source-bin --out-dir ./output-gitignore/bin",
-    "build-bin-dev": "cross-env BABEL_ENV=dev npm run build-bin -- --watch",
+    "build-bin-dev": "dr-dev --EE BABEL_ENV=dev -E -- npm run build-bin -- --watch",
     "// test ========================": "",
     "test-T": "node ./output-gitignore/bin --TFS .test.js -T",
-    "test-T-dev": "cross-env BABEL_ENV=dev node ./output-gitignore/bin --TR @babel/register --TFS .test.js -T",
+    "test-T-dev": "dr-dev --EE BABEL_ENV=dev -E -- node ./output-gitignore/bin --TR @babel/register --TFS .test.js -T",
     "test-dev": "npm run test-T-dev -- source/node/preset.test.js",
     "test-source": "npm run test-T-dev -- source/",
     "test-output-library": "npm run test-T -- output-gitignore/library/",
@@ -53,7 +53,8 @@
     "@dr-js/core": "^0.3.0 || ^0.3.0-dev.6"
   },
   "devDependencies": {
-    "@dr-js/dev-web": "0.3.0-dev.4"
+    "@dr-js/dev": "0.3.0-dev.5",
+    "@dr-js/dev-web": "0.3.0-dev.5"
   },
   "sideEffects": false
 }

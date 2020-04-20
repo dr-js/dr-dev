@@ -5,9 +5,10 @@
   },
   "IMPORT": [
     "base",
+    "base-1-script",
     "../babel",
     "../webpack",
     "../eslint",
-    "base-last"
+    "base-9-last"
   ]
 }

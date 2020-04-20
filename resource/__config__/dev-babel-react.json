@@ -5,9 +5,10 @@
   },
   "IMPORT": [
     "base",
+    "base-1-script",
     "../react",
     "../babel/[react]",
     "../eslint/[react]",
-    "base-last"
+    "base-9-last"
   ]
 }

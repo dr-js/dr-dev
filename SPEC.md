@@ -233,7 +233,6 @@
 | babel-plugin-minify-replace             |   ^0.5.0 |
 | babel-plugin-module-resolver            |   ^4.0.0 |
 | babel-plugin-styled-components          |  ^1.10.7 |
-| cross-env                               |   ^7.0.2 |
 | eslint                                  |   ^6.8.0 |
 | eslint-plugin-import                    |  ^2.20.2 |
 | eslint-plugin-node                      |  ^11.1.0 |

@@ -1,7 +1,5 @@
 {
   "EXPORT": [
-    "INIT#script#generateSpec.js",
-    "INIT#script#index.js",
     "INIT#.github#workflows#ci-test.yml",
     "INIT#.gitignore",
     "INIT#package.json",
@@ -24,7 +22,6 @@
     "npm": ">=6.12"
   },
   "dependencies": {
-    "cross-env": "^7.0.2",
     "terser": "^4.6.11"
   },
   "sideEffects": false

@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "// script ======================": "",
+    "script-pack": "node -r @babel/register ./script quiet pack",
+    "script-publish": "node -r @babel/register ./script pack publish",
+    "script-publish-dev": "node -r @babel/register ./script pack publish-dev",
+    "script-generate-spec": "node -r @babel/register ./script/generateSpec"
+  }
+}
