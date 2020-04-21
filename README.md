@@ -51,4 +51,4 @@ A collection of strange functions, for development
 - 📁 [resource/](resource/)
   - resource for pack sub package
 - 📄 [SPEC.md](SPEC.md)
-  - list of all directly accessible codes, sort of an API lockfile
+  - list of all directly accessible codes, sort of API lockfile

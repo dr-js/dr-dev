@@ -243,4 +243,4 @@
 | react                                   | ^16.13.1 |
 | styled-components                       |   ^5.1.0 |
 | terser                                  |  ^4.6.11 |
-| webpack                                 |  ^4.42.1 |
+| webpack                                 |  ^4.43.0 |
