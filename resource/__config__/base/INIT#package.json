@@ -6,8 +6,8 @@
   "description": "{PACKAGE-DESCRIPTION}",
   "repository": "github:{GITHUB-USER}/{GITHUB-REPO}",
   "engines": {
-    "node": ">=12.13",
-    "npm": ">=6.12"
+    "node": ">=12.16",
+    "npm": ">=6.14"
   },
   "devDependencies": {
     "@dr-js/dev": "{FLAVOR-VERSION}",

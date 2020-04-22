@@ -18,11 +18,7 @@
   ],
   "repository": "github:dr-js/dr-dev",
   "engines": {
-    "node": ">=12.13",
-    "npm": ">=6.12"
-  },
-  "dependencies": {
-    "terser": "^4.6.11"
-  },
-  "sideEffects": false
+    "node": ">=12.16",
+    "npm": ">=6.14"
+  }
 }

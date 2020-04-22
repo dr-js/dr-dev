@@ -65,8 +65,8 @@ const runWithPuppeteer = async ({
   return result
 }
 
-const DEFAULT_TIMEOUT_PAGE = 10 * 1000
-const DEFAULT_TIMEOUT_TEST = 60 * 1000 // should done test in 1min
+const DEFAULT_TIMEOUT_PAGE = 42 * 1000
+const DEFAULT_TIMEOUT_TEST = 8 * 60 * 1000 // should done test in 8min
 
 const wrapTestScriptStringToHTML = async ({
   testScriptString,
@@ -78,9 +78,9 @@ const wrapTestScriptStringToHTML = async ({
   '<link rel="icon" href="data:,">', // stop fetch favicon
   `<title>${testTag}</title>`,
   `<script>${await readFileAsync(require.resolve('@dr-js/dev/browser/test.js'))}</script>`,
-  `<script>window.DrDevTest.TEST_SETUP({ timeout: ${timeoutTest} })</script>`,
+  `<script>(window.CURRENT_TEST = window.DrDevTest.createTest()).TEST_SETUP({ timeout: ${timeoutTest} })</script>`,
   `<script>${testScriptString}</script>`,
-  `<script>window.addEventListener('load', () => window.DrDevTest.TEST_RUN().then(({ failList }) => { console.log(JSON.stringify({ "${testTag}": { failCount: failList.length } })) }))</script>`
+  `<script>window.addEventListener('load', () => window.CURRENT_TEST.TEST_RUN().then(({ failList }) => { console.log(JSON.stringify({ "${testTag}": { failCount: failList.length } })) }))</script>`
 ].join('\n')
 
 const testWithPuppeteer = async ({

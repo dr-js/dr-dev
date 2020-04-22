@@ -1,4 +1,3 @@
-import { spawnSync } from 'child_process'
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time'
 import { run } from '@dr-js/core/module/node/system/Run'
@@ -11,12 +10,7 @@ import {
   isPidExist
 } from '@dr-js/core/module/node/system/Process'
 
-// TODO: copied from `@dr-js/node`, consider import directly?
-const gitSync = (...argList) => String(spawnSync('git', argList).stdout).replace(/\s/g, '')
-const getGitBranch = () => gitSync('symbolic-ref', '--short', 'HEAD') || `detached-HEAD/${gitSync('rev-parse', '--short', 'HEAD')}`
-const getGitCommitHash = () => gitSync('log', '-1', '--format=%H')
-
-const withRunBackground = async (option, task, setupDelay = 500) => {
+const withRunBackground = async (option, asyncFunc, setupDelay = 500) => {
   const { subProcess, promise } = run(option)
   const exitPromise = promise.catch((error) => __DEV__ && console.log(`process exit with error: ${error}`))
 
@@ -30,7 +24,7 @@ const withRunBackground = async (option, task, setupDelay = 500) => {
   const { pid, command, subTree } = findProcessTreeInfo(subProcessInfo, toProcessTree(processList)) // drops ppid since sub tree may get chopped
   __DEV__ && console.log({ pid, command, subTree })
 
-  const { result, error } = await catchAsync(task, { subProcess, promise, pid })
+  const { result, error } = await catchAsync(asyncFunc, { subProcess, promise, pid })
 
   // process kill
   await killProcessTreeInfoAsync({ pid, command, subTree })
@@ -60,9 +54,6 @@ const SOFT_SIGNAL_LIST = [
 ]
 
 export {
-  getGitBranch,
-  getGitCommitHash,
-
   withRunBackground,
   runAndHandover
 }

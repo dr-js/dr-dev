@@ -2,8 +2,9 @@ import { resolve } from 'path'
 import { isString, isBasicObject, isBasicArray } from '@dr-js/core/module/common/check'
 import { objectFromEntries } from '@dr-js/core/module/common/immutable/Object'
 
+import { findUpPackageRoot } from '@dr-js/node/module/module/Software/npm'
+
 import { runAndHandover } from '@dr-js/dev/module/node/run'
-import { findUpPackageRoot } from '@dr-js/dev/module/node/npm/path'
 
 import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from '../function'
 

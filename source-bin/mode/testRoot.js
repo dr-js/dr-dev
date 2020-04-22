@@ -2,14 +2,15 @@ import { relative } from 'path'
 
 import { toPosixPath } from '@dr-js/core/module/node/file/Path'
 import { getFileList } from '@dr-js/core/module/node/file/Directory'
+import { configureTerminalColor } from '@dr-js/node/module/module/TerminalColor'
 
-import { TEST_SETUP, TEST_RUN, describe } from '@dr-js/dev/module/common/test'
+import { createTest } from '@dr-js/dev/module/common/test'
 
 const doTestRoot = async ({
   testRoot = process.cwd(),
   testFileSuffixList = [ '.js' ],
   testRequireList = [],
-  testTimeout = 10 * 1000
+  testTimeout = 42 * 1000
 }) => {
   const testPathFunc = (testFileSuffixList && testFileSuffixList.length)
     ? (path) => testFileSuffixList.find((testFileSuffix) => path.endsWith(testFileSuffix))
@@ -26,6 +27,15 @@ const doTestRoot = async ({
       throw error
     }
   }
+
+  const TerminalColor = configureTerminalColor()
+  const { TEST_SETUP, TEST_RUN, describe } = createTest({ // setup colors
+    colorError: TerminalColor.fg.red,
+    colorMain: TerminalColor.fg.cyan,
+    colorTitle: TerminalColor.fg.green,
+    colorText: TerminalColor.fg.darkGray,
+    colorTime: TerminalColor.fg.yellow
+  })
 
   TEST_SETUP({ timeout: testTimeout })
 
@@ -52,7 +62,7 @@ const doTestRootList = async ({
   testRootList = [ process.cwd() ],
   testFileSuffixList = [ '.js' ],
   testRequireList = [],
-  testTimeout = 10 * 1000
+  testTimeout = 42 * 1000
 }) => {
   for (const testRoot of testRootList) {
     await doTestRoot({

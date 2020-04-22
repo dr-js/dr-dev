@@ -25,7 +25,7 @@ const MODE_FORMAT_LIST = parseCompactList(
   [ 'test-root,T/AP,O|root path to look test file from, default to "."', parseCompactList(
     'test-file-suffix,TFS/AS,O|pattern for test file, default to ".js"',
     'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"',
-    'test-timeout,TT/SI,O|timeout for each test, in msec, default to 10*1000 (10sec)'
+    'test-timeout,TT/SI,O|timeout for each test, in msec, default to 42*1000 (42sec)'
   ) ],
   [ 'init,I/AP,O/0-1|path for init a package, will not reset existing file, default to "."', parseCompactList(
     'init-resource-package,P/SP,O|path to resource package, default search for "./node_modules/@dr-js/dev-*/"',

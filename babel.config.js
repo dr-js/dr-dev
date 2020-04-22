@@ -9,10 +9,7 @@ module.exports = {
   ],
   plugins: [
     [ 'minify-replace', {
-      replacements: [
-        { identifierName: '__DEV__', replacement: { type: 'booleanLiteral', value: isDev } },
-        { identifierName: '__ENV_NODE__', replacement: { type: 'booleanLiteral', value: true } }
-      ]
+      replacements: [ { identifierName: '__DEV__', replacement: { type: 'booleanLiteral', value: isDev } } ]
     } ],
     [ 'module-resolver', {
       root: [ './' ],

@@ -51,7 +51,7 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
         testRootList: modeArgList || [ process.cwd() ],
         testFileSuffixList: tryGet('test-file-suffix') || [ '.js' ],
         testRequireList: tryGet('test-require') || [],
-        testTimeout: tryGet('test-timeout') || 10 * 1000
+        testTimeout: tryGet('test-timeout') || 42 * 1000
       })
     case 'init':
       return doInit({

@@ -13,8 +13,7 @@ runMain(async (logger) => {
 
   const config = getCommonWebpackConfig({
     output: { path: fromOutput('browser'), filename: '[name].js', library: 'DrDevTest', libraryTarget: 'umd' },
-    entry: { 'test': 'source/common/test' },
-    extraDefine: { __ENV_NODE__: false }
+    entry: { 'test': 'source/common/test' }
   })
 
   logger.padLog(`compile with webpack mode: ${mode}, isWatch: ${Boolean(isWatch)}`)

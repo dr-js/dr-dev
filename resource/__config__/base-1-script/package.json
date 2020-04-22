@@ -3,5 +3,9 @@
     "INIT#script#generateSpec.js",
     "INIT#script#index.js",
     "INIT#package.json"
-  ]
+  ],
+  "dependencies": {
+    "terser": "^4.6.12"
+  },
+  "sideEffects": false
 }

@@ -23,10 +23,8 @@
   - `commonFlag`, `compileWithWebpack`
 + 📄 [source/common/dev.js](source/common/dev.js)
   - `createTransformCacheWithInfo`, `hijackSetTimeoutInterval`
-+ 📄 [source/common/terminalColor.js](source/common/terminalColor.js)
-  - `TerminalColor`, `shouldSupportColor`
 + 📄 [source/common/test.js](source/common/test.js)
-  - `TEST_RUN`, `TEST_SETUP`, `after`, `before`, `describe`, `info`, `it`
+  - `createTest`
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
@@ -38,7 +36,7 @@
 + 📄 [source/node/preset.js](source/node/preset.js)
   - `FILTER_JS_FILE`, `FILTER_SOURCE_JS_FILE`, `FILTER_SOURCE_PATH`, `FILTER_TEST_JS_FILE`, `FILTER_TEST_PATH`
 + 📄 [source/node/run.js](source/node/run.js)
-  - `getGitBranch`, `getGitCommitHash`, `runAndHandover`, `withRunBackground`
+  - `runAndHandover`, `withRunBackground`
 + 📄 [source/node/export/generate.js](source/node/export/generate.js)
   - `EXPORT_HOIST_LIST_KEY`, `EXPORT_LIST_KEY`, `HOIST_LIST_KEY`, `generateExportInfo`, `generateIndexScript`
 + 📄 [source/node/export/parse.js](source/node/export/parse.js)
@@ -50,11 +48,9 @@
 + 📄 [source/node/npm/comboCommand.js](source/node/npm/comboCommand.js)
   - `COMBO_COMMAND_CONFIG_MAP`, `comboCommand`
 + 📄 [source/node/npm/npxLazy.js](source/node/npm/npxLazy.js)
-  - `npxLazy`, `parsePackageNameAndVersion`, `runNpx`
+  - `npxLazy`, `runNpx`
 + 📄 [source/node/npm/parseScript.js](source/node/npm/parseScript.js)
   - `parseCommand`, `parsePackageScript`, `warpBashSubShell`, `wrapJoinBashArgs`
-+ 📄 [source/node/npm/path.js](source/node/npm/path.js)
-  - `findUpPackageRoot`, `fromPathGlobalNodeModules`, `getPathGlobalNpmNodeModules`, `tryRequireGlobal`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)
@@ -103,7 +99,7 @@
 >     --test-require --TR [ARGUMENT=1+]
 >         module or file to require before test files, mostly for "@babel/register"
 >     --test-timeout --TT [ARGUMENT=1]
->         timeout for each test, in msec, default to 10*1000 (10sec)
+>         timeout for each test, in msec, default to 42*1000 (42sec)
 >   --init --I -I [OPTIONAL] [ARGUMENT=0-1]
 >       path for init a package, will not reset existing file, default to "."
 >     --init-resource-package --P -P [ARGUMENT=1]
@@ -239,8 +235,8 @@
 | eslint-plugin-promise                   |   ^4.2.1 |
 | eslint-plugin-react                     |  ^7.19.0 |
 | prop-types                              |  ^15.7.2 |
-| puppeteer                               |   ^3.0.0 |
+| puppeteer                               |   ^3.0.1 |
 | react                                   | ^16.13.1 |
 | styled-components                       |   ^5.1.0 |
-| terser                                  |  ^4.6.11 |
+| terser                                  |  ^4.6.12 |
 | webpack                                 |  ^4.43.0 |
