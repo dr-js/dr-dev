@@ -1,11 +1,17 @@
 import { clock } from '@dr-js/core/module/common/time'
-import { time as formatTime } from '@dr-js/core/module/common/format'
+import { time } from '@dr-js/core/module/common/format'
+import { clamp } from '@dr-js/core/module/common/math/base'
 
 import { loadEnvKey, saveEnvKey, __VERBOSE__ } from './env'
 
 const EMPTY_FUNC = () => {}
 
-const getLogger = (title = 'dev', quiet = false, padWidth = 120, logFunc = console.log) => {
+const getLogger = (
+  title = 'dev',
+  quiet = false,
+  padWidth = clamp((process.stdout.isTTY && process.stdout.columns) || 80, 64, 240),
+  logFunc = console.log
+) => {
   const envTitle = loadEnvKey('__DEV_LOGGER_TITLE__')
   title = envTitle ? `${title}|${envTitle}` : title
   saveEnvKey('__DEV_LOGGER_TITLE__', title)
@@ -13,15 +19,15 @@ const getLogger = (title = 'dev', quiet = false, padWidth = 120, logFunc = conso
   const startTime = clock()
   let prevTime = clock()
   const getPadTime = () => {
-    const time = clock()
-    prevTime = time
-    return formatTime(time - startTime)
+    const currentTime = clock()
+    prevTime = currentTime
+    return time(currentTime - startTime)
   }
   const getStepTime = () => {
-    const time = clock()
-    const stepTime = time - prevTime
-    prevTime = time
-    return formatTime(stepTime)
+    const currentTime = clock()
+    const stepTime = currentTime - prevTime
+    prevTime = currentTime
+    return time(stepTime)
   }
 
   const padLog = (...args) => {
