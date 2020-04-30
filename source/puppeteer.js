@@ -1,9 +1,9 @@
 import Puppeteer from 'puppeteer'
+import { promises as fsAsync } from 'fs'
 
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { time } from '@dr-js/core/module/common/format'
 import { createInsideOutPromise } from '@dr-js/core/module/common/function'
-import { readFileAsync } from '@dr-js/core/module/node/file/function'
 
 const puppeteerBrowserDisconnectListener = () => {
   __DEV__ && console.warn('[Puppeteer] unexpected browser disconnect, exiting')
@@ -77,7 +77,7 @@ const wrapTestScriptStringToHTML = async ({
   '<meta charset="utf-8">',
   '<link rel="icon" href="data:,">', // stop fetch favicon
   `<title>${testTag}</title>`,
-  `<script>${await readFileAsync(require.resolve('@dr-js/dev/browser/test.js'))}</script>`,
+  `<script>${await fsAsync.readFile(require.resolve('@dr-js/dev/browser/test.js'))}</script>`,
   `<script>(window.CURRENT_TEST = window.DrDevTest.createTest()).TEST_SETUP({ timeout: ${timeoutTest} })</script>`,
   `<script>${testScriptString}</script>`,
   `<script>window.addEventListener('load', () => window.CURRENT_TEST.TEST_RUN().then(({ failList }) => { console.log(JSON.stringify({ "${testTag}": { failCount: failList.length } })) }))</script>`

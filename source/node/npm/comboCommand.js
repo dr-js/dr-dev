@@ -1,8 +1,8 @@
 import { resolve } from 'path'
 import { execSync } from 'child_process'
+import { promises as fsAsync } from 'fs'
 import { isString, isBasicFunction } from '@dr-js/core/module/common/check'
 import { indentLine } from '@dr-js/core/module/common/string'
-import { writeFileAsync } from '@dr-js/core/module/node/file/function'
 import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
 
 // [ command or function, message ]
@@ -15,7 +15,7 @@ const CC_INSTALL_OFFLINE = [
 ]
 const CC_INSTALL_CLEAR = [
   [ async ({ pathRoot }) => modifyDelete(resolve(pathRoot, 'node_modules/')), 'delete "node_modules"' ],
-  [ async ({ pathRoot }) => writeFileAsync(resolve(pathRoot, 'package-lock.json'), ''), 'empty "package-lock.json"' ]
+  [ async ({ pathRoot }) => fsAsync.writeFile(resolve(pathRoot, 'package-lock.json'), ''), 'empty "package-lock.json"' ]
 ]
 const CC_PACKAGE_DEDUPE = [
   [ 'npm i', 'first install' ],

@@ -3,7 +3,7 @@ import { readFileSync } from 'fs'
 
 import { indentLine } from '@dr-js/core/module/common/string'
 import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } from '@dr-js/core/module/common/verify'
-import { visibleAsync } from '@dr-js/core/module/node/file/function'
+import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path'
 import { modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
 
 import {
@@ -60,8 +60,8 @@ describe('Output', () => {
     })
 
     stringifyEqual(
-      await visibleAsync(fromOutput('.gitignore')),
-      false,
+      await getPathLstat(fromOutput('.gitignore')),
+      STAT_ERROR,
       'should apply copyMapPathList'
     )
     stringifyEqual(

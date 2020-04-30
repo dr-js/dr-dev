@@ -2,7 +2,7 @@ import { resolve, dirname, basename, relative } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format'
 import { objectMergeDeep, objectSortKey } from '@dr-js/core/module/common/mutable/Object'
-import { visibleAsync } from '@dr-js/core/module/node/file/function'
+import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path'
 import { getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
 
@@ -137,7 +137,7 @@ const loadAndCopyPackExportInitJSON = async ({
 
   if (!isReset) { // check if file overwrite will happen
     for (const [ , relativeInitPath ] of initPairList) {
-      if (await visibleAsync(resolve(pathOutput, relativeInitPath))) throw new Error(`quit reset existing file: ${relativeInitPath}`)
+      if (STAT_ERROR !== await getPathLstat(resolve(pathOutput, relativeInitPath))) throw new Error(`quit reset existing file: ${relativeInitPath}`)
     }
   }
 

@@ -1,7 +1,7 @@
 import { relative } from 'path'
+import { promises as fsAsync } from 'fs'
 import { clock } from '@dr-js/core/module/common/time'
 import { binary, time, padTable } from '@dr-js/core/module/common/format'
-import { statAsync, unlinkAsync, readFileAsync, writeFileAsync } from '@dr-js/core/module/node/file/function'
 
 import { __VERBOSE__ } from './node/env'
 
@@ -13,18 +13,18 @@ const processFileList = async ({ fileList, processor, rootPath = '', logger }) =
   let totalSizeSource = 0
   let totalSizeDelta = 0
   for (const filePath of fileList) {
-    const inputString = String(await readFileAsync(filePath))
+    const inputString = String(await fsAsync.readFile(filePath))
     const outputString = await processor(inputString, filePath)
-    const sizeSource = (await statAsync(filePath)).size
+    const sizeSource = (await fsAsync.stat(filePath)).size
     let sizeOutput
     if (inputString === outputString) {
       logger.devLog(`process skipped ${filePath}`)
       sizeOutput = sizeSource
     } else if (outputString) {
-      await writeFileAsync(filePath, outputString)
-      sizeOutput = (await statAsync(filePath)).size
+      await fsAsync.writeFile(filePath, outputString)
+      sizeOutput = (await fsAsync.stat(filePath)).size
     } else { // TODO: maybe not necessary to delete an empty file?
-      await unlinkAsync(filePath)
+      await fsAsync.unlink(filePath)
       sizeOutput = 0
     }
     const sizeDelta = sizeOutput - sizeSource

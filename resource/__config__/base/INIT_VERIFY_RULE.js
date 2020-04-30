@@ -1,7 +1,7 @@
 const { escapeRegExp } = require('@dr-js/core/library/common/string')
 
 const buildMatchRegexp = (stringList) => {
-  if (stringList.length === 0) throw new Error(`mission string to match for`)
+  if (stringList.length === 0) throw new Error('mission string to match for')
   return new RegExp(stringList.map(escapeRegExp).join('|'))
 }
 const buildVerifyFunc = ({ verifyPreNoList, verifyNoList }) => {
@@ -65,14 +65,43 @@ const VERIFY_RULE_LIST = [ { // @dr-js/core break change
   messageBreakIn: '@dr-js/core@0.3.0-dev.5',
   messageList: [ 'use `AsyncTaskQueue + AsyncLane` instead of `AsyncTaskRunnerCluster`' ],
   verifyNoList: [ 'AsyncTaskRunner' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.6',
+  messageList: [ 'use `getDefaultOpenCommandList` instead of `getDefaultOpen`' ],
+  verifyNoList: [ 'getDefaultOpen(' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.9',
+  messageList: [ 'browser: use `onProgressUpload/onProgressDownload` instead of `onUploadProgress/onDownloadProgress` for `fetchLikeRequest`' ],
+  verifyNoList: [ 'onUploadProgress', 'onDownloadProgress' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.11',
+  messageList: [ 'drop `node/file/function`, use `fs` directly' ],
+  verifyNoList: [ '@dr-js/core/library/node/file/function', '@dr-js/core/module/node/file/function' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.11',
+  messageList: [ 'sort `node/file/Directory`' ],
+  verifyNoList: [ 'getDirectorySubInfoList', 'DirectoryInfoTree' ]
+}, {
+  messageBreakIn: '@dr-js/core@0.3.0-dev.11',
+  messageList: [ 'use `prettyStringifyTreeNode` instead of `prettyStringifyTree`' ],
+  verifyNoList: [ 'prettyStringifyTree(' ]
 }, { // @dr-js/node break change
   messageBreakIn: '@dr-js/node@0.2.0-dev.4',
   messageList: [ 'use `path:rename/PATH_RENAME` instead of `path:move/PATH_MOVE`' ],
   verifyNoList: [ 'path:move', 'PATH_MOVE' ]
 }, {
   messageBreakIn: '@dr-js/node@0.3.0-dev.0',
-  messageList: [ ' `fileTLS*` option of `configureServerPack` from `module/ServerPack`, use `TLSSNIConfig|TLSDHParam` instead' ],
+  messageList: [ '`fileTLS*` option of `configureServerPack` from `module/ServerPack`, use `TLSSNIConfig|TLSDHParam` instead' ],
   verifyNoList: [ 'fileTLS' ]
+}, {
+  messageBreakIn: '@dr-js/node@0.3.0-dev.2',
+  messageList: [ 'use `ResolveCommand` from `@dr-js/core`' ],
+  verifyNoList: [ '@dr-js/node/library/module/ResolveCommand', '@dr-js/node/module/module/ResolveCommand' ]
+}, {
+  messageBreakIn: '@dr-js/node@0.3.0-dev.6',
+  messageList: [ 'drop `compressFileConfig` from `module/Software/7z`' ],
+  verifyPreNoList: [ 'module/Software/7z' ],
+  verifyNoList: [ 'compressFileConfig' ]
 }, { // @dr-js/dev break change
   messageBreakIn: 'dr-dev@0.0.6-dev.1',
   messageList: [ 'use `extraPresetList/extraPluginList` instead of `presetExtra/pluginExtra` for `getBabelConfig/getWebpackBabelConfig`' ],
@@ -114,6 +143,10 @@ const VERIFY_RULE_LIST = [ { // @dr-js/core break change
   messageSuggestIn: '@dr-js/dev@0.2.3-dev.0',
   messageList: [ 'use `resolve(...)` instead of `resolve(process.cwd(), ...)`' ],
   verifyNoList: [ 'resolve(process.cwd()' ]
+}, {
+  messageSuggestIn: '@dr-js/dev@0.3.0-dev.10',
+  messageList: [ 'use `request.destroy()|request.destroyed` instead of `request.abort()|request.aborted` follow: https://github.com/nodejs/node/pull/32807' ],
+  verifyNoList: [ 'request.abort' ]
 } ].map(normalizeRule)
 
 module.exports = { VERIFY_RULE_LIST }

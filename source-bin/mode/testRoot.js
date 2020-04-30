@@ -16,8 +16,8 @@ const doTestRoot = async ({
     ? (path) => testFileSuffixList.find((testFileSuffix) => path.endsWith(testFileSuffix))
     : null
   const fileList = await getFileList(testRoot, testPathFunc
-    ? (fileList, { path }) => testPathFunc(path) && fileList.push(path)
-    : (fileList, { path }) => fileList.push(path)
+    ? (fileList, { path }) => { testPathFunc(path) && fileList.push(path) }
+    : (fileList, { path }) => { fileList.push(path) }
   )
   if (!fileList.length) throw new Error([ 'no test file selected', `with suffix "${testFileSuffixList.join(',')}"`, `from ${testRoot}` ].filter(Boolean).join(' '))
 

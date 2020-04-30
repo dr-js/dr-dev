@@ -1,4 +1,4 @@
-import { getDirectoryInfoTree, walkDirectoryInfoTree } from '@dr-js/core/module/node/file/Directory'
+import { getDirInfoTree, walkDirInfoTreeAsync } from '@dr-js/core/module/node/file/Directory'
 import { FILTER_SOURCE_PATH } from '../preset'
 import { createExportParser } from './parse'
 
@@ -8,8 +8,8 @@ const collectSourceJsRouteMap = async ({
   logger
 }) => {
   const { parseExport, getSourceRouteMap } = createExportParser({ logger })
-  const parseWalkExport = (info) => pathInfoFilter(info) && parseExport(info.path)
-  for (const pathRoot of pathRootList) await walkDirectoryInfoTree(await getDirectoryInfoTree(pathRoot), parseWalkExport)
+  const parseWalkExport = async (dirInfo) => { pathInfoFilter(dirInfo) && await parseExport(dirInfo.path) }
+  for (const pathRoot of pathRootList) await walkDirInfoTreeAsync(await getDirInfoTree(pathRoot), parseWalkExport)
   return getSourceRouteMap()
 }
 
