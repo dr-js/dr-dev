@@ -1,4 +1,4 @@
-import { resolve, basename } from 'path'
+import { resolve } from 'path'
 import { readFileSync } from 'fs'
 
 import { indentLine } from '@dr-js/core/module/common/string'
@@ -8,7 +8,7 @@ import { modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
 
 import {
   initOutput,
-  packOutput, getPackageTgzName,
+  packOutput,
   // verifyOutputBin,
   verifyNoGitignore,
   publishOutput, getPublishFlag, verifyPublishVersion
@@ -81,17 +81,11 @@ describe('Output', () => {
     )
   })
 
-  it('packOutput() & getPackageTgzName()', async () => {
+  it('packOutput()', async () => {
     const fromOutput = (...args) => fromTestRoot('output-packOutput', ...args)
     const packageJSON = await initOutput({ fromOutput, fromRoot, logger })
-
-    const pathPackagePack = await packOutput({ fromOutput, fromRoot: fromTestRoot, logger })
-
-    stringifyEqual(
-      basename(pathPackagePack),
-      getPackageTgzName(packageJSON),
-      'should match getPackageTgzName'
-    )
+    const pathPackagePack = await packOutput({ fromOutput, fromRoot: fromTestRoot, packageJSON, logger })
+    info(`[pathPackagePack]: ${pathPackagePack}`)
   })
 
   it('verifyNoGitignore()', async () => {

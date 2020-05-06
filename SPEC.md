@@ -16,7 +16,7 @@
 + 📄 [source/minify.js](source/minify.js)
   - `getTerserOption`, `minifyFileListWithTerser`, `minifyWithTerser`
 + 📄 [source/output.js](source/output.js)
-  - `clearOutput`, `getPackageTgzName`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
+  - `clearOutput`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
   - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
 + 📄 [source/webpack.js](source/webpack.js)
@@ -218,25 +218,25 @@
 
 | Package name                            |  Version |
 | :----                                   |    ----: |
-| @babel/cli                              |   ^7.8.4 |
-| @babel/core                             |   ^7.9.6 |
-| @babel/plugin-proposal-class-properties |   ^7.8.3 |
-| @babel/preset-env                       |   ^7.9.6 |
-| @babel/preset-react                     |   ^7.9.4 |
-| @babel/register                         |   ^7.9.0 |
+| @babel/cli                              |  ^7.10.4 |
+| @babel/core                             |  ^7.10.4 |
+| @babel/plugin-proposal-class-properties |  ^7.10.4 |
+| @babel/preset-env                       |  ^7.10.4 |
+| @babel/preset-react                     |  ^7.10.4 |
+| @babel/register                         |  ^7.10.4 |
 | babel-eslint                            |  ^10.1.0 |
 | babel-loader                            |   ^8.1.0 |
 | babel-plugin-minify-replace             |   ^0.5.0 |
 | babel-plugin-module-resolver            |   ^4.0.0 |
 | babel-plugin-styled-components          |  ^1.10.7 |
-| eslint                                  |   ^6.8.0 |
-| eslint-plugin-import                    |  ^2.20.2 |
+| eslint                                  |   ^7.4.0 |
+| eslint-plugin-import                    |  ^2.22.0 |
 | eslint-plugin-node                      |  ^11.1.0 |
 | eslint-plugin-promise                   |   ^4.2.1 |
-| eslint-plugin-react                     |  ^7.19.0 |
+| eslint-plugin-react                     |  ^7.20.3 |
 | prop-types                              |  ^15.7.2 |
-| puppeteer                               |   ^3.0.2 |
+| puppeteer                               |   ^5.0.0 |
 | react                                   | ^16.13.1 |
-| styled-components                       |   ^5.1.0 |
-| terser                                  |  ^4.6.13 |
+| styled-components                       |   ^5.1.1 |
+| terser                                  |   ^4.8.0 |
 | webpack                                 |  ^4.43.0 |

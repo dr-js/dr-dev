@@ -4,11 +4,11 @@
     "INIT#package.json"
   ],
   "dependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/cli": "^7.8.4",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/register": "^7.9.0",
+    "@babel/core": "^7.10.4",
+    "@babel/cli": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/register": "^7.10.4",
     "babel-plugin-minify-replace": "^0.5.0",
     "babel-plugin-module-resolver": "^4.0.0"
   }

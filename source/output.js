@@ -6,6 +6,8 @@ import { getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/file/Modify'
 import { run } from '@dr-js/core/module/node/system/Run'
 
+import { toPackageTgzName } from '@dr-js/node/module/module/Software/npm'
+
 import { __VERBOSE__ } from './node/env'
 import { FILTER_TEST_PATH } from './node/preset'
 import { getFileListFromPathList, resetDirectory } from './node/file'
@@ -59,6 +61,7 @@ const initOutput = async ({
 const packOutput = async ({
   fromOutput,
   fromRoot = fromOutput, // OPTIONAL, for move output .tgz file to root
+  packageJSON = require(fromOutput('package.json')),
   logger
 }) => {
   logger.padLog('run pack output')
@@ -68,7 +71,7 @@ const packOutput = async ({
     option: { shell: true, cwd: fromOutput(), stdio: __VERBOSE__ ? 'inherit' : [ 'ignore', 'ignore' ] }
   }).promise
 
-  const packName = getPackageTgzName(require(fromOutput('package.json')))
+  const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {
     logger.log('move to root path')
     await modifyRename(fromOutput(packName), fromRoot(packName))
@@ -77,7 +80,6 @@ const packOutput = async ({
 
   return fromRoot(packName)
 }
-const getPackageTgzName = (packageJSON) => `${packageJSON.name.replace(/^@/, '').replace('/', '-')}-${packageJSON.version}.tgz`
 
 const clearOutput = async ({ fromOutput, pathList = [ '.' ], filterFile = FILTER_TEST_PATH, logger }) => {
   logger.padLog('clear output')
@@ -173,7 +175,7 @@ const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0
 
 export {
   initOutput,
-  packOutput, getPackageTgzName,
+  packOutput,
   clearOutput,
   verifyOutputBin,
   verifyNoGitignore, verifyGitStatusClean,
