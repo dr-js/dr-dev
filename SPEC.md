@@ -14,7 +14,7 @@
 + 📄 [source/main.js](source/main.js)
   - `argvFlag`, `runMain`
 + 📄 [source/minify.js](source/minify.js)
-  - `getTerserOption`, `minifyFileListWithTerser`, `minifyWithTerser`
+  - `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
 + 📄 [source/output.js](source/output.js)
   - `clearOutput`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
@@ -218,25 +218,25 @@
 
 | Package name                            |  Version |
 | :----                                   |    ----: |
-| @babel/cli                              |  ^7.10.4 |
-| @babel/core                             |  ^7.10.4 |
+| @babel/cli                              |  ^7.11.6 |
+| @babel/core                             |  ^7.11.6 |
 | @babel/plugin-proposal-class-properties |  ^7.10.4 |
-| @babel/preset-env                       |  ^7.10.4 |
+| @babel/preset-env                       |  ^7.11.5 |
 | @babel/preset-react                     |  ^7.10.4 |
-| @babel/register                         |  ^7.10.4 |
+| @babel/register                         |  ^7.11.5 |
 | babel-eslint                            |  ^10.1.0 |
 | babel-loader                            |   ^8.1.0 |
 | babel-plugin-minify-replace             |   ^0.5.0 |
 | babel-plugin-module-resolver            |   ^4.0.0 |
-| babel-plugin-styled-components          |  ^1.10.7 |
-| eslint                                  |   ^7.4.0 |
+| babel-plugin-styled-components          |  ^1.11.1 |
+| eslint                                  |   ^7.9.0 |
 | eslint-plugin-import                    |  ^2.22.0 |
 | eslint-plugin-node                      |  ^11.1.0 |
 | eslint-plugin-promise                   |   ^4.2.1 |
-| eslint-plugin-react                     |  ^7.20.3 |
+| eslint-plugin-react                     |  ^7.20.6 |
 | prop-types                              |  ^15.7.2 |
-| puppeteer                               |   ^5.0.0 |
+| puppeteer                               |   ^5.3.0 |
 | react                                   | ^16.13.1 |
-| styled-components                       |   ^5.1.1 |
-| terser                                  |   ^4.8.0 |
-| webpack                                 |  ^4.43.0 |
+| styled-components                       |   ^5.2.0 |
+| terser                                  |   ^5.3.1 |
+| webpack                                 |  ^4.44.1 |

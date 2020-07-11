@@ -8,11 +8,11 @@ module.exports = {
     sourceType: 'module'
   },
 
-  env: { es6: true, node: true },
+  env: { es2020: true, node: true },
 
   plugins: [ 'import', 'node', 'promise' ], // plugins: [ 'import', 'node', 'promise', 'standard' ], // EDIT
 
-  globals: { document: 'readonly', navigator: 'readonly', window: 'readonly', __DEV__: 'readonly' }, // globals: { document: 'readonly', navigator: 'readonly', window: 'readonly' }, // EDIT
+  globals: { globalThis: 'readonly', global: 'readonly', window: 'readonly', self: 'readonly', __DEV__: 'readonly' }, // globals: { document: 'readonly', navigator: 'readonly', window: 'readonly' }, // EDIT
 
   rules: {
     'accessor-pairs': 'error',

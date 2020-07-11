@@ -1,6 +1,6 @@
 import { relative } from 'path'
-import { readFileSync, writeFileSync } from 'fs'
-import Terser from 'terser'
+import { promises as fsAsync } from 'fs'
+import { minify as terserMinify } from 'terser'
 
 import { clock } from '@dr-js/core/module/common/time'
 import { binary, time, padTable } from '@dr-js/core/module/common/format'
@@ -19,22 +19,21 @@ const getTerserOption = ({
 } = {}) => ({
   ecma,
   toplevel,
-  parse: { ecma },
   compress: { ecma, toplevel, join_vars: false, sequences: false, global_defs: globalDefineMap },
   mangle: isReadable ? false : { toplevel },
   output: isReadable ? { ecma, beautify: true, indent_level: 2, width: 240 } : { ecma, beautify: false, semicolons: false },
   sourceMap: false
 })
 
-const minifyWithTerser = ({ filePath, option, logger }) => {
+const minifyFileWithTerser = async ({ filePath, option, logger }) => {
   const timeStart = clock()
-  const scriptSource = String(readFileSync(filePath))
-  const { error, code: scriptOutput } = Terser.minify(scriptSource, option)
+  const scriptSource = String(await fsAsync.readFile(filePath))
+  const { error, code: scriptOutput } = await terserMinify(scriptSource, option)
   if (error) {
-    logger.padLog(`[minifyWithTerser] failed to minify file: ${filePath}`)
+    logger.padLog(`[minifyFileWithTerser] failed to minify file: ${filePath}`)
     throw error
   }
-  writeFileSync(filePath, scriptOutput)
+  await fsAsync.writeFile(filePath, scriptOutput)
 
   const timeEnd = clock()
   const sizeSource = Buffer.byteLength(scriptSource)
@@ -56,7 +55,7 @@ const minifyFileListWithTerser = async ({ fileList, option, rootPath = '', logge
   let totalSizeSource = 0
   let totalSizeDelta = 0
   for (const filePath of fileList) {
-    const { sizeSource, sizeOutput, timeStart, timeEnd } = minifyWithTerser({ filePath, option, logger })
+    const { sizeSource, sizeOutput, timeStart, timeEnd } = await minifyFileWithTerser({ filePath, option, logger })
     const sizeDelta = sizeOutput - sizeSource
     totalSizeSource += sizeSource
     totalSizeDelta += sizeDelta
@@ -80,6 +79,6 @@ const minifyFileListWithTerser = async ({ fileList, option, rootPath = '', logge
 
 export {
   getTerserOption,
-  minifyWithTerser,
+  minifyFileWithTerser,
   minifyFileListWithTerser
 }
