@@ -1,6 +1,6 @@
+import Webpack from 'webpack'
 import { dirname } from 'path'
 import { writeFileSync } from 'fs'
-import webpack from 'webpack'
 
 import { binary, time, padTable } from '@dr-js/core/module/common/format'
 import { createDirectory } from '@dr-js/core/module/node/file/Directory'
@@ -69,7 +69,7 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGr
     config.profile = true
   }
 
-  const compiler = webpack(config)
+  const compiler = Webpack(config)
   const logStats = getLogStats(isWatch, logger)
 
   if (isWatch) {
@@ -79,6 +79,7 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGr
   } else {
     logger.log('[compile] start')
     const stats = await new Promise((resolve, reject) => compiler.run(getStatsCheck(reject, resolve)))
+    await new Promise((resolve, reject) => compiler.close((error, result) => error ? reject(error) : resolve(result))) // close for Webpack5
     logStats(stats)
     let statsJSON
     const getStatsJSON = () => {
@@ -130,7 +131,7 @@ const commonFlag = async ({
   }) => ({
     mode,
     bail: isProduction,
-    target: isNodeEnv ? 'node' : 'web', // support node main modules like 'fs'
+    target: isNodeEnv ? 'node12' : 'web', // support node main modules like 'fs'
     node: isNodeEnv ? false : undefined, // do not polyfill fake node environment when build for node
     output,
     entry,
@@ -138,12 +139,12 @@ const commonFlag = async ({
     externals,
     module: { rules: [ { test: /\.js$/, use: { loader: 'babel-loader', options: babelOption } } ] },
     plugins: [
-      new webpack.DefinePlugin({
+      new Webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(mode),
         __DEV__: !isProduction,
         ...extraDefine
       }),
-      isNodeBin && new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
+      isNodeBin && new Webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
       ...extraPluginList
     ].filter(Boolean),
     optimization: { minimize: isMinimize },
