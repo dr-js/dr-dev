@@ -238,5 +238,5 @@
 | puppeteer                               |   ^5.3.1 |
 | react                                   | ^16.13.1 |
 | styled-components                       |   ^5.2.0 |
-| terser                                  |   ^5.3.4 |
-| webpack                                 |   ^5.0.0 |
+| terser                                  |   ^5.3.5 |
+| webpack                                 |   ^5.1.0 |

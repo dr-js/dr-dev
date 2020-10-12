@@ -5,7 +5,7 @@ on: [ push ]
 jobs:
   build:
     strategy:
-#      fail-fast: false # allow all test to run to the end
+      fail-fast: false # allow all test to run to the end
       matrix:
         os: [ ubuntu-latest ] # [ ubuntu-latest, windows-latest, macos-latest ]
         node-version: [ 12.x, 14.x ]
@@ -32,13 +32,8 @@ jobs:
           echo "node: $(node -v)"
           echo "npm: $(npm -v)"
 
-#      - name: Patch `libgbm1` for `puppeteer@3` on linux # https://github.com/puppeteer/puppeteer/issues/5674
+#      - name: Patch `libgbm1` for `puppeteer@3` on linux # https://github.com/puppeteer/puppeteer/issues/5704
 #        run: node -e "process.exitCode = Number(os.platform() === 'linux')" || sudo apt-get install -y libgbm1
-
-#      - name: Patch `7z` on darwin
-#        run: node -e "process.exitCode = Number(os.platform() === 'darwin')" || brew install p7zip
-#        # linux supported: https://github.com/actions/virtual-environments/blob/ubuntu18/20200415.3/images/linux/scripts/installers/7-zip.sh
-#        # win32 supported: https://github.com/actions/virtual-environments/blob/win19/20200416.1/images/win/scripts/Installers/Install-7zip.ps1
 
       - run: npm ci
 

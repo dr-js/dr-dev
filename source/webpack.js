@@ -4,7 +4,7 @@ import { writeFileSync } from 'fs'
 
 import { binary, time, padTable } from '@dr-js/core/module/common/format'
 import { createDirectory } from '@dr-js/core/module/node/file/Directory'
-import { addExitListenerSync } from '@dr-js/core/module/node/system/ExitListener'
+import { addExitListenerAsync } from '@dr-js/core/module/node/system/ExitListener'
 
 import { __VERBOSE__, argvFlag } from './node/env'
 import { getWebpackBabelConfig } from './babel'
@@ -74,8 +74,11 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGr
 
   if (isWatch) {
     logger.log('[watch] start')
-    compiler.watch({ aggregateTimeout: 512, poll: undefined }, getStatsCheck((error) => logger.log(`error: ${error}`), logStats))
-    addExitListenerSync((exitState) => logger.log(`[watch] exit with state: ${JSON.stringify(exitState)}`))
+    const watching = compiler.watch({ aggregateTimeout: 512, poll: undefined }, getStatsCheck((error) => logger.log(`error: ${error}`), logStats))
+    addExitListenerAsync(async (eventPack) => {
+      await new Promise((resolve) => watching.close(resolve))
+      logger.log(`[watch] exit with state: ${JSON.stringify(eventPack)}`)
+    })
   } else {
     logger.log('[compile] start')
     const stats = await new Promise((resolve, reject) => compiler.run(getStatsCheck(reject, resolve)))
