@@ -46,7 +46,7 @@ const getLogStats = (isWatch, { padLog, log }) => {
       formatTag({ emitted })
     ]))
     __VERBOSE__ && chunks.forEach(({ id, names, size, entry, initial, rendered }) => table.push([
-      `  Chunk ${id}${names.length ? ' ' : ''}${names.join(',')}`,
+      `  Chunk ${id || '-'} ${names.join(',')}`,
       formatSize(size),
       formatTag({ entry, initial, rendered })
     ]))

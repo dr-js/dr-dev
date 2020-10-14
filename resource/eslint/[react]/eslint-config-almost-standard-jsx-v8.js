@@ -45,7 +45,7 @@ module.exports = {
       afterOpening: 'never',
       beforeClosing: 'never'
     } ],
-    'react/jsx-uses-react': 'error',
+    // 'react/jsx-uses-react': 'error', // EDIT: https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
     'react/jsx-uses-vars': 'error',
     'react/self-closing-comp': 'error'
   }

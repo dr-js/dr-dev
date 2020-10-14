@@ -2,6 +2,6 @@
   "IMPORT": [ "../" ],
   "EXPORT": [ "INIT#babel.config.js" ],
   "dependencies": {
-    "@babel/preset-react": "^7.10.4"
+    "@babel/preset-react": "^7.12.1"
   }
 }

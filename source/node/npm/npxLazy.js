@@ -2,19 +2,18 @@ import { resolve } from 'path'
 import { tryRequire } from '@dr-js/core/module/env/tryRequire'
 import { parsePackageNameAndVersion, findUpPackageRoot, fromNpmNodeModules, getPathNpmGlobalRoot } from '@dr-js/node/module/module/Software/npm'
 
-const runNpx = async (
+const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnpx` package will be dropped since `npm@7` and may later break the usage
   args = [],
   tabLog
 ) => {
-  const npx = tryRequire(fromNpmNodeModules('libnpx')) // borrow package from npm
-  const pathNpmCli = fromNpmNodeModules('../bin/npm-cli.js') // optional, something like `path.join(__dirname, 'node_modules', 'npm', 'bin', 'npm-cli.js')`
+  const pathNpxCli = fromNpmNodeModules('../bin/npx-cli.js') // exist in both `npm@6` and `npm@7`
   tabLog(1, 'args:', ...args)
-  tabLog(1, 'pathNpmCli:', pathNpmCli)
-  return npx(npx.parseArgs([
-    process.argv[ 0 ], // node
-    process.argv[ 1 ], // this script
-    ...args
-  ], pathNpmCli))
+  tabLog(1, 'pathNpxCli:', pathNpxCli)
+
+  // rewrite `process.argv` to fake npx command so `npx-cli.js` can do it's job
+  process.argv.length = 1 // keep node binary
+  process.argv.push(pathNpxCli, ...args)
+  return require(pathNpxCli)
 }
 
 const npxLazy = async ({
