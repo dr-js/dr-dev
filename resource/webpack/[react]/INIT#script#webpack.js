@@ -16,7 +16,10 @@ runMain(async (logger) => {
   })
 
   const config = getCommonWebpackConfig({
-    babelOption: getWebpackBabelConfig({ isProduction, extraPresetList: [ [ '@babel/react' ] ] }),
+    babelOption: getWebpackBabelConfig({
+      isProduction,
+      extraPresetList: [ [ '@babel/react', { runtime: 'automatic' } ] ] // TODO: later remove at `babel@8`: https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#manual-babel-setup
+    }),
     output: { path: fromOutput('library'), filename: isProduction ? '[name].[chunkhash:8].js' : '[name].js', library: 'PACKAGE_NAME', libraryTarget: 'umd' },
     entry: { 'index': 'source/index' }
   })

@@ -219,7 +219,7 @@
 | Package name                            |  Version |
 | :----                                   |    ----: |
 | @babel/cli                              |  ^7.12.1 |
-| @babel/core                             |  ^7.12.1 |
+| @babel/core                             |  ^7.12.3 |
 | @babel/plugin-proposal-class-properties |  ^7.12.1 |
 | @babel/preset-env                       |  ^7.12.1 |
 | @babel/preset-react                     |  ^7.12.1 |
@@ -239,4 +239,4 @@
 | react                                   | ^16.14.0 |
 | styled-components                       |   ^5.2.0 |
 | terser                                  |   ^5.3.5 |
-| webpack                                 |   ^5.1.2 |
+| webpack                                 |   ^5.1.3 |
