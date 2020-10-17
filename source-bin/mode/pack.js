@@ -80,7 +80,12 @@ const doPack = async ({
   }
 
   const pathPackagePack = await packOutput({ fromOutput, logger })
-  await publishOutput({ extraArgs: isDryRun ? [ '--dry-run' ] : [], isPublish, isPublishDev, packageJSON, pathPackagePack, logger })
+  await publishOutput({
+    extraArgs: isDryRun ? [ '--dry-run' ] : [],
+    isPublishAuto: false, isPublish, isPublishDev,
+    packageJSON, pathPackagePack,
+    logger
+  })
 }
 
 export { doPack }

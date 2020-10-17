@@ -101,20 +101,30 @@ describe('Output', () => {
     packageJSON.version = '0.0.0-dev.0' // reset for test
 
     // should do nothing
-    await publishOutput({ isPublish: false, isPublishDev: false, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], logger })
+    await publishOutput({ isPublishAuto: false, isPublish: false, isPublishDev: false, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], logger })
     verifyLog('skipped publish output, no flag found')
 
     // should --dry-run
     info('test publish with --dry-run')
-    await publishOutput({ isPublish: false, isPublishDev: true, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], logger })
+    await publishOutput({ isPublishAuto: false, isPublish: false, isPublishDev: true, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], logger })
     verifyLog('publish-dev')
   })
 
   it('getPublishFlag()', () => {
-    stringifyEqual(getPublishFlag([ 'a', 'b', 'c', 'dev' ]), { isPublish: false, isPublishDev: false })
-    stringifyEqual(getPublishFlag([ 'publish' ]), { isPublish: true, isPublishDev: false })
-    stringifyEqual(getPublishFlag([ 'publish-dev' ]), { isPublish: false, isPublishDev: true })
+    stringifyEqual(getPublishFlag([ 'a', 'b', 'c', 'dev' ]), { isPublishAuto: false, isPublish: false, isPublishDev: false })
+    stringifyEqual(getPublishFlag([ 'publish' ]), { isPublishAuto: false, isPublish: true, isPublishDev: false })
+    stringifyEqual(getPublishFlag([ 'publish-dev' ]), { isPublishAuto: false, isPublish: false, isPublishDev: true })
+    stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0'), { isPublishAuto: true, isPublish: true, isPublishDev: false })
+    stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0-dev.0'), { isPublishAuto: true, isPublish: false, isPublishDev: true })
+    stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0-dev.0-local.0'), { isPublishAuto: true, isPublish: false, isPublishDev: true })
+
+    doThrow(() => getPublishFlag([ 'publish-auto', 'publish' ]), 'should prevent set both flag')
+    doThrow(() => getPublishFlag([ 'publish-auto', 'publish-dev' ]), 'should prevent set both flag')
     doThrow(() => getPublishFlag([ 'publish', 'publish-dev' ]), 'should prevent set both flag')
+    doThrow(() => getPublishFlag([ 'publish-auto', 'publish', 'publish-dev' ]), 'should prevent set all flag')
+
+    doThrow(() => getPublishFlag([ 'publish-auto' ]), 'should require packageVersion')
+    doThrow(() => getPublishFlag([ 'publish-auto' ], ''), 'should require packageVersion')
   })
 
   it('verifyPublishVersion()', () => {

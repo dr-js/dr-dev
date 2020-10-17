@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.4.0-dev.4",
+  "version": "0.4.0-dev.5",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -33,7 +33,7 @@
     "// test ========================": "",
     "test-T": "node ./output-gitignore/bin --TFS .test.js -T",
     "test-T-dev": "dr-dev --EE BABEL_ENV=dev -E -- node ./output-gitignore/bin --TR @babel/register --TFS .test.js -T",
-    "test-dev": "npm run test-T-dev -- source/node/npm/npxLazy.test.js",
+    "test-dev": "npm run test-T-dev -- source/output.test.js",
     "test-source": "npm run test-T-dev -- source/",
     "test-output-library": "npm run test-T -- output-gitignore/library/",
     "test-output-module": "npm run test-T-dev -- output-gitignore/module/",
@@ -50,12 +50,12 @@
     "npm": ">=6.14"
   },
   "dependencies": {
-    "@dr-js/core": "0.4.0-dev.5",
-    "@dr-js/node": "0.4.0-dev.2"
+    "@dr-js/core": "0.4.0-dev.7",
+    "@dr-js/node": "0.4.0-dev.3"
   },
   "devDependencies": {
-    "@dr-js/dev": "0.4.0-dev.3",
-    "@dr-js/dev-web": "0.4.0-dev.3"
+    "@dr-js/dev": "0.4.0-dev.4",
+    "@dr-js/dev-web": "0.4.0-dev.4"
   },
   "sideEffects": false
 }

@@ -6,7 +6,7 @@ import { getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/file/Modify'
 import { run } from '@dr-js/core/module/node/system/Run'
 
-import { toPackageTgzName } from '@dr-js/node/module/module/Software/npm'
+import { toPackageTgzName, getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
 
 import { __VERBOSE__ } from './node/env'
 import { FILTER_TEST_PATH } from './node/preset'
@@ -66,9 +66,9 @@ const packOutput = async ({
 }) => {
   logger.padLog('run pack output')
   await run({
-    command: 'npm',
+    command: getPathNpmExecutable(),
     argList: [ '--no-update-notifier', 'pack' ],
-    option: { shell: true, cwd: fromOutput(), stdio: __VERBOSE__ ? 'inherit' : [ 'ignore', 'ignore' ] }
+    option: { cwd: fromOutput(), stdio: __VERBOSE__ ? 'inherit' : [ 'ignore', 'ignore' ] }
   }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
@@ -125,17 +125,22 @@ const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger }) => {
 }
 
 const publishOutput = async ({
-  flagList,
-  isPublish = getPublishFlag(flagList).isPublish,
-  isPublishDev = getPublishFlag(flagList).isPublishDev,
   packageJSON: { name, version },
+  flagList,
+  isPublishAuto = getPublishFlag(flagList, version).isPublishAuto,
+  isPublish = getPublishFlag(flagList, version).isPublish,
+  isPublishDev = getPublishFlag(flagList, version).isPublishDev,
   pathPackagePack, // the .tgz output of pack
   extraArgs = [],
   logger
 }) => {
   if (!isPublish && !isPublishDev) return logger.padLog('skipped publish output, no flag found')
   if (!pathPackagePack || !pathPackagePack.endsWith('.tgz')) throw new Error(`[publishOutput] invalid pathPackagePack: ${pathPackagePack}`)
-  verifyPublishVersion({ version, isPublishDev })
+
+  // skip verify for auto + dev
+  !(isPublishAuto && isPublishDev) && verifyPublishVersion({ version, isPublishDev })
+
+  !extraArgs.includes('--tag') && extraArgs.push('--tag', isPublishDev ? 'dev' : 'latest')
 
   // Only applies to scoped packages, which default to restricted, check: https://docs.npmjs.com/cli/publish
   name.startsWith('@') && !extraArgs.includes('--access') && extraArgs.push('--access', 'public')
@@ -147,21 +152,25 @@ const publishOutput = async ({
 
   logger.padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
   await run({
-    command: 'npm',
+    command: getPathNpmExecutable(),
     argList: [
       '--no-update-notifier',
       'publish', pathPackagePack,
-      '--tag', isPublishDev ? 'dev' : 'latest',
       ...extraArgs
-    ],
-    option: { shell: true }
+    ]
   }).promise
 }
-const getPublishFlag = (flagList) => {
-  const isPublish = flagList.includes('publish')
-  const isPublishDev = flagList.includes('publish-dev')
-  if (isPublish && isPublishDev) throw new Error('[getPublishFlag] should not set both: isPublish, isPublishDev')
-  return { isPublish, isPublishDev }
+const getPublishFlag = (flagList, packageVersion) => {
+  const isPublishAuto = flagList.includes('publish-auto') // less checking for auto + dev
+  let isPublish = flagList.includes('publish')
+  let isPublishDev = flagList.includes('publish-dev')
+  if (Number(isPublishAuto) + Number(isPublish) + Number(isPublishDev) >= 2) throw new Error('[getPublishFlag] expect single flag')
+  if (isPublishAuto) {
+    if (!packageVersion) throw new Error('[getPublishFlag] expect packageVersion for auto publish')
+    isPublishDev = packageVersion.includes('-dev.')
+    isPublish = !isPublishDev
+  }
+  return { isPublishAuto, isPublish, isPublishDev }
 }
 const verifyPublishVersion = ({ version, isPublishDev }) => {
   if (isPublishDev

@@ -12,13 +12,15 @@ import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTre
 
 import { withTempDirectory } from '@dr-js/dev/module/node/file'
 
+import { getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
+
 import { collectDependency } from '../function'
 
 const runNpmOutdated = async (pathPackage) => {
   const { promise, subProcess, stdoutPromise, stderrPromise } = run({
-    command: 'npm',
+    command: getPathNpmExecutable(),
     argList: [ '--no-update-notifier', 'outdated' ],
-    option: { cwd: pathPackage, shell: true },
+    option: { cwd: pathPackage },
     quiet: true
   })
 

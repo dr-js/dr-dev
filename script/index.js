@@ -41,9 +41,9 @@ const processOutput = async ({ logger }) => {
   logger.padLog(`size reduce: ${sizeReduce}B`)
 }
 
-const packResource = async ({ packageJSON, logger }) => {
-  const { isPublish, isPublishDev } = getPublishFlag(process.argv)
-  logger.padLog(`pack resource package: ${packageJSON.version}, isPublish: ${isPublish}, isPublishDev: ${isPublishDev}`)
+const packResource = async ({ packageJSON: { version }, logger }) => {
+  const { isPublish, isPublishDev } = getPublishFlag(process.argv, version)
+  logger.padLog(`pack resource package: ${version}, isPublish: ${isPublish}, isPublishDev: ${isPublishDev}`)
 
   if (!argvFlag('unsafe')) {
     logger.padLog('run check-outdated')
@@ -65,7 +65,7 @@ const packResource = async ({ packageJSON, logger }) => {
         '--pack',
         '--path-input', file,
         '--path-output', `./output-package-gitignore/${name}/`,
-        '--output-version', packageJSON.version,
+        '--output-version', version,
         '--output-name', name,
         '--output-description', description,
         isPublish && '--publish',
@@ -85,7 +85,7 @@ runMain(async (logger) => {
   await buildOutput({ logger })
   if (argvFlag('resource')) return packResource({ packageJSON, logger }) // do not run both
   await processOutput({ logger })
-  const isTest = argvFlag('test', 'publish', 'publish-dev')
+  const isTest = argvFlag('test', 'publish-auto', 'publish', 'publish-dev')
   isTest && logger.padLog('lint source')
   isTest && execShell('npm run lint')
   isTest && await processOutput({ logger }) // once more
