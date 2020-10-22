@@ -82,6 +82,7 @@ const packOutput = async ({
 }
 
 const clearOutput = async ({ fromOutput, pathList = [ '.' ], filterFile = FILTER_TEST_PATH, logger }) => {
+  if (!fromOutput) throw new Error('[clearOutput] expect fromOutput')
   logger.padLog('clear output')
   const fileList = await getFileListFromPathList(pathList, fromOutput, filterFile)
   for (const filePath of fileList) await modifyDelete(filePath)
@@ -130,6 +131,7 @@ const publishOutput = async ({
   isPublishAuto = getPublishFlag(flagList, version).isPublishAuto,
   isPublish = getPublishFlag(flagList, version).isPublish,
   isPublishDev = getPublishFlag(flagList, version).isPublishDev,
+  isPublishVerify = !(isPublishAuto && isPublishDev), // skip verify only for auto + dev
   pathPackagePack, // the .tgz output of pack
   extraArgs = [],
   logger
@@ -137,8 +139,7 @@ const publishOutput = async ({
   if (!isPublish && !isPublishDev) return logger.padLog('skipped publish output, no flag found')
   if (!pathPackagePack || !pathPackagePack.endsWith('.tgz')) throw new Error(`[publishOutput] invalid pathPackagePack: ${pathPackagePack}`)
 
-  // skip verify for auto + dev
-  !(isPublishAuto && isPublishDev) && verifyPublishVersion({ version, isPublishDev })
+  isPublishVerify && verifyPublishVersion({ version, isPublishDev })
 
   !extraArgs.includes('--tag') && extraArgs.push('--tag', isPublishDev ? 'dev' : 'latest')
 
