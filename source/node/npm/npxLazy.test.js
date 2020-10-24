@@ -1,4 +1,5 @@
 import { doNotThrowAsync } from '@dr-js/core/module/common/verify'
+import { setTimeoutAsync } from '@dr-js/core/module/common/time'
 
 import {
   runNpx
@@ -11,12 +12,12 @@ const tabLog = (level, ...args) => info(`${'  '.repeat(level)}${args.join(' ')}`
 describe('Node.Npm.npxLazy', () => {
   it('runNpx()', async () => {
     await doNotThrowAsync(async () => {
-      const result = await runNpx([ 'node', '-v' ], tabLog) // { code: 0, stdout: '', stderr: '' }
-      info(JSON.stringify(result))
+      await runNpx([ 'node', '-v' ], tabLog)
+      await setTimeoutAsync(256) // wait run to end
     })
     await doNotThrowAsync(async () => {
-      const result = await runNpx([ 'npm', '-v' ], tabLog) // { code: 0, stdout: '', stderr: '' }
-      info(JSON.stringify(result))
+      await runNpx([ 'npm', '-v' ], tabLog)
+      await setTimeoutAsync(256) // wait run to end
     })
   })
 })

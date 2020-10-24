@@ -229,7 +229,7 @@
 | babel-plugin-minify-replace             |  ^0.5.0 |
 | babel-plugin-module-resolver            |  ^4.0.0 |
 | babel-plugin-styled-components          | ^1.11.1 |
-| eslint                                  | ^7.12.0 |
+| eslint                                  | ^7.12.1 |
 | eslint-plugin-import                    | ^2.22.1 |
 | eslint-plugin-node                      | ^11.1.0 |
 | eslint-plugin-promise                   |  ^4.2.1 |

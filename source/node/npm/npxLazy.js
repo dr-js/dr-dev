@@ -6,6 +6,8 @@ const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnp
   args = [],
   tabLog
 ) => {
+  // NOTE: with this method, there's no way to know when the process ends and the end result,
+  //   so outer code should just bail out, and let the process itself run to end
   const pathNpxCli = fromNpmNodeModules('../bin/npx-cli.js') // exist in both `npm@6` and `npm@7`
   tabLog(1, 'args:', ...args)
   tabLog(1, 'pathNpxCli:', pathNpxCli)
@@ -13,6 +15,8 @@ const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnp
   // rewrite `process.argv` to fake npx command so `npx-cli.js` can do it's job
   process.argv.length = 1 // keep node binary
   process.argv.push(pathNpxCli, ...args)
+
+  delete require.cache[ require.resolve(pathNpxCli) ] // reset cache or the code in require will only run once
   return require(pathNpxCli)
 }
 

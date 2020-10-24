@@ -2,10 +2,13 @@ import { clock } from '@dr-js/core/module/common/time'
 import { time } from '@dr-js/core/module/common/format'
 import { clamp } from '@dr-js/core/module/common/math/base'
 
+import { configureTerminalColor } from '@dr-js/node/module/module/TerminalColor'
+
 import { loadEnvKey, saveEnvKey, __VERBOSE__ } from './env'
 
 const EMPTY_FUNC = () => {}
 
+const TerminalColor = configureTerminalColor()
 const getLogger = (
   title = 'dev',
   quiet = false,
@@ -33,10 +36,10 @@ const getLogger = (
   const padLog = (...args) => {
     const start = `## ${args.join(' ')} `
     const end = ` [${title}|${getPadTime()}]`
-    logFunc(`\n${start.padEnd(padWidth - end.length, '-')}${end}`)
+    logFunc(`\n${start.padEnd(padWidth - end.length, '-')}${TerminalColor.fg.yellow(end)}`)
   }
-  const stepLog = (...args) => logFunc(`- (+${getStepTime()}) ${args.join(' ')}`)
-  const log = (...args) => logFunc(`- ${args.join(' ')}`)
+  const stepLog = (...args) => logFunc(`- ${TerminalColor.fg.yellow(`(+${getStepTime()})`)} ${args.join(' ')}`)
+  const log = (...args) => logFunc(TerminalColor.fg.darkGray(`- ${args.join(' ')}`))
   const devLog = __VERBOSE__ ? log : EMPTY_FUNC
 
   return quiet

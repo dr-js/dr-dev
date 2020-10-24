@@ -1,5 +1,5 @@
 import Webpack from 'webpack'
-import { dirname } from 'path'
+import { join, dirname } from 'path'
 import { writeFileSync } from 'fs'
 
 import { binary, time, padTable } from '@dr-js/core/module/common/format'
@@ -121,6 +121,7 @@ const commonFlag = async ({
 
   const getCommonWebpackConfig = ({
     babelOption = getWebpackBabelConfig({ isProduction }),
+    packageJSONPickOption = { keys: [ 'name', 'version' ], exportMode: 'export-each' }, // prefer style like: `import { a, b } from './package.json'`
     output, // = { path: fromOutput('library'), filename: '[name].js', library: 'LIBRARY', libraryTarget: 'umd' },
     entry, // = { index: 'source/index' },
     resolve = { alias: { source: fromRoot('source') } },
@@ -128,6 +129,7 @@ const commonFlag = async ({
     isNodeEnv = false,
     isNodeBin = false, // add `#!/usr/bin/env node`
     isMinimize = false,
+    extraModuleRuleList = [],
     extraPluginList = [],
     extraDefine = {},
     ...extraConfig
@@ -140,7 +142,17 @@ const commonFlag = async ({
     entry,
     resolve,
     externals,
-    module: { rules: [ { test: /\.js$/, use: { loader: 'babel-loader', options: babelOption } } ] },
+    module: {
+      rules: [
+        babelOption && { test: /\.js$/, use: { loader: 'babel-loader', options: babelOption } },
+        packageJSONPickOption && {
+          test: /package\.json$/,
+          type: (!packageJSONPickOption.exportMode || packageJSONPickOption.exportMode.startsWith('export-')) ? 'javascript/auto' : undefined,
+          use: { loader: join(__dirname, 'webpack-json-pick-loader.js'), options: packageJSONPickOption }
+        },
+        ...extraModuleRuleList
+      ].filter(Boolean)
+    },
     plugins: [
       new Webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(mode),
