@@ -235,8 +235,8 @@
 | eslint-plugin-promise                   |  ^4.2.1 |
 | eslint-plugin-react                     | ^7.21.5 |
 | prop-types                              | ^15.7.2 |
-| puppeteer                               |  ^5.4.0 |
+| puppeteer                               |  ^5.4.1 |
 | react                                   | ^17.0.1 |
 | styled-components                       |  ^5.2.0 |
 | terser                                  |  ^5.3.8 |
-| webpack                                 |  ^5.2.0 |
+| webpack                                 |  ^5.3.1 |

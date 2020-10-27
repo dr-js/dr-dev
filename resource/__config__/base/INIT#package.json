@@ -6,7 +6,7 @@
   "description": "{PACKAGE-DESCRIPTION}",
   "repository": "github:{GITHUB-USER}/{GITHUB-REPO}",
   "engines": {
-    "node": ">=12.16",
+    "node": ">=12.19",
     "npm": ">=6.14"
   },
   "devDependencies": {

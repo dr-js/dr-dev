@@ -1,4 +1,4 @@
-import { global } from '@dr-js/core/module/env/global'
+import { getGlobal } from '@dr-js/core/module/env/global'
 import { clock } from '@dr-js/core/module/common/time'
 import { time } from '@dr-js/core/module/common/format'
 import { isCompactArrayShallowEqual } from '@dr-js/core/module/common/immutable/check'
@@ -66,6 +66,8 @@ const hijackSetTimeoutInterval = () => {
   const clearTimeoutOrg = clearTimeout
   const setIntervalOrg = setInterval
   const clearIntervalOrg = clearInterval
+
+  const global = getGlobal()
 
   global.setTimeout = (func, delay, ...args) => {
     const token = setTimeoutOrg((...args) => {
