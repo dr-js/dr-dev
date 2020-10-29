@@ -6,14 +6,14 @@ import { time } from '@dr-js/core/module/common/format'
 import { createInsideOutPromise } from '@dr-js/core/module/common/function'
 
 const puppeteerBrowserDisconnectListener = () => {
-  __DEV__ && console.warn('[Puppeteer] unexpected browser disconnect, exiting')
+  console.warn('[Puppeteer] unexpected browser disconnect, exiting')
   process.exit(-2)
 }
 
 const clearPuppeteerBrowser = ({ puppeteerBrowser }) => {
   puppeteerBrowser.removeListener('disconnected', puppeteerBrowserDisconnectListener)
   return puppeteerBrowser.close().catch((error) => {
-    __DEV__ && console.warn('[Puppeteer] puppeteerBrowser clear error:', String(error))
+    console.warn('[Puppeteer] puppeteerBrowser clear error:', String(error))
     process.exit(-1)
   })
 }

@@ -1,6 +1,9 @@
 name: ci-test
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - '**'
 
 jobs:
   build:
@@ -8,7 +11,7 @@ jobs:
       fail-fast: false # allow all test to run to the end
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
-        node-version: [ 12.x, 14.x, 15.x ]
+        node-version: [ 14.x, 15.x ]
 
     runs-on: ${{ matrix.os }}
 

@@ -57,8 +57,8 @@
 > ```
 > CLI Usage:
 >   --config --c -c [OPTIONAL] [ARGUMENT=1]
->       from ENV: set to "env" to enable, not using be default
->       from JS/JSON file: set to "path/to/file.config.js|json"
+>       from ENV: set to "env" to enable, default not use
+>       from JS/JSON: set to "path/to/config.js|json"
 >   --help --h -h [OPTIONAL] [ARGUMENT=0+]
 >       show full help
 >   --version --v -v [OPTIONAL] [ARGUMENT=0+]
@@ -152,24 +152,24 @@
 >     export DR_DEV_SORT_KEY="[ARGUMENT=0+]"
 >     export DR_DEV_GIT_COMMIT="[ARGUMENT=0+]"
 >     export DR_DEV_TEST_ROOT="[OPTIONAL] [ARGUMENT=1+]"
->     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+]"
->     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+]"
->     export DR_DEV_TEST_TIMEOUT="[ARGUMENT=1]"
+>     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
+>     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
+>     export DR_DEV_TEST_TIMEOUT="[ARGUMENT=1] [ALIAS=DR_DEV_TT]"
 >     export DR_DEV_INIT="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_INIT_RESOURCE_PACKAGE="[ARGUMENT=1]"
 >     export DR_DEV_INIT_RESET="[ARGUMENT=0+]"
 >     export DR_DEV_INIT_VERIFY="[ARGUMENT=0+]"
->     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+]"
+>     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+] [ALIAS=DR_DEV_IVR]"
 >     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
->     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1]"
->     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1]"
->     export DR_DEV_EXEC_LOAD="[OPTIONAL] [ARGUMENT=1+]"
->     export DR_DEV_PARSE_SCRIPT="[OPTIONAL] [ARGUMENT=1+]"
->     export DR_DEV_PARSE_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+]"
->     export DR_DEV_RUN_SCRIPT="[OPTIONAL] [ARGUMENT=1+]"
->     export DR_DEV_RUN_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+]"
->     export DR_DEV_NPM_COMBO="[OPTIONAL] [ARGUMENT=1+]"
->     export DR_DEV_NPX_LAZY="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1] [ALIAS=DR_DEV_EE]"
+>     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1] [ALIAS=DR_DEV_EC]"
+>     export DR_DEV_EXEC_LOAD="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_EL]"
+>     export DR_DEV_PARSE_SCRIPT="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PS]"
+>     export DR_DEV_PARSE_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PSL]"
+>     export DR_DEV_RUN_SCRIPT="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_RS]"
+>     export DR_DEV_RUN_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_RSL]"
+>     export DR_DEV_NPM_COMBO="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_NC]"
+>     export DR_DEV_NPX_LAZY="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_NPX,DR_DEV_NL]"
 >   "
 > CONFIG Usage:
 >   {
@@ -192,24 +192,24 @@
 >     "sortKey": [ "[ARGUMENT=0+]" ],
 >     "gitCommit": [ "[ARGUMENT=0+]" ],
 >     "testRoot": [ "[OPTIONAL] [ARGUMENT=1+]" ],
->     "testFileSuffix": [ "[ARGUMENT=1+]" ],
->     "testRequire": [ "[ARGUMENT=1+]" ],
->     "testTimeout": [ "[ARGUMENT=1]" ],
+>     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
+>     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],
+>     "testTimeout": [ "[ARGUMENT=1] [ALIAS=TT]" ],
 >     "init": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "initResourcePackage": [ "[ARGUMENT=1]" ],
 >     "initReset": [ "[ARGUMENT=0+]" ],
 >     "initVerify": [ "[ARGUMENT=0+]" ],
->     "initVerifyRule": [ "[ARGUMENT=1+]" ],
+>     "initVerifyRule": [ "[ARGUMENT=1+] [ALIAS=IVR]" ],
 >     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
->     "execEnv": [ "[ARGUMENT=0-1]" ],
->     "execCwd": [ "[ARGUMENT=0-1]" ],
->     "execLoad": [ "[OPTIONAL] [ARGUMENT=1+]" ],
->     "parseScript": [ "[OPTIONAL] [ARGUMENT=1+]" ],
->     "parseScriptList": [ "[OPTIONAL] [ARGUMENT=1+]" ],
->     "runScript": [ "[OPTIONAL] [ARGUMENT=1+]" ],
->     "runScriptList": [ "[OPTIONAL] [ARGUMENT=1+]" ],
->     "npmCombo": [ "[OPTIONAL] [ARGUMENT=1+]" ],
->     "npxLazy": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "execEnv": [ "[ARGUMENT=0-1] [ALIAS=EE]" ],
+>     "execCwd": [ "[ARGUMENT=0-1] [ALIAS=EC]" ],
+>     "execLoad": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=EL]" ],
+>     "parseScript": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=ps]" ],
+>     "parseScriptList": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=psl]" ],
+>     "runScript": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=rs]" ],
+>     "runScriptList": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=rsl]" ],
+>     "npmCombo": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=nc]" ],
+>     "npxLazy": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=npx,nl]" ],
 >   }
 > ```
 
@@ -221,14 +221,14 @@
 | @babel/cli                     | ^7.12.1 |
 | @babel/core                    | ^7.12.3 |
 | @babel/preset-env              | ^7.12.1 |
-| @babel/preset-react            | ^7.12.1 |
+| @babel/preset-react            | ^7.12.5 |
 | @babel/register                | ^7.12.1 |
 | babel-eslint                   | ^10.1.0 |
-| babel-loader                   |  ^8.1.0 |
+| babel-loader                   |  ^8.2.1 |
 | babel-plugin-minify-replace    |  ^0.5.0 |
 | babel-plugin-module-resolver   |  ^4.0.0 |
 | babel-plugin-styled-components | ^1.11.1 |
-| eslint                         | ^7.12.1 |
+| eslint                         | ^7.13.0 |
 | eslint-plugin-import           | ^2.22.1 |
 | eslint-plugin-node             | ^11.1.0 |
 | eslint-plugin-promise          |  ^4.2.1 |
@@ -236,6 +236,6 @@
 | prop-types                     | ^15.7.2 |
 | puppeteer                      |  ^5.4.1 |
 | react                          | ^17.0.1 |
-| styled-components              |  ^5.2.0 |
+| styled-components              |  ^5.2.1 |
 | terser                         |  ^5.3.8 |
-| webpack                        |  ^5.3.1 |
+| webpack                        |  ^5.4.0 |

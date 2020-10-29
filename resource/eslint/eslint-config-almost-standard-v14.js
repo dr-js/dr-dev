@@ -2,6 +2,8 @@
 // EDIT: from https://github.com/standard/eslint-config-standard/blob/v13.0.1/eslintrc.json
 
 module.exports = {
+  ignorePatterns: [ '!.*', 'node_modules' ], // https://github.com/eslint/eslint/issues/10341#issuecomment-468548031
+
   parserOptions: {
     ecmaVersion: 2020,
     ecmaFeatures: { jsx: true },

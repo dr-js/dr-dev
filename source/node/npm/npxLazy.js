@@ -17,7 +17,13 @@ const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnp
   process.argv.push(pathNpxCli, ...args)
 
   delete require.cache[ require.resolve(pathNpxCli) ] // reset cache or the code in require will only run once
-  return require(pathNpxCli)
+  require(pathNpxCli)
+
+  // TODO: NOTE: HACK: this assumes outer code do not have something keep the process running, like server or timeout
+  return new Promise((resolve, reject) => process.on('beforeExit', (code) => code
+    ? reject(new Error(`exit with code: ${code}, args: [${args.join(' ')}]`))
+    : resolve()
+  ))
 }
 
 const npxLazy = async ({
