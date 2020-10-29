@@ -216,27 +216,26 @@
 #### Resource package
 📄 [resource/](resource/)
 
-| Package name                            | Version |
-| :----                                   |   ----: |
-| @babel/cli                              | ^7.12.1 |
-| @babel/core                             | ^7.12.3 |
-| @babel/plugin-proposal-class-properties | ^7.12.1 |
-| @babel/preset-env                       | ^7.12.1 |
-| @babel/preset-react                     | ^7.12.1 |
-| @babel/register                         | ^7.12.1 |
-| babel-eslint                            | ^10.1.0 |
-| babel-loader                            |  ^8.1.0 |
-| babel-plugin-minify-replace             |  ^0.5.0 |
-| babel-plugin-module-resolver            |  ^4.0.0 |
-| babel-plugin-styled-components          | ^1.11.1 |
-| eslint                                  | ^7.12.1 |
-| eslint-plugin-import                    | ^2.22.1 |
-| eslint-plugin-node                      | ^11.1.0 |
-| eslint-plugin-promise                   |  ^4.2.1 |
-| eslint-plugin-react                     | ^7.21.5 |
-| prop-types                              | ^15.7.2 |
-| puppeteer                               |  ^5.4.1 |
-| react                                   | ^17.0.1 |
-| styled-components                       |  ^5.2.0 |
-| terser                                  |  ^5.3.8 |
-| webpack                                 |  ^5.3.1 |
+| Package name                   | Version |
+| :----                          |   ----: |
+| @babel/cli                     | ^7.12.1 |
+| @babel/core                    | ^7.12.3 |
+| @babel/preset-env              | ^7.12.1 |
+| @babel/preset-react            | ^7.12.1 |
+| @babel/register                | ^7.12.1 |
+| babel-eslint                   | ^10.1.0 |
+| babel-loader                   |  ^8.1.0 |
+| babel-plugin-minify-replace    |  ^0.5.0 |
+| babel-plugin-module-resolver   |  ^4.0.0 |
+| babel-plugin-styled-components | ^1.11.1 |
+| eslint                         | ^7.12.1 |
+| eslint-plugin-import           | ^2.22.1 |
+| eslint-plugin-node             | ^11.1.0 |
+| eslint-plugin-promise          |  ^4.2.1 |
+| eslint-plugin-react            | ^7.21.5 |
+| prop-types                     | ^15.7.2 |
+| puppeteer                      |  ^5.4.1 |
+| react                          | ^17.0.1 |
+| styled-components              |  ^5.2.0 |
+| terser                         |  ^5.3.8 |
+| webpack                        |  ^5.3.1 |

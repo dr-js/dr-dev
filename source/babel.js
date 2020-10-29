@@ -12,14 +12,13 @@ const getBabelConfig = ({
   presets: [
     [ '@babel/env', isAllTransform
       ? { forceAllTransforms: true, modules: 'commonjs' }
-      : { targets: { node: '10' }, modules: isModule ? false : 'commonjs' }
+      : { targets: { node: '12' }, modules: isModule ? false : 'commonjs' }
     ],
     ...extraPresetList
   ].filter(Boolean),
   plugins: [
     ...extraPluginList,
     [ '@babel/proposal-class-properties', { loose: true } ],
-    !isModule && [ '@babel/proposal-object-rest-spread', { loose: true, useBuiltIns: true } ], // NOTE: for Edge(17.17134) support check: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#Spread_in_object_literals
     [ 'minify-replace', {
       replacements: [
         ...extraMinifyReplaceList,
@@ -50,13 +49,12 @@ const getWebpackBabelConfig = ({
   presets: [
     [ '@babel/env', isProduction && isAllTransform
       ? { forceAllTransforms: true, modules: false }
-      : { targets: { node: '10' }, modules: false }
+      : { targets: { node: '12' }, modules: false }
     ],
     ...extraPresetList
   ].filter(Boolean),
   plugins: [
     [ '@babel/proposal-class-properties', { loose: true } ],
-    isProduction && [ '@babel/proposal-object-rest-spread', { loose: true, useBuiltIns: true } ], // NOTE: for Edge(17.17134) support check: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#Spread_in_object_literals
     ...extraPluginList
   ].filter(Boolean)
 })

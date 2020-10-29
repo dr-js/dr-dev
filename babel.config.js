@@ -5,7 +5,7 @@ const isUseSource = BABEL_ENV.includes('use-source')
 
 module.exports = {
   presets: [
-    [ '@babel/env', { targets: { node: '10' }, modules: isModule ? false : 'commonjs' } ]
+    [ '@babel/env', { targets: { node: '12' }, modules: isModule ? false : 'commonjs' } ]
   ],
   plugins: [
     [ 'minify-replace', {

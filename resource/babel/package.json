@@ -7,7 +7,6 @@
     "@babel/core": "^7.12.3",
     "@babel/cli": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
-    "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/register": "^7.12.1",
     "babel-plugin-minify-replace": "^0.5.0",
     "babel-plugin-module-resolver": "^4.0.0"
