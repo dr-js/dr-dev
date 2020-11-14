@@ -1,29 +1,32 @@
 import { resolve } from 'path'
 import { tryRequire } from '@dr-js/core/module/env/tryRequire'
+import { run } from '@dr-js/core/module/node/system/Run'
 import { parsePackageNameAndVersion, findUpPackageRoot, fromNpmNodeModules, getPathNpmGlobalRoot } from '@dr-js/node/module/module/Software/npm'
 
 const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnpx` package will be dropped since `npm@7` and may later break the usage
-  args = [],
+  argList = [],
   tabLog
 ) => {
-  // NOTE: with this method, there's no way to know when the process ends and the end result,
-  //   so outer code should just bail out, and let the process itself run to end
   const pathNpxCli = fromNpmNodeModules('../bin/npx-cli.js') // exist in both `npm@6` and `npm@7`
-  tabLog(1, 'args:', ...args)
+  tabLog(1, 'argList:', ...argList)
   tabLog(1, 'pathNpxCli:', pathNpxCli)
+  await run({ command: pathNpxCli, argList }).promise
 
-  // rewrite `process.argv` to fake npx command so `npx-cli.js` can do it's job
-  process.argv.length = 1 // keep node binary
-  process.argv.push(pathNpxCli, ...args)
-
-  delete require.cache[ require.resolve(pathNpxCli) ] // reset cache or the code in require will only run once
-  require(pathNpxCli)
-
-  // TODO: NOTE: HACK: this assumes outer code do not have something keep the process running, like server or timeout
-  return new Promise((resolve, reject) => process.on('beforeExit', (code) => code
-    ? reject(new Error(`exit with code: ${code}, args: [${args.join(' ')}]`))
-    : resolve()
-  ))
+  // // TODO: this is flaky, check test for details
+  // // NOTE: with this method, there's no way to know when the process ends and the end result,
+  // //   so outer code should just bail out, and let the process itself run to end
+  // // rewrite `process.argv` to fake npx command so `npx-cli.js` can do it's job
+  // process.argv.length = 1 // keep node binary
+  // process.argv.push(pathNpxCli, ...args)
+  //
+  // delete require.cache[ require.resolve(pathNpxCli) ] // reset cache or the code in require will only run once
+  // require(pathNpxCli)
+  //
+  // // TODO: NOTE: HACK: this assumes outer code do not have something keep the process running, like server or timeout
+  // await new Promise((resolve, reject) => process.once('beforeExit', (code) => code
+  //   ? reject(new Error(`exit with code: ${code}, args: [${args.join(' ')}]`))
+  //   : resolve()
+  // ))
 }
 
 const npxLazy = async ({

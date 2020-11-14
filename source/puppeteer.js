@@ -4,6 +4,7 @@ import { promises as fsAsync } from 'fs'
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { time } from '@dr-js/core/module/common/format'
 import { createInsideOutPromise } from '@dr-js/core/module/common/function'
+import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener'
 
 const puppeteerBrowserDisconnectListener = () => {
   console.warn('[Puppeteer] unexpected browser disconnect, exiting')
@@ -122,7 +123,13 @@ const testWithPuppeteer = async ({
 
     logger.log('[test] loaded')
     const timeoutToken = setTimeout(() => reject(new Error(`${testTag} test timeout`)), timeoutTest)
-    await promise
+    await guardPromiseEarlyExit(
+      () => {
+        console.error('[TEST] detected early exit, broken promise/async chain?')
+        process.exitCode = 42
+      },
+      promise
+    )
     clearTimeout(timeoutToken)
     logger.log('[test] done')
   },

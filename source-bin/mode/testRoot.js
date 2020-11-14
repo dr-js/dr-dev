@@ -2,6 +2,7 @@ import { relative } from 'path'
 
 import { toPosixPath } from '@dr-js/core/module/node/file/Path'
 import { getFileList } from '@dr-js/core/module/node/file/Directory'
+import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener'
 import { configureTerminalColor } from '@dr-js/node/module/module/TerminalColor'
 
 import { createTest } from '@dr-js/dev/module/common/test'
@@ -51,7 +52,13 @@ const doTestRoot = async ({
     }
   }
 
-  const { passList, failList } = await TEST_RUN()
+  const { passList, failList } = await guardPromiseEarlyExit(
+    () => {
+      console.error('[TEST] detected early exit, broken promise/async chain?')
+      process.exitCode = 42
+    },
+    TEST_RUN()
+  )
 
   const failCount = failList.length
   const testCount = passList.length + failCount

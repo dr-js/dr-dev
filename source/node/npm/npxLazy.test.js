@@ -10,5 +10,7 @@ describe('Node.Npm.npxLazy', () => {
   it('runNpx()', async () => {
     await doNotThrowAsync(async () => runNpx([ 'node', '-v' ], tabLog))
     await doNotThrowAsync(async () => runNpx([ 'npm', '-v' ], tabLog))
+    await doNotThrowAsync(async () => runNpx([ 'npx', '-v' ], tabLog))
+    // await doNotThrowAsync(async () => runNpx([ '@dr-js/core', '-v' ], tabLog))
   })
 })
