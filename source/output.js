@@ -127,42 +127,39 @@ const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger }) => {
 
 const publishOutput = async ({
   packageJSON: { name, version },
-  flagList,
+  pathPackagePack, // the .tgz output of pack
+  flagList = process.argv,
   isPublishAuto = getPublishFlag(flagList, version).isPublishAuto,
   isPublish = getPublishFlag(flagList, version).isPublish,
   isPublishDev = getPublishFlag(flagList, version).isPublishDev,
   isPublishVerify = !(isPublishAuto && isPublishDev), // skip verify only for auto + dev
-  pathPackagePack, // the .tgz output of pack
+  isAccessRestricted = false,
   extraArgs = [],
   logger
 }) => {
   if (!isPublish && !isPublishDev) return logger.padLog('skipped publish output, no flag found')
   if (!pathPackagePack || !pathPackagePack.endsWith('.tgz')) throw new Error(`[publishOutput] invalid pathPackagePack: ${pathPackagePack}`)
-
   isPublishVerify && verifyPublishVersion({ version, isPublishDev })
 
+  logger.padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
+
+  // Patch tag
   !extraArgs.includes('--tag') && extraArgs.push('--tag', isPublishDev ? 'dev' : 'latest')
 
-  // Only applies to scoped packages, which default to restricted, check: https://docs.npmjs.com/cli/publish
-  name.startsWith('@') && !extraArgs.includes('--access') && extraArgs.push('--access', 'public')
+  // Patch access public to scoped packages, which default to restricted, check: https://docs.npmjs.com/cli/publish
+  !isAccessRestricted && !extraArgs.includes('--access') && name.startsWith('@') && extraArgs.push('--access', 'public')
 
-  // NOTE: if this process is run under yarn, the registry will be pointing to `https://registry.yarnpkg.com/`, and auth for publish will not work
-  // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'config', 'get', 'userconfig' ] })
-  // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'config', 'get', 'registry' ] })
-  // if (isPublish || isPublishDev) runSync({ command: 'npm', argList: [ 'whoami' ] })
-
-  logger.padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
+  // NOTE: if this process is run under yarn, the registry will be pointing to `https://registry.yarnpkg.com/`, and auth for publish will not work, check:
+  // - `npm config get userconfig`
+  // - `npm config get registry`
+  // - `npm whoami`
   await run({
     command: getPathNpmExecutable(),
-    argList: [
-      '--no-update-notifier',
-      'publish', pathPackagePack,
-      ...extraArgs
-    ]
+    argList: [ '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]
   }).promise
 }
 const getPublishFlag = (flagList, packageVersion) => {
-  const isPublishAuto = flagList.includes('publish-auto') // less checking for auto + dev
+  const isPublishAuto = flagList.includes('publish-auto') // no version verify for auto + dev, and do not limit dev version format to `REGEXP_PUBLISH_VERSION_DEV`
   let isPublish = flagList.includes('publish')
   let isPublishDev = flagList.includes('publish-dev')
   if (Number(isPublishAuto) + Number(isPublish) + Number(isPublishDev) >= 2) throw new Error('[getPublishFlag] expect single flag')

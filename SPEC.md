@@ -218,8 +218,8 @@
 
 | Package name                   | Version |
 | :----                          |   ----: |
-| @babel/cli                     | ^7.12.7 |
-| @babel/core                    | ^7.12.7 |
+| @babel/cli                     | ^7.12.8 |
+| @babel/core                    | ^7.12.8 |
 | @babel/preset-env              | ^7.12.7 |
 | @babel/preset-react            | ^7.12.7 |
 | @babel/register                | ^7.12.1 |

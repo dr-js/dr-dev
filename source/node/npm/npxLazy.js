@@ -10,7 +10,10 @@ const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnp
   const pathNpxCli = fromNpmNodeModules('../bin/npx-cli.js') // exist in both `npm@6` and `npm@7`
   tabLog(1, 'argList:', ...argList)
   tabLog(1, 'pathNpxCli:', pathNpxCli)
-  await run({ command: pathNpxCli, argList }).promise
+  await run({
+    command: process.execPath, // NOTE: use node to run for win32 support
+    argList: [ pathNpxCli, ...argList ]
+  }).promise
 
   // // TODO: this is flaky, check test for details
   // // NOTE: with this method, there's no way to know when the process ends and the end result,
