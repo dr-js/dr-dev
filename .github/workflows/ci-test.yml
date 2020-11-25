@@ -35,25 +35,25 @@ jobs:
           echo "node: $(node -v)"
           echo "npm: $(npm -v)"
 
-      - run: npx @dr-js/dev@0.4.1-dev.4 -c .github/ci-cache/cache-step.config.js --cache-step setup
+      - run: npx @dr-js/dev@0.4 -c .github/cache/config.js --cache-step setup
 
       - name: Cache JS
         uses: actions/cache@v2 # https://github.com/actions/cache
         env:
           cache-version: 20201125
         with:
-          key: ${{ runner.os }}-${{ env.cache-version }}-${{ matrix.node-version }}-${{ hashFiles('.github/ci-cache/temp-gitignore/cache-step-checksum-file') }}
+          key: ${{ runner.os }}-${{ env.cache-version }}-${{ matrix.node-version }}-${{ hashFiles('.github/cache/temp-gitignore/checksum-file') }}
           restore-keys: |
             ${{ runner.os }}-${{ env.cache-version }}-${{ matrix.node-version }}-
           path: |
             ~/.npm/
             node_modules/
-            .github/ci-cache/persist-gitignore/
+            .github/cache/persist-gitignore/
 
-      - run: npx @dr-js/dev@0.4.1-dev.4 -c .github/ci-cache/cache-step.config.js --cache-step mark
+      - run: npx @dr-js/dev@0.4 -c .github/cache/config.js --cache-step mark
 
       - run: npm ci
 
-      - run: npm run script-pack-test
+      - run: npm test
 
-      - run: npx @dr-js/dev@0.4.1-dev.4 -c .github/ci-cache/cache-step.config.js --cache-step prune
+      - run: npx @dr-js/dev@0.4 -c .github/cache/config.js --cache-step prune

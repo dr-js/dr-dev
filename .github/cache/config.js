@@ -5,19 +5,19 @@ module.exports = {
   // cacheStep: '', // pass from CLI
   prunePolicy: 'unused',
 
-  pathStatFile: './persist-gitignore/cache-stat',
+  pathStatFile: './persist-gitignore/stat',
 
   pathChecksumList: [
     '../../source/',
     '../../source-bin/',
     '../../package-lock.json'
   ],
-  pathChecksumFile: './temp-gitignore/cache-step-checksum-file',
+  pathChecksumFile: './temp-gitignore/checksum-file',
 
   pathStaleCheckList: [
     resolve(homedir(), '.npm/')
     // node_modules is managed, so no stale-check required
   ],
-  pathStaleCheckFile: './temp-gitignore/cache-step-stale-check-file',
+  pathStaleCheckFile: './temp-gitignore/stale-check-file',
   maxStaleDay: 8
 }
