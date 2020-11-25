@@ -8,6 +8,7 @@ import { doStepPackageVersion } from './mode/stepPackageVersion'
 import { doTestRootList } from './mode/testRoot'
 import { doInit } from './mode/init'
 import { doExec, doExecLoad } from './mode/exec'
+import { doCacheStep } from './mode/cacheStep'
 
 import { run } from '@dr-js/core/module/node/system/Run'
 
@@ -67,6 +68,17 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
         argList: modeArgList.slice(1),
         env: tryGetFirst('exec-env'),
         cwd: tryGetFirst('exec-cwd')
+      })
+    case 'cache-step':
+      return doCacheStep({
+        cacheStepType: modeArgList[ 0 ],
+        prunePolicyType: tryGetFirst('prune-policy') || 'unused',
+        pathStatFile: getFirst('path-stat-file'),
+        pathChecksumList: get('path-checksum-list'),
+        pathChecksumFile: getFirst('path-checksum-file'),
+        pathStaleCheckList: get('path-stale-check-list'),
+        pathStaleCheckFile: tryGetFirst('path-stale-check-file') || undefined,
+        maxStaleDay: tryGetFirst('max-stale-day') || 8
       })
     case 'exec-load':
       return doExecLoad({

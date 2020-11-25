@@ -37,6 +37,12 @@
   - `FILTER_JS_FILE`, `FILTER_SOURCE_JS_FILE`, `FILTER_SOURCE_PATH`, `FILTER_TEST_JS_FILE`, `FILTER_TEST_PATH`
 + 📄 [source/node/run.js](source/node/run.js)
   - `runAndHandover`, `withRunBackground`
++ 📄 [source/node/cache/checksum.js](source/node/cache/checksum.js)
+  - `checksumDetectChange`, `checksumUpdate`, `describeChecksumInfoList`, `describeChecksumOfPathList`, `getChecksumInfoListOfPath`, `getChecksumInfoListOfPathList`, `getChecksumInfoOfFile`, `loadStatFile`, `saveStatFile`
++ 📄 [source/node/cache/function.js](source/node/cache/function.js)
+  - `loadStat`, `packTime`, `parseTime`, `saveStat`
++ 📄 [source/node/cache/staleCheck.js](source/node/cache/staleCheck.js)
+  - `describeStaleReport`, `loadStatFile`, `saveStatFile`, `staleCheckCalcReport`, `staleCheckMark`, `staleCheckSetup`
 + 📄 [source/node/export/generate.js](source/node/export/generate.js)
   - `EXPORT_HOIST_LIST_KEY`, `EXPORT_LIST_KEY`, `HOIST_LIST_KEY`, `generateExportInfo`, `generateIndexScript`
 + 📄 [source/node/export/parse.js](source/node/export/parse.js)
@@ -116,6 +122,24 @@
 >         use URLSearchParams format String, or key-value Object
 >     --exec-cwd --EC [ARGUMENT=0-1]
 >         reset cwd to path
+>   --cache-step [OPTIONAL] [ARGUMENT=1]
+>       one of:
+>         setup mark prune
+>     --prune-policy [ARGUMENT=1]
+>         one of:
+>           unused stale-only debug
+>     --path-stat-file [ARGUMENT=1]
+>         path of stat file, used to help detect checksum change and compare stale-check time
+>     --path-checksum-list [ARGUMENT=1+]
+>         list of file or directory to calc checksum
+>     --path-checksum-file [ARGUMENT=1]
+>         path for generated checksum file
+>     --path-stale-check-list [ARGUMENT=1+]
+>         list of cache file or directory to check time
+>     --path-stale-check-file [ARGUMENT=1]
+>         path for generated stale-check report file, also useful for debugging
+>     --max-stale-day [ARGUMENT=1]
+>         how old unused file is stale, default: 8day
 >   --exec-load --EL [OPTIONAL] [ARGUMENT=1+]
 >       load and exec command from package.json[ "devExecCommands" ]: $@=commandName, ...extraArgList
 >   --parse-script --ps [OPTIONAL] [ARGUMENT=1+]
@@ -163,6 +187,14 @@
 >     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1] [ALIAS=DR_DEV_EE]"
 >     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1] [ALIAS=DR_DEV_EC]"
+>     export DR_DEV_CACHE_STEP="[OPTIONAL] [ARGUMENT=1]"
+>     export DR_DEV_PRUNE_POLICY="[ARGUMENT=1]"
+>     export DR_DEV_PATH_STAT_FILE="[ARGUMENT=1]"
+>     export DR_DEV_PATH_CHECKSUM_LIST="[ARGUMENT=1+]"
+>     export DR_DEV_PATH_CHECKSUM_FILE="[ARGUMENT=1]"
+>     export DR_DEV_PATH_STALE_CHECK_LIST="[ARGUMENT=1+]"
+>     export DR_DEV_PATH_STALE_CHECK_FILE="[ARGUMENT=1]"
+>     export DR_DEV_MAX_STALE_DAY="[ARGUMENT=1]"
 >     export DR_DEV_EXEC_LOAD="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_EL]"
 >     export DR_DEV_PARSE_SCRIPT="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PS]"
 >     export DR_DEV_PARSE_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PSL]"
@@ -203,6 +235,14 @@
 >     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "execEnv": [ "[ARGUMENT=0-1] [ALIAS=EE]" ],
 >     "execCwd": [ "[ARGUMENT=0-1] [ALIAS=EC]" ],
+>     "cacheStep": [ "[OPTIONAL] [ARGUMENT=1]" ],
+>     "prunePolicy": [ "[ARGUMENT=1]" ],
+>     "pathStatFile": [ "[ARGUMENT=1]" ],
+>     "pathChecksumList": [ "[ARGUMENT=1+]" ],
+>     "pathChecksumFile": [ "[ARGUMENT=1]" ],
+>     "pathStaleCheckList": [ "[ARGUMENT=1+]" ],
+>     "pathStaleCheckFile": [ "[ARGUMENT=1]" ],
+>     "maxStaleDay": [ "[ARGUMENT=1]" ],
 >     "execLoad": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=EL]" ],
 >     "parseScript": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=ps]" ],
 >     "parseScriptList": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=psl]" ],
@@ -219,7 +259,7 @@
 | Package name                   | Version |
 | :----                          |   ----: |
 | @babel/cli                     | ^7.12.8 |
-| @babel/core                    | ^7.12.8 |
+| @babel/core                    | ^7.12.9 |
 | @babel/preset-env              | ^7.12.7 |
 | @babel/preset-react            | ^7.12.7 |
 | @babel/register                | ^7.12.1 |
