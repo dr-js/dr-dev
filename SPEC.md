@@ -278,4 +278,4 @@
 | react                          | ^17.0.1 |
 | styled-components              |  ^5.2.1 |
 | terser                         |  ^5.5.0 |
-| webpack                        |  ^5.6.0 |
+| webpack                        |  ^5.7.0 |

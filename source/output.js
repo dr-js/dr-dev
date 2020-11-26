@@ -146,8 +146,8 @@ const publishOutput = async ({
   // Patch tag
   !extraArgs.includes('--tag') && extraArgs.push('--tag', isPublishDev ? 'dev' : 'latest')
 
-  // Patch access public to scoped packages, which default to restricted, check: https://docs.npmjs.com/cli/publish
-  !isAccessRestricted && !extraArgs.includes('--access') && name.startsWith('@') && extraArgs.push('--access', 'public')
+  // Patch only for scoped packages, default to restricted, check: https://docs.npmjs.com/cli/publish
+  !extraArgs.includes('--access') && name.startsWith('@') && extraArgs.push('--access', isAccessRestricted ? 'restricted' : 'public')
 
   // NOTE: if this process is run under yarn, the registry will be pointing to `https://registry.yarnpkg.com/`, and auth for publish will not work, check:
   // - `npm config get userconfig`
@@ -165,8 +165,8 @@ const getPublishFlag = (flagList, packageVersion) => {
   if (Number(isPublishAuto) + Number(isPublish) + Number(isPublishDev) >= 2) throw new Error('[getPublishFlag] expect single flag')
   if (isPublishAuto) {
     if (!packageVersion) throw new Error('[getPublishFlag] expect packageVersion for auto publish')
-    isPublishDev = packageVersion.includes('-dev.')
-    isPublish = !isPublishDev
+    isPublish = REGEXP_PUBLISH_VERSION.test(packageVersion)
+    isPublishDev = !isPublish
   }
   return { isPublishAuto, isPublish, isPublishDev }
 }

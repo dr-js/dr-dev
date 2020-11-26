@@ -1,5 +1,6 @@
 {
   "EXPORT": [
+    "INiT#.github#cache#config.js",
     "INIT#.github#workflows#ci-test.yml",
     "INIT#.gitignore",
     "INIT#package.json",

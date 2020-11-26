@@ -117,6 +117,7 @@ describe('Output', () => {
     stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0'), { isPublishAuto: true, isPublish: true, isPublishDev: false })
     stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0-dev.0'), { isPublishAuto: true, isPublish: false, isPublishDev: true })
     stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0-dev.0-local.0'), { isPublishAuto: true, isPublish: false, isPublishDev: true })
+    stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0-random'), { isPublishAuto: true, isPublish: false, isPublishDev: true })
 
     doThrow(() => getPublishFlag([ 'publish-auto', 'publish' ]), 'should prevent set both flag')
     doThrow(() => getPublishFlag([ 'publish-auto', 'publish-dev' ]), 'should prevent set both flag')
