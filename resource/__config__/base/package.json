@@ -1,7 +1,8 @@
 {
   "EXPORT": [
-    "INiT#.github#cache#config.js",
+    "INIT#.github#cache#config.js",
     "INIT#.github#workflows#ci-test.yml",
+    "INIT#.github#ci-patch.js",
     "INIT#.gitignore",
     "INIT#package.json",
     "INIT#README.md",

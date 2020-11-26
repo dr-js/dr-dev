@@ -183,7 +183,7 @@ const calcStaleReportOfPath = async (
       await getTailPromise()
       break
     }
-    // allow missing file
+    // allow missing file // TODO: maybe it's better to force the cache path exist to prevent noop cache config?
     // default:
     //   throw new Error(`invalid pathType: ${pathType} for ${absolutePath}`)
   }

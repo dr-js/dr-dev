@@ -8,7 +8,7 @@ module.exports = {
   pathStatFile: './persist-gitignore/stat',
 
   pathChecksumList: [ // NOTE: this list of file should decide when the cache content should change, if the cache is npm only, `package-lock.json` should be enough
-    // '../../resource/',
+    // '../../script/',
     // '../../source/',
     // '../../source-bin/',
     '../../package-lock.json'

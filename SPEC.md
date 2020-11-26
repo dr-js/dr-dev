@@ -264,7 +264,7 @@
 | @babel/preset-react            | ^7.12.7 |
 | @babel/register                | ^7.12.1 |
 | babel-eslint                   | ^10.1.0 |
-| babel-loader                   |  ^8.2.1 |
+| babel-loader                   |  ^8.2.2 |
 | babel-plugin-minify-replace    |  ^0.5.0 |
 | babel-plugin-module-resolver   |  ^4.0.0 |
 | babel-plugin-styled-components | ^1.12.0 |
@@ -277,5 +277,5 @@
 | puppeteer                      |  ^5.5.0 |
 | react                          | ^17.0.1 |
 | styled-components              |  ^5.2.1 |
-| terser                         |  ^5.5.0 |
-| webpack                        |  ^5.7.0 |
+| terser                         |  ^5.5.1 |
+| webpack                        |  ^5.9.0 |

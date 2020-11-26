@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.4.2",
+  "version": "0.4.3-dev.0",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -41,7 +41,7 @@
     "check-outdated": "node ./output-gitignore/bin -C -i ./resource",
     "check-outdated-self": "node ./output-gitignore/bin -C -i ./package.json",
     "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json output-gitignore/browser",
-    "lint": "eslint ./source/ ./source-bin/ ./script/",
+    "lint": "eslint ./source/ ./source-bin/ ./resource/ ./script/",
     "test": "npm run script-pack-resource-test && npm run script-pack-test",
     "prepack": "echo \"Error: pack with script-*\" && exit 1"
   },
@@ -50,12 +50,12 @@
     "npm": ">=6.14"
   },
   "dependencies": {
-    "@dr-js/core": "^0.4.1 || ^0.4.1-dev.7",
+    "@dr-js/core": "^0.4.1 || ^0.4.1-dev.8",
     "@dr-js/node": "^0.4.1 || ^0.4.1-dev.3"
   },
   "devDependencies": {
-    "@dr-js/dev": "0.4.1",
-    "@dr-js/dev-web": "0.4.1"
+    "@dr-js/dev": "0.4.2",
+    "@dr-js/dev-web": "0.4.2"
   },
   "sideEffects": false
 }
