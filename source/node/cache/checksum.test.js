@@ -30,7 +30,7 @@ const TEST_CONFIG = {
   pathStatFile: fromRoot('sample-stat')
 }
 
-before('prepare', async () => {
+before(async () => {
   await resetDirectory(TEST_ROOT)
 
   await fsAsync.writeFile(fromRoot('sample-cache-file-0'), 'sample-cache-file-0')
@@ -41,7 +41,7 @@ before('prepare', async () => {
   await createDirectory(fromRoot('sample-cache-dir-1'))
   for (const index of getSampleRange(0, 5)) await fsAsync.writeFile(fromRoot('sample-cache-dir-1', `dir-1-${index}`), `dir-1-${index}`)
 })
-after('clear', async () => {
+after(async () => {
   await modifyDelete(TEST_ROOT)
 })
 

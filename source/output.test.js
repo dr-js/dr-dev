@@ -22,11 +22,11 @@ const PATH_TEST_ROOT = resolve(__dirname, './test-output-gitignore/')
 const PATH_ROOT = resolve(__dirname, __dirname.includes('output-gitignore') ? '../../' : '../')
 if (!PATH_ROOT) throw new Error('unexpected PATH_ROOT')
 
-before('prepare', async () => {
+before(async () => {
   await resetDirectory(PATH_TEST_ROOT)
 })
 
-after('clear', async () => {
+after(async () => {
   await modifyDeleteForce(PATH_TEST_ROOT)
 })
 
