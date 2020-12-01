@@ -80,7 +80,7 @@ const createTest = ({
 
   const getPushScopeFunc = (type, typeListName) => (title, func) => {
     if (func === undefined && isBasicFunction(title)) [ title, func ] = [ func, title ] // swap to support auto naming, but this is not a good test habit
-    if (!isString(title)) title = `[${CURRENT_SCOPE.title}] ${type} #${CURRENT_SCOPE[ typeListName ].length}`
+    if (!isString(title)) title = `${CURRENT_SCOPE.title} - ${type} #${CURRENT_SCOPE[ typeListName ].length}`
     string(title, `invalid ${type} title`)
     basicFunction(func, `invalid ${type} func`)
     CURRENT_SCOPE[ typeListName ].push({

@@ -124,7 +124,7 @@
 >         reset cwd to path
 >   --cache-step [OPTIONAL] [ARGUMENT=1]
 >       one of:
->         setup mark prune
+>         setup mark prune is-hash-changed
 >     --prune-policy [ARGUMENT=1]
 >         one of:
 >           unused stale-only debug

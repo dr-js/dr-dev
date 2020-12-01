@@ -38,7 +38,7 @@ const MODE_FORMAT_LIST = parseCompactList(
     'exec-cwd,EC/P,O/0-1|reset cwd to path'
   ) ],
   [ 'cache-step/SS,O', { // enable checksum, stale-check, and delete, will only stale-check on checksum change
-    ...pickOneOf([ 'setup', 'mark', 'prune' ]),
+    ...pickOneOf([ 'setup', 'mark', 'prune', 'is-hash-changed' ]),
     extendFormatList: parseCompactList(
       [ 'prune-policy/SS,O', pickOneOf([ 'unused', 'stale-only', 'debug' ]) ],
       'path-stat-file/SP|path of stat file, used to help detect checksum change and compare stale-check time',

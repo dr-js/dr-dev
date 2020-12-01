@@ -105,7 +105,7 @@ const checksumUpdate = async (config) => {
   return { checksumHash, isHashChanged }
 }
 
-const checksumDetectChange = async (config) => {
+const checksumDetectChange = async (config, isSkipSave = false) => { // set isSkipSave to allow repeatedly check hash change
   // load stat
   config = await loadStatFile(config)
 
@@ -119,7 +119,7 @@ const checksumDetectChange = async (config) => {
   config.stat.timeUpdate = new Date()
 
   // save back
-  await saveStatFile(config)
+  !isSkipSave && await saveStatFile(config)
 
   return {
     checksumHash,
