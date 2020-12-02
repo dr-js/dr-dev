@@ -76,7 +76,7 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
         pathStatFile: getFirst('path-stat-file'),
         pathChecksumList: get('path-checksum-list'),
         pathChecksumFile: getFirst('path-checksum-file'),
-        pathStaleCheckList: get('path-stale-check-list'),
+        pathStaleCheckList: tryGet('path-stale-check-list') || [],
         pathStaleCheckFile: tryGetFirst('path-stale-check-file') || undefined,
         maxStaleDay: tryGetFirst('max-stale-day') || 8
       })

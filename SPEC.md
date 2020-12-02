@@ -134,7 +134,7 @@
 >         list of file or directory to calc checksum
 >     --path-checksum-file [ARGUMENT=1]
 >         path for generated checksum file
->     --path-stale-check-list [ARGUMENT=1+]
+>     --path-stale-check-list [ARGUMENT=0+]
 >         list of cache file or directory to check time
 >     --path-stale-check-file [ARGUMENT=1]
 >         path for generated stale-check report file, also useful for debugging
@@ -192,7 +192,7 @@
 >     export DR_DEV_PATH_STAT_FILE="[ARGUMENT=1]"
 >     export DR_DEV_PATH_CHECKSUM_LIST="[ARGUMENT=1+]"
 >     export DR_DEV_PATH_CHECKSUM_FILE="[ARGUMENT=1]"
->     export DR_DEV_PATH_STALE_CHECK_LIST="[ARGUMENT=1+]"
+>     export DR_DEV_PATH_STALE_CHECK_LIST="[ARGUMENT=0+]"
 >     export DR_DEV_PATH_STALE_CHECK_FILE="[ARGUMENT=1]"
 >     export DR_DEV_MAX_STALE_DAY="[ARGUMENT=1]"
 >     export DR_DEV_EXEC_LOAD="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_EL]"
@@ -240,7 +240,7 @@
 >     "pathStatFile": [ "[ARGUMENT=1]" ],
 >     "pathChecksumList": [ "[ARGUMENT=1+]" ],
 >     "pathChecksumFile": [ "[ARGUMENT=1]" ],
->     "pathStaleCheckList": [ "[ARGUMENT=1+]" ],
+>     "pathStaleCheckList": [ "[ARGUMENT=0+]" ],
 >     "pathStaleCheckFile": [ "[ARGUMENT=1]" ],
 >     "maxStaleDay": [ "[ARGUMENT=1]" ],
 >     "execLoad": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=EL]" ],

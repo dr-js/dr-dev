@@ -9,8 +9,10 @@ console.log(`[ci-patch] with @dr-js/core@${require('@dr-js/core/package.json').v
 const PATH_ROOT = resolve(__dirname, '../')
 console.log(`[ci-patch] PATH_ROOT: ${PATH_ROOT}`)
 
-const quickRun = async (argListOrString) => { // accept string list of very basic command do not need extra quote
-  const argList = Array.isArray(argListOrString) ? argListOrString : argListOrString.split(' ').filter(Boolean)
+const quickRun = async (argListOrString) => {
+  const argList = Array.isArray(argListOrString)
+    ? argListOrString // non-shell command string list, prepend `'bash', '-c'` to run in bash shell
+    : argListOrString.split(' ').filter(Boolean) // non-shell command do not need extra quote joined together as single string
   const command = argList.shift()
   console.log(`[ci-patch] run: "${command} ${argList.join(' ')}"`)
   const { promise } = run({ command, argList, option: { cwd: PATH_ROOT } })

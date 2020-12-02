@@ -42,9 +42,9 @@ const MODE_FORMAT_LIST = parseCompactList(
     extendFormatList: parseCompactList(
       [ 'prune-policy/SS,O', pickOneOf([ 'unused', 'stale-only', 'debug' ]) ],
       'path-stat-file/SP|path of stat file, used to help detect checksum change and compare stale-check time',
-      'path-checksum-list/AP,O|list of file or directory to calc checksum',
+      'path-checksum-list/AP|list of file or directory to calc checksum',
       'path-checksum-file/SP|path for generated checksum file',
-      'path-stale-check-list/AP,O|list of cache file or directory to check time',
+      'path-stale-check-list/AP,O/0-|list of cache file or directory to check time',
       'path-stale-check-file/SP,O|path for generated stale-check report file, also useful for debugging',
       'max-stale-day/SI,O|how old unused file is stale, default: 8day'
     )
