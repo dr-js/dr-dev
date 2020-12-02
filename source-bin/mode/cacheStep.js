@@ -58,7 +58,7 @@ const doCacheStep = async ({
     case 'is-hash-changed': { // allow repeatable shell check before the actual prune
       const { checksumHash, isHashChanged } = await checksumDetectChange(config, 'skip-save')
       console.log(`[cache-step] checksumHash: ${checksumHash}, isHashChanged: ${isHashChanged}`)
-      process.exitCode = isHashChanged ? 1 : 0 // will error (exit with 1) if hash changed
+      process.exitCode = isHashChanged ? 0 : 1 // will exit with 0 if hash changed, same as shell `true`, and 1 for no change or `false`
       break
     }
   }
