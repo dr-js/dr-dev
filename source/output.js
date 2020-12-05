@@ -119,7 +119,7 @@ const verifyNoGitignore = async ({ path, logger }) => {
 
 const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger }) => {
   logger.padLog('verify git has nothing to commit')
-  const { promise, stdoutPromise } = run({ command: 'git', argList: [ 'status' ], option: { cwd }, quiet: true })
+  const { promise, stdoutPromise } = run({ command: 'git', argList: [ 'status', '-vv' ], option: { cwd }, quiet: true }) // NOTE: use -vv to log diff detail
   await promise
   const outputGitStatus = String(await stdoutPromise)
   ok(outputGitStatus.includes('nothing to commit, working tree clean'), `git change to commit: ${outputGitStatus}`)

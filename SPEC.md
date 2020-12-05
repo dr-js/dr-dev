@@ -65,16 +65,16 @@
 >   --config --c -c [OPTIONAL] [ARGUMENT=1]
 >       from ENV: set to "env" to enable, default not use
 >       from JS/JSON: set to "path/to/config.js|json"
->   --help --h -h [OPTIONAL] [ARGUMENT=0+]
+>   --help --h -h [OPTIONAL] [ARGUMENT=0-1]
 >       show full help
->   --version --v -v [OPTIONAL] [ARGUMENT=0+]
+>   --version --v -v [OPTIONAL] [ARGUMENT=0-1]
 >       show version
->   --debug --D -D [OPTIONAL] [ARGUMENT=0+]
+>   --debug --D -D [OPTIONAL] [ARGUMENT=0-1]
 >       more debug log
 >   --path-input --i -i [ARGUMENT=1]
 >       path to "package.json", or directory with "package.json" inside
->   --pack [OPTIONAL] [ARGUMENT=0+]
->       set to enable
+>   --pack [OPTIONAL] [ARGUMENT=0-1]
+>       set to ANY value to enable, except "false/no/n/0"
 >     --path-output [ARGUMENT=1]
 >         output path
 >     --output-name [ARGUMENT=1]
@@ -83,20 +83,20 @@
 >         output package version
 >     --output-description [ARGUMENT=1]
 >         output package description
->     --publish [ARGUMENT=0+]
+>     --publish [ARGUMENT=0-1]
 >         run npm publish
->     --publish-dev [ARGUMENT=0+]
+>     --publish-dev [ARGUMENT=0-1]
 >         run npm publish-dev
->     --dry-run [ARGUMENT=0+]
+>     --dry-run [ARGUMENT=0-1]
 >         for testing publish procedure
->   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0+]
->       set to enable
+>   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0-1]
+>       set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
->   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0+]
+>   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0-1]
 >       step up package version (expect "0.0.0-dev.0-local.0" format)
->     --sort-key --K -K [ARGUMENT=0+]
+>     --sort-key --K -K [ARGUMENT=0-1]
 >         sort keys in package.json
->     --git-commit --G -G [ARGUMENT=0+]
+>     --git-commit --G -G [ARGUMENT=0-1]
 >         step up patch version, and prepare a git commit
 >   --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
 >       root path to look test file from, default to "."
@@ -110,9 +110,9 @@
 >       path for init a package, will not reset existing file, default to "."
 >     --init-resource-package --P -P [ARGUMENT=1]
 >         path to resource package, default search for "./node_modules/@dr-js/dev-*/"
->     --init-reset --R -R [ARGUMENT=0+]
+>     --init-reset --R -R [ARGUMENT=0-1]
 >         allow init to reset existing file
->     --init-verify --V -V [ARGUMENT=0+]
+>     --init-verify --V -V [ARGUMENT=0-1]
 >         do common init file content check, will skip file modify
 >     --init-verify-rule --IVR [ARGUMENT=1+]
 >         path to verify rule, default search in "init-resource-package"
@@ -158,31 +158,31 @@
 >   "
 >     #!/usr/bin/env bash
 >     export DR_DEV_CONFIG="[OPTIONAL] [ARGUMENT=1]"
->     export DR_DEV_HELP="[OPTIONAL] [ARGUMENT=0+]"
->     export DR_DEV_VERSION="[OPTIONAL] [ARGUMENT=0+]"
->     export DR_DEV_DEBUG="[OPTIONAL] [ARGUMENT=0+]"
+>     export DR_DEV_HELP="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_DEBUG="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_PATH_INPUT="[ARGUMENT=1]"
->     export DR_DEV_PACK="[OPTIONAL] [ARGUMENT=0+]"
+>     export DR_DEV_PACK="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_PATH_OUTPUT="[ARGUMENT=1]"
 >     export DR_DEV_OUTPUT_NAME="[ARGUMENT=1]"
 >     export DR_DEV_OUTPUT_VERSION="[ARGUMENT=1]"
 >     export DR_DEV_OUTPUT_DESCRIPTION="[ARGUMENT=1]"
->     export DR_DEV_PUBLISH="[ARGUMENT=0+]"
->     export DR_DEV_PUBLISH_DEV="[ARGUMENT=0+]"
->     export DR_DEV_DRY_RUN="[ARGUMENT=0+]"
->     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0+]"
+>     export DR_DEV_PUBLISH="[ARGUMENT=0-1]"
+>     export DR_DEV_PUBLISH_DEV="[ARGUMENT=0-1]"
+>     export DR_DEV_DRY_RUN="[ARGUMENT=0-1]"
+>     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
->     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0+]"
->     export DR_DEV_SORT_KEY="[ARGUMENT=0+]"
->     export DR_DEV_GIT_COMMIT="[ARGUMENT=0+]"
+>     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_SORT_KEY="[ARGUMENT=0-1]"
+>     export DR_DEV_GIT_COMMIT="[ARGUMENT=0-1]"
 >     export DR_DEV_TEST_ROOT="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
 >     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
 >     export DR_DEV_TEST_TIMEOUT="[ARGUMENT=1] [ALIAS=DR_DEV_TT]"
 >     export DR_DEV_INIT="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_INIT_RESOURCE_PACKAGE="[ARGUMENT=1]"
->     export DR_DEV_INIT_RESET="[ARGUMENT=0+]"
->     export DR_DEV_INIT_VERIFY="[ARGUMENT=0+]"
+>     export DR_DEV_INIT_RESET="[ARGUMENT=0-1]"
+>     export DR_DEV_INIT_VERIFY="[ARGUMENT=0-1]"
 >     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+] [ALIAS=DR_DEV_IVR]"
 >     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1] [ALIAS=DR_DEV_EE]"
@@ -206,31 +206,31 @@
 > CONFIG Usage:
 >   {
 >     "config": [ "[OPTIONAL] [ARGUMENT=1]" ],
->     "help": [ "[OPTIONAL] [ARGUMENT=0+]" ],
->     "version": [ "[OPTIONAL] [ARGUMENT=0+]" ],
->     "debug": [ "[OPTIONAL] [ARGUMENT=0+]" ],
+>     "help": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "version": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "debug": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "pathInput": [ "[ARGUMENT=1]" ],
->     "pack": [ "[OPTIONAL] [ARGUMENT=0+]" ],
+>     "pack": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "pathOutput": [ "[ARGUMENT=1]" ],
 >     "outputName": [ "[ARGUMENT=1]" ],
 >     "outputVersion": [ "[ARGUMENT=1]" ],
 >     "outputDescription": [ "[ARGUMENT=1]" ],
->     "publish": [ "[ARGUMENT=0+]" ],
->     "publishDev": [ "[ARGUMENT=0+]" ],
->     "dryRun": [ "[ARGUMENT=0+]" ],
->     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0+]" ],
+>     "publish": [ "[ARGUMENT=0-1]" ],
+>     "publishDev": [ "[ARGUMENT=0-1]" ],
+>     "dryRun": [ "[ARGUMENT=0-1]" ],
+>     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "pathTemp": [ "[ARGUMENT=1]" ],
->     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0+]" ],
->     "sortKey": [ "[ARGUMENT=0+]" ],
->     "gitCommit": [ "[ARGUMENT=0+]" ],
+>     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "sortKey": [ "[ARGUMENT=0-1]" ],
+>     "gitCommit": [ "[ARGUMENT=0-1]" ],
 >     "testRoot": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
 >     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],
 >     "testTimeout": [ "[ARGUMENT=1] [ALIAS=TT]" ],
 >     "init": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "initResourcePackage": [ "[ARGUMENT=1]" ],
->     "initReset": [ "[ARGUMENT=0+]" ],
->     "initVerify": [ "[ARGUMENT=0+]" ],
+>     "initReset": [ "[ARGUMENT=0-1]" ],
+>     "initVerify": [ "[ARGUMENT=0-1]" ],
 >     "initVerifyRule": [ "[ARGUMENT=1+] [ALIAS=IVR]" ],
 >     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "execEnv": [ "[ARGUMENT=0-1] [ALIAS=EE]" ],
@@ -268,7 +268,7 @@
 | babel-plugin-minify-replace    |  ^0.5.0 |
 | babel-plugin-module-resolver   |  ^4.0.0 |
 | babel-plugin-styled-components | ^1.12.0 |
-| eslint                         | ^7.14.0 |
+| eslint                         | ^7.15.0 |
 | eslint-plugin-import           | ^2.22.1 |
 | eslint-plugin-node             | ^11.1.0 |
 | eslint-plugin-promise          |  ^4.2.1 |
@@ -278,4 +278,4 @@
 | react                          | ^17.0.1 |
 | styled-components              |  ^5.2.1 |
 | terser                         |  ^5.5.1 |
-| webpack                        |  ^5.9.0 |
+| webpack                        | ^5.10.0 |

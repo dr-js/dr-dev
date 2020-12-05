@@ -21,7 +21,7 @@ import { name as packageName, version as packageVersion } from '../package.json'
 
 const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
   const modeArgList = get(modeName)
-  const tabLog = tryGet('debug')
+  const tabLog = tryGetFirst('debug')
     ? (level, ...args) => console.log(`${'  '.repeat(level)}${args.join(' ')}`)
     : () => {}
   switch (modeName) {
@@ -37,15 +37,15 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
         outputName: tryGetFirst('output-name'),
         outputVersion: tryGetFirst('output-version'),
         outputDescription: tryGetFirst('output-description'),
-        isPublish: tryGet('publish'),
-        isPublishDev: tryGet('publish-dev'),
-        isDryRun: tryGet('dry-run')
+        isPublish: tryGetFirst('publish'),
+        isPublishDev: tryGetFirst('publish-dev'),
+        isDryRun: tryGetFirst('dry-run')
       })
     case 'step-package-version':
       return doStepPackageVersion({
         pathInput: tryGetFirst('path-input') || '.',
-        isSortKey: tryGet('sort-key'),
-        isGitCommit: tryGet('git-commit')
+        isSortKey: tryGetFirst('sort-key'),
+        isGitCommit: tryGetFirst('git-commit')
       })
     case 'test-root':
       return doTestRootList({
@@ -58,8 +58,8 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
       return doInit({
         pathOutput: modeArgList[ 0 ] || '.',
         pathResourcePackage: tryGetFirst('init-resource-package') || '.',
-        isReset: tryGet('init-reset'),
-        isVerify: tryGet('init-verify'),
+        isReset: tryGetFirst('init-reset'),
+        isVerify: tryGetFirst('init-verify'),
         pathVerifyRule: tryGetFirst('init-verify-rule')
       })
     case 'exec':
@@ -115,8 +115,8 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
 
 const main = async () => {
   const optionData = await parseOption()
-  if (optionData.tryGet('version')) return console.log(JSON.stringify({ packageName, packageVersion }, null, 2))
-  if (optionData.tryGet('help')) return console.log(formatUsage())
+  if (optionData.tryGetFirst('version')) return console.log(JSON.stringify({ packageName, packageVersion }, null, 2))
+  if (optionData.tryGetFirst('help')) return console.log(formatUsage())
   const modeName = MODE_NAME_LIST.find((name) => optionData.tryGet(name))
   if (!modeName) throw new Error('no mode specified')
   await runMode(modeName, optionData).catch((error) => {
