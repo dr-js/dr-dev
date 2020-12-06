@@ -102,7 +102,7 @@ const verifyOutputBin = async ({
     command: 'node',
     argList: [ pathBin, ...versionArgList ],
     option: { cwd: fromOutput() },
-    quiet: true
+    quiet: true, describeError: true
   })
   await promise
   const outputBinTest = String(await stdoutPromise)

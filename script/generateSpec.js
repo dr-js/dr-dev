@@ -35,7 +35,7 @@ runMain(async (logger) => {
       '#### Resource package',
       getMarkdownFileLink('resource/'),
       ...renderMarkdownTable({
-        headerRow: [ 'Package name', 'Version' ],
+        headerRow: [ 'Package name', '    Version' ],
         padFuncList: [ 'L', 'R' ],
         cellRowList: Object.entries(packageInfoMap).map(([ name, { version } ]) => [ name, version ])
       })

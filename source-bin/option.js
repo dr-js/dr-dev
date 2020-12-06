@@ -44,7 +44,7 @@ const MODE_FORMAT_LIST = parseCompactList(
       'checksum-file-only', 'CFO' // only write the checksum file
     ]),
     extendFormatList: parseCompactList(
-      [ 'prune-policy/SS,O', pickOneOf([ 'unused', 'stale-only', 'debug' ]) ],
+      [ 'prune-policy/SS,O', pickOneOf([ 'unused', 'stale-only', 'debug' ], '"prune" only, ') ],
       'path-stat-file/SP,O|path of stat file, used to help detect checksum change and compare stale-check time, only optional for "checksum-file-only" mode',
       'path-checksum-list,pcl/AP|list of file or directory to calc checksum',
       'path-checksum-file,pcf/SP|path for generated checksum file',

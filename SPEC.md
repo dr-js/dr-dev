@@ -129,7 +129,7 @@
 >         setup mark prune is-hash-changed
 >         IHC checksum-file-only CFO
 >     --prune-policy [ARGUMENT=1]
->         one of:
+>         "prune" only, one of:
 >           unused stale-only debug
 >     --path-stat-file [ARGUMENT=1]
 >         path of stat file, used to help detect checksum change and compare stale-check time, only optional for "checksum-file-only" mode
@@ -259,26 +259,26 @@
 #### Resource package
 📄 [resource/](resource/)
 
-| Package name                   | Version |
-| :----                          |   ----: |
-| @babel/cli                     | ^7.12.8 |
-| @babel/core                    | ^7.12.9 |
-| @babel/preset-env              | ^7.12.7 |
-| @babel/preset-react            | ^7.12.7 |
-| @babel/register                | ^7.12.1 |
-| babel-eslint                   | ^10.1.0 |
-| babel-loader                   |  ^8.2.2 |
-| babel-plugin-minify-replace    |  ^0.5.0 |
-| babel-plugin-module-resolver   |  ^4.0.0 |
-| babel-plugin-styled-components | ^1.12.0 |
-| eslint                         | ^7.15.0 |
-| eslint-plugin-import           | ^2.22.1 |
-| eslint-plugin-node             | ^11.1.0 |
-| eslint-plugin-promise          |  ^4.2.1 |
-| eslint-plugin-react            | ^7.21.5 |
-| prop-types                     | ^15.7.2 |
-| puppeteer                      |  ^5.5.0 |
-| react                          | ^17.0.1 |
-| styled-components              |  ^5.2.1 |
-| terser                         |  ^5.5.1 |
-| webpack                        | ^5.10.0 |
+| Package name                   |     Version |
+| :----                          |       ----: |
+| @babel/cli                     |    ^7.12.10 |
+| @babel/core                    |    ^7.12.10 |
+| @babel/preset-env              |    ^7.12.11 |
+| @babel/preset-react            |    ^7.12.10 |
+| @babel/register                |    ^7.12.10 |
+| babel-eslint                   |     ^10.1.0 |
+| babel-loader                   |      ^8.2.2 |
+| babel-plugin-minify-replace    |      ^0.5.0 |
+| babel-plugin-module-resolver   |      ^4.1.0 |
+| babel-plugin-styled-components |     ^1.12.0 |
+| eslint                         |     ^7.16.0 |
+| eslint-plugin-import           |     ^2.22.1 |
+| eslint-plugin-node             |     ^11.1.0 |
+| eslint-plugin-promise          |      ^4.2.1 |
+| eslint-plugin-react            |     ^7.21.5 |
+| prop-types                     |     ^15.7.2 |
+| puppeteer                      |      ^5.5.0 |
+| react                          |     ^17.0.1 |
+| styled-components              |      ^5.2.1 |
+| terser                         |      ^5.5.1 |
+| webpack                        |     ^5.11.0 |

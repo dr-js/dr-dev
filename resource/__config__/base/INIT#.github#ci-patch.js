@@ -1,6 +1,6 @@
 const { resolve } = require('path')
 const { release, arch, homedir } = require('os')
-const { run, describeRunOutcome } = require('@dr-js/core/library/node/system/Run')
+const { run } = require('@dr-js/core/library/node/system/Run')
 
 console.log(`[ci-patch] system: ${process.platform}-${release()}[${arch()}]`)
 console.log(`[ci-patch] node: ${process.version}`)
@@ -15,11 +15,7 @@ const quickRun = async (argListOrString) => {
     : argListOrString.split(' ').filter(Boolean) // non-shell command do not need extra quote joined together as single string
   const command = argList.shift()
   console.log(`[ci-patch] run: "${command} ${argList.join(' ')}"`)
-  const { promise } = run({ command, argList, option: { cwd: PATH_ROOT } })
-  await promise.catch(async (error) => {
-    console.error(await describeRunOutcome(error))
-    throw error
-  })
+  await run({ command, argList, option: { cwd: PATH_ROOT }, describeError: true }).promise
 }
 
 const main = async () => {
@@ -30,7 +26,8 @@ const main = async () => {
   //   fix win32 CI cause `something to commit` test error: https://github.com/actions/checkout/issues/135#issuecomment-602171132
   IS_WIN32 && await quickRun('git config core.autocrlf false')
   IS_WIN32 && await quickRun('git config core.eol lf')
-  IS_WIN32 && await quickRun('git reset --hard @{upstream}')
+  IS_WIN32 && await quickRun('git rm --cached -r .') // reset Git index, `rm .git/index` also work, check: https://stackoverflow.com/questions/5787937/git-status-shows-files-as-changed-even-though-contents-are-the-same/41041699#41041699
+  IS_WIN32 && await quickRun('git reset --hard')
 
   // Patch npm
   //   set cache path to `~/.npm/` for all platform (only win32 for now)
