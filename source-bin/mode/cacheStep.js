@@ -1,6 +1,7 @@
 import { modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
-import { checksumUpdate, checksumDetectChange } from '@dr-js/dev/module/node/cache/checksum'
-import { staleCheckSetup, staleCheckMark, staleCheckCalcReport, describeStaleReport } from '@dr-js/dev/module/node/cache/staleCheck'
+
+import { checksumUpdate, checksumDetectChange } from 'source/node/cache/checksum'
+import { staleCheckSetup, staleCheckMark, staleCheckCalcReport, describeStaleReport } from 'source/node/cache/staleCheck'
 
 const doCacheStep = async ({
   cacheStepType, prunePolicyType,
@@ -55,10 +56,17 @@ const doCacheStep = async ({
       }
       break
     }
-    case 'is-hash-changed': { // allow repeatable shell check before the actual prune
+    case 'is-hash-changed':
+    case 'IHC': { // allow repeatable shell check before the actual prune
       const { checksumHash, isHashChanged } = await checksumDetectChange(config, 'skip-save')
       console.log(`[cache-step] checksumHash: ${checksumHash}, isHashChanged: ${isHashChanged}`)
       process.exitCode = isHashChanged ? 0 : 1 // will exit with 0 if hash changed, same as shell `true`, and 1 for no change or `false`
+      break
+    }
+    case 'checksum-file-only':
+    case 'CFO': { // only write the checksum file
+      const { checksumHash } = await checksumUpdate(config, 'checksum-file-only')
+      console.log(`[cache-step] checksumHash: ${checksumHash}`)
       break
     }
   }

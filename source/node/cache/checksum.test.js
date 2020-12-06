@@ -75,6 +75,7 @@ describe('Node.Cache.Checksum', () => {
   it('checksumUpdate', async () => {
     __DEV__ && info(await describeChecksumOfPathList({ pathList: TEST_CONFIG.pathChecksumList }))
 
+    strictEqual((await checksumUpdate(TEST_CONFIG, 'checksum-file-only')).isHashChanged, undefined)
     strictEqual((await checksumUpdate(TEST_CONFIG)).isHashChanged, false)
     strictEqual((await checksumUpdate(TEST_CONFIG)).isHashChanged, false)
     strictEqual((await checksumDetectChange(TEST_CONFIG)).isHashChanged, false)
@@ -88,6 +89,7 @@ describe('Node.Cache.Checksum', () => {
     strictEqual((await checksumDetectChange(TEST_CONFIG)).isHashChanged, true)
     strictEqual((await checksumDetectChange(TEST_CONFIG)).isHashChanged, false)
     strictEqual((await checksumUpdate(TEST_CONFIG)).isHashChanged, false)
+    strictEqual((await checksumUpdate(TEST_CONFIG, 'checksum-file-only')).isHashChanged, undefined)
 
     await saveStatFile(await loadStatFile(TEST_CONFIG))
   })

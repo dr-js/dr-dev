@@ -2,9 +2,9 @@ import { resolve } from 'path'
 import { writeFileSync } from 'fs'
 import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object'
 
-import { getLogger } from '@dr-js/dev/module/node/logger'
-import { resetDirectory } from '@dr-js/dev/module/node/file'
-import { packOutput, publishOutput } from '@dr-js/dev/module/output'
+import { getLogger } from 'source/node/logger'
+import { resetDirectory } from 'source/node/file'
+import { packOutput, publishOutput } from 'source/output'
 
 import { formatPackagePath, copyAndSavePackExportInitJSON } from '../function'
 

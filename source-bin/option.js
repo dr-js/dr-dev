@@ -1,6 +1,6 @@
 import { Preset, getOptionalFormatFlag, prepareOption } from '@dr-js/core/module/node/module/Option/preset'
 
-import { COMBO_COMMAND_CONFIG_MAP } from '@dr-js/dev/module/node/npm/comboCommand'
+import { COMBO_COMMAND_CONFIG_MAP } from 'source/node/npm/comboCommand'
 import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from './function'
 
 const { Config, parseCompactList, pickOneOf } = Preset
@@ -37,13 +37,17 @@ const MODE_FORMAT_LIST = parseCompactList(
     'exec-env,EE/O/0-1|use URLSearchParams format String, or key-value Object',
     'exec-cwd,EC/P,O/0-1|reset cwd to path'
   ) ],
-  [ 'cache-step/SS,O', { // enable checksum, stale-check, and delete, will only stale-check on checksum change
-    ...pickOneOf([ 'setup', 'mark', 'prune', 'is-hash-changed' ]),
+  [ 'cache-step,cs/SS,O', { // enable checksum, stale-check, and delete, will only stale-check on checksum change
+    ...pickOneOf([
+      'setup', 'mark', 'prune',
+      'is-hash-changed', 'IHC', // allow repeatable shell check before the actual prune, exit with 0 as shell `true` when hash changed
+      'checksum-file-only', 'CFO' // only write the checksum file
+    ]),
     extendFormatList: parseCompactList(
       [ 'prune-policy/SS,O', pickOneOf([ 'unused', 'stale-only', 'debug' ]) ],
-      'path-stat-file/SP|path of stat file, used to help detect checksum change and compare stale-check time',
-      'path-checksum-list/AP|list of file or directory to calc checksum',
-      'path-checksum-file/SP|path for generated checksum file',
+      'path-stat-file/SP,O|path of stat file, used to help detect checksum change and compare stale-check time, only optional for "checksum-file-only" mode',
+      'path-checksum-list,pcl/AP|list of file or directory to calc checksum',
+      'path-checksum-file,pcf/SP|path for generated checksum file',
       'path-stale-check-list/AP,O/0-|list of cache file or directory to check time',
       'path-stale-check-file/SP,O|path for generated stale-check report file, also useful for debugging',
       'max-stale-day/SI,O|how old unused file is stale, default: 8day'

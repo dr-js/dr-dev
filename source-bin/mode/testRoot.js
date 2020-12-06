@@ -5,7 +5,7 @@ import { getFileList } from '@dr-js/core/module/node/file/Directory'
 import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener'
 import { configureTerminalColor } from '@dr-js/node/module/module/TerminalColor'
 
-import { createTest } from '@dr-js/dev/module/common/test'
+import { createTest } from 'source/common/test'
 
 const doTestRoot = async ({
   testRoot = process.cwd(),

@@ -12,16 +12,16 @@ import { doCacheStep } from './mode/cacheStep'
 
 import { run } from '@dr-js/core/module/node/system/Run'
 
-import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from '@dr-js/dev/module/node/npm/parseScript'
-import { comboCommand } from '@dr-js/dev/module/node/npm/comboCommand'
-import { npxLazy } from '@dr-js/dev/module/node/npm/npxLazy'
+import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript'
+import { comboCommand } from 'source/node/npm/comboCommand'
+import { npxLazy } from 'source/node/npm/npxLazy'
 
 import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
 import { name as packageName, version as packageVersion } from '../package.json'
 
-const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
+const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst, getToggle }) => {
   const modeArgList = get(modeName)
-  const tabLog = tryGetFirst('debug')
+  const tabLog = getToggle('debug')
     ? (level, ...args) => console.log(`${'  '.repeat(level)}${args.join(' ')}`)
     : () => {}
   switch (modeName) {
@@ -37,15 +37,15 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
         outputName: tryGetFirst('output-name'),
         outputVersion: tryGetFirst('output-version'),
         outputDescription: tryGetFirst('output-description'),
-        isPublish: tryGetFirst('publish'),
-        isPublishDev: tryGetFirst('publish-dev'),
-        isDryRun: tryGetFirst('dry-run')
+        isPublish: getToggle('publish'),
+        isPublishDev: getToggle('publish-dev'),
+        isDryRun: getToggle('dry-run')
       })
     case 'step-package-version':
       return doStepPackageVersion({
         pathInput: tryGetFirst('path-input') || '.',
-        isSortKey: tryGetFirst('sort-key'),
-        isGitCommit: tryGetFirst('git-commit')
+        isSortKey: getToggle('sort-key'),
+        isGitCommit: getToggle('git-commit')
       })
     case 'test-root':
       return doTestRootList({
@@ -58,8 +58,8 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
       return doInit({
         pathOutput: modeArgList[ 0 ] || '.',
         pathResourcePackage: tryGetFirst('init-resource-package') || '.',
-        isReset: tryGetFirst('init-reset'),
-        isVerify: tryGetFirst('init-verify'),
+        isReset: getToggle('init-reset'),
+        isVerify: getToggle('init-verify'),
         pathVerifyRule: tryGetFirst('init-verify-rule')
       })
     case 'exec':
@@ -73,7 +73,7 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
       return doCacheStep({
         cacheStepType: modeArgList[ 0 ],
         prunePolicyType: tryGetFirst('prune-policy') || 'unused',
-        pathStatFile: getFirst('path-stat-file'),
+        pathStatFile: tryGetFirst('path-stat-file'), // TODO: only when 'checksum-file-only'
         pathChecksumList: get('path-checksum-list'),
         pathChecksumFile: getFirst('path-checksum-file'),
         pathStaleCheckList: tryGet('path-stale-check-list') || [],
@@ -115,8 +115,8 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst }) => {
 
 const main = async () => {
   const optionData = await parseOption()
-  if (optionData.tryGetFirst('version')) return console.log(JSON.stringify({ packageName, packageVersion }, null, 2))
-  if (optionData.tryGetFirst('help')) return console.log(formatUsage())
+  if (optionData.getToggle('version')) return console.log(JSON.stringify({ packageName, packageVersion }, null, 2))
+  if (optionData.getToggle('help')) return console.log(formatUsage())
   const modeName = MODE_NAME_LIST.find((name) => optionData.tryGet(name))
   if (!modeName) throw new Error('no mode specified')
   await runMode(modeName, optionData).catch((error) => {

@@ -5,7 +5,7 @@ import { catchAsync } from '@dr-js/core/module/common/error'
 import { indentLine } from '@dr-js/core/module/common/string'
 import { getFileList } from '@dr-js/core/module/node/file/Directory'
 
-import { findPathFragList } from '@dr-js/dev/module/node/file'
+import { findPathFragList } from 'source/node/file'
 
 import { getFromPackExport, loadAndCopyPackExportInitJSON } from '../function'
 

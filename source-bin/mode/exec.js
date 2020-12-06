@@ -4,7 +4,7 @@ import { objectFromEntries } from '@dr-js/core/module/common/immutable/Object'
 
 import { findUpPackageRoot } from '@dr-js/node/module/module/Software/npm'
 
-import { runAndHandover } from '@dr-js/dev/module/node/run'
+import { runAndHandover } from 'source/node/run'
 
 import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from '../function'
 

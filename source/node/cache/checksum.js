@@ -86,9 +86,9 @@ const saveStatFile = async (config) => saveStat(config, STAT_KEY, (stat) => ({
   'checksum-hash-prev': stat.checksumHashPrev
 }))
 
-const checksumUpdate = async (config) => {
+const checksumUpdate = async (config, isChecksumFileOnly = false) => { // set isChecksumFileOnly to only write the checksum file
   // load stat
-  config = await loadStatFile(config)
+  if (!isChecksumFileOnly) config = await loadStatFile(config)
 
   // save checksum file
   const checksumString = await describeChecksumOfPathList({ pathList: config.pathChecksumList })
@@ -97,10 +97,11 @@ const checksumUpdate = async (config) => {
 
   // detect hash change, but do not update
   const checksumHash = createHash('sha256').update(checksumString).digest('base64')
-  const isHashChanged = Boolean(config.stat.checksumHash && (config.stat.checksumHash !== checksumHash))
+  const isHashChanged = isChecksumFileOnly ? undefined // not checking since no stat is loaded
+    : Boolean(config.stat.checksumHash && (config.stat.checksumHash !== checksumHash))
 
   // save back
-  await saveStatFile(config)
+  !isChecksumFileOnly && await saveStatFile(config)
 
   return { checksumHash, isHashChanged }
 }

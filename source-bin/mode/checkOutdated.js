@@ -10,9 +10,9 @@ import { getPathStat } from '@dr-js/core/module/node/file/Path'
 import { run } from '@dr-js/core/module/node/system/Run'
 import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from '@dr-js/core/module/node/system/Process'
 
-import { withTempDirectory } from '@dr-js/dev/module/node/file'
-
 import { getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
+
+import { withTempDirectory } from 'source/node/file'
 
 import { collectDependency } from '../function'
 

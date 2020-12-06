@@ -1,7 +1,7 @@
 const BABEL_ENV = process.env.BABEL_ENV || ''
 const isDev = BABEL_ENV.includes('dev')
 const isModule = BABEL_ENV.includes('module')
-const isUseSource = BABEL_ENV.includes('use-source')
+const isOutputBin = BABEL_ENV.includes('outputBin') // map `source/*` to `../library/*` for `source-bin` in output
 
 module.exports = {
   presets: [
@@ -14,13 +14,9 @@ module.exports = {
     [ 'module-resolver', {
       root: [ './' ],
       alias: isModule ? undefined : [
-        {
-          '^@dr-js/dev/module/(.+)': isUseSource
-            ? './source/\\1' // when direct use/test `./source-bin` with `@babel/register`
-            : './library/\\1' // when build to output
-        },
+        isOutputBin && { '^source/(.+)': './library/\\1' }, // when build bin to output
         { '^@dr-js/([\\w-]+)/module/(.+)': '@dr-js/\\1/library/\\2' }
-      ]
+      ].filter(Boolean)
     } ]
   ],
   comments: false
