@@ -58,12 +58,13 @@ const fileProcessorBabel = (inputString) => inputString
 //  - function(){return $a_}  =>  ()=>$a_
 //  - function(){return wt.a} =>  ()=>wt.a
 // don't:
-//  - function(){return a}()  =>  ()=>a()
-const fileProcessorWebpack = (inputString) => inputString
-  .replace(/function\s*\(\)\s*{\s*return\s+([\w$]+(?:\.[\w$]+)?)\s*}([\s;)\]])/g, '()=>$1$2') // TODO: may break code?
+//  - function(){return a}()       =>  ()=>a()
+//  - function(){return this.a}()  =>  ()=>this.a
+const fileProcessorWebpack = (inputString) => inputString // TODO: DEPRECATE: risk breaking code & replaceable `function()` is less often seem in minified webpack output
+// .replace(/function\s*\(\)\s*{\s*return\s+([\w$]+(?:\.[\w$]+)?)\s*}([\s;)\]])/g, '()=>$1$2') // TODO: may break code?
 
 export {
   processFileList,
   fileProcessorBabel,
-  fileProcessorWebpack
+  fileProcessorWebpack // TODO: DEPRECATE
 }

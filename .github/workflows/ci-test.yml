@@ -31,7 +31,7 @@ jobs:
 
       - name: Patch & log CI info
         run: |
-          npx @dr-js/core@^0.4.3-dev.1 -eI .github/ci-patch.js
+          npx @dr-js/core@^0.4.3 -eI .github/ci-patch.js
           dr-dev -c .github/cache/config.js --cache-step setup
 
       - name: Cache JS
@@ -47,6 +47,7 @@ jobs:
 
       - run: npm ci
 
-      - run: npm test
+      # TODO: TEMP FIX: use npm@6 and wait for: https://github.com/npm/cli/issues/2411
+      - run: npx npm@6 test
 
       - run: dr-dev -c .github/cache/config.js --cache-step prune

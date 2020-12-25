@@ -1,4 +1,5 @@
 import { resolve, relative, sep } from 'path'
+import { promises as fsAsync } from 'fs'
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { isString } from '@dr-js/core/module/common/check'
 import { describe } from '@dr-js/core/module/common/format'
@@ -55,9 +56,16 @@ const resetDirectory = async (path) => {
   await createDirectory(path)
 }
 
+const copyAfterEdit = async (
+  pathFrom,
+  pathTo,
+  editFunc = async (buffer) => buffer
+) => fsAsync.writeFile(pathTo, await editFunc(await fsAsync.readFile(pathFrom)))
+
 export {
   getFileListFromPathList,
   findPathFragList,
   withTempDirectory,
-  resetDirectory
+  resetDirectory,
+  copyAfterEdit
 }

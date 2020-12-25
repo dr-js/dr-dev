@@ -1,11 +1,11 @@
 import { relative } from 'path'
-import { promises as fsAsync } from 'fs'
 import { minify as terserMinify } from 'terser'
 
 import { clock } from '@dr-js/core/module/common/time'
 import { binary, time, padTable } from '@dr-js/core/module/common/format'
 
 import { __VERBOSE__ } from './node/env'
+import { copyAfterEdit } from './node/file'
 
 const getTerserOption = ({
   isReadable = false, // should be much more readable // TODO: option `beautify` is being removed
@@ -26,25 +26,25 @@ const getTerserOption = ({
 })
 
 const minifyFileWithTerser = async ({ filePath, option, logger }) => {
-  const timeStart = clock()
-  const scriptSource = String(await fsAsync.readFile(filePath))
-  const { error, code: scriptOutput } = await terserMinify(scriptSource, option)
-  if (error) {
-    logger.padLog(`[minifyFileWithTerser] failed to minify file: ${filePath}`)
-    throw error
+  const result = {
+    timeStart: clock()
+    // timeEnd: 0,
+    // sizeSource: 0,
+    // sizeOutput: 0
   }
-  await fsAsync.writeFile(filePath, scriptOutput)
-
-  const timeEnd = clock()
-  const sizeSource = Buffer.byteLength(scriptSource)
-  const sizeOutput = Buffer.byteLength(scriptOutput)
-
-  return {
-    sizeSource,
-    sizeOutput,
-    timeStart,
-    timeEnd
-  }
+  await copyAfterEdit(filePath, filePath, async (buffer) => {
+    const { error, code: scriptOutput } = await terserMinify(String(buffer), option)
+    if (error) {
+      logger.padLog(`[minifyFileWithTerser] failed to minify file: ${filePath}`)
+      throw error
+    }
+    const bufferOutput = Buffer.from(scriptOutput)
+    result.timeEnd = clock()
+    result.sizeSource = buffer.length
+    result.sizeOutput = bufferOutput.length
+    return bufferOutput
+  })
+  return result
 }
 
 const minifyFileListWithTerser = async ({ fileList, option, rootPath = '', logger }) => {

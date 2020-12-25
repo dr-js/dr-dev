@@ -28,7 +28,7 @@
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
-  - `findPathFragList`, `getFileListFromPathList`, `resetDirectory`, `withTempDirectory`
+  - `copyAfterEdit`, `findPathFragList`, `getFileListFromPathList`, `resetDirectory`, `withTempDirectory`
 + 📄 [source/node/filePreset.js](source/node/filePreset.js)
   - `getSourceJsFileListFromPathList`
 + 📄 [source/node/logger.js](source/node/logger.js)
@@ -271,14 +271,14 @@
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |     ^1.12.0 |
-| eslint                         |     ^7.16.0 |
+| eslint                         |     ^7.17.0 |
 | eslint-plugin-import           |     ^2.22.1 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^4.2.1 |
-| eslint-plugin-react            |     ^7.21.5 |
+| eslint-plugin-react            |     ^7.22.0 |
 | prop-types                     |     ^15.7.2 |
 | puppeteer                      |      ^5.5.0 |
 | react                          |     ^17.0.1 |
 | styled-components              |      ^5.2.1 |
 | terser                         |      ^5.5.1 |
-| webpack                        |     ^5.11.0 |
+| webpack                        |     ^5.11.1 |
