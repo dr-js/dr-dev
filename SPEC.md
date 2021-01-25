@@ -21,6 +21,8 @@
   - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
 + 📄 [source/webpack.js](source/webpack.js)
   - `commonFlag`, `compileWithWebpack`
++ 📄 [source/webpack-progress-plugin.js](source/webpack-progress-plugin.js)
+  - `createProgressPlugin`
 + 📄 [source/common/dev.js](source/common/dev.js)
   - `createTransformCacheWithInfo`, `hijackSetTimeoutInterval`
 + 📄 [source/common/test.js](source/common/test.js)
@@ -36,7 +38,7 @@
 + 📄 [source/node/preset.js](source/node/preset.js)
   - `FILTER_JS_FILE`, `FILTER_SOURCE_JS_FILE`, `FILTER_SOURCE_PATH`, `FILTER_TEST_JS_FILE`, `FILTER_TEST_PATH`
 + 📄 [source/node/run.js](source/node/run.js)
-  - `runAndHandover`, `withRunBackground`
+  - `runAndHandover`, `runPassThrough`, `runWithAsyncFunc`, `withRunBackground`
 + 📄 [source/node/cache/checksum.js](source/node/cache/checksum.js)
   - `checksumDetectChange`, `checksumUpdate`, `describeChecksumInfoList`, `describeChecksumOfPathList`, `getChecksumInfoListOfPath`, `getChecksumInfoListOfPathList`, `getChecksumInfoOfFile`, `loadStatFile`, `saveStatFile`
 + 📄 [source/node/cache/function.js](source/node/cache/function.js)
@@ -54,7 +56,7 @@
 + 📄 [source/node/npm/comboCommand.js](source/node/npm/comboCommand.js)
   - `COMBO_COMMAND_CONFIG_MAP`, `comboCommand`
 + 📄 [source/node/npm/npxLazy.js](source/node/npm/npxLazy.js)
-  - `npxLazy`, `runNpx`
+  - `npxLazy`, `runNpx`, `runNpxLazy`
 + 📄 [source/node/npm/parseScript.js](source/node/npm/parseScript.js)
   - `parseCommand`, `parsePackageScript`, `warpBashSubShell`, `wrapJoinBashArgs`
 
@@ -271,7 +273,7 @@
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |     ^1.12.0 |
-| eslint                         |     ^7.17.0 |
+| eslint                         |     ^7.18.0 |
 | eslint-plugin-import           |     ^2.22.1 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^4.2.1 |
@@ -281,4 +283,4 @@
 | react                          |     ^17.0.1 |
 | styled-components              |      ^5.2.1 |
 | terser                         |      ^5.5.1 |
-| webpack                        |     ^5.11.1 |
+| webpack                        |     ^5.17.0 |

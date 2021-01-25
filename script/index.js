@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { execSync } from 'child_process'
 
-import { runSync } from '@dr-js/core/module/node/system/Run'
+import { runSync } from '@dr-js/core/module/node/run'
 
 import { getFileListFromPathList, resetDirectory } from 'source/node/file'
 import { getSourceJsFileListFromPathList } from 'source/node/filePreset'
@@ -58,22 +58,17 @@ const packResource = async ({ packageJSON: { version }, logger }) => {
   configFileList.forEach((file) => {
     const { __FLAVOR__: { name, description } } = require(file)
     logger.padLog(`pack package ${name}`)
-    runSync({
-      command: 'node',
-      argList: [
-        './output-gitignore/bin',
-        '--pack',
-        '--path-input', file,
-        '--path-output', `./output-package-gitignore/${name}/`,
-        '--output-version', version,
-        '--output-name', name,
-        '--output-description', description,
-        isPublish && '--publish',
-        isPublishDev && '--publish-dev',
-        argvFlag('dry-run') && '--dry-run'
-      ].filter(Boolean),
-      option: { cwd: fromRoot() }
-    })
+    runSync([ process.execPath, './output-gitignore/bin',
+      '--pack',
+      '--path-input', file,
+      '--path-output', `./output-package-gitignore/${name}/`,
+      '--output-version', version,
+      '--output-name', name,
+      '--output-description', description,
+      isPublish && '--publish',
+      isPublishDev && '--publish-dev',
+      argvFlag('dry-run') && '--dry-run'
+    ].filter(Boolean), { cwd: fromRoot() })
   })
 }
 

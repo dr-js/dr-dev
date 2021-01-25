@@ -4,7 +4,7 @@ import { binary } from '@dr-js/core/module/common/format'
 import { isBasicObject } from '@dr-js/core/module/common/check'
 import { getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/file/Modify'
-import { run } from '@dr-js/core/module/node/system/Run'
+import { run } from '@dr-js/core/module/node/run'
 
 import { toPackageTgzName, getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
 
@@ -65,11 +65,9 @@ const packOutput = async ({
   logger
 }) => {
   logger.padLog('run pack output')
-  await run({
-    command: getPathNpmExecutable(),
-    argList: [ '--no-update-notifier', 'pack' ],
-    option: { cwd: fromOutput(), stdio: __VERBOSE__ ? 'inherit' : [ 'ignore', 'ignore' ] }
-  }).promise
+  await run([
+    getPathNpmExecutable(), '--no-update-notifier', 'pack'
+  ], { cwd: fromOutput(), stdio: __VERBOSE__ ? 'inherit' : [ 'ignore', 'ignore', 'inherit' ] }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {
@@ -98,12 +96,7 @@ const verifyOutputBin = async ({
   let pathBin = bin || './bin'
   if (isBasicObject(pathBin)) pathBin = pathBin[ Object.keys(pathBin)[ 0 ] ]
   logger.padLog('verify output bin working')
-  const { promise, stdoutPromise } = run({
-    command: 'node',
-    argList: [ pathBin, ...versionArgList ],
-    option: { cwd: fromOutput() },
-    quiet: true, describeError: true
-  })
+  const { promise, stdoutPromise } = run([ process.execPath, pathBin, ...versionArgList ], { cwd: fromOutput(), quiet: true, describeError: true })
   await promise
   const outputBinTest = String(await stdoutPromise)
   logger.log(`bin test output: ${outputBinTest}`)
@@ -119,7 +112,7 @@ const verifyNoGitignore = async ({ path, logger }) => {
 
 const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger }) => {
   logger.padLog('verify git has nothing to commit')
-  const { promise, stdoutPromise } = run({ command: 'git', argList: [ 'status', '-vv' ], option: { cwd }, quiet: true }) // NOTE: use -vv to log diff detail
+  const { promise, stdoutPromise } = run([ 'git', 'status', '-vv' ], { cwd, quiet: true }) // NOTE: use -vv to log diff detail
   await promise
   const outputGitStatus = String(await stdoutPromise)
   ok(outputGitStatus.includes('nothing to commit, working tree clean'), `git change to commit: ${outputGitStatus}`)
@@ -153,10 +146,7 @@ const publishOutput = async ({
   // - `npm config get userconfig`
   // - `npm config get registry`
   // - `npm whoami`
-  await run({
-    command: getPathNpmExecutable(),
-    argList: [ '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]
-  }).promise
+  await run([ getPathNpmExecutable(), '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]).promise
 }
 const getPublishFlag = (flagList, packageVersion) => {
   const isPublishAuto = flagList.includes('publish-auto') // no version verify for auto + dev, and do not limit dev version format to `REGEXP_PUBLISH_VERSION_DEV`

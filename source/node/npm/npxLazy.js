@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 import { tryRequire } from '@dr-js/core/module/env/tryRequire'
-import { run } from '@dr-js/core/module/node/system/Run'
+import { run } from '@dr-js/core/module/node/run'
 import { parsePackageNameAndVersion, findUpPackageRoot, fromNpmNodeModules, getPathNpmGlobalRoot } from '@dr-js/node/module/module/Software/npm'
 
 const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnpx` package will be dropped since `npm@7` and may later break the usage
@@ -10,10 +10,7 @@ const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnp
   const pathNpxCli = fromNpmNodeModules('../bin/npx-cli.js') // exist in both `npm@6` and `npm@7`
   tabLog(1, 'argList:', ...argList)
   tabLog(1, 'pathNpxCli:', pathNpxCli)
-  await run({
-    command: process.execPath, // NOTE: use node to run for win32 support
-    argList: [ pathNpxCli, ...argList ]
-  }).promise
+  await run([ process.execPath, pathNpxCli, ...argList ]).promise // NOTE: use node to run for win32 support
 
   // // TODO: this is flaky, check test for details
   // // NOTE: with this method, there's no way to know when the process ends and the end result,
@@ -32,10 +29,10 @@ const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnp
   // ))
 }
 
-const npxLazy = async ({
-  argList: [ command, ...extraArgs ],
+const runNpxLazy = async (
+  [ command, ...extraArgs ],
   tabLog = (level, ...args) => {}
-}) => {
+) => {
   const [ packageName, version ] = parsePackageNameAndVersion(command)
   if (version) {
     const { satisfies } = tryRequire(fromNpmNodeModules('semver')) // borrow package from npm
@@ -57,7 +54,10 @@ const npxLazy = async ({
   return runNpx([ command, ...extraArgs ], tabLog)
 }
 
+const npxLazy = async ({ argList, tabLog }) => runNpxLazy(argList, tabLog) // TODO: DEPRECATE
+
 export {
-  runNpx,
-  npxLazy
+  runNpx, runNpxLazy,
+
+  npxLazy // TODO: DEPRECATE
 }

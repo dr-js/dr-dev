@@ -34,9 +34,7 @@ const main = async () => {
   await quickRun([ ...`${COMMAND_SUDO_NPM} config set cache`.split(' '), resolve(homedir(), '.npm/'), '--global' ])
 
   // Patch install @dr-js/dev globally
-  await quickRun(`${COMMAND_SUDO_NPM} install --global @dr-js/dev@^0.4`)
-
-  IS_WIN32 && await quickRun(`${COMMAND_SUDO_NPM} install --global npm@6`) // win32 npx do not override system npm // TODO: TEMP FIX: use npm@6 and wait for: https://github.com/npm/cli/issues/2411
+  await quickRun(`${COMMAND_SUDO_NPM} install --global @dr-js/dev@0.4`)
 }
 
 main().then(

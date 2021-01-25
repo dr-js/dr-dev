@@ -7,7 +7,7 @@ import { withTimeoutPromise } from '@dr-js/core/module/common/function'
 import { objectMap } from '@dr-js/core/module/common/immutable/Object'
 import { compareSemVer } from '@dr-js/core/module/common/module/SemVer'
 import { getPathStat } from '@dr-js/core/module/node/file/Path'
-import { run } from '@dr-js/core/module/node/system/Run'
+import { run } from '@dr-js/core/module/node/run'
 import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from '@dr-js/core/module/node/system/Process'
 
 import { getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
@@ -17,12 +17,9 @@ import { withTempDirectory } from 'source/node/file'
 import { collectDependency } from '../function'
 
 const runNpmOutdated = async (pathPackage) => {
-  const { promise, subProcess, stdoutPromise, stderrPromise } = run({
-    command: getPathNpmExecutable(),
-    argList: [ '--no-update-notifier', 'outdated' ],
-    option: { cwd: pathPackage },
-    quiet: true
-  })
+  const { promise, subProcess, stdoutPromise, stderrPromise } = run([
+    getPathNpmExecutable(), '--no-update-notifier', 'outdated'
+  ], { cwd: pathPackage, quiet: true })
 
   const promiseWithCatch = promise.catch((acceptableError) => {
     __DEV__ && console.log('acceptableError:', acceptableError)

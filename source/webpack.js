@@ -1,4 +1,4 @@
-import Webpack from 'webpack'
+import Webpack, { DefinePlugin, BannerPlugin } from 'webpack'
 import { join, dirname } from 'path'
 import { writeFileSync } from 'fs'
 
@@ -8,6 +8,7 @@ import { addExitListenerAsync } from '@dr-js/core/module/node/system/ExitListene
 
 import { __VERBOSE__, argvFlag } from './node/env'
 import { getWebpackBabelConfig } from './babel'
+import { createProgressPlugin } from './webpack-progress-plugin'
 
 // https://webpack.js.org/api/stats/
 
@@ -154,12 +155,13 @@ const commonFlag = async ({
       ].filter(Boolean)
     },
     plugins: [
-      new Webpack.DefinePlugin({
+      createProgressPlugin({ log: logger.log }),
+      new DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(mode),
         __DEV__: !isProduction,
         ...extraDefine
       }),
-      isNodeBin && new Webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
+      isNodeBin && new BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
       ...extraPluginList
     ].filter(Boolean),
     optimization: { minimize: isMinimize },

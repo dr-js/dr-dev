@@ -10,11 +10,11 @@ import { doInit } from './mode/init'
 import { doExec, doExecLoad } from './mode/exec'
 import { doCacheStep } from './mode/cacheStep'
 
-import { run } from '@dr-js/core/module/node/system/Run'
+import { run } from '@dr-js/core/module/node/run'
 
 import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript'
 import { comboCommand } from 'source/node/npm/comboCommand'
-import { npxLazy } from 'source/node/npm/npxLazy'
+import { runNpxLazy } from 'source/node/npm/npxLazy'
 
 import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
 import { name as packageName, version as packageVersion } from '../package.json'
@@ -63,9 +63,7 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst, getToggle
         pathVerifyRule: tryGetFirst('init-verify-rule')
       })
     case 'exec':
-      return doExec({
-        command: modeArgList[ 0 ],
-        argList: modeArgList.slice(1),
+      return doExec(modeArgList, {
         env: tryGetFirst('exec-env'),
         cwd: tryGetFirst('exec-cwd')
       })
@@ -102,14 +100,14 @@ const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst, getToggle
         command = parsePackageScript(packageJSON, scriptName, wrapJoinBashArgs(extraArgs), 0, tabLog)
       }
       if (modeName.startsWith('parse-script')) return console.log(command)
-      return run({ command: 'bash', argList: [ '-c', command ] }).promise
+      return run([ 'bash', '-c', command ]).promise
     }
     case 'npm-combo': {
       for (const name of modeArgList) await comboCommand({ name, tabLog })
       return
     }
     case 'npx-lazy':
-      return npxLazy({ argList: modeArgList, tabLog })
+      return runNpxLazy(modeArgList, tabLog)
   }
 }
 

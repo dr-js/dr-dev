@@ -1,6 +1,6 @@
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time'
-import { run } from '@dr-js/core/module/node/system/Run'
+import { run } from '@dr-js/core/module/node/run'
 import { resolveCommandAsync } from '@dr-js/core/module/node/system/ResolveCommand'
 import {
   getProcessListAsync,
@@ -10,8 +10,8 @@ import {
   isPidExist
 } from '@dr-js/core/module/node/system/Process'
 
-const withRunBackground = async (option, asyncFunc, setupDelay = 500) => {
-  const { subProcess, promise } = run(option)
+const runWithAsyncFunc = async (argList, { asyncFunc, setupDelay = 500, ...option }) => {
+  const { subProcess, promise } = run(argList, option)
   const exitPromise = promise.catch((error) => __DEV__ && console.log(`process exit with error: ${error}`))
 
   // wait for process setup
@@ -37,13 +37,13 @@ const withRunBackground = async (option, asyncFunc, setupDelay = 500) => {
 // do not support shell internal command (shell: false)
 // after this should execute no more code
 // borrowed logic: https://github.com/babel/babel/blob/v7.9.5/packages/babel-node/src/babel-node.js#L86-L99
-const runAndHandover = async ({ command, argList, option }) => {
-  command = await resolveCommandAsync(command, option && option.cwd) // find full path, especially for win32
-  if (option) option = { ...option, stdio: 'inherit', shell: false } // force reset to inherit stdio and no shell
-  const { promise, subProcess } = run({ command, argList, option })
-  SOFT_SIGNAL_LIST.forEach((signal) => process.on(signal, () => subProcess.kill(signal)))
+const runPassThrough = async (argList, option) => {
+  argList = [ ...argList ]
+  argList[ 0 ] = await resolveCommandAsync(argList[ 0 ], option && option.cwd) // find full path, especially for win32
+  const { promise, subProcess } = run(argList, option)
+  SOFT_SIGNAL_LIST.forEach((signal) => process.on(signal, () => subProcess.kill(signal))) // pass through common events
   const { code } = await promise.catch((error) => error)
-  if (code) process.exitCode = code
+  if (code !== 0) process.exitCode = code || -1
 }
 const SOFT_SIGNAL_LIST = [
   'SIGINT', // 1, soft
@@ -53,7 +53,11 @@ const SOFT_SIGNAL_LIST = [
   'SIGTERM' // 15, soft
 ]
 
+const withRunBackground = async ({ command, argList, ...option }, asyncFunc, setupDelay = 500) => runWithAsyncFunc([ command, ...argList ], { asyncFunc, setupDelay, ...option }) // TODO: DEPRECATE
+const runAndHandover = async ({ command, argList, option }) => runPassThrough([ command, ...argList ], option) // TODO: DEPRECATE
+
 export {
-  withRunBackground,
-  runAndHandover
+  runWithAsyncFunc, runPassThrough,
+
+  withRunBackground, runAndHandover // TODO: DEPRECATE
 }

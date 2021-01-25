@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 
-import { runSync } from '@dr-js/core/module/node/system/Run'
+import { runSync } from '@dr-js/core/module/node/run'
 
 import { formatPackagePath, writePackageJSON } from '../function'
 
@@ -60,8 +60,8 @@ const doStepPackageVersion = async ({
   ].join('\n')
 
   log(`[StepPackageVersion] git commit message: '${messageTitle}'`)
-  runSync({ command: 'git', argList: [ 'add', packageFile ], option: { cwd: packagePath } })
-  runSync({ command: 'git', argList: [ 'commit', '-m', messageTitle, '-m', messageContent ], option: { cwd: packagePath } })
+  runSync([ 'git', 'add', packageFile ], { cwd: packagePath })
+  runSync([ 'git', 'commit', '-m', messageTitle, '-m', messageContent ], { cwd: packagePath })
 }
 
 export { doStepPackageVersion }
