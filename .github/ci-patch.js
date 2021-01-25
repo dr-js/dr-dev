@@ -1,6 +1,6 @@
 const { resolve } = require('path')
 const { release, arch, homedir } = require('os')
-const { run } = require('@dr-js/core/library/node/system/Run')
+const { run } = require('@dr-js/core/library/node/run')
 
 console.log(`[ci-patch] system: ${process.platform}-${release()}[${arch()}]`)
 console.log(`[ci-patch] node: ${process.version}`)
@@ -10,12 +10,9 @@ const PATH_ROOT = resolve(__dirname, '../')
 console.log(`[ci-patch] PATH_ROOT: ${PATH_ROOT}`)
 
 const quickRun = async (argListOrString) => {
-  const argList = Array.isArray(argListOrString)
-    ? argListOrString // non-shell command string list, prepend `'bash', '-c'` to run in bash shell
-    : argListOrString.split(' ').filter(Boolean) // non-shell command do not need extra quote joined together as single string
-  const command = argList.shift()
-  console.log(`[ci-patch] run: "${command} ${argList.join(' ')}"`)
-  await run({ command, argList, option: { cwd: PATH_ROOT }, describeError: true }).promise
+  const argList = Array.isArray(argListOrString) ? argListOrString : argListOrString.split(' ').filter(Boolean)
+  console.log(`[ci-patch] run: "${argList.join(' ')}"`)
+  await run(argList, { cwd: PATH_ROOT }).promise
 }
 
 const main = async () => {
@@ -37,10 +34,7 @@ const main = async () => {
   await quickRun(`${COMMAND_SUDO_NPM} install --global @dr-js/dev@0.4`)
 }
 
-main().then(
-  () => console.log('[ci-patch] done'),
-  (error) => {
-    console.error('[ci-patch] error:', error)
-    process.exitCode = 1
-  }
-)
+main().then(() => console.log('[ci-patch] done'), (error) => {
+  console.error('[ci-patch] error:', error)
+  process.exitCode = 1
+})

@@ -67,7 +67,7 @@ const packOutput = async ({
   logger.padLog('run pack output')
   await run([
     getPathNpmExecutable(), '--no-update-notifier', 'pack'
-  ], { cwd: fromOutput(), stdio: __VERBOSE__ ? 'inherit' : [ 'ignore', 'ignore', 'inherit' ] }).promise
+  ], { cwd: fromOutput(), quiet: !__VERBOSE__, describeError: !__VERBOSE__ }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {

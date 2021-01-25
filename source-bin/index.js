@@ -19,7 +19,9 @@ import { runNpxLazy } from 'source/node/npm/npxLazy'
 import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
 import { name as packageName, version as packageVersion } from '../package.json'
 
-const runMode = async (modeName, { get, tryGet, getFirst, tryGetFirst, getToggle }) => {
+const runMode = async (optionData, modeName) => {
+  const { get, tryGet, getFirst, tryGetFirst, getToggle } = optionData
+
   const modeArgList = get(modeName)
   const tabLog = getToggle('debug')
     ? (level, ...args) => console.log(`${'  '.repeat(level)}${args.join(' ')}`)
@@ -117,7 +119,7 @@ const main = async () => {
   if (optionData.getToggle('help')) return console.log(formatUsage())
   const modeName = MODE_NAME_LIST.find((name) => optionData.tryGet(name))
   if (!modeName) throw new Error('no mode specified')
-  await runMode(modeName, optionData).catch((error) => {
+  await runMode(optionData, modeName).catch((error) => {
     console.warn(`[Error] in mode: ${modeName}:`, error.stack || error)
     process.exit(2)
   })
