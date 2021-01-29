@@ -10,7 +10,7 @@ const getBabelConfig = ({
   extraModuleResolverList = []
 } = {}) => ({
   presets: [
-    [ '@babel/env', isAllTransform
+    [ '@babel/preset-env', isAllTransform
       ? { forceAllTransforms: true, modules: 'commonjs' }
       : { targets: { node: '12' }, modules: isModule ? false : 'commonjs' }
     ],
@@ -18,14 +18,14 @@ const getBabelConfig = ({
   ].filter(Boolean),
   plugins: [
     ...extraPluginList,
-    [ '@babel/proposal-class-properties', { loose: true } ],
-    [ 'minify-replace', {
+    [ '@babel/plugin-proposal-class-properties', { loose: true } ],
+    [ 'babel-plugin-minify-replace', {
       replacements: [
         ...extraMinifyReplaceList,
         { identifierName: '__DEV__', replacement: { type: 'booleanLiteral', value: isDev } }
       ]
     } ],
-    [ 'module-resolver', {
+    [ 'babel-plugin-module-resolver', {
       root: [ './' ],
       alias: isModule ? undefined : [
         ...extraModuleResolverList, // higher priority
@@ -47,14 +47,14 @@ const getWebpackBabelConfig = ({
   babelrc: false,
   cacheDirectory: isProduction,
   presets: [
-    [ '@babel/env', isProduction && isAllTransform
+    [ '@babel/preset-env', isProduction && isAllTransform
       ? { forceAllTransforms: true, modules: false }
       : { targets: { node: '12' }, modules: false }
     ],
     ...extraPresetList
   ].filter(Boolean),
   plugins: [
-    [ '@babel/proposal-class-properties', { loose: true } ],
+    [ '@babel/plugin-proposal-class-properties', { loose: true } ],
     ...extraPluginList
   ].filter(Boolean)
 })

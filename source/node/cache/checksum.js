@@ -5,6 +5,7 @@ import { createHash } from 'crypto'
 import { compareString } from '@dr-js/core/module/common/compare'
 import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common/module/AsyncLane'
 
+import { calcHash } from '@dr-js/core/module/node/data/Buffer'
 import { setupStreamPipe, readableStreamToBufferAsync } from '@dr-js/core/module/node/data/Stream'
 import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/file/Path'
 import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/file/Directory'
@@ -96,7 +97,7 @@ const checksumUpdate = async (config, isChecksumFileOnly = false) => { // set is
   await fsAsync.writeFile(config.pathChecksumFile, checksumString)
 
   // detect hash change, but do not update
-  const checksumHash = createHash('sha256').update(checksumString).digest('base64')
+  const checksumHash = calcHash(checksumString, 'sha256')
   const isHashChanged = isChecksumFileOnly ? undefined // not checking since no stat is loaded
     : Boolean(config.stat.checksumHash && (config.stat.checksumHash !== checksumHash))
 
@@ -111,7 +112,7 @@ const checksumDetectChange = async (config, isSkipSave = false) => { // set isSk
   config = await loadStatFile(config)
 
   // load checksum file & calc hash
-  const checksumHash = createHash('sha256').update(await fsAsync.readFile(config.pathChecksumFile)).digest('base64')
+  const checksumHash = calcHash(await fsAsync.readFile(config.pathChecksumFile), 'sha256')
 
   // detect hash change
   const isHashChanged = Boolean(config.stat.checksumHash && (config.stat.checksumHash !== checksumHash))

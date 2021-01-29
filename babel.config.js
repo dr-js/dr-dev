@@ -5,13 +5,13 @@ const isOutputBin = BABEL_ENV.includes('outputBin') // map `source/*` to `../lib
 
 module.exports = {
   presets: [
-    [ '@babel/env', { targets: { node: '12' }, modules: isModule ? false : 'commonjs' } ]
+    [ '@babel/preset-env', { targets: { node: '12' }, modules: isModule ? false : 'commonjs' } ]
   ],
   plugins: [
-    [ 'minify-replace', {
+    [ 'babel-plugin-minify-replace', {
       replacements: [ { identifierName: '__DEV__', replacement: { type: 'booleanLiteral', value: isDev } } ]
     } ],
-    [ 'module-resolver', {
+    [ 'babel-plugin-module-resolver', {
       root: [ './' ],
       alias: isModule ? undefined : [
         isOutputBin && { '^source/(.+)': './library/\\1' }, // when build bin to output

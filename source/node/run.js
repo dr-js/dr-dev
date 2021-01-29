@@ -53,8 +53,8 @@ const SOFT_SIGNAL_LIST = [
   'SIGTERM' // 15, soft
 ]
 
-const withRunBackground = async ({ command, argList, ...option }, asyncFunc, setupDelay = 500) => runWithAsyncFunc([ command, ...argList ], { asyncFunc, setupDelay, ...option }) // TODO: DEPRECATE
-const runAndHandover = async ({ command, argList, option }) => runPassThrough([ command, ...argList ], option) // TODO: DEPRECATE
+const withRunBackground = async ({ command, argList = [], option, quiet, describeError }, asyncFunc, setupDelay = 500) => runWithAsyncFunc([ command, ...argList ], { asyncFunc, setupDelay, quiet, describeError, ...option }) // TODO: DEPRECATE
+const runAndHandover = async ({ command, argList = [], option, quiet, describeError }) => runPassThrough([ command, ...argList ], { quiet, describeError, ...option }) // TODO: DEPRECATE
 
 export {
   runWithAsyncFunc, runPassThrough,
