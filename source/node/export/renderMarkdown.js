@@ -1,6 +1,6 @@
 import { relative } from 'path'
 import { padTable } from '@dr-js/core/module/common/format'
-import { indentLine } from '@dr-js/core/module/common/string'
+import { indentLine, forEachRegExpExec } from '@dr-js/core/module/common/string'
 import { toPosixPath } from '@dr-js/core/module/node/file/Path'
 import { HOIST_LIST_KEY, EXPORT_LIST_KEY, EXPORT_HOIST_LIST_KEY } from './generate'
 
@@ -21,11 +21,10 @@ const getMarkdownHeaderLink = (
 const REGEXP_MARKDOWN_HEADER = /^#{1,6}(.+?)#*$/gm // TODO: will mis-match comment in bash, use `marked`?
 const matchMarkdownHeader = (string) => {
   const headerTextList = []
-  let result
-  while ((result = REGEXP_MARKDOWN_HEADER.exec(string))) {
-    const headerText = result[ 1 ].trim()
+  forEachRegExpExec(REGEXP_MARKDOWN_HEADER, string, ([ , group1 ]) => {
+    const headerText = group1.trim()
     headerText && headerTextList.push(headerText)
-  }
+  })
   return headerTextList
 }
 const renderMarkdownAutoAppendHeaderLink = (...markdownStringList) => {

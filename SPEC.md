@@ -16,7 +16,7 @@
 + 📄 [source/minify.js](source/minify.js)
   - `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
 + 📄 [source/output.js](source/output.js)
-  - `clearOutput`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
+  - `REGEXP_PUBLISH_VERSION`, `REGEXP_PUBLISH_VERSION_DEV`, `clearOutput`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
   - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
 + 📄 [source/webpack.js](source/webpack.js)
@@ -73,9 +73,19 @@
 >       show full help
 >   --version --v -v [OPTIONAL] [ARGUMENT=0-1]
 >       show version
+>   --note --N -N [OPTIONAL] [ARGUMENT=1+]
+>       noop, tag for ps/htop
+>   --quiet --q -q [OPTIONAL] [ARGUMENT=0-1]
+>       less log
 >   --debug --D -D [OPTIONAL] [ARGUMENT=0-1]
->       more debug log
->   --path-input --i -i [ARGUMENT=1]
+>       more debug log, mute by "quiet"
+>   --input-file --I -I [OPTIONAL] [ARGUMENT=1]
+>       common option
+>   --output-file --O -O [OPTIONAL] [ARGUMENT=1]
+>       common option
+>   --pid-file --pid [OPTIONAL] [ARGUMENT=1]
+>       common option
+>   --path-input [ARGUMENT=1]
 >       path to "package.json", or directory with "package.json" inside
 >   --pack [OPTIONAL] [ARGUMENT=0-1]
 >       set to ANY value to enable, except "false/no/n/0"
@@ -110,7 +120,7 @@
 >         module or file to require before test files, mostly for "@babel/register"
 >     --test-timeout --TT [ARGUMENT=1]
 >         timeout for each test, in msec, default to 42*1000 (42sec)
->   --init --I -I [OPTIONAL] [ARGUMENT=0-1]
+>   --init [OPTIONAL] [ARGUMENT=0-1]
 >       path for init a package, will not reset existing file, default to "."
 >     --init-resource-package --P -P [ARGUMENT=1]
 >         path to resource package, default search for "./node_modules/@dr-js/dev-*/"
@@ -159,13 +169,24 @@
 >       useful npm combo, one of: config|c|install-offline|io|install-clear|ic|package-dedupe|ddp|pd|package-reset|pr
 >   --npx-lazy --npx --nl --X -X [OPTIONAL] [ARGUMENT=1+]
 >       skip npx re-install if package version fit: $@=package@version,...extraArgs
+>   --eval --e -e [OPTIONAL] [ARGUMENT=0+]
+>       eval file or string: -O=outputFile, -I/$0=scriptFile/scriptString, $@=...evalArgv
+>   --repl --i -i [OPTIONAL] [ARGUMENT=0-1]
+>       start node REPL
+>   --fetch --f -f [OPTIONAL] [ARGUMENT=1-4]
+>       fetch url with http_proxy env support: -I=requestBody/null, -O=outputFile/stdout, $@=initialUrl,method/GET,jumpMax/4,timeout/0
 > ENV Usage:
 >   "
 >     #!/usr/bin/env bash
 >     export DR_DEV_CONFIG="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_HELP="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_NOTE="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_QUIET="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_DEBUG="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_INPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
+>     export DR_DEV_OUTPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
+>     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
 >     export DR_DEV_PATH_INPUT="[ARGUMENT=1]"
 >     export DR_DEV_PACK="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_PATH_OUTPUT="[ARGUMENT=1]"
@@ -207,13 +228,21 @@
 >     export DR_DEV_RUN_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_RSL]"
 >     export DR_DEV_NPM_COMBO="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_NC]"
 >     export DR_DEV_NPX_LAZY="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_NPX,DR_DEV_NL]"
+>     export DR_DEV_EVAL="[OPTIONAL] [ARGUMENT=0+]"
+>     export DR_DEV_REPL="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_FETCH="[OPTIONAL] [ARGUMENT=1-4]"
 >   "
 > CONFIG Usage:
 >   {
 >     "config": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "help": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "version": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "note": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "quiet": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "debug": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "inputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
+>     "outputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
+>     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
 >     "pathInput": [ "[ARGUMENT=1]" ],
 >     "pack": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "pathOutput": [ "[ARGUMENT=1]" ],
@@ -255,6 +284,9 @@
 >     "runScriptList": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=rsl]" ],
 >     "npmCombo": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=nc]" ],
 >     "npxLazy": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=npx,nl]" ],
+>     "eval": [ "[OPTIONAL] [ARGUMENT=0+]" ],
+>     "repl": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "fetch": [ "[OPTIONAL] [ARGUMENT=1-4]" ],
 >   }
 > ```
 
@@ -263,9 +295,9 @@
 
 | Package name                   |     Version |
 | :----                          |       ----: |
-| @babel/cli                     |    ^7.12.13 |
-| @babel/core                    |    ^7.12.13 |
-| @babel/preset-env              |    ^7.12.13 |
+| @babel/cli                     |    ^7.12.17 |
+| @babel/core                    |    ^7.12.17 |
+| @babel/preset-env              |    ^7.12.17 |
 | @babel/preset-react            |    ^7.12.13 |
 | @babel/register                |    ^7.12.13 |
 | babel-eslint                   |     ^10.1.0 |
@@ -273,14 +305,14 @@
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |     ^1.12.0 |
-| eslint                         |     ^7.19.0 |
+| eslint                         |     ^7.20.0 |
 | eslint-plugin-import           |     ^2.22.1 |
 | eslint-plugin-node             |     ^11.1.0 |
-| eslint-plugin-promise          |      ^4.2.1 |
+| eslint-plugin-promise          |      ^4.3.1 |
 | eslint-plugin-react            |     ^7.22.0 |
 | prop-types                     |     ^15.7.2 |
-| puppeteer                      |      ^6.0.0 |
+| puppeteer                      |      ^7.1.0 |
 | react                          |     ^17.0.1 |
 | styled-components              |      ^5.2.1 |
-| terser                         |      ^5.5.1 |
-| webpack                        |     ^5.20.0 |
+| terser                         |      ^5.6.0 |
+| webpack                        |     ^5.23.0 |

@@ -176,5 +176,5 @@ export {
   clearOutput,
   verifyOutputBin,
   verifyNoGitignore, verifyGitStatusClean,
-  publishOutput, getPublishFlag, verifyPublishVersion
+  publishOutput, getPublishFlag, verifyPublishVersion, REGEXP_PUBLISH_VERSION, REGEXP_PUBLISH_VERSION_DEV
 }

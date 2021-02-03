@@ -6,6 +6,13 @@ import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path'
 import { getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
 
+import { modulePathHack } from '@dr-js/core/bin/function'
+
+// HACK: add `@dr-js/dev` to internal `modulePaths` to allow require
+//   `.../npm/node_modules/@dr-js/*/bin/function.js` + `../../../../` = `.../npm/node_modules/` // allow this and related module to resolve
+//   `.../.npm/_npx/####/lib/node_modules/@dr-js/*/bin/function.js` + `../../../../` = `.../.npm/_npx/####/lib/node_modules/` // allow this and related module to resolve
+const patchModulePath = () => modulePathHack(resolve(module.filename, '../../../../'))
+
 const PACKAGE_KEY_DEV_EXEC_COMMAND_MAP = 'devExecCommands'
 
 const formatPackagePath = (packagePath) => {
@@ -157,6 +164,8 @@ const loadAndCopyPackExportInitJSON = async ({
 const REGEXP_TEXT_FILE = /\.(js|json|md|ya?ml|gitignore)$/
 
 export {
+  patchModulePath,
+
   PACKAGE_KEY_DEV_EXEC_COMMAND_MAP,
   formatPackagePath,
   writePackageJSON,

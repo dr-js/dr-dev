@@ -57,6 +57,6 @@ const comboCommand = async ({
 }
 
 export {
-  COMBO_COMMAND_CONFIG_MAP,
-  comboCommand
+  COMBO_COMMAND_CONFIG_MAP, // TODO: DEPRECATE: unused
+  comboCommand // TODO: DEPRECATE: unused
 }

@@ -11,21 +11,28 @@ import { doExec, doExecLoad } from './mode/exec'
 import { doCacheStep } from './mode/cacheStep'
 
 import { run } from '@dr-js/core/module/node/run'
+import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function'
+
+import { fetchWithJumpProxy } from '@dr-js/node/module/module/Software/npm'
+import { patchModulePath as patchModulePathNode } from '@dr-js/node/bin/function'
 
 import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript'
-import { comboCommand } from 'source/node/npm/comboCommand'
+import { comboCommand } from 'source/node/npm/comboCommand' // TODO: DEPRECATE: unused
 import { runNpxLazy } from 'source/node/npm/npxLazy'
 
+import { patchModulePath } from './function'
 import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
 import { name as packageName, version as packageVersion } from '../package.json'
 
 const runMode = async (optionData, modeName) => {
+  const sharedPack = await sharedOption(optionData, modeName)
   const { get, tryGet, getFirst, tryGetFirst, getToggle } = optionData
+  const { argumentList, log } = sharedPack
 
-  const modeArgList = get(modeName)
   const tabLog = getToggle('debug')
-    ? (level, ...args) => console.log(`${'  '.repeat(level)}${args.join(' ')}`)
+    ? (level, ...args) => log(`${'  '.repeat(level)}${args.join(' ')}`)
     : () => {}
+
   switch (modeName) {
     case 'check-outdated' :
       return doCheckOutdated({
@@ -51,27 +58,27 @@ const runMode = async (optionData, modeName) => {
       })
     case 'test-root':
       return doTestRootList({
-        testRootList: modeArgList || [ process.cwd() ],
+        testRootList: argumentList || [ process.cwd() ],
         testFileSuffixList: tryGet('test-file-suffix') || [ '.js' ],
         testRequireList: tryGet('test-require') || [],
         testTimeout: tryGet('test-timeout') || 42 * 1000
       })
     case 'init':
       return doInit({
-        pathOutput: modeArgList[ 0 ] || '.',
+        pathOutput: argumentList[ 0 ] || '.',
         pathResourcePackage: tryGetFirst('init-resource-package') || '.',
         isReset: getToggle('init-reset'),
         isVerify: getToggle('init-verify'),
         pathVerifyRule: tryGetFirst('init-verify-rule')
       })
     case 'exec':
-      return doExec(modeArgList, {
+      return doExec(argumentList, {
         env: tryGetFirst('exec-env'),
         cwd: tryGetFirst('exec-cwd')
       })
     case 'cache-step':
       return doCacheStep({
-        cacheStepType: modeArgList[ 0 ],
+        cacheStepType: argumentList[ 0 ],
         prunePolicyType: tryGetFirst('prune-policy') || 'unused',
         pathStatFile: tryGetFirst('path-stat-file'), // TODO: only when 'checksum-file-only'
         pathChecksumList: get('path-checksum-list'),
@@ -83,8 +90,8 @@ const runMode = async (optionData, modeName) => {
     case 'exec-load':
       return doExecLoad({
         pathInput: tryGetFirst('path-input') || '.',
-        name: modeArgList[ 0 ],
-        extraArgList: modeArgList.slice(1)
+        name: argumentList[ 0 ],
+        extraArgList: argumentList.slice(1)
       })
     case 'parse-script':
     case 'parse-script-list':
@@ -93,23 +100,34 @@ const runMode = async (optionData, modeName) => {
       const packageJSON = JSON.parse(String(readFileSync('package.json'))) // TODO: NOTE: relative to cwd
       let command
       if (modeName.endsWith('-list')) {
-        command = warpBashSubShell(modeArgList
+        command = warpBashSubShell(argumentList
           .map((scriptName) => parsePackageScript(packageJSON, scriptName, '', 0, tabLog))
           .join('\n')
         )
       } else {
-        const [ scriptName, ...extraArgs ] = modeArgList
+        const [ scriptName, ...extraArgs ] = argumentList
         command = parsePackageScript(packageJSON, scriptName, wrapJoinBashArgs(extraArgs), 0, tabLog)
       }
       if (modeName.startsWith('parse-script')) return console.log(command)
       return run([ 'bash', '-c', command ]).promise
     }
-    case 'npm-combo': {
-      for (const name of modeArgList) await comboCommand({ name, tabLog })
+    case 'npm-combo': { // TODO: DEPRECATE: unused
+      for (const name of argumentList) await comboCommand({ name, tabLog })
       return
     }
     case 'npx-lazy':
-      return runNpxLazy(modeArgList, tabLog)
+      return runNpxLazy(argumentList, tabLog)
+
+    default:
+      return sharedMode({
+        ...sharedPack,
+        patchMP: () => {
+          patchModulePath()
+          patchModulePathCore()
+          patchModulePathNode()
+        },
+        fetchWJ: fetchWithJumpProxy, fetchUA: `${packageName}/${packageVersion}`
+      })
   }
 }
 

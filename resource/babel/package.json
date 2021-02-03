@@ -4,9 +4,9 @@
     "INIT#package.json"
   ],
   "dependencies": {
-    "@babel/core": "^7.12.13",
-    "@babel/cli": "^7.12.13",
-    "@babel/preset-env": "^7.12.13",
+    "@babel/core": "^7.12.17",
+    "@babel/cli": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
     "@babel/register": "^7.12.13",
     "babel-plugin-minify-replace": "^0.5.0",
     "babel-plugin-module-resolver": "^4.1.0"

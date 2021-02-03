@@ -1,6 +1,6 @@
 import { Preset, getOptionalFormatFlag, prepareOption } from '@dr-js/core/module/node/module/Option/preset'
 
-import { COMBO_COMMAND_CONFIG_MAP } from 'source/node/npm/comboCommand'
+import { COMBO_COMMAND_CONFIG_MAP } from 'source/node/npm/comboCommand' // TODO: DEPRECATE: unused
 import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from './function'
 
 const { Config, parseCompactList, pickOneOf } = Preset
@@ -27,7 +27,7 @@ const MODE_FORMAT_LIST = parseCompactList(
     'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"',
     'test-timeout,TT/SI,O|timeout for each test, in msec, default to 42*1000 (42sec)'
   ) ],
-  [ 'init,I/AP,O/0-1|path for init a package, will not reset existing file, default to "."', parseCompactList(
+  [ 'init/AP,O/0-1|path for init a package, will not reset existing file, default to "."', parseCompactList(
     'init-resource-package,P/SP,O|path to resource package, default search for "./node_modules/@dr-js/dev-*/"',
     'init-reset,R/T|allow init to reset existing file',
     'init-verify,V/T|do common init file content check, will skip file modify',
@@ -58,8 +58,13 @@ const MODE_FORMAT_LIST = parseCompactList(
   'parse-script-list,psl/AS,O|combine multi-script, but no extraArgs: $@=...scriptNameList',
   'run-script,rs/AS,O|parse and run: $@=scriptName,...extraArgs',
   'run-script-list,rsl/AS,O|combine multi-script, but no extraArgs: $@=...scriptNameList',
-  `npm-combo,nc,M/AS,O|useful npm combo, one of: ${Object.keys(COMBO_COMMAND_CONFIG_MAP).join('|')}`,
-  'npx-lazy,npx,nl,X/AS,O|skip npx re-install if package version fit: $@=package@version,...extraArgs'
+  `npm-combo,nc,M/AS,O|useful npm combo, one of: ${Object.keys(COMBO_COMMAND_CONFIG_MAP).join('|')}`, // TODO: DEPRECATE: unused
+  'npx-lazy,npx,nl,X/AS,O|skip npx re-install if package version fit: $@=package@version,...extraArgs',
+
+  // shared mode
+  'eval,e/A,O|eval file or string: -O=outputFile, -I/$0=scriptFile/scriptString, $@=...evalArgv',
+  'repl,i/T|start node REPL',
+  'fetch,f/AS,O/1-4|fetch url with http_proxy env support: -I=requestBody/null, -O=outputFile/stdout, $@=initialUrl,method/GET,jumpMax/4,timeout/0'
 )
 
 const OPTION_CONFIG = {
@@ -69,8 +74,16 @@ const OPTION_CONFIG = {
     ...parseCompactList(
       'help,h/T|show full help',
       'version,v/T|show version',
-      'debug,D/T|more debug log',
-      [ 'path-input,i/SP|path to "package.json", or directory with "package.json" inside', {
+      'note,N/AS,O|noop, tag for ps/htop',
+
+      'quiet,q/T|less log',
+      'debug,D/T|more debug log, mute by "quiet"',
+
+      'input-file,I/SP,O|common option',
+      'output-file,O/SP,O|common option',
+      'pid-file,pid/SP,O|common option',
+
+      [ 'path-input/SP|path to "package.json", or directory with "package.json" inside', {
         optional: getOptionalFormatFlag('check-outdated', 'pack')
       } ]
     ),

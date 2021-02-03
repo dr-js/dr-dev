@@ -12,6 +12,7 @@ import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTre
 
 import { getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
 
+import { REGEXP_PUBLISH_VERSION } from 'source/output'
 import { withTempDirectory } from 'source/node/file'
 
 import { collectDependency } from '../function'
@@ -51,12 +52,13 @@ const compareAndLogResult = async (packageInfoMap, npmOutdatedOutputString) => {
 
   npmOutdatedOutputString.split('\n').forEach((outputLine) => {
     const [ , name, versionWanted, versionLatest ] = REGEXP_NPM_OUTDATED_OUTPUT.exec(outputLine.replace(REGEXP_ANSI_ESCAPE_CODE, '')) || []
-    if (!packageInfoMap[ name ]) return
+    if (!packageInfoMap[ name ]) return // skip missing
 
     const { version, source } = packageInfoMap[ name ]
     const versionTarget = compareSemVer(versionWanted, versionLatest) <= 0 // select bigger version
       ? versionLatest
       : versionWanted
+    if (!REGEXP_PUBLISH_VERSION.test(versionTarget)) return console.error(`[WARN|compareAndLogResult] skipped bad version: ${name}@${versionTarget}`) // skip mis-published version like: `terser@5.6.0-beta`, check: https://github.com/terser/terser/issues/930
 
     const rowList = [ name, version, versionTarget, source ] // must match PAD_FUNC_LIST
 
