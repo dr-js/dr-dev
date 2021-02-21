@@ -7,6 +7,8 @@
 #### Export Path
 + 📄 [source/babel.js](source/babel.js)
   - `getBabelConfig`, `getWebpackBabelConfig`
++ 📄 [source/ci.js](source/ci.js)
+  - `commonInfoPatchCombo`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
   - `fileProcessorBabel`, `fileProcessorWebpack`, `processFileList`
 + 📄 [source/license.js](source/license.js)
