@@ -24,7 +24,7 @@ const commonInfoPatchCombo = (logger, config = { PATH_ROOT: findUpPackageRoot(pr
 
   const RUN = (argListOrString, isDetached = false) => {
     const argList = Array.isArray(argListOrString) ? argListOrString : argListOrString.split(' ').filter(Boolean) // prepend `'bash', '-c'` to run in bash shell
-    logger.log(`[${config.DRY_RUN ? 'DRY_RUN' : 'RUN'}] "${argList.join(' ')}"`)
+    logger.log(`[${config.DRY_RUN ? 'RUN|DRY' : isDetached ? 'RUN|DETACHED' : 'RUN'}] "${argList.join(' ')}"`)
     if (!config.DRY_RUN) return (isDetached ? runDetached : runSync)(argList, { cwd: config.PATH_ROOT })
   }
 

@@ -1,6 +1,9 @@
+import { dirname } from 'path'
+import { createWriteStream } from 'fs'
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time'
 import { run } from '@dr-js/core/module/node/run'
+import { createDirectory } from '@dr-js/core/module/node/file/Directory'
 import { resolveCommandAsync } from '@dr-js/core/module/node/system/ResolveCommand'
 import {
   getProcessListAsync,
@@ -34,6 +37,22 @@ const runWithAsyncFunc = async (argList, { asyncFunc, setupDelay = 500, ...optio
   return result
 }
 
+const runWithTee = async (argList, option = {}, logFile) => { // output to both stdout and log file
+  await createDirectory(dirname(logFile))
+  const { promise, subProcess } = run(argList, { ...option, quiet: true })
+  const logStream = createWriteStream(logFile)
+  subProcess.stdout.pipe(process.stdout, { end: false })
+  subProcess.stderr.pipe(process.stderr, { end: false })
+  subProcess.stdout.pipe(logStream, { end: false })
+  subProcess.stderr.pipe(logStream, { end: false })
+  await promise
+  subProcess.stdout.unpipe(process.stdout)
+  subProcess.stderr.unpipe(process.stderr)
+  subProcess.stdout.unpipe(logStream)
+  subProcess.stderr.unpipe(logStream)
+  logStream.end()
+}
+
 // do not support shell internal command (shell: false)
 // after this should execute no more code
 // borrowed logic: https://github.com/babel/babel/blob/v7.9.5/packages/babel-node/src/babel-node.js#L86-L99
@@ -53,11 +72,23 @@ const SOFT_SIGNAL_LIST = [
   'SIGTERM' // 15, soft
 ]
 
+const withCwd = (pathCwd, taskAsync) => async (...args) => { // NOTE: to run command using env cwd only (not accept as input)
+  const prevCwd = process.cwd()
+  process.chdir(pathCwd)
+  const { result, error } = await catchAsync(taskAsync, ...args)
+  process.chdir(prevCwd)
+  if (error) throw error
+  return result
+}
+
 const withRunBackground = async ({ command, argList = [], option, quiet, describeError }, asyncFunc, setupDelay = 500) => runWithAsyncFunc([ command, ...argList ], { asyncFunc, setupDelay, quiet, describeError, ...option }) // TODO: DEPRECATE
 const runAndHandover = async ({ command, argList = [], option, quiet, describeError }) => runPassThrough([ command, ...argList ], { quiet, describeError, ...option }) // TODO: DEPRECATE
 
 export {
-  runWithAsyncFunc, runPassThrough,
+  runWithAsyncFunc,
+  runWithTee,
+  runPassThrough,
+  withCwd,
 
   withRunBackground, runAndHandover // TODO: DEPRECATE
 }

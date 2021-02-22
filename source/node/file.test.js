@@ -2,7 +2,8 @@ import { resolve } from 'path'
 import { stringifyEqual, doThrowAsync } from '@dr-js/core/module/common/verify'
 
 import {
-  findPathFragList
+  findPathFragList,
+  filterPrecompressFileList
 } from './file'
 
 const { describe, it } = global
@@ -39,5 +40,18 @@ describe('File', () => {
       await findPathFragList(PATH_ROOT, [ 'source', /node?/, 'file.js' ]),
       resolve(PATH_ROOT, 'source/node/file.js')
     )
+  })
+
+  it('filterPrecompressFileList()', () => {
+    const fileList = [
+      'a.txt', 'a.txt.br', 'a.txt.gz',
+      'b.html',
+      'c.tar.gz',
+      'd.js', 'd.js.br', 'd.js.gz'
+    ]
+    const { sourceFileList, sourceCompressList, precompressFileList } = filterPrecompressFileList(fileList)
+    stringifyEqual(sourceFileList, [ 'a.txt', 'b.html', 'c.tar.gz', 'd.js' ])
+    stringifyEqual(sourceCompressList, [ 'a.txt', 'b.html', 'd.js' ])
+    stringifyEqual(precompressFileList, [ 'a.txt.br', 'a.txt.gz', 'd.js.br', 'd.js.gz' ])
   })
 })

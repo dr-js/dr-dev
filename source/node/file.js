@@ -1,11 +1,14 @@
 import { resolve, relative, sep } from 'path'
 import { promises as fsAsync } from 'fs'
+
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { isString } from '@dr-js/core/module/common/check'
 import { describe } from '@dr-js/core/module/common/format'
 import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/node/file/Path'
 import { getDirInfoList, createDirectory, getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyDelete, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
+
+import { compressGzBrFileAsync } from '@dr-js/node/module/module/Software/function'
 
 const DEFAULT_RESOLVE_PATH = (path) => path
 
@@ -52,7 +55,7 @@ const withTempDirectory = async (tempPath, asyncTask) => { // NOTE: will always 
 }
 
 const resetDirectory = async (path) => {
-  await modifyDeleteForce(path)
+  await modifyDeleteForce(path) // maybe not exist
   await createDirectory(path)
 }
 
@@ -62,10 +65,53 @@ const copyAfterEdit = async (
   editFunc = async (buffer) => buffer
 ) => fsAsync.writeFile(pathTo, await editFunc(await fsAsync.readFile(pathFrom)))
 
+// for remove dup before zip/packing
+// given a list of file, return which file should keep, and which is just pre-compressed dup
+const filterPrecompressFileList = (fileList) => {
+  const sourceFileList = [] // should be source file
+  const sourceCompressList = [] // should be compressible, by extension
+  const precompressFileList = [] // just pre-compressed dup
+  const fileSet = new Set(fileList)
+  for (const file of fileList) {
+    if (
+      /\.(gz|br)$/.test(file) && // is compressed naming
+      fileSet.has(file.slice(0, -3)) // exist source with dropped ".gz|br" extension
+    ) {
+      precompressFileList.push(file)
+      continue
+    }
+    sourceFileList.push(file)
+    if (/\.(js|json|txt|md|html|css|xml|svg|ico|otf|ttf|eot)$/.test(file)) sourceCompressList.push(file)
+  }
+  return {
+    sourceFileList,
+    sourceCompressList,
+    precompressFileList
+  }
+}
+const generatePrecompressForPath = async (path) => { // will overwrite existing precompressFile to prevent stale content being kept
+  const result = filterPrecompressFileList(await getFileList(path))
+  for (const file of result.sourceCompressList) {
+    await Promise.all([
+      compressGzBrFileAsync(file, `${file}.gz`),
+      compressGzBrFileAsync(file, `${file}.br`)
+    ])
+  }
+  return result
+}
+const trimPrecompressForPath = async (path) => {
+  const result = filterPrecompressFileList(await getFileList(path))
+  for (const file of result.precompressFileList) await modifyDelete(file)
+  return result
+}
+
 export {
   getFileListFromPathList,
   findPathFragList,
   withTempDirectory,
   resetDirectory,
-  copyAfterEdit
+  copyAfterEdit,
+
+  filterPrecompressFileList,
+  generatePrecompressForPath, trimPrecompressForPath
 }

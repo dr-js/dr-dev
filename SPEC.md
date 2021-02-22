@@ -9,6 +9,8 @@
   - `getBabelConfig`, `getWebpackBabelConfig`
 + 📄 [source/ci.js](source/ci.js)
   - `commonInfoPatchCombo`
++ 📄 [source/docker.js](source/docker.js)
+  - `checkImageExist`, `getContainerList`, `runDocker`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
   - `fileProcessorBabel`, `fileProcessorWebpack`, `processFileList`
 + 📄 [source/license.js](source/license.js)
@@ -32,7 +34,7 @@
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
-  - `copyAfterEdit`, `findPathFragList`, `getFileListFromPathList`, `resetDirectory`, `withTempDirectory`
+  - `copyAfterEdit`, `filterPrecompressFileList`, `findPathFragList`, `generatePrecompressForPath`, `getFileListFromPathList`, `resetDirectory`, `trimPrecompressForPath`, `withTempDirectory`
 + 📄 [source/node/filePreset.js](source/node/filePreset.js)
   - `getSourceJsFileListFromPathList`
 + 📄 [source/node/logger.js](source/node/logger.js)
@@ -40,7 +42,7 @@
 + 📄 [source/node/preset.js](source/node/preset.js)
   - `FILTER_JS_FILE`, `FILTER_SOURCE_JS_FILE`, `FILTER_SOURCE_PATH`, `FILTER_TEST_JS_FILE`, `FILTER_TEST_PATH`
 + 📄 [source/node/run.js](source/node/run.js)
-  - `runAndHandover`, `runPassThrough`, `runWithAsyncFunc`, `withRunBackground`
+  - `runAndHandover`, `runPassThrough`, `runWithAsyncFunc`, `runWithTee`, `withCwd`, `withRunBackground`
 + 📄 [source/node/cache/checksum.js](source/node/cache/checksum.js)
   - `checksumDetectChange`, `checksumUpdate`, `describeChecksumInfoList`, `describeChecksumOfPathList`, `getChecksumInfoListOfPath`, `getChecksumInfoListOfPathList`, `getChecksumInfoOfFile`, `loadStatFile`, `saveStatFile`
 + 📄 [source/node/cache/function.js](source/node/cache/function.js)
@@ -297,11 +299,11 @@
 
 | Package name                   |     Version |
 | :----                          |       ----: |
-| @babel/cli                     |    ^7.12.17 |
-| @babel/core                    |    ^7.12.17 |
-| @babel/preset-env              |    ^7.12.17 |
+| @babel/cli                     |     ^7.13.0 |
+| @babel/core                    |     ^7.13.1 |
+| @babel/preset-env              |     ^7.13.5 |
 | @babel/preset-react            |    ^7.12.13 |
-| @babel/register                |    ^7.12.13 |
+| @babel/register                |     ^7.13.0 |
 | babel-eslint                   |     ^10.1.0 |
 | babel-loader                   |      ^8.2.2 |
 | babel-plugin-minify-replace    |      ^0.5.0 |
@@ -317,4 +319,4 @@
 | react                          |     ^17.0.1 |
 | styled-components              |      ^5.2.1 |
 | terser                         |      ^5.6.0 |
-| webpack                        |     ^5.23.0 |
+| webpack                        |     ^5.24.1 |
