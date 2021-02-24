@@ -1,9 +1,9 @@
 import { run } from '@dr-js/core/module/node/run'
-import { getArgs } from '@dr-js/node/module/module/Software/docker'
+import { verify } from '@dr-js/node/module/module/Software/docker'
 import { runWithTee } from './node/run'
 
 const runDocker = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWithTee : run)(
-  [ ...getArgs(), ...argList ],
+  [ ...verify(), ...argList ],
   { describeError: teeLogFile || !option.quiet, ...option }, // describeError only when output is redirected
   teeLogFile
 )
@@ -28,10 +28,11 @@ const checkImageExist = async (imageRepo, imageTag) => {
   return false
 }
 
-const getContainerList = async (isListAll = false) => {
+const getContainerPsList = async (isListAll = false) => {
   const { promise, stdoutPromise } = runDocker([ 'container', 'ps', '--format', '"{{.ID}}|{{.Image}}|{{.Names}}"', isListAll && '--all' ].filter(Boolean), { quiet: true })
   await promise
   return String(await stdoutPromise).trim().split('\n')
+    .filter(Boolean)
     .map((string) => {
       const [ id, image, names ] = string.split('|')
       return { id, image, names }
@@ -41,5 +42,5 @@ const getContainerList = async (isListAll = false) => {
 export {
   runDocker,
   checkImageExist,
-  getContainerList
+  getContainerPsList
 }
