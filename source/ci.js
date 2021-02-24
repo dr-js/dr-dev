@@ -1,15 +1,20 @@
 import { resolve } from 'path'
-import { arch, release, homedir } from 'os'
+import { arch, release } from 'os'
 
 import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format'
 import { runSync, runDetached } from '@dr-js/core/module/node/run'
 
 import { findUpPackageRoot, getPathNpm } from '@dr-js/node/module/module/Software/npm'
 
+import { fromPathCombo } from './output'
+
 // NOTE: test local ci-patch with command like:
 //   DRY_RUN=1 npx dr-js-dev-*.tgz -eI .github/ci-patch.js
 
-const commonInfoPatchCombo = (logger, config = { PATH_ROOT: findUpPackageRoot(process.cwd()) }) => {
+const commonInfoPatchCombo = (
+  logger,
+  config = { PATH_ROOT: findUpPackageRoot(process.cwd()) }
+) => {
   // add common config
   if (process.env.DRY_RUN) config.DRY_RUN = true
   config.IS_WIN32 = process.platform === 'win32'
@@ -39,8 +44,7 @@ const commonInfoPatchCombo = (logger, config = { PATH_ROOT: findUpPackageRoot(pr
   return {
     config,
     RUN,
-    fromRoot: (...args) => resolve(config.PATH_ROOT, ...args),
-    fromHome: (...args) => resolve(homedir(), ...args)
+    ...fromPathCombo(config)
   }
 }
 

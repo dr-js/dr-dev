@@ -1,4 +1,6 @@
 import { ok } from 'assert'
+import { resolve } from 'path'
+import { homedir, tmpdir } from 'os'
 import { statSync, readFileSync, writeFileSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format'
 import { isBasicObject } from '@dr-js/core/module/common/check'
@@ -6,12 +8,28 @@ import { getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/file/Modify'
 import { run } from '@dr-js/core/module/node/run'
 
-import { toPackageTgzName, getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
+import { findUpPackageRoot, toPackageTgzName, getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
 
 import { __VERBOSE__ } from './node/env'
 import { FILTER_TEST_PATH } from './node/preset'
 import { getFileListFromPathList, resetDirectory } from './node/file'
 import { writeLicenseFile } from './license'
+
+const fromPathCombo = ({
+  PATH_ROOT = findUpPackageRoot(process.cwd()),
+  PATH_TEMP = tmpdir(),
+  PATH_HOME = homedir(),
+  PATH_OUTPUT = resolve(PATH_ROOT, 'output-gitignore')
+} = {}) => ({
+  PATH_ROOT,
+  PATH_TEMP,
+  PATH_HOME,
+  PATH_OUTPUT,
+  fromRoot: (...args) => resolve(PATH_ROOT, ...args),
+  fromTemp: (...args) => resolve(PATH_TEMP, ...args),
+  fromHome: (...args) => resolve(PATH_HOME, ...args),
+  fromOutput: (...args) => resolve(PATH_OUTPUT, ...args)
+})
 
 const initOutput = async ({
   fromOutput,
@@ -171,6 +189,7 @@ const REGEXP_PUBLISH_VERSION = /^\d+\.\d+\.\d+$/ // 0.0.0
 const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0
 
 export {
+  fromPathCombo,
   initOutput,
   packOutput,
   clearOutput,

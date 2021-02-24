@@ -59,10 +59,10 @@ const resetDirectory = async (path) => {
   await createDirectory(path)
 }
 
-const copyAfterEdit = async (
+const editFile = async (
+  editFunc = async (buffer) => buffer,
   pathFrom,
-  pathTo,
-  editFunc = async (buffer) => buffer
+  pathTo = pathFrom // support both copy & in-place edit
 ) => fsAsync.writeFile(pathTo, await editFunc(await fsAsync.readFile(pathFrom)))
 
 // for remove dup before zip/packing
@@ -105,13 +105,17 @@ const trimPrecompressForPath = async (path) => {
   return result
 }
 
+const copyAfterEdit = async (pathFrom, pathTo, editFunc) => editFile(editFunc, pathFrom, pathTo) // TODO: DEPRECATE: use `editFile`
+
 export {
   getFileListFromPathList,
   findPathFragList,
   withTempDirectory,
   resetDirectory,
-  copyAfterEdit,
+  editFile,
 
   filterPrecompressFileList,
-  generatePrecompressForPath, trimPrecompressForPath
+  generatePrecompressForPath, trimPrecompressForPath,
+
+  copyAfterEdit // TODO: DEPRECATE: use `editFile`
 }

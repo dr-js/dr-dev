@@ -4,9 +4,10 @@ import { readFileSync } from 'fs'
 import { indentLine } from '@dr-js/core/module/common/string'
 import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } from '@dr-js/core/module/common/verify'
 import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path'
-import { modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
+import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
 
 import {
+  fromPathCombo,
   initOutput,
   packOutput,
   // verifyOutputBin,
@@ -22,13 +23,8 @@ const PATH_TEST_ROOT = resolve(__dirname, './test-output-gitignore/')
 const PATH_ROOT = resolve(__dirname, __dirname.includes('output-gitignore') ? '../../' : '../')
 if (!PATH_ROOT) throw new Error('unexpected PATH_ROOT')
 
-before(async () => {
-  await resetDirectory(PATH_TEST_ROOT)
-})
-
-after(async () => {
-  await modifyDeleteForce(PATH_TEST_ROOT)
-})
+before(() => resetDirectory(PATH_TEST_ROOT))
+after(() => modifyDelete(PATH_TEST_ROOT))
 
 describe('Output', () => {
   const fromTestRoot = (...args) => resolve(PATH_TEST_ROOT, ...args)
@@ -43,6 +39,10 @@ describe('Output', () => {
     if (logList.some((log) => log && log.includes(expectLog))) return
     throw new Error(`[verifyLog] expectLog: ${expectLog}, get:\n${logList.map((log) => indentLine(log, '  > ', ' >> ')).join('\n')}`)
   }
+
+  it('fromPathCombo()', async () => {
+    info(fromPathCombo({ PATH_ROOT: '/aa/bb' }).fromOutput('cc', 'dd'))
+  })
 
   it('initOutput()', async () => {
     const fromOutput = (...args) => fromTestRoot('output-initOutput', ...args)
