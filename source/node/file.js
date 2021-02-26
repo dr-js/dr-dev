@@ -67,7 +67,10 @@ const editFile = async (
 
 // for remove dup before zip/packing
 // given a list of file, return which file should keep, and which is just pre-compressed dup
-const filterPrecompressFileList = (fileList) => {
+const filterPrecompressFileList = (
+  fileList,
+  regexpCompress = /\.(js|json|txt|md|html|css|xml|wasm|svg|ico|otf|ttf|eot)$/ // common compressible web file extensions
+) => {
   const sourceFileList = [] // should be source file
   const sourceCompressList = [] // should be compressible, by extension
   const precompressFileList = [] // just pre-compressed dup
@@ -81,7 +84,7 @@ const filterPrecompressFileList = (fileList) => {
       continue
     }
     sourceFileList.push(file)
-    if (/\.(js|json|txt|md|html|css|xml|svg|ico|otf|ttf|eot)$/.test(file)) sourceCompressList.push(file)
+    regexpCompress.test(file) && sourceCompressList.push(file)
   }
   return {
     sourceFileList,

@@ -47,6 +47,15 @@ const getContainerPsList = async (isListAll = false) => {
     })
 }
 
+const matchContainerPsList = (
+  containerPsList = [], // will mutate and added `pid: Number` to containerPsList
+  processList = [] // from `await getProcessListAsync()`
+) => {
+  containerPsList.forEach((item) => {
+    item.pid = (processList.find(({ command }) => command.includes(item.id)) || {}).pid // NOTE: this pid is host pid, not the pid in container
+  })
+}
+
 const runDocker = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWithTee : run)( // TODO: DEPRECATE: bad design, await is SOMETIMES needed
   [ ...verify(), ...argList ],
   { describeError: teeLogFile || !option.quiet, ...option }, // describeError only when output is redirected
@@ -56,7 +65,7 @@ const runDocker = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWi
 export {
   docker, dockerSync, dockerWithTee,
   checkImageExist,
-  getContainerPsList,
+  getContainerPsList, matchContainerPsList,
 
   runDocker // TODO: DEPRECATE: bad design, await is SOMETIMES needed
 }
