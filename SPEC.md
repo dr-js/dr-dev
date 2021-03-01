@@ -10,7 +10,7 @@
 + 📄 [source/ci.js](source/ci.js)
   - `commonInfoPatchCombo`
 + 📄 [source/docker.js](source/docker.js)
-  - `checkImageExist`, `docker`, `dockerSync`, `dockerWithTee`, `getContainerPsList`, `matchContainerPsList`, `runDocker`
+  - `checkImageExist`, `compose`, `composeSync`, `docker`, `dockerSync`, `dockerWithTee`, `getContainerPsList`, `matchContainerPsList`, `runDocker`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
   - `fileProcessorBabel`, `fileProcessorWebpack`, `processFileList`
 + 📄 [source/license.js](source/license.js)

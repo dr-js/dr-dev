@@ -2,6 +2,7 @@ import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format'
 import { resolveCommandName } from '@dr-js/core/module/node/system/ResolveCommand'
 import {
   docker, dockerSync,
+  compose, composeSync,
   getContainerPsList
 } from './docker'
 
@@ -19,6 +20,17 @@ describe('Docker', () => {
 
   it('dockerSync()', async () => {
     const { stdout } = dockerSync([ 'version' ], { quiet: true })
+    info(String(stdout))
+  })
+
+  it('compose()', async () => {
+    const { promise, stdoutPromise } = compose([ 'version' ], { quiet: true })
+    await promise
+    info(String(await stdoutPromise))
+  })
+
+  it('composeSync()', async () => {
+    const { stdout } = composeSync([ 'version' ], { quiet: true })
     info(String(stdout))
   })
 

@@ -1,5 +1,5 @@
 import { run, runSync } from '@dr-js/core/module/node/run'
-import { verify } from '@dr-js/node/module/module/Software/docker'
+import { verify, verifyCompose } from '@dr-js/node/module/module/Software/docker'
 import { runWithTee } from './node/run'
 
 const docker = (argList = [], option = {}) => run(
@@ -14,6 +14,15 @@ const dockerWithTee = async (argList = [], option = {}, teeLogFile) => runWithTe
   [ ...verify(), ...argList ],
   { describeError: teeLogFile || !option.quiet, ...option }, // describeError only when output is redirected
   teeLogFile
+)
+
+const compose = (argList = [], option = {}) => run(
+  [ ...verifyCompose(), ...argList ],
+  { describeError: !option.quiet, ...option } // describeError only when output is redirected
+)
+const composeSync = (argList = [], option = {}) => runSync(
+  [ ...verifyCompose(), ...argList ],
+  { describeError: !option.quiet, ...option } // describeError only when output is redirected
 )
 
 const checkImageExist = async (imageRepo, imageTag) => {
@@ -64,6 +73,8 @@ const runDocker = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWi
 
 export {
   docker, dockerSync, dockerWithTee,
+  compose, composeSync,
+
   checkImageExist,
   getContainerPsList, matchContainerPsList,
 
