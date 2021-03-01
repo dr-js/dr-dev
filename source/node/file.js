@@ -89,23 +89,31 @@ const filterPrecompressFileList = (
   return {
     sourceFileList,
     sourceCompressList,
-    precompressFileList
+    precompressFileList,
+    isSkipBr: false // allow change later
   }
 }
-const generatePrecompressForPath = async (path) => { // will overwrite existing precompressFile to prevent stale content being kept
-  const result = filterPrecompressFileList(await getFileList(path))
-  for (const file of result.sourceCompressList) {
-    await Promise.all([
-      compressGzBrFileAsync(file, `${file}.gz`),
-      compressGzBrFileAsync(file, `${file}.br`)
-    ])
+const generatePrecompressForPath = async (path, filterResult) => { // will overwrite existing precompressFile to prevent stale content being kept
+  filterResult = filterResult || filterPrecompressFileList(await getFileList(path))
+  const { sourceCompressList, isSkipBr = false } = filterResult
+  const jobList = []
+  for (const file of sourceCompressList) {
+    jobList.push(() => compressGzBrFileAsync(file, `${file}.gz`))
+    isSkipBr || jobList.push(() => compressGzBrFileAsync(file, `${file}.br`))
   }
-  return result
+  const getJob = () => {
+    if (jobList.length === 0) return
+    const func = jobList.pop()
+    return func().then(getJob)
+  }
+  await Promise.all([ getJob(), getJob(), getJob(), getJob() ]) // Nodejs `UV_THREADPOOL_SIZE` default to 4, and zlib should use all these internal threadpool
+  return filterResult
 }
-const trimPrecompressForPath = async (path) => {
-  const result = filterPrecompressFileList(await getFileList(path))
-  for (const file of result.precompressFileList) await modifyDelete(file)
-  return result
+const trimPrecompressForPath = async (path, filterResult) => {
+  filterResult = filterResult || (await getFileList(path))
+  const { precompressFileList } = filterResult
+  for (const file of precompressFileList) await modifyDelete(file)
+  return filterResult
 }
 
 const copyAfterEdit = async (pathFrom, pathTo, editFunc) => editFile(editFunc, pathFrom, pathTo) // TODO: DEPRECATE: use `editFile`

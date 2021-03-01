@@ -71,8 +71,8 @@
 >   --config --c -c [OPTIONAL] [ARGUMENT=1]
 >       from JS/JSON: set to "path/to/config.js|json"
 >       from ENV: set to "env" to enable, default not check env
->       from ENV JSON: set to "json-env:$env-name" to read the ENV string as JSON
->       from CLI JSON: set to "json-cli:$json-string" to read the appended string as JSON
+>       from ENV JSON: set to "json-env:ENV_NAME" to read the ENV string as JSON, or "jz64/jb64-env"
+>       from CLI JSON: set to "json-cli:JSON_STRING" to read the appended string as JSON, or "jz64/jb64-cli"
 >   --help --h -h [OPTIONAL] [ARGUMENT=0-1]
 >       show full help
 >   --version --v -v [OPTIONAL] [ARGUMENT=0-1]
@@ -301,7 +301,7 @@
 | :----                          |       ----: |
 | @babel/cli                     |     ^7.13.0 |
 | @babel/core                    |     ^7.13.8 |
-| @babel/preset-env              |     ^7.13.8 |
+| @babel/preset-env              |     ^7.13.9 |
 | @babel/preset-react            |    ^7.12.13 |
 | @babel/register                |     ^7.13.8 |
 | babel-eslint                   |     ^10.1.0 |
@@ -319,4 +319,4 @@
 | react                          |     ^17.0.1 |
 | styled-components              |      ^5.2.1 |
 | terser                         |      ^5.6.0 |
-| webpack                        |     ^5.24.2 |
+| webpack                        |     ^5.24.3 |

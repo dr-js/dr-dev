@@ -109,7 +109,10 @@ const runMode = async (optionData, modeName) => {
         command = parsePackageScript(packageJSON, scriptName, wrapJoinBashArgs(extraArgs), 0, tabLog)
       }
       if (modeName.startsWith('parse-script')) return console.log(command)
-      return run([ 'bash', '-c', command ]).promise
+      // try exec:
+      //   bash -c "false ; echo PASS" # will not stop on error
+      //   bash -ec "false ; echo PASS" # will stop on error
+      return run([ 'bash', '-ec', command ]).promise // TODO: inline `set -e`, or join command with `&&`?
     }
     case 'npm-combo': { // TODO: DEPRECATE: unused
       for (const name of argumentList) await comboCommand({ name, tabLog })
