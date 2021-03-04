@@ -299,9 +299,9 @@
 
 | Package name                   |     Version |
 | :----                          |       ----: |
-| @babel/cli                     |     ^7.13.0 |
-| @babel/core                    |     ^7.13.8 |
-| @babel/preset-env              |     ^7.13.9 |
+| @babel/cli                     |    ^7.13.10 |
+| @babel/core                    |    ^7.13.10 |
+| @babel/preset-env              |    ^7.13.10 |
 | @babel/preset-react            |    ^7.12.13 |
 | @babel/register                |     ^7.13.8 |
 | babel-eslint                   |     ^10.1.0 |
@@ -319,4 +319,4 @@
 | react                          |     ^17.0.1 |
 | styled-components              |      ^5.2.1 |
 | terser                         |      ^5.6.0 |
-| webpack                        |     ^5.24.3 |
+| webpack                        |     ^5.24.4 |

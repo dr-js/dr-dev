@@ -46,7 +46,7 @@ const checkImageExist = async (imageRepo, imageTag) => {
 }
 
 const getContainerPsList = async (isListAll = false) => {
-  const { promise, stdoutPromise } = docker([ 'container', 'ps', '--format', '"{{.ID}}|{{.Image}}|{{.Names}}"', isListAll && '--all' ].filter(Boolean), { quiet: true })
+  const { promise, stdoutPromise } = docker([ 'container', 'ps', '--format', '{{.ID}}|{{.Image}}|{{.Names}}', isListAll && '--all' ].filter(Boolean), { quiet: true })
   await promise
   return String(await stdoutPromise).trim().split('\n')
     .filter(Boolean)
