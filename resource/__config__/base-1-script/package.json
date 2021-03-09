@@ -5,7 +5,7 @@
     "INIT#package.json"
   ],
   "dependencies": {
-    "terser": "^5.6.0"
+    "terser": "^5.6.1"
   },
   "sideEffects": false
 }

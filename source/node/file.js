@@ -4,6 +4,7 @@ import { promises as fsAsync } from 'fs'
 import { catchAsync } from '@dr-js/core/module/common/error'
 import { isString } from '@dr-js/core/module/common/check'
 import { describe } from '@dr-js/core/module/common/format'
+import { getSample } from '@dr-js/core/module/common/math/sample'
 import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/node/file/Path'
 import { getDirInfoList, createDirectory, getFileList } from '@dr-js/core/module/node/file/Directory'
 import { modifyDelete, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
@@ -93,7 +94,10 @@ const filterPrecompressFileList = (
     isSkipBr: false // allow change later
   }
 }
-const generatePrecompressForPath = async (path, filterResult) => { // will overwrite existing precompressFile to prevent stale content being kept
+const generatePrecompressForPath = async (
+  path, filterResult,
+  jobPoolSize = 4 // Nodejs `UV_THREADPOOL_SIZE` default to 4, and zlib should use all these internal threadpool for this to finish ASAP, set to 1 to avoid CPU hogging
+) => { // will overwrite existing precompressFile to prevent stale content being kept
   filterResult = filterResult || filterPrecompressFileList(await getFileList(path))
   const { sourceCompressList, isSkipBr = false } = filterResult
   const jobList = []
@@ -106,7 +110,7 @@ const generatePrecompressForPath = async (path, filterResult) => { // will overw
     const func = jobList.pop()
     return func().then(getJob)
   }
-  await Promise.all([ getJob(), getJob(), getJob(), getJob() ]) // Nodejs `UV_THREADPOOL_SIZE` default to 4, and zlib should use all these internal threadpool
+  await Promise.all(getSample(() => getJob(), jobPoolSize))
   return filterResult
 }
 const trimPrecompressForPath = async (path, filterResult) => {

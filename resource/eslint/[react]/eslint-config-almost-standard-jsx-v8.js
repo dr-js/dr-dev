@@ -10,7 +10,7 @@ module.exports = {
     sourceType: 'module'
   },
 
-  parser: 'babel-eslint', // EDIT
+  parser: '@babel/eslint-parser', // EDIT
 
   plugins: [ 'react' ],
 
