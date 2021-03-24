@@ -165,7 +165,7 @@ const commonFlag = async ({
       ...extraPluginList
     ].filter(Boolean),
     optimization: { minimize: isMinimize },
-    performance: { hints: isMinimize }, // mute: `The following asset(s) exceed the recommended size limit (250 kB).`
+    performance: { hints: isMinimize || 'warning' }, // mute: `The following asset(s) exceed the recommended size limit (250 kB).`
     ...extraConfig
   })
 

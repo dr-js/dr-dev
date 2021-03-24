@@ -1,14 +1,9 @@
-import { resolve } from 'path'
-
 import { compileWithWebpack, commonFlag } from 'source/webpack'
-import { runMain } from 'source/main'
-
-const PATH_ROOT = resolve(__dirname, '..')
-const PATH_OUTPUT = resolve(__dirname, '../output-gitignore')
-const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
-const fromOutput = (...args) => resolve(PATH_OUTPUT, ...args)
+import { runMain, commonCombo } from 'source/main'
 
 runMain(async (logger) => {
+  const { fromRoot, fromOutput } = commonCombo(logger)
+
   const { mode, isWatch, profileOutput, getCommonWebpackConfig } = await commonFlag({ fromRoot, logger })
 
   const config = getCommonWebpackConfig({
