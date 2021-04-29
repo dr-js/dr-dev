@@ -10,7 +10,7 @@
 + 📄 [source/ci.js](source/ci.js)
   - `commonInfoPatchCombo`
 + 📄 [source/docker.js](source/docker.js)
-  - `checkImageExist`, `compose`, `composeSync`, `docker`, `dockerSync`, `dockerWithTee`, `getContainerLsList`, `getContainerPsList`, `matchContainerLsList`, `matchContainerPsList`, `patchContainerLsListStartedAt`, `runDocker`
+  - `checkImageExist`, `checkLocalImage`, `checkPullImage`, `compose`, `composeSync`, `docker`, `dockerSync`, `dockerWithTee`, `getContainerLsList`, `getContainerPsList`, `matchContainerLsList`, `matchContainerPsList`, `patchContainerLsListStartedAt`, `pullImage`, `runDocker`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
   - `fileProcessorBabel`, `fileProcessorWebpack`, `processFileList`
 + 📄 [source/license.js](source/license.js)
@@ -300,9 +300,9 @@
 | Package name                   |     Version |
 | :----                          |       ----: |
 | @babel/cli                     |    ^7.13.16 |
-| @babel/core                    |    ^7.13.16 |
+| @babel/core                    |     ^7.14.0 |
 | @babel/eslint-parser           |    ^7.13.14 |
-| @babel/preset-env              |    ^7.13.15 |
+| @babel/preset-env              |     ^7.14.1 |
 | @babel/preset-react            |    ^7.13.13 |
 | @babel/register                |    ^7.13.16 |
 | babel-loader                   |      ^8.2.2 |
@@ -315,8 +315,8 @@
 | eslint-plugin-promise          |      ^5.1.0 |
 | eslint-plugin-react            |     ^7.23.2 |
 | prop-types                     |     ^15.7.2 |
-| puppeteer                      |      ^9.0.0 |
+| puppeteer                      |      ^9.1.1 |
 | react                          |     ^17.0.2 |
-| styled-components              |      ^5.2.3 |
+| styled-components              |      ^5.3.0 |
 | terser                         |      ^5.7.0 |
-| webpack                        |     ^5.36.1 |
+| webpack                        |     ^5.36.2 |

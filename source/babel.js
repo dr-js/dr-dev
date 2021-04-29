@@ -18,7 +18,6 @@ const getBabelConfig = ({
   ].filter(Boolean),
   plugins: [
     ...extraPluginList,
-    [ '@babel/plugin-proposal-class-properties', { loose: true } ],
     [ 'babel-plugin-minify-replace', {
       replacements: [
         ...extraMinifyReplaceList,
@@ -54,7 +53,6 @@ const getWebpackBabelConfig = ({
     ...extraPresetList
   ].filter(Boolean),
   plugins: [
-    [ '@babel/plugin-proposal-class-properties', { loose: true } ],
     ...extraPluginList
   ].filter(Boolean)
 })

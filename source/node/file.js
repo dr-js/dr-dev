@@ -114,7 +114,7 @@ const generatePrecompressForPath = async (
   return filterResult
 }
 const trimPrecompressForPath = async (path, filterResult) => {
-  filterResult = filterResult || (await getFileList(path))
+  filterResult = filterResult || filterPrecompressFileList(await getFileList(path))
   const { precompressFileList } = filterResult
   for (const file of precompressFileList) await modifyDelete(file)
   return filterResult

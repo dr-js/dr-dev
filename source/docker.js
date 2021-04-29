@@ -1,3 +1,4 @@
+import { catchAsync } from '@dr-js/core/module/common/error'
 import { run, runSync } from '@dr-js/core/module/node/run'
 import { verify, verifyCompose } from '@dr-js/node/module/module/Software/docker'
 import { runWithTee } from './node/run'
@@ -25,24 +26,21 @@ const composeSync = (argList = [], option = {}) => runSync(
   { describeError: !option.quiet, ...option } // describeError only when output is redirected
 )
 
-const checkImageExist = async (imageRepo, imageTag) => {
-  { // check local
-    const { promise, stdoutPromise } = docker([ 'image', 'ls', `${imageRepo}:${imageTag}` ], { quiet: true })
-    await promise
-    const stdoutString = String(await stdoutPromise)
-    if (stdoutString.includes(imageRepo) && stdoutString.includes(imageTag)) return true
-  }
-  try { // check pull
-    const { promise } = docker([ 'pull', `${imageRepo}:${imageTag}` ], { quiet: true })
-    await promise
-    { // check local again
-      const { promise, stdoutPromise } = docker([ 'image', 'ls', `${imageRepo}:${imageTag}` ], { quiet: true })
-      await promise
-      const stdoutString = String(await stdoutPromise)
-      if (stdoutString.includes(imageRepo) && stdoutString.includes(imageTag)) return true
-    }
-  } catch (error) {}
-  return false
+const checkLocalImage = async (imageRepo, imageTag) => {
+  const { promise, stdoutPromise } = docker([ 'image', 'ls', `${imageRepo}:${imageTag}` ], { quiet: true })
+  await promise
+  const stdoutString = String(await stdoutPromise)
+  return stdoutString.includes(imageRepo) && stdoutString.includes(imageTag)
+}
+const pullImage = async (imageRepo, imageTag) => {
+  const { promise } = docker([ 'pull', `${imageRepo}:${imageTag}` ], { quiet: true })
+  await promise
+}
+
+const checkPullImage = async (imageRepo, imageTag) => {
+  if (await checkLocalImage(imageRepo, imageTag)) return true
+  await catchAsync(pullImage, imageRepo, imageTag) // try pull remote
+  return checkLocalImage(imageRepo, imageTag) // check local again
 }
 
 const getContainerLsList = async (isListAll = false) => {
@@ -96,9 +94,10 @@ export {
   docker, dockerSync, dockerWithTee,
   compose, composeSync,
 
-  checkImageExist,
+  checkLocalImage, pullImage, checkPullImage,
   getContainerLsList, patchContainerLsListStartedAt, matchContainerLsList,
 
+  checkPullImage as checkImageExist, // TODO: DEPRECATE
   getContainerLsList as getContainerPsList, matchContainerLsList as matchContainerPsList, // TODO: DEPRECATE
   runDocker // TODO: DEPRECATE: bad design, await is SOMETIMES needed
 }
