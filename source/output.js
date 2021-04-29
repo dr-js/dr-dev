@@ -128,13 +128,14 @@ const verifyOutputBin = async ({
   fromOutput,
   versionArgList = [ '--version' ], // DEFAULT: request version
   packageJSON: { name, version, bin },
+  pathExe = process.execPath, // allow set to '' for other non-node executable
   matchStringList = [ name, version ], // DEFAULT: expect output with full package name & version
   logger
 }) => {
   let pathBin = bin || './bin'
   if (isBasicObject(pathBin)) pathBin = pathBin[ Object.keys(pathBin)[ 0 ] ]
   logger.padLog('verify output bin working')
-  const { promise, stdoutPromise } = run([ process.execPath, pathBin, ...versionArgList ], { cwd: fromOutput(), quiet: true, describeError: true })
+  const { promise, stdoutPromise } = run([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd: fromOutput(), quiet: true, describeError: true })
   await promise
   const outputBinTest = String(await stdoutPromise)
   logger.log(`bin test output: ${outputBinTest}`)

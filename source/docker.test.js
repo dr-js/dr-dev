@@ -3,7 +3,7 @@ import { resolveCommandName } from '@dr-js/core/module/node/system/ResolveComman
 import {
   docker, dockerSync,
   compose, composeSync,
-  getContainerPsList
+  getContainerLsList
 } from './docker'
 
 const { describe, it, info = console.log } = global
@@ -34,7 +34,7 @@ describe('Docker', () => {
     info(String(stdout))
   })
 
-  it('getContainerPsList()', async () => {
-    info(prettyStringifyConfigObject(await getContainerPsList()))
+  it('getContainerLsList()', async () => {
+    info(prettyStringifyConfigObject(await getContainerLsList()))
   })
 })
