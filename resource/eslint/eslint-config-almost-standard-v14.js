@@ -1,41 +1,44 @@
+// UPDATE: https://github.com/standard/eslint-config-standard/compare/v14.1.1...v16.0.2#diff-31af7bef8291401346dd22af1e7c0ab20be3d024fb0104cfc82182bee0e73d99
 // UPDATE: https://github.com/standard/eslint-config-standard/compare/v13.0.1...v14.1.1#diff-1761f4f4ee815f0c4156b931d737ff32
 // EDIT: from https://github.com/standard/eslint-config-standard/blob/v13.0.1/eslintrc.json
 
 module.exports = {
-  ignorePatterns: [ '!.*', 'node_modules' ], // https://github.com/eslint/eslint/issues/10341#issuecomment-468548031
+  ignorePatterns: [ '!.*', 'node_modules' ], // EDIT: https://github.com/eslint/eslint/issues/10341#issuecomment-468548031
 
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2021,
     ecmaFeatures: { jsx: true },
     sourceType: 'module'
   },
 
-  env: { es2020: true, node: true },
+  env: { es6: true, es2021: true, node: true },
 
-  plugins: [ 'import', 'node', 'promise' ], // plugins: [ 'import', 'node', 'promise', 'standard' ], // EDIT
+  plugins: [ 'import', 'node', 'promise' ],
 
   globals: { globalThis: 'readonly', global: 'readonly', window: 'readonly', self: 'readonly', __DEV__: 'readonly' }, // globals: { document: 'readonly', navigator: 'readonly', window: 'readonly' }, // EDIT
 
   rules: {
-    'accessor-pairs': 'error',
+    'no-var': 'warn',
+    'accessor-pairs': [ 'error', { setWithoutGet: true, enforceForClassMembers: true } ],
     'array-bracket-spacing': [ 'error', 'always' ], // 'array-bracket-spacing': [ 'error', 'never' ], // EDIT
+    'array-callback-return': [ 'error', { allowImplicit: false, checkForEach: false } ],
     'arrow-spacing': [ 'error', { before: true, after: true } ],
     'block-spacing': [ 'error', 'always' ],
     'brace-style': [ 'error', '1tbs', { allowSingleLine: true } ],
-    'camelcase': [ 'error', { properties: 'never' } ],
+    'camelcase': [ 'error', { allow: [ '^UNSAFE_' ], properties: 'never', ignoreGlobals: true } ],
     'comma-dangle': [ 'error', { arrays: 'never', objects: 'never', imports: 'never', exports: 'never', functions: 'never' } ],
     'comma-spacing': [ 'error', { before: false, after: true } ],
     'comma-style': [ 'error', 'last' ],
-    'computed-property-spacing': [ 'error', 'always' ], // 'computed-property-spacing': [ 'error', 'never' ], // EDIT
+    'computed-property-spacing': [ 'error', 'always', { enforceForClassMembers: true } ], // 'computed-property-spacing': [ 'error', 'never', { enforceForClassMembers: true } ], // EDIT
     'constructor-super': 'error',
     'curly': [ 'error', 'multi-line' ],
+    'default-case-last': 'error',
     'dot-location': [ 'error', 'property' ],
     // 'dot-notation': [ 'error', { allowKeywords: true } ], // EDIT
     'eol-last': 'error',
     'eqeqeq': [ 'error', 'always', { null: 'ignore' } ],
     'func-call-spacing': [ 'error', 'never' ],
     'generator-star-spacing': [ 'error', { before: true, after: true } ],
-    'handle-callback-err': [ 'error', '^(err|error)$' ],
     'indent': [ 'error', 2, {
       SwitchCase: 1,
       VariableDeclarator: 1,
@@ -49,11 +52,13 @@ module.exports = {
       ImportDeclaration: 1,
       flatTernaryExpressions: false,
       ignoreComments: false,
-      ignoredNodes: [ 'TemplateLiteral *' ]
+      ignoredNodes: [ 'TemplateLiteral *', 'JSXElement', 'JSXElement > *', 'JSXAttribute', 'JSXIdentifier', 'JSXNamespacedName', 'JSXMemberExpression', 'JSXSpreadAttribute', 'JSXExpressionContainer', 'JSXOpeningElement', 'JSXClosingElement', 'JSXFragment', 'JSXOpeningFragment', 'JSXClosingFragment', 'JSXText', 'JSXEmptyExpression', 'JSXSpreadChild' ],
+      offsetTernaryExpressions: false // offsetTernaryExpressions: true // EDIT
     } ],
     'key-spacing': [ 'error', { beforeColon: false, afterColon: true } ],
     'keyword-spacing': [ 'error', { before: true, after: true } ],
     'lines-between-class-members': [ 'error', 'always', { exceptAfterSingleLine: true } ],
+    // 'multiline-ternary': [ 'error', 'always-multiline' ], // EDIT
     'new-cap': [ 'error', { newIsCap: true, capIsNew: false, properties: true } ],
     'new-parens': 'error',
     'no-array-constructor': 'error',
@@ -72,6 +77,8 @@ module.exports = {
     'no-dupe-class-members': 'error',
     'no-dupe-keys': 'error',
     'no-duplicate-case': 'error',
+    'no-useless-backreference': 'error',
+    'no-empty': [ 'error', { allowEmptyCatch: true } ],
     'no-empty-character-class': 'error',
     'no-empty-pattern': 'error',
     'no-eval': 'error',
@@ -85,12 +92,13 @@ module.exports = {
     'no-func-assign': 'error',
     'no-global-assign': 'error',
     'no-implied-eval': 'error',
-    'no-inner-declarations': [ 'error', 'functions' ],
+    'no-import-assign': 'error',
     'no-invalid-regexp': 'error',
     'no-irregular-whitespace': 'error',
     'no-iterator': 'error',
     'no-labels': [ 'error', { allowLoop: false, allowSwitch: false } ],
     'no-lone-blocks': 'error',
+    'no-loss-of-precision': 'error',
     'no-misleading-character-class': 'error',
     'no-prototype-builtins': 'error',
     'no-useless-catch': 'error',
@@ -102,17 +110,14 @@ module.exports = {
     'no-multi-spaces': 'error',
     'no-multi-str': 'error',
     'no-multiple-empty-lines': [ 'error', { max: 1, maxEOF: 0 } ],
-    'no-negated-in-lhs': 'error',
     'no-new': 'error',
     'no-new-func': 'error',
     'no-new-object': 'error',
-    'no-new-require': 'error',
     'no-new-symbol': 'error',
     'no-new-wrappers': 'error',
     'no-obj-calls': 'error',
     'no-octal': 'error',
     'no-octal-escape': 'error',
-    'no-path-concat': 'error',
     'no-proto': 'error',
     'no-redeclare': [ 'error', { builtinGlobals: false } ],
     'no-regex-spaces': 'error',
@@ -133,10 +138,11 @@ module.exports = {
     'no-unmodified-loop-condition': 'error',
     'no-unneeded-ternary': [ 'error', { defaultAssignment: false } ],
     'no-unreachable': 'error',
+    'no-unreachable-loop': 'error',
     'no-unsafe-finally': 'error',
     'no-unsafe-negation': 'error',
     'no-unused-expressions': [ 'error', { allowShortCircuit: true, allowTernary: true, allowTaggedTemplates: true } ],
-    'no-unused-vars': [ 'error', { vars: 'all', args: 'none', ignoreRestSiblings: true } ],
+    'no-unused-vars': [ 'error', { args: 'none', caughtErrors: 'none', ignoreRestSiblings: true, vars: 'all' } ],
     'no-use-before-define': [ 'error', { functions: false, classes: false, variables: false } ],
     'no-useless-call': 'error',
     'no-useless-computed-key': 'error',
@@ -155,6 +161,7 @@ module.exports = {
     'padded-blocks': [ 'error', { blocks: 'never', switches: 'never', classes: 'never' } ],
     'prefer-const': [ 'error', { destructuring: 'all' } ],
     'prefer-promise-reject-errors': 'error',
+    'prefer-regex-literals': [ 'error', { disallowRedundantWrapping: true } ],
     'quote-props': [ 'error', 'as-needed', { unnecessary: false } ], // 'quote-props': [ 'error', 'as-needed' ], // EDIT
     'quotes': [ 'error', 'single', { avoidEscape: true, allowTemplateLiterals: false } ],
     'rest-spread-spacing': [ 'error', 'never' ],
@@ -173,7 +180,7 @@ module.exports = {
     'template-curly-spacing': [ 'error', 'never' ],
     'template-tag-spacing': [ 'error', 'never' ],
     'unicode-bom': [ 'error', 'never' ],
-    'use-isnan': 'error',
+    'use-isnan': [ 'error', { enforceForSwitchCase: true, enforceForIndexOf: true } ],
     'valid-typeof': [ 'error', { requireStringLiterals: true } ],
     'wrap-iife': [ 'error', 'any', { functionPrototypeMethods: true } ],
     'yield-star-spacing': [ 'error', 'both' ],
@@ -186,11 +193,14 @@ module.exports = {
     'import/no-named-default': 'error',
     'import/no-webpack-loader-syntax': 'error',
 
+    'node/handle-callback-err': [ 'error', '^(err|error)$' ],
+    'node/no-callback-literal': 'error',
     'node/no-deprecated-api': 'error',
+    'node/no-exports-assign': 'error',
+    'node/no-new-require': 'error',
+    'node/no-path-concat': 'error',
     'node/process-exit-as-throw': 'error',
 
     'promise/param-names': 'error'
-
-    // 'standard/no-callback-literal': 'error' // EDIT
   }
 }
