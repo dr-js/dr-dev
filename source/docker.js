@@ -68,7 +68,7 @@ const patchContainerLsListStartedAt = async (
   await promise
   String(await stdoutPromise).trim().split('\n')
     .filter(Boolean)
-    .map((string) => {
+    .forEach((string) => {
       const [ id, startedAtString ] = string.split('|') // the full id & ISO time string
       const item = containerLsList[ idList.findIndex((v) => id.startsWith(v)) ]
       if (item) item.startedAt = new Date(startedAtString)

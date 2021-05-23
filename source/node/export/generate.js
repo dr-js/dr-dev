@@ -27,7 +27,7 @@ const generateIndexScript = ({ sourceRouteMap }) => {
       importList.push(exportName)
     })
 
-    fileList.map(({ name, exportList }) => {
+    fileList.forEach(({ name, exportList }) => {
       const shouldMergeExport = directoryList.length || isFirstUpperCase(name)
 
       if (shouldMergeExport) {
@@ -66,7 +66,7 @@ const generateExportInfo = ({ sourceRouteMap }) => {
       exportInfo[ toExportName(name) ] = getExportInfo(...routeList, name)
     })
 
-    fileList.map(({ name, exportList }) => {
+    fileList.forEach(({ name, exportList }) => {
       const shouldMergeExport = directoryList.length || isFirstUpperCase(name)
 
       if (shouldMergeExport) {
