@@ -23,12 +23,12 @@ runMain(async (logger) => {
   }
 
   const processOutput = async ({ logger }) => {
-    const fileListLibraryBrowserBin = await getSourceJsFileListFromPathList([ 'library', 'browser', 'bin' ], fromOutput)
-    const fileListModule = await getSourceJsFileListFromPathList([ 'module' ], fromOutput)
+    const fileListBrowserBin = await getSourceJsFileListFromPathList([ 'browser', 'bin' ], fromOutput)
+    const fileListLibraryModule = await getSourceJsFileListFromPathList([ 'library', 'module' ], fromOutput)
     let sizeReduce = 0
-    sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryBrowserBin, option: getTerserOption(), rootPath: fromRoot(), logger })
-    sizeReduce += await minifyFileListWithTerser({ fileList: fileListModule, option: getTerserOption({ isReadable: true }), rootPath: fromRoot(), logger })
-    sizeReduce += await processFileList({ fileList: [ ...fileListLibraryBrowserBin, ...fileListModule ], processor: fileProcessorBabel, rootPath: fromRoot(), logger })
+    sizeReduce += await minifyFileListWithTerser({ fileList: fileListBrowserBin, option: getTerserOption(), rootPath: fromRoot(), logger })
+    sizeReduce += await minifyFileListWithTerser({ fileList: fileListLibraryModule, option: getTerserOption({ isReadable: true }), rootPath: fromRoot(), logger })
+    sizeReduce += await processFileList({ fileList: [ ...fileListBrowserBin, ...fileListLibraryModule ], processor: fileProcessorBabel, rootPath: fromRoot(), logger })
     logger.padLog(`size reduce: ${sizeReduce}B`)
   }
 
