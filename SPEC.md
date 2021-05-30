@@ -16,7 +16,7 @@
 + 📄 [source/license.js](source/license.js)
   - `writeLicenseFile`
 + 📄 [source/main.js](source/main.js)
-  - `argvFlag`, `commonCombo`, `commonInfoPatchCombo`, `readFileSync`, `resolve`, `runMain`, `writeFileSync`
+  - `argvFlag`, `commonCombo`, `commonInfoPatchCombo`, `existsSync`, `readFileSync`, `resolve`, `runMain`, `sep`, `writeFileSync`
 + 📄 [source/minify.js](source/minify.js)
   - `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
 + 📄 [source/output.js](source/output.js)
@@ -301,8 +301,8 @@
 | :----                          |       ----: |
 | @babel/cli                     |     ^7.14.3 |
 | @babel/core                    |     ^7.14.3 |
-| @babel/eslint-parser           |     ^7.14.3 |
-| @babel/preset-env              |     ^7.14.2 |
+| @babel/eslint-parser           |     ^7.14.4 |
+| @babel/preset-env              |     ^7.14.4 |
 | @babel/preset-react            |    ^7.13.13 |
 | @babel/register                |    ^7.13.16 |
 | babel-loader                   |      ^8.2.2 |
@@ -310,13 +310,13 @@
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |     ^1.12.0 |
 | eslint                         |     ^7.27.0 |
-| eslint-plugin-import           |     ^2.23.3 |
+| eslint-plugin-import           |     ^2.23.4 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^5.1.0 |
-| eslint-plugin-react            |     ^7.23.2 |
+| eslint-plugin-react            |     ^7.24.0 |
 | prop-types                     |     ^15.7.2 |
-| puppeteer                      |      ^9.1.1 |
+| puppeteer                      |     ^10.0.0 |
 | react                          |     ^17.0.2 |
 | styled-components              |      ^5.3.0 |
 | terser                         |      ^5.7.0 |
-| webpack                        |     ^5.37.1 |
+| webpack                        |     ^5.38.1 |
