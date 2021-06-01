@@ -52,12 +52,12 @@
     "npm": ">=6.14"
   },
   "dependencies": {
-    "@dr-js/core": "^0.4.11",
+    "@dr-js/core": "^0.4.12",
     "@dr-js/node": "^0.4.9"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.4.14",
-    "@dr-js/dev-web": "^0.4.14"
+    "@dr-js/dev": "^0.4.15",
+    "@dr-js/dev-web": "^0.4.15"
   },
   "sideEffects": false
 }
