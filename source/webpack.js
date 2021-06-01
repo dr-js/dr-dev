@@ -137,7 +137,7 @@ const commonFlag = async ({
   }) => ({
     mode,
     bail: isProduction,
-    target: isNodeEnv ? 'node12' : 'web', // support node main modules like 'fs'
+    target: isNodeEnv ? 'node12' : [ 'web', 'es8' ], // support node main modules like 'fs'
     node: isNodeEnv ? false : undefined, // do not polyfill fake node environment when build for node
     output,
     entry,
@@ -145,7 +145,7 @@ const commonFlag = async ({
     externals,
     module: {
       rules: [
-        babelOption && { test: /\.js$/, use: { loader: 'babel-loader', options: babelOption } },
+        babelOption && { test: /\.m?js$/, use: { loader: 'babel-loader', options: babelOption } },
         packageJSONPickOption && {
           test: /package\.json$/,
           type: (!packageJSONPickOption.exportMode || packageJSONPickOption.exportMode.startsWith('export-')) ? 'javascript/auto' : undefined,
@@ -165,7 +165,7 @@ const commonFlag = async ({
       ...extraPluginList
     ].filter(Boolean),
     optimization: { minimize: isMinimize },
-    performance: { hints: isMinimize || 'warning' }, // mute: `The following asset(s) exceed the recommended size limit (250 kB).`
+    performance: { hints: isMinimize ? 'warning' : false }, // mute: `The following asset(s) exceed the recommended size limit (250 kB).`
     ...extraConfig
   })
 

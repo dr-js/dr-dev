@@ -1,5 +1,5 @@
-import { resolve } from 'path'
-import { readFileSync, writeFileSync } from 'fs'
+import { resolve, sep } from 'path'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
 
 import { clock } from '@dr-js/core/module/common/time'
 import { time } from '@dr-js/core/module/common/format'
@@ -31,5 +31,7 @@ const runMain = (
 
 export {
   runMain,
-  argvFlag, commonCombo, commonInfoPatchCombo, resolve, readFileSync, writeFileSync // quick import
+  // quick import // TODO: DEPRECATE: move to `combo.js`
+  argvFlag, commonCombo, commonInfoPatchCombo,
+  resolve, sep, readFileSync, writeFileSync, existsSync
 }
