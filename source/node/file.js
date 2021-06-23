@@ -55,11 +55,29 @@ const withTempDirectory = async (tempPath, asyncTask) => { // NOTE: will always 
   return result
 }
 
+const loadFile = async (path) => fsAsync.readFile(path)
+const loadText = async (path) => String(await loadFile(path))
+const loadJson = async (path) => JSON.parse(await loadText(path))
+
+const saveFile = async (bufferOrString, path) => fsAsync.writeFile(path, bufferOrString)
+const saveText = saveFile
+const saveJson = async (value, path) => saveText(path, JSON.stringify(value, null, 2))
+
 const editFile = async (
-  editFunc = async (buffer) => buffer,
+  editFunc = async (buffer) => buffer, // or String
   pathFrom,
-  pathTo = pathFrom // support both copy & in-place edit
+  pathTo = pathFrom // for in-place edit
 ) => fsAsync.writeFile(pathTo, await editFunc(await fsAsync.readFile(pathFrom)))
+const editText = async (
+  editFunc = async (string) => string,
+  pathFrom,
+  pathTo
+) => editFile(async (buffer) => editFunc(String(buffer)), pathFrom, pathTo)
+const editJson = async (
+  editFunc = async (value) => value, // mostly Object
+  pathFrom,
+  pathTo
+) => editText(async (string) => JSON.stringify(await editFunc(JSON.parse(string)), null, 2), pathFrom, pathTo)
 
 // for remove dup before zip/packing
 // given a list of file, return which file should keep, and which is just pre-compressed dup
@@ -121,7 +139,10 @@ export {
   getFileListFromPathList,
   findPathFragList,
   withTempDirectory,
-  editFile,
+
+  loadFile, loadText, loadJson,
+  saveFile, saveText, saveJson,
+  editFile, editText, editJson,
 
   filterPrecompressFileList,
   generatePrecompressForPath, trimPrecompressForPath,

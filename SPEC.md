@@ -34,7 +34,7 @@
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
-  - `copyAfterEdit`, `editFile`, `filterPrecompressFileList`, `findPathFragList`, `generatePrecompressForPath`, `getFileListFromPathList`, `resetDirectory`, `trimPrecompressForPath`, `withTempDirectory`
+  - `copyAfterEdit`, `editFile`, `editJson`, `editText`, `filterPrecompressFileList`, `findPathFragList`, `generatePrecompressForPath`, `getFileListFromPathList`, `loadFile`, `loadJson`, `loadText`, `resetDirectory`, `saveFile`, `saveJson`, `saveText`, `trimPrecompressForPath`, `withTempDirectory`
 + 📄 [source/node/filePreset.js](source/node/filePreset.js)
   - `getSourceJsFileListFromPathList`
 + 📄 [source/node/logger.js](source/node/logger.js)
