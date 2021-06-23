@@ -105,7 +105,7 @@ const packOutput = async ({
   logger.padLog('run pack output')
   await run([
     getPathNpmExecutable(), '--no-update-notifier', 'pack'
-  ], { cwd: fromOutput(), quiet: !__VERBOSE__, describeError: !__VERBOSE__ }).promise
+  ], { cwd: fromOutput(), quiet: !__VERBOSE__ }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {
@@ -135,7 +135,7 @@ const verifyOutputBin = async ({
   let pathBin = bin || './bin'
   if (isBasicObject(pathBin)) pathBin = pathBin[ Object.keys(pathBin)[ 0 ] ]
   logger.padLog('verify output bin working')
-  const { promise, stdoutPromise } = run([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd: fromOutput(), quiet: true, describeError: true })
+  const { promise, stdoutPromise } = run([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd: fromOutput(), quiet: true })
   await promise
   const outputBinTest = String(await stdoutPromise)
   logger.log(`bin test output: ${outputBinTest}`)

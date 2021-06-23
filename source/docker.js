@@ -3,28 +3,12 @@ import { run, runSync } from '@dr-js/core/module/node/run.js'
 import { verify, verifyCompose } from '@dr-js/node/module/module/Software/docker.js'
 import { runWithTee } from './node/run.js'
 
-const docker = (argList = [], option = {}) => run(
-  [ ...verify(), ...argList ],
-  { describeError: !option.quiet, ...option } // describeError only when output is redirected
-)
-const dockerSync = (argList = [], option = {}) => runSync(
-  [ ...verify(), ...argList ],
-  { describeError: !option.quiet, ...option } // describeError only when output is redirected
-)
-const dockerWithTee = async (argList = [], option = {}, teeLogFile) => runWithTee(
-  [ ...verify(), ...argList ],
-  { describeError: teeLogFile || !option.quiet, ...option }, // describeError only when output is redirected
-  teeLogFile
-)
+const docker = (argList = [], option = {}) => run([ ...verify(), ...argList ], option)
+const dockerSync = (argList = [], option = {}) => runSync([ ...verify(), ...argList ], option)
+const dockerWithTee = async (argList = [], option = {}, teeLogFile) => runWithTee([ ...verify(), ...argList ], option, teeLogFile)
 
-const compose = (argList = [], option = {}) => run(
-  [ ...verifyCompose(), ...argList ],
-  { describeError: !option.quiet, ...option } // describeError only when output is redirected
-)
-const composeSync = (argList = [], option = {}) => runSync(
-  [ ...verifyCompose(), ...argList ],
-  { describeError: !option.quiet, ...option } // describeError only when output is redirected
-)
+const compose = (argList = [], option = {}) => run([ ...verifyCompose(), ...argList ], option)
+const composeSync = (argList = [], option = {}) => runSync([ ...verifyCompose(), ...argList ], option)
 
 const checkLocalImage = async (imageRepo, imageTag) => {
   const { promise, stdoutPromise } = docker([ 'image', 'ls', `${imageRepo}:${imageTag}` ], { quiet: true })
@@ -86,7 +70,7 @@ const matchContainerLsList = (
 
 const runDocker = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWithTee : run)( // TODO: DEPRECATE: bad design, await is SOMETIMES needed
   [ ...verify(), ...argList ],
-  { describeError: teeLogFile || !option.quiet, ...option }, // describeError only when output is redirected
+  option,
   teeLogFile
 )
 
