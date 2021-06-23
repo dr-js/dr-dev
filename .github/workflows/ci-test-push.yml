@@ -1,4 +1,4 @@
-name: ci-test
+name: ci-test-push
 
 on:
   push: { branches: [ "**" ] }
@@ -7,12 +7,12 @@ env:
   cache-version: 20210623
 
 jobs:
-  ci-test:
+  test-push:
     strategy:
       fail-fast: false # allow all test to run to the end
       matrix:
-        os: [ "ubuntu-latest" ] # [ "ubuntu-latest", "windows-latest", "macos-latest" ]
-        node-version: [ "14.x", "16.x" ]
+        os: [ "ubuntu-latest", "windows-latest", "macos-latest" ]
+        node-version: [ "14.x" ]
 
     runs-on: "${{ matrix.os }}"
 
@@ -23,7 +23,7 @@ jobs:
 
       - name: Patch & log CI info
         run: |
-          npx @dr-js/dev@0.4 -eI .github/ci-patch.js
+          npx @dr-js/dev@^0.4 -eI .github/ci-patch.js
           dr-dev -c .github/cache/config.js --cache-step setup
 
       - uses: actions/cache@v2 # https://github.com/actions/cache
