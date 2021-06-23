@@ -1,7 +1,7 @@
-import { catchAsync } from '@dr-js/core/module/common/error'
-import { run, runSync } from '@dr-js/core/module/node/run'
-import { verify, verifyCompose } from '@dr-js/node/module/module/Software/docker'
-import { runWithTee } from './node/run'
+import { catchAsync } from '@dr-js/core/module/common/error.js'
+import { run, runSync } from '@dr-js/core/module/node/run.js'
+import { verify, verifyCompose } from '@dr-js/node/module/module/Software/docker.js'
+import { runWithTee } from './node/run.js'
 
 const docker = (argList = [], option = {}) => run(
   [ ...verify(), ...argList ],

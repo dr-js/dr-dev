@@ -1,5 +1,5 @@
-import { getLogger } from 'source/node/logger'
-import { commonInfoPatchCombo } from './ci'
+import { getLogger } from 'source/node/logger.js'
+import { commonInfoPatchCombo } from './ci.js'
 
 const { describe, it, info = console.log } = global
 

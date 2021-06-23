@@ -1,15 +1,15 @@
 import { resolve, relative, sep } from 'path'
 import { promises as fsAsync } from 'fs'
 
-import { catchAsync } from '@dr-js/core/module/common/error'
-import { isString } from '@dr-js/core/module/common/check'
-import { describe } from '@dr-js/core/module/common/format'
-import { getSample } from '@dr-js/core/module/common/math/sample'
-import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/node/file/Path'
-import { getDirInfoList, createDirectory, getFileList } from '@dr-js/core/module/node/file/Directory'
-import { modifyDelete, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
+import { catchAsync } from '@dr-js/core/module/common/error.js'
+import { isString } from '@dr-js/core/module/common/check.js'
+import { describe } from '@dr-js/core/module/common/format.js'
+import { getSample } from '@dr-js/core/module/common/math/sample.js'
+import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/node/file/Path.js'
+import { getDirInfoList, createDirectory, getFileList } from '@dr-js/core/module/node/file/Directory.js'
+import { modifyDelete, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify.js'
 
-import { compressGzBrFileAsync } from '@dr-js/node/module/module/Software/function'
+import { compressGzBrFileAsync } from '@dr-js/node/module/module/Software/function.js'
 
 const DEFAULT_RESOLVE_PATH = (path) => path
 

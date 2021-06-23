@@ -1,12 +1,12 @@
 import { resolve, dirname, basename, relative } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
-import { binary } from '@dr-js/core/module/common/format'
-import { objectMergeDeep, objectSortKey } from '@dr-js/core/module/common/mutable/Object'
-import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path'
-import { getFileList } from '@dr-js/core/module/node/file/Directory'
-import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
+import { binary } from '@dr-js/core/module/common/format.js'
+import { objectMergeDeep, objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'
+import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path.js'
+import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
+import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify.js'
 
-import { modulePathHack } from '@dr-js/core/bin/function'
+import { modulePathHack } from '@dr-js/core/bin/function.js'
 
 // HACK: add `@dr-js/dev` to internal `modulePaths` to allow require
 //   `.../npm/node_modules/@dr-js/*/bin/function.js` + `../../../../` = `.../npm/node_modules/` // allow this and related module to resolve

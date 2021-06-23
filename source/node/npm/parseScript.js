@@ -1,4 +1,4 @@
-import { indentLine } from '@dr-js/core/module/common/string'
+import { indentLine } from '@dr-js/core/module/common/string.js'
 
 const COMPLEX_BASH_COMMAND_SET = new Set([ // common known complex command, will interfere with later parsing `&&`, do not parse further
   'bash', 'sh', '.', 'source',

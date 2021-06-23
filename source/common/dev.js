@@ -1,7 +1,7 @@
-import { getGlobal } from '@dr-js/core/module/env/global'
-import { clock } from '@dr-js/core/module/common/time'
-import { time } from '@dr-js/core/module/common/format'
-import { isCompactArrayShallowEqual } from '@dr-js/core/module/common/immutable/check'
+import { getGlobal } from '@dr-js/core/module/env/global.js'
+import { clock } from '@dr-js/core/module/common/time.js'
+import { time } from '@dr-js/core/module/common/format.js'
+import { isCompactArrayShallowEqual } from '@dr-js/core/module/common/immutable/check.js'
 
 // memorize expensive immutable transform, with info output, mostly for debug // TODO: remove or reduce code size?
 const createTransformCacheWithInfo = (outputInfo = DEFAULT_OUTPUT_INFO, shouldOutputInfo = DEFAULT_SHOULD_OUTPUT_INFO) => {

@@ -1,6 +1,6 @@
 import { dirname } from 'path'
 import { promises as fsAsync } from 'fs'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory'
+import { createDirectory } from '@dr-js/core/module/node/file/Directory.js'
 
 const packTime = (timeDate) => timeDate === undefined ? '' : timeDate.toISOString()
 const parseTime = (timeString) => !timeString ? undefined : new Date(timeString)

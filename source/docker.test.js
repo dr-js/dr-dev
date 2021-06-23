@@ -1,10 +1,10 @@
-import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format'
-import { resolveCommandName } from '@dr-js/core/module/node/system/ResolveCommand'
+import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format.js'
+import { resolveCommandName } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import {
   docker, dockerSync,
   compose, composeSync,
   getContainerLsList
-} from './docker'
+} from './docker.js'
 
 const { describe, it, info = console.log } = global
 

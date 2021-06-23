@@ -1,12 +1,12 @@
 import { resolve } from 'path'
 import { writeFileSync } from 'fs'
-import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object'
+import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object.js'
 
-import { getLogger } from 'source/node/logger'
-import { resetDirectory } from 'source/node/file'
-import { packOutput, publishOutput } from 'source/output'
+import { getLogger } from 'source/node/logger.js'
+import { resetDirectory } from 'source/node/file.js'
+import { packOutput, publishOutput } from 'source/output.js'
 
-import { formatPackagePath, copyAndSavePackExportInitJSON } from '../function'
+import { formatPackagePath, copyAndSavePackExportInitJSON } from '../function.js'
 
 const GET_INITIAL_PACKAGE_INFO = () => ({ packageJSON: {}, exportPairList: [] })
 

@@ -1,10 +1,10 @@
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
 
-import { indentLine } from '@dr-js/core/module/common/string'
-import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } from '@dr-js/core/module/common/verify'
-import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path'
-import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
+import { indentLine } from '@dr-js/core/module/common/string.js'
+import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } from '@dr-js/core/module/common/verify.js'
+import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path.js'
+import { modifyDelete } from '@dr-js/core/module/node/file/Modify.js'
 
 import {
   fromPathCombo,
@@ -13,9 +13,9 @@ import {
   // verifyOutputBin,
   verifyNoGitignore,
   publishOutput, getPublishFlag, verifyPublishVersion
-} from './output'
-import { getLogger } from './node/logger'
-import { resetDirectory } from './node/file'
+} from './output.js'
+import { getLogger } from './node/logger.js'
+import { resetDirectory } from './node/file.js'
 
 const { describe, it, before, after, info = console.log } = global
 

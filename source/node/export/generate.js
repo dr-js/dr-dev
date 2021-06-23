@@ -1,16 +1,16 @@
 const toExportName = (name) => `${name.charAt(0).toUpperCase()}${name.slice(1)}`
 const isFirstUpperCase = (name) => /[A-Z]/.test(name.charAt(0))
 
-// for mixed content Directory or upper-case-named File
+// for mixed-content Directory or upper-case-named File
 // merge export:
-//   import * as Aaa from './aaa'
-//   import * as Bbb from './Bbb'
+//   import * as Aaa from './aaa/index.js'
+//   import * as Bbb from './Bbb.js'
 //   export { Aaa, Bbb }
 //
 // for lower-cased-named File
 // hoist export:
-//   export { a1, a2 } from './aaa'
-//   export { b1, b2 } from './Bbb'
+//   export { c1, c2 } from './ccc.js'
+//   export { d1, d2 } from './ddd.js'
 
 const generateIndexScript = ({ sourceRouteMap }) => {
   const indexScriptMap = {
@@ -21,21 +21,22 @@ const generateIndexScript = ({ sourceRouteMap }) => {
     const textList = []
     const importList = []
 
-    directoryList.forEach((name) => {
+    directoryList.forEach((name) => { // merge: mixed-content Directory
       const exportName = toExportName(name)
-      textList.push(`import * as ${exportName} from './${name}'`)
+      textList.push(`import * as ${exportName} from './${name}/index.js'`)
       importList.push(exportName)
     })
 
     fileList.forEach(({ name, exportList }) => {
-      const shouldMergeExport = directoryList.length || isFirstUpperCase(name)
-
-      if (shouldMergeExport) {
+      if (
+        directoryList.length || // merge: File in mixed-content Directory
+        isFirstUpperCase(name) // merge: upper-case-named File
+      ) {
         const exportName = toExportName(name)
-        textList.push(`import * as ${exportName} from './${name}'`)
+        textList.push(`import * as ${exportName} from './${name}.js'`)
         importList.push(exportName)
-      } else {
-        textList.push(`export { ${exportList.join(', ')} } from './${name}'`)
+      } else { // hoist: lower-cased-named File
+        textList.push(`export { ${exportList.join(', ')} } from './${name}.js'`)
       }
     })
 

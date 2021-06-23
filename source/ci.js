@@ -1,11 +1,11 @@
 import { resolve } from 'path'
 import { arch, release } from 'os'
 
-import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format'
+import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format.js'
 
-import { getPathNpm } from '@dr-js/node/module/module/Software/npm'
+import { getPathNpm } from '@dr-js/node/module/module/Software/npm.js'
 
-import { commonCombo } from './output'
+import { commonCombo } from './output.js'
 
 // NOTE: test local ci-patch with command like:
 //   DRY_RUN=1 npx dr-js-dev-*.tgz -eI .github/ci-patch.js

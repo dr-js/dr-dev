@@ -1,10 +1,10 @@
 import Puppeteer from 'puppeteer'
 import { promises as fsAsync } from 'fs'
 
-import { catchAsync } from '@dr-js/core/module/common/error'
-import { time } from '@dr-js/core/module/common/format'
-import { createInsideOutPromise } from '@dr-js/core/module/common/function'
-import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener'
+import { catchAsync } from '@dr-js/core/module/common/error.js'
+import { time } from '@dr-js/core/module/common/format.js'
+import { createInsideOutPromise } from '@dr-js/core/module/common/function.js'
+import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener.js'
 
 const puppeteerBrowserDisconnectListener = () => {
   console.warn('[Puppeteer] unexpected browser disconnect, exiting')

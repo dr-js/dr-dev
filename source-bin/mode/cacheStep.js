@@ -1,7 +1,7 @@
-import { modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
+import { modifyDeleteForce } from '@dr-js/core/module/node/file/Modify.js'
 
-import { checksumUpdate, checksumDetectChange } from 'source/node/cache/checksum'
-import { staleCheckSetup, staleCheckMark, staleCheckCalcReport, describeStaleReport } from 'source/node/cache/staleCheck'
+import { checksumUpdate, checksumDetectChange } from 'source/node/cache/checksum.js'
+import { staleCheckSetup, staleCheckMark, staleCheckCalcReport, describeStaleReport } from 'source/node/cache/staleCheck.js'
 
 const doCacheStep = async ({
   cacheStepType, prunePolicyType,

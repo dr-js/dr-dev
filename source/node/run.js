@@ -1,17 +1,17 @@
 import { dirname } from 'path'
 import { createWriteStream } from 'fs'
-import { catchAsync } from '@dr-js/core/module/common/error'
-import { setTimeoutAsync } from '@dr-js/core/module/common/time'
-import { run } from '@dr-js/core/module/node/run'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory'
-import { resolveCommandAsync } from '@dr-js/core/module/node/system/ResolveCommand'
+import { catchAsync } from '@dr-js/core/module/common/error.js'
+import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
+import { run } from '@dr-js/core/module/node/run.js'
+import { createDirectory } from '@dr-js/core/module/node/file/Directory.js'
+import { resolveCommandAsync } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import {
   getProcessListAsync,
   toProcessPidMap,
   toProcessTree, findProcessTreeInfo,
   killProcessTreeInfoAsync,
   isPidExist
-} from '@dr-js/core/module/node/system/Process'
+} from '@dr-js/core/module/node/system/Process.js'
 
 const runWithAsyncFunc = async (argList, { asyncFunc, setupDelay = 500, ...option }) => {
   const { subProcess, promise } = run(argList, option)

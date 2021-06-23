@@ -1,15 +1,15 @@
 import { resolve } from 'path'
 import { promises as fsAsync } from 'fs'
-import { setTimeoutAsync } from '@dr-js/core/module/common/time'
-import { getSampleRange } from '@dr-js/core/module/common/math/sample'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory'
-import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
-import { resetDirectory } from '../file'
+import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
+import { getSampleRange } from '@dr-js/core/module/common/math/sample.js'
+import { createDirectory } from '@dr-js/core/module/node/file/Directory.js'
+import { modifyDelete } from '@dr-js/core/module/node/file/Modify.js'
+import { resetDirectory } from '../file.js'
 
 import {
   staleCheckSetup, staleCheckMark, staleCheckCalcReport,
   loadStatFile, saveStatFile
-} from './staleCheck'
+} from './staleCheck.js'
 
 const { describe, it, before, after, info = console.log } = global
 

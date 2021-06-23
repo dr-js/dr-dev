@@ -1,8 +1,8 @@
-import { FILTER_TEST_JS_FILE } from '@dr-js/dev/module/node/preset'
-import { getFileListFromPathList } from '@dr-js/dev/module/node/file'
-import { compileWithWebpack, commonFlag } from '@dr-js/dev/module/webpack'
-import { testWithPuppeteer } from '@dr-js/dev/module/puppeteer'
-import { runMain, commonCombo, resolve, readFileSync } from '@dr-js/dev/module/main'
+import { FILTER_TEST_JS_FILE } from '@dr-js/dev/module/node/preset.js'
+import { getFileListFromPathList } from '@dr-js/dev/module/node/file.js'
+import { compileWithWebpack, commonFlag } from '@dr-js/dev/module/webpack.js'
+import { testWithPuppeteer } from '@dr-js/dev/module/puppeteer.js'
+import { runMain, commonCombo, resolve, readFileSync } from '@dr-js/dev/module/main.js'
 
 const NAME_TEST_BROWSER = 'test-browser'
 

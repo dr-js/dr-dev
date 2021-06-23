@@ -1,11 +1,11 @@
 import { relative } from 'path'
 
-import { toPosixPath } from '@dr-js/core/module/node/file/Path'
-import { getFileList } from '@dr-js/core/module/node/file/Directory'
-import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener'
-import { configureTerminalColor } from '@dr-js/node/module/module/TerminalColor'
+import { toPosixPath } from '@dr-js/core/module/node/file/Path.js'
+import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
+import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener.js'
+import { configureTerminalColor } from '@dr-js/node/module/module/TerminalColor.js'
 
-import { createTest } from 'source/common/test'
+import { createTest } from 'source/common/test.js'
 
 const doTestRoot = async ({
   testRoot = process.cwd(),

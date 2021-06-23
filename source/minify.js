@@ -1,11 +1,11 @@
 import { relative } from 'path'
 import { minify as terserMinify } from 'terser'
 
-import { clock } from '@dr-js/core/module/common/time'
-import { binary, time, padTable } from '@dr-js/core/module/common/format'
+import { clock } from '@dr-js/core/module/common/time.js'
+import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
-import { __VERBOSE__ } from './node/env'
-import { copyAfterEdit } from './node/file'
+import { __VERBOSE__ } from './node/env.js'
+import { copyAfterEdit } from './node/file.js'
 
 const getTerserOption = ({
   isReadable = false, // should be much more readable // TODO: option `beautify` is being removed

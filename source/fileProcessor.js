@@ -1,9 +1,9 @@
 import { relative } from 'path'
 import { promises as fsAsync } from 'fs'
-import { clock } from '@dr-js/core/module/common/time'
-import { binary, time, padTable } from '@dr-js/core/module/common/format'
+import { clock } from '@dr-js/core/module/common/time.js'
+import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
-import { __VERBOSE__ } from './node/env'
+import { __VERBOSE__ } from './node/env.js'
 
 const processFileList = async ({ fileList, processor, rootPath = '', logger }) => {
   logger.padLog(`process ${fileList.length} file`)

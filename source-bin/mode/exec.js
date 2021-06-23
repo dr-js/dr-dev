@@ -1,12 +1,12 @@
 import { resolve } from 'path'
-import { isString, isBasicObject, isBasicArray } from '@dr-js/core/module/common/check'
-import { objectFromEntries } from '@dr-js/core/module/common/immutable/Object'
+import { isString, isBasicObject, isBasicArray } from '@dr-js/core/module/common/check.js'
+import { objectFromEntries } from '@dr-js/core/module/common/immutable/Object.js'
 
-import { findUpPackageRoot } from '@dr-js/node/module/module/Software/npm'
+import { findUpPackageRoot } from '@dr-js/node/module/module/Software/npm.js'
 
-import { runPassThrough } from 'source/node/run'
+import { runPassThrough } from 'source/node/run.js'
 
-import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from '../function'
+import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from '../function.js'
 
 const doExec = async (argList, {
   env,

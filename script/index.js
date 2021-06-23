@@ -1,9 +1,9 @@
-import { getFileListFromPathList, resetDirectory } from 'source/node/file'
-import { getSourceJsFileListFromPathList } from 'source/node/filePreset'
-import { initOutput, packOutput, clearOutput, verifyOutputBin, verifyNoGitignore, verifyGitStatusClean, getPublishFlag, publishOutput } from 'source/output'
-import { getTerserOption, minifyFileListWithTerser } from 'source/minify'
-import { processFileList, fileProcessorBabel } from 'source/fileProcessor'
-import { runMain, argvFlag, commonCombo } from 'source/main'
+import { getFileListFromPathList, resetDirectory } from 'source/node/file.js'
+import { getSourceJsFileListFromPathList } from 'source/node/filePreset.js'
+import { initOutput, packOutput, clearOutput, verifyOutputBin, verifyNoGitignore, verifyGitStatusClean, getPublishFlag, publishOutput } from 'source/output.js'
+import { getTerserOption, minifyFileListWithTerser } from 'source/minify.js'
+import { processFileList, fileProcessorBabel } from 'source/fileProcessor.js'
+import { runMain, argvFlag, commonCombo } from 'source/main.js'
 
 runMain(async (logger) => {
   const { RUN, fromRoot, fromOutput } = commonCombo(logger)

@@ -1,7 +1,7 @@
-import { Preset, getOptionalFormatFlag, prepareOption } from '@dr-js/core/module/node/module/Option/preset'
+import { Preset, getOptionalFormatFlag, prepareOption } from '@dr-js/core/module/node/module/Option/preset.js'
 
-import { COMBO_COMMAND_CONFIG_MAP } from 'source/node/npm/comboCommand' // TODO: DEPRECATE: unused
-import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from './function'
+import { COMBO_COMMAND_CONFIG_MAP } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
+import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from './function.js'
 
 const { Config, parseCompactList, pickOneOf } = Preset
 

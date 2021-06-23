@@ -2,26 +2,26 @@
 
 import { readFileSync } from 'fs'
 
-import { doCheckOutdated } from './mode/checkOutdated'
-import { doPack } from './mode/pack'
-import { doStepPackageVersion } from './mode/stepPackageVersion'
-import { doTestRootList } from './mode/testRoot'
-import { doInit } from './mode/init'
-import { doExec, doExecLoad } from './mode/exec'
-import { doCacheStep } from './mode/cacheStep'
+import { doCheckOutdated } from './mode/checkOutdated.js'
+import { doPack } from './mode/pack.js'
+import { doStepPackageVersion } from './mode/stepPackageVersion.js'
+import { doTestRootList } from './mode/testRoot.js'
+import { doInit } from './mode/init.js'
+import { doExec, doExecLoad } from './mode/exec.js'
+import { doCacheStep } from './mode/cacheStep.js'
 
-import { run } from '@dr-js/core/module/node/run'
-import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function'
+import { run } from '@dr-js/core/module/node/run.js'
+import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function.js'
 
-import { fetchWithJumpProxy } from '@dr-js/node/module/module/Software/npm'
-import { patchModulePath as patchModulePathNode } from '@dr-js/node/bin/function'
+import { fetchWithJumpProxy } from '@dr-js/node/module/module/Software/npm.js'
+import { patchModulePath as patchModulePathNode } from '@dr-js/node/bin/function.js'
 
-import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript'
-import { comboCommand } from 'source/node/npm/comboCommand' // TODO: DEPRECATE: unused
-import { runNpxLazy } from 'source/node/npm/npxLazy'
+import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript.js'
+import { comboCommand } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
+import { runNpxLazy } from 'source/node/npm/npxLazy.js'
 
-import { patchModulePath } from './function'
-import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
+import { patchModulePath } from './function.js'
+import { MODE_NAME_LIST, parseOption, formatUsage } from './option.js'
 import { name as packageName, version as packageVersion } from '../package.json'
 
 const runMode = async (optionData, modeName) => {

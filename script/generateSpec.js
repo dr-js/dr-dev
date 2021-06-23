@@ -1,10 +1,10 @@
-import { collectSourceJsRouteMap } from 'source/node/export/parsePreset'
-import { generateExportInfo } from 'source/node/export/generate'
-import { getMarkdownFileLink, renderMarkdownAutoAppendHeaderLink, renderMarkdownBlockQuote, renderMarkdownTable, renderMarkdownExportPath } from 'source/node/export/renderMarkdown'
-import { runMain, commonCombo, writeFileSync } from 'source/main'
+import { collectSourceJsRouteMap } from 'source/node/export/parsePreset.js'
+import { generateExportInfo } from 'source/node/export/generate.js'
+import { getMarkdownFileLink, renderMarkdownAutoAppendHeaderLink, renderMarkdownBlockQuote, renderMarkdownTable, renderMarkdownExportPath } from 'source/node/export/renderMarkdown.js'
+import { runMain, commonCombo, writeFileSync } from 'source/main.js'
 
-import { formatUsage } from 'source-bin/option'
-import { collectDependency } from 'source-bin/function'
+import { formatUsage } from 'source-bin/option.js'
+import { collectDependency } from 'source-bin/function.js'
 
 runMain(async (logger) => {
   const { fromRoot } = commonCombo(logger)

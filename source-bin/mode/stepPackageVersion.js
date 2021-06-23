@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs'
 
-import { runSync } from '@dr-js/core/module/node/run'
+import { runSync } from '@dr-js/core/module/node/run.js'
 
-import { formatPackagePath, writePackageJSON } from '../function'
+import { formatPackagePath, writePackageJSON } from '../function.js'
 
 const REGEXP_PACKAGE_VERSION = /^(\d+\.\d+\.\d+(?:-\w+\.\d+)*?)(?:-local\.)?(\d+)?$/ // check: https://regexr.com/419ol
 

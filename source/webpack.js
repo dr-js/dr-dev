@@ -2,13 +2,13 @@ import Webpack, { DefinePlugin, BannerPlugin } from 'webpack'
 import { join, dirname } from 'path'
 import { writeFileSync } from 'fs'
 
-import { binary, time, padTable } from '@dr-js/core/module/common/format'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory'
-import { addExitListenerAsync } from '@dr-js/core/module/node/system/ExitListener'
+import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
+import { createDirectory } from '@dr-js/core/module/node/file/Directory.js'
+import { addExitListenerAsync } from '@dr-js/core/module/node/system/ExitListener.js'
 
-import { __VERBOSE__, argvFlag } from './node/env'
-import { getWebpackBabelConfig } from './babel'
-import { createProgressPlugin } from './webpack-progress-plugin'
+import { __VERBOSE__, argvFlag } from './node/env.js'
+import { getWebpackBabelConfig } from './babel.js'
+import { createProgressPlugin } from './webpack-progress-plugin.js'
 
 // https://webpack.js.org/api/stats/
 

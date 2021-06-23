@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { stringifyEqual, doThrowAsync } from '@dr-js/core/module/common/verify'
+import { stringifyEqual, doThrowAsync } from '@dr-js/core/module/common/verify.js'
 
 import {
   findPathFragList,

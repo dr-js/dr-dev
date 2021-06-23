@@ -1,21 +1,21 @@
 import { resolve, dirname } from 'path'
 import { writeFileSync } from 'fs'
 
-import { padTable } from '@dr-js/core/module/common/format'
-import { setTimeoutAsync } from '@dr-js/core/module/common/time'
-import { withTimeoutPromise } from '@dr-js/core/module/common/function'
-import { objectMap } from '@dr-js/core/module/common/immutable/Object'
-import { compareSemVer } from '@dr-js/core/module/common/module/SemVer'
-import { getPathStat } from '@dr-js/core/module/node/file/Path'
-import { run } from '@dr-js/core/module/node/run'
-import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from '@dr-js/core/module/node/system/Process'
+import { padTable } from '@dr-js/core/module/common/format.js'
+import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
+import { withTimeoutPromise } from '@dr-js/core/module/common/function.js'
+import { objectMap } from '@dr-js/core/module/common/immutable/Object.js'
+import { compareSemVer } from '@dr-js/core/module/common/module/SemVer.js'
+import { getPathStat } from '@dr-js/core/module/node/file/Path.js'
+import { run } from '@dr-js/core/module/node/run.js'
+import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from '@dr-js/core/module/node/system/Process.js'
 
-import { getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
+import { getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm.js'
 
-import { REGEXP_PUBLISH_VERSION } from 'source/output'
-import { withTempDirectory } from 'source/node/file'
+import { REGEXP_PUBLISH_VERSION } from 'source/output.js'
+import { withTempDirectory } from 'source/node/file.js'
 
-import { collectDependency } from '../function'
+import { collectDependency } from '../function.js'
 
 const runNpmOutdated = async (pathPackage) => {
   const { promise, subProcess, stdoutPromise, stderrPromise } = run([

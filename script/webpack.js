@@ -1,5 +1,5 @@
-import { compileWithWebpack, commonFlag } from 'source/webpack'
-import { runMain, commonCombo } from 'source/main'
+import { compileWithWebpack, commonFlag } from 'source/webpack.js'
+import { runMain, commonCombo } from 'source/main.js'
 
 runMain(async (logger) => {
   const { fromRoot, fromOutput } = commonCombo(logger)
