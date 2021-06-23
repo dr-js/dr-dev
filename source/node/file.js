@@ -7,7 +7,7 @@ import { describe } from '@dr-js/core/module/common/format.js'
 import { getSample } from '@dr-js/core/module/common/math/sample.js'
 import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/node/file/Path.js'
 import { getDirInfoList, createDirectory, getFileList } from '@dr-js/core/module/node/file/Directory.js'
-import { modifyDelete, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify.js'
+import { modifyDelete } from '@dr-js/core/module/node/file/Modify.js'
 
 import { compressGzBrFileAsync } from '@dr-js/node/module/module/Software/function.js'
 
@@ -53,11 +53,6 @@ const withTempDirectory = async (tempPath, asyncTask) => { // NOTE: will always 
   await modifyDelete(deletePath)
   if (error) throw error
   return result
-}
-
-const resetDirectory = async (path) => {
-  await modifyDeleteForce(path) // maybe not exist
-  await createDirectory(path)
 }
 
 const editFile = async (
@@ -126,7 +121,6 @@ export {
   getFileListFromPathList,
   findPathFragList,
   withTempDirectory,
-  resetDirectory,
   editFile,
 
   filterPrecompressFileList,
@@ -134,3 +128,5 @@ export {
 
   copyAfterEdit // TODO: DEPRECATE: use `editFile`
 }
+
+export { resetDirectory } from '@dr-js/core/module/node/file/Directory.js' // TODO: DEPRECATE

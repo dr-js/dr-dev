@@ -4,7 +4,7 @@ import { homedir, tmpdir } from 'os'
 import { statSync, readFileSync, writeFileSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { isBasicObject } from '@dr-js/core/module/common/check.js'
-import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
+import { getFileList, resetDirectory } from '@dr-js/core/module/node/file/Directory.js'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/file/Modify.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import { run, runSync, runDetached } from '@dr-js/core/module/node/run.js'
@@ -13,7 +13,7 @@ import { findUpPackageRoot, toPackageTgzName, getPathNpmExecutable } from '@dr-j
 
 import { __VERBOSE__, argvFlag } from './node/env.js'
 import { FILTER_TEST_PATH } from './node/preset.js'
-import { getFileListFromPathList, resetDirectory } from './node/file.js'
+import { getFileListFromPathList } from './node/file.js'
 import { writeLicenseFile } from './license.js'
 
 const fromPathCombo = ({

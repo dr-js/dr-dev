@@ -2,9 +2,8 @@ import { promises as fsAsync } from 'fs'
 import { resolve } from 'path'
 import { strictEqual, doThrowAsync } from '@dr-js/core/module/common/verify.js'
 import { getSampleRange } from '@dr-js/core/module/common/math/sample.js'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory.js'
+import { createDirectory, resetDirectory } from '@dr-js/core/module/node/file/Directory.js'
 import { modifyDelete } from '@dr-js/core/module/node/file/Modify.js'
-import { resetDirectory } from '../file.js'
 
 import {
   describeChecksumOfPathList,
