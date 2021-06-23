@@ -299,17 +299,17 @@
 
 | Package name                   |     Version |
 | :----                          |       ----: |
-| @babel/cli                     |     ^7.14.3 |
-| @babel/core                    |     ^7.14.3 |
-| @babel/eslint-parser           |     ^7.14.4 |
-| @babel/preset-env              |     ^7.14.4 |
-| @babel/preset-react            |    ^7.13.13 |
-| @babel/register                |    ^7.13.16 |
+| @babel/cli                     |     ^7.14.5 |
+| @babel/core                    |     ^7.14.6 |
+| @babel/eslint-parser           |     ^7.14.7 |
+| @babel/preset-env              |     ^7.14.7 |
+| @babel/preset-react            |     ^7.14.5 |
+| @babel/register                |     ^7.14.5 |
 | babel-loader                   |      ^8.2.2 |
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |     ^1.12.0 |
-| eslint                         |     ^7.27.0 |
+| eslint                         |     ^7.29.0 |
 | eslint-plugin-import           |     ^2.23.4 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^5.1.0 |
@@ -319,4 +319,4 @@
 | react                          |     ^17.0.2 |
 | styled-components              |      ^5.3.0 |
 | terser                         |      ^5.7.0 |
-| webpack                        |     ^5.38.1 |
+| webpack                        |     ^5.40.0 |
