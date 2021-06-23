@@ -1,9 +1,9 @@
 const { resolve } = require('path')
 const { promises: fsAsync } = require('fs')
-const { setTimeoutAsync } = require('@dr-js/core/library/common/time')
-const { getPathStat } = require('@dr-js/core/library/node/file/Path')
-const { createDirectory } = require('@dr-js/core/library/node/file/Directory')
-const { modifyDeleteForce } = require('@dr-js/core/library/node/file/Modify')
+const { setTimeoutAsync } = require('@dr-js/core/library/common/time.js')
+const { getPathStat } = require('@dr-js/core/library/node/file/Path.js')
+const { createDirectory } = require('@dr-js/core/library/node/file/Directory.js')
+const { modifyDeleteForce } = require('@dr-js/core/library/node/file/Modify.js')
 
 const PATH_ROOT = resolve(__dirname, 'stale-check-gitignore/')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)

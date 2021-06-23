@@ -20,8 +20,8 @@ const commonInfoPatchCombo = (logger, initConfig) => {
   logger.padLog('Log info')
   logger.log(`system: ${process.platform}-${release()}[${arch()}]`)
   logger.log(`node: ${process.version}`)
-  logger.log(`npm: ${require(resolve(getPathNpm(), './package')).version}`)
-  logger.log(`with: ${[ '@dr-js/core', '@dr-js/node', '@dr-js/dev' ].map((v) => `${v}@${require(`${v}/package`).version}`).join(', ')}`)
+  logger.log(`npm: ${require(resolve(getPathNpm(), './package.json')).version}`)
+  logger.log(`with: ${[ '@dr-js/core', '@dr-js/node', '@dr-js/dev' ].map((v) => `${v}@${require(`${v}/package.json`).version}`).join(', ')}`)
   logger.log(`config:\n${prettyStringifyConfigObject(config, '  ', '    ')}`)
 
   if (config.IS_WIN32) {

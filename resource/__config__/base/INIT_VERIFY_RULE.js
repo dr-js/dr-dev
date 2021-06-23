@@ -1,4 +1,4 @@
-const { escapeRegExp } = require('@dr-js/core/library/common/string')
+const { escapeRegExp } = require('@dr-js/core/library/common/string.js')
 
 const buildMatchRegexp = (stringList) => {
   if (stringList.length === 0) throw new Error('mission string to match for')
