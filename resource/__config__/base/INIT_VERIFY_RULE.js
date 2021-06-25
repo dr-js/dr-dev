@@ -85,23 +85,6 @@ const VERIFY_RULE_LIST = [ { // @dr-js/core break change
   messageBreakIn: '@dr-js/core@0.3.0-dev.11',
   messageList: [ 'use `prettyStringifyTreeNode` instead of `prettyStringifyTree`' ],
   verifyNoList: [ 'prettyStringifyTree(' ]
-}, { // @dr-js/node break change
-  messageBreakIn: '@dr-js/node@0.2.0-dev.4',
-  messageList: [ 'use `path:rename/PATH_RENAME` instead of `path:move/PATH_MOVE`' ],
-  verifyNoList: [ 'path:move', 'PATH_MOVE' ]
-}, {
-  messageBreakIn: '@dr-js/node@0.3.0-dev.0',
-  messageList: [ '`fileTLS*` option of `configureServerPack` from `module/ServerPack`, use `TLSSNIConfig|TLSDHParam` instead' ],
-  verifyNoList: [ 'fileTLS' ]
-}, {
-  messageBreakIn: '@dr-js/node@0.3.0-dev.2',
-  messageList: [ 'use `ResolveCommand` from `@dr-js/core`' ],
-  verifyNoList: [ '@dr-js/node/library/module/ResolveCommand', '@dr-js/node/module/module/ResolveCommand' ]
-}, {
-  messageBreakIn: '@dr-js/node@0.3.0-dev.6',
-  messageList: [ 'drop `compressFileConfig` from `module/Software/7z`' ],
-  verifyPreNoList: [ 'module/Software/7z' ],
-  verifyNoList: [ 'compressFileConfig' ]
 }, { // @dr-js/dev break change
   messageBreakIn: 'dr-dev@0.0.6-dev.1',
   messageList: [ 'use `extraPresetList/extraPluginList` instead of `presetExtra/pluginExtra` for `getBabelConfig/getWebpackBabelConfig`' ],

@@ -3,7 +3,7 @@ import { relative } from 'path'
 import { toPosixPath } from '@dr-js/core/module/node/file/Path.js'
 import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
 import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener.js'
-import { configureTerminalColor } from '@dr-js/node/module/module/TerminalColor.js'
+import { configureTerminalColor } from '@dr-js/core/module/node/module/TerminalColor.js'
 
 import { createTest } from 'source/common/test.js'
 

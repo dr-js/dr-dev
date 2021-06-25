@@ -9,7 +9,7 @@ import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/n
 import { getDirInfoList, createDirectory, getFileList } from '@dr-js/core/module/node/file/Directory.js'
 import { modifyDelete } from '@dr-js/core/module/node/file/Modify.js'
 
-import { compressGzBrFileAsync } from '@dr-js/node/module/module/Software/function.js'
+import { compressGzBrFileAsync } from '@dr-js/core/module/node/module/Archive/function.js'
 
 const DEFAULT_RESOLVE_PATH = (path) => path
 

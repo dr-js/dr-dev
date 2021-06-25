@@ -10,7 +10,7 @@ import { getPathStat } from '@dr-js/core/module/node/file/Path.js'
 import { run } from '@dr-js/core/module/node/run.js'
 import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from '@dr-js/core/module/node/system/Process.js'
 
-import { getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm.js'
+import { getPathNpmExecutable } from '@dr-js/core/module/node/module/Software/npm.js'
 
 import { REGEXP_PUBLISH_VERSION } from 'source/output.js'
 import { withTempDirectory } from 'source/node/file.js'

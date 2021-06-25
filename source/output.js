@@ -9,7 +9,7 @@ import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import { run, runSync, runDetached } from '@dr-js/core/module/node/run.js'
 
-import { findUpPackageRoot, toPackageTgzName, getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm.js'
+import { findUpPackageRoot, toPackageTgzName, getPathNpmExecutable } from '@dr-js/core/module/node/module/Software/npm.js'
 
 import { __VERBOSE__, argvFlag } from './node/env.js'
 import { FILTER_TEST_PATH } from './node/preset.js'

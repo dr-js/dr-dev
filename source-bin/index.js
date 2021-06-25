@@ -13,8 +13,7 @@ import { doCacheStep } from './mode/cacheStep.js'
 import { run } from '@dr-js/core/module/node/run.js'
 import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function.js'
 
-import { fetchWithJumpProxy } from '@dr-js/node/module/module/Software/npm.js'
-import { patchModulePath as patchModulePathNode } from '@dr-js/node/bin/function.js'
+import { fetchWithJumpProxy } from '@dr-js/core/module/node/module/Software/npm.js'
 
 import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript.js'
 import { comboCommand } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
@@ -127,7 +126,6 @@ const runMode = async (optionData, modeName) => {
         patchMP: () => {
           patchModulePath()
           patchModulePathCore()
-          patchModulePathNode()
         },
         fetchWJ: fetchWithJumpProxy, fetchUA: `${packageName}/${packageVersion}`
       })

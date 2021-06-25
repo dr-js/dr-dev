@@ -2,7 +2,7 @@ import { resolve } from 'path'
 import { isString, isBasicObject, isBasicArray } from '@dr-js/core/module/common/check.js'
 import { objectFromEntries } from '@dr-js/core/module/common/immutable/Object.js'
 
-import { findUpPackageRoot } from '@dr-js/node/module/module/Software/npm.js'
+import { findUpPackageRoot } from '@dr-js/core/module/node/module/Software/npm.js'
 
 import { runPassThrough } from 'source/node/run.js'
 
