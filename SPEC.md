@@ -27,6 +27,8 @@
   - `commonFlag`, `compileWithWebpack`
 + 📄 [source/webpack-progress-plugin.js](source/webpack-progress-plugin.js)
   - `createProgressPlugin`
++ 📄 [source/browser/resource.js](source/browser/resource.js)
+  - `loadImage`, `loadScript`, `loadText`
 + 📄 [source/common/dev.js](source/common/dev.js)
   - `createTransformCacheWithInfo`, `hijackSetTimeoutInterval`
 + 📄 [source/common/test.js](source/common/test.js)
@@ -41,6 +43,8 @@
   - `getLogger`
 + 📄 [source/node/preset.js](source/node/preset.js)
   - `FILTER_JS_FILE`, `FILTER_SOURCE_JS_FILE`, `FILTER_SOURCE_PATH`, `FILTER_TEST_JS_FILE`, `FILTER_TEST_PATH`
++ 📄 [source/node/resource.js](source/node/resource.js)
+  - `loadJSON`, `loadLocalJSON`, `loadLocalScript`, `loadRemoteJSON`, `loadRemoteScript`, `loadScript`
 + 📄 [source/node/run.js](source/node/run.js)
   - `runAndHandover`, `runPassThrough`, `runWithAsyncFunc`, `runWithTee`, `withCwd`, `withRunBackground`
 + 📄 [source/node/cache/checksum.js](source/node/cache/checksum.js)

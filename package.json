@@ -26,7 +26,7 @@
     "script-publish-dev-all": "npm run script-publish-dev && npm run script-pack-resource-publish-dev",
     "script-generate-spec": "node -r @babel/register ./script/generateSpec",
     "// build =======================": "",
-    "build-library": "babel ./source --out-dir ./output-gitignore/library",
+    "build-library": "babel ./source --out-dir ./output-gitignore/library --ignore source/browser/",
     "build-library-dev": "dr-dev --EE BABEL_ENV=dev -E -- npm run build-library -- --watch",
     "build-module": "dr-dev --EE BABEL_ENV=module -E -- babel ./source --out-dir ./output-gitignore/module",
     "build-browser": "node -r @babel/register ./script/webpack production profile",
