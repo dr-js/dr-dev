@@ -19,18 +19,21 @@ import { writeLicenseFile } from './license.js'
 const fromPathCombo = ({
   PATH_ROOT = findUpPackageRoot(process.cwd()),
   PATH_OUTPUT = 'output-gitignore/', // relative
-  PATH_TEMP = tmpdir(),
-  PATH_HOME = homedir()
+  PATH_TEMP = '.temp-gitignore/', // relative
+  PATH_HOME = homedir(),
+  PATH_OSTEMP = tmpdir()
 } = {}) => {
   // allow use relative path from PATH_ROOT
   PATH_OUTPUT = resolve(PATH_ROOT, PATH_OUTPUT)
   PATH_TEMP = resolve(PATH_ROOT, PATH_TEMP)
   PATH_HOME = resolve(PATH_ROOT, PATH_HOME)
+  PATH_OSTEMP = resolve(PATH_ROOT, PATH_OSTEMP)
   return {
     PATH_ROOT, fromRoot: (...args) => resolve(PATH_ROOT, ...args),
     PATH_OUTPUT, fromOutput: (...args) => resolve(PATH_OUTPUT, ...args),
     PATH_TEMP, fromTemp: (...args) => resolve(PATH_TEMP, ...args),
-    PATH_HOME, fromHome: (...args) => resolve(PATH_HOME, ...args)
+    PATH_HOME, fromHome: (...args) => resolve(PATH_HOME, ...args),
+    PATH_OSTEMP, fromOsTemp: (...args) => resolve(PATH_OSTEMP, ...args)
   }
 }
 
