@@ -6,7 +6,7 @@ import {
   filterPrecompressFileList
 } from './file'
 
-const { describe, it } = global
+const { describe, it } = globalThis
 
 const PATH_ROOT = resolve(__dirname, __dirname.includes('output-gitignore') ? '../../../' : '../../')
 

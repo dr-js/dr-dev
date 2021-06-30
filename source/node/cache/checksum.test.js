@@ -12,7 +12,7 @@ import {
   checksumUpdate, checksumDetectChange
 } from './checksum.js'
 
-const { describe, it, before, after, info = console.log } = global
+const { describe, it, before, after, info = console.log } = globalThis
 
 const TEST_ROOT = resolve(__dirname, './test-checksum-gitignore/')
 const fromRoot = (...args) => resolve(TEST_ROOT, ...args)

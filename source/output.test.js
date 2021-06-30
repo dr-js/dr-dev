@@ -17,7 +17,7 @@ import {
 } from './output.js'
 import { getLogger } from './node/logger.js'
 
-const { describe, it, before, after, info = console.log } = global
+const { describe, it, before, after, info = console.log } = globalThis
 
 const PATH_TEST_ROOT = resolve(__dirname, './test-output-gitignore/')
 const PATH_ROOT = resolve(__dirname, __dirname.includes('output-gitignore') ? '../../' : '../')

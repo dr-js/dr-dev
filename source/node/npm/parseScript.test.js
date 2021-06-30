@@ -7,7 +7,7 @@ import {
   parsePackageScript
 } from './parseScript.js'
 
-const { describe, it, info = console.log } = global
+const { describe, it, info = console.log } = globalThis
 
 const tabLog = (level, ...args) => info(`${'  '.repeat(level)}${args.join(' ')}`)
 

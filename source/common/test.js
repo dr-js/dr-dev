@@ -1,5 +1,3 @@
-import { getGlobal } from '@dr-js/core/module/env/global.js'
-
 import { string, basicFunction } from '@dr-js/core/module/common/verify.js'
 import { isString, isBasicFunction } from '@dr-js/core/module/common/check.js'
 import { catchSync, catchAsync } from '@dr-js/core/module/common/error.js'
@@ -105,8 +103,8 @@ const createTest = ({
     RESULT = { passList: [], failList: [] }
     CONFIG = { log, logLevel, timeout }
 
-    // inject global for test script
-    !isSkipGlobalAssign && Object.assign(getGlobal(), { describe, it, before, after, info })
+    // inject globalThis for test script
+    !isSkipGlobalAssign && Object.assign(globalThis, { describe, it, before, after, info })
 
     CONFIG.log(colorMain('[TEST] setup'))
   }

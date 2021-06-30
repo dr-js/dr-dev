@@ -1,4 +1,3 @@
-import { getGlobal } from '@dr-js/core/module/env/global.js'
 import { clock } from '@dr-js/core/module/common/time.js'
 import { time } from '@dr-js/core/module/common/format.js'
 import { isCompactArrayShallowEqual } from '@dr-js/core/module/common/immutable/check.js'
@@ -67,9 +66,7 @@ const hijackSetTimeoutInterval = () => {
   const setIntervalOrg = setInterval
   const clearIntervalOrg = clearInterval
 
-  const global = getGlobal()
-
-  global.setTimeout = (func, delay, ...args) => {
+  globalThis.setTimeout = (func, delay, ...args) => {
     const token = setTimeoutOrg((...args) => {
       hijackPool.delete(token)
       return func(...args)
@@ -82,12 +79,12 @@ const hijackSetTimeoutInterval = () => {
     })
     return token
   }
-  global.clearTimeout = (token) => {
+  globalThis.clearTimeout = (token) => {
     hijackPool.delete(token)
     clearTimeoutOrg(token)
   }
 
-  global.setInterval = (func, delay, ...args) => {
+  globalThis.setInterval = (func, delay, ...args) => {
     const token = setIntervalOrg(func, delay, ...args)
     hijackPool.set(token, {
       type: 'setInterval',
@@ -97,7 +94,7 @@ const hijackSetTimeoutInterval = () => {
     })
     return token
   }
-  global.clearInterval = (token) => {
+  globalThis.clearInterval = (token) => {
     hijackPool.delete(token)
     clearIntervalOrg(token)
   }

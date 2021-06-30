@@ -10,7 +10,7 @@ import {
   loadStatFile, saveStatFile
 } from './staleCheck.js'
 
-const { describe, it, before, after, info = console.log } = global
+const { describe, it, before, after, info = console.log } = globalThis
 
 const TEST_ROOT = resolve(__dirname, './test-stale-check-gitignore/')
 const fromRoot = (...args) => resolve(TEST_ROOT, ...args)

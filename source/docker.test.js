@@ -4,7 +4,7 @@ import {
   getContainerLsList
 } from './docker.js'
 
-const { describe, it, info = console.log } = global
+const { describe, it, info = console.log } = globalThis
 
 describe('Docker', () => {
   __DEV__ && info(`DOCKER_BIN_PATH: ${resolveCommandName('docker')}`)

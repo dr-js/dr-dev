@@ -9,7 +9,7 @@ import {
   FILTER_SOURCE_JS_FILE
 } from './preset.js'
 
-const { describe, it } = global
+const { describe, it } = globalThis
 
 const TEST_PATH_LIST = []
 const EXPECT_LIST = []
