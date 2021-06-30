@@ -15,6 +15,8 @@ import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from
 
 import { fetchWithJumpProxy } from '@dr-js/core/module/node/module/Software/npm.js'
 
+import { patchModulePath as patchModulePathNode } from '@dr-js/node/bin/function.js' // TODO: DEPRECATE
+
 import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript.js'
 import { comboCommand } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
 import { runNpxLazy } from 'source/node/npm/npxLazy.js'
@@ -126,6 +128,7 @@ const runMode = async (optionData, modeName) => {
         patchMP: () => {
           patchModulePath()
           patchModulePathCore()
+          patchModulePathNode() // TODO: DEPRECATE
         },
         fetchWJ: fetchWithJumpProxy, fetchUA: `${packageName}/${packageVersion}` // TODO: DEPRECATE: drop mode 'fetch'
       })

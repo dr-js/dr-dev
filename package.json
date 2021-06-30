@@ -58,5 +58,8 @@
     "@dr-js/dev": "^0.4.16-dev.2",
     "@dr-js/dev-web": "^0.4.16-dev.2"
   },
+  "optionalDependencies": {
+    "@dr-js/node": "^0.4.9"
+  },
   "sideEffects": false
 }
