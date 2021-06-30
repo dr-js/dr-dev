@@ -64,7 +64,7 @@ const MODE_FORMAT_LIST = parseCompactList(
   // shared mode
   'eval,e/A,O|eval file or string: -O=outputFile, -I/$0=scriptFile/scriptString, $@=...evalArgv',
   'repl,i/T|start node REPL',
-  'fetch,f/AS,O/1-4|fetch url with http_proxy env support: -I=requestBody/null, -O=outputFile/stdout, $@=initialUrl,method/GET,jumpMax/4,timeout/0'
+  'fetch,f/AS,O/1-4|fetch url with http_proxy env support: -I=requestBody/null, -O=outputFile/stdout, $@=initialUrl,method/GET,jumpMax/4,timeout/0' // TODO: DEPRECATE: drop mode 'fetch'
 )
 
 const OPTION_CONFIG = {

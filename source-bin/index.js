@@ -127,7 +127,7 @@ const runMode = async (optionData, modeName) => {
           patchModulePath()
           patchModulePathCore()
         },
-        fetchWJ: fetchWithJumpProxy, fetchUA: `${packageName}/${packageVersion}`
+        fetchWJ: fetchWithJumpProxy, fetchUA: `${packageName}/${packageVersion}` // TODO: DEPRECATE: drop mode 'fetch'
       })
   }
 }
