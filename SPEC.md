@@ -128,8 +128,8 @@
 >         sort keys in package.json
 >     --git-commit --G -G [ARGUMENT=0-1]
 >         step up patch version, and prepare a git commit
->   --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
->       root path to look test file from, default to "."
+>   --test --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
+>       list of path to look test file from, default to "."
 >     --test-file-suffix --TFS [ARGUMENT=1+]
 >         pattern for test file, default to ".js"
 >     --test-require --TR [ARGUMENT=1+]
@@ -217,7 +217,7 @@
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_SORT_KEY="[ARGUMENT=0-1]"
 >     export DR_DEV_GIT_COMMIT="[ARGUMENT=0-1]"
->     export DR_DEV_TEST_ROOT="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
 >     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
 >     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
 >     export DR_DEV_TEST_TIMEOUT="[ARGUMENT=1] [ALIAS=DR_DEV_TT]"
@@ -273,7 +273,7 @@
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "sortKey": [ "[ARGUMENT=0-1]" ],
 >     "gitCommit": [ "[ARGUMENT=0-1]" ],
->     "testRoot": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
 >     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
 >     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],
 >     "testTimeout": [ "[ARGUMENT=1] [ALIAS=TT]" ],

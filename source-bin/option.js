@@ -22,7 +22,7 @@ const MODE_FORMAT_LIST = parseCompactList(
     'sort-key,K/T|sort keys in package.json',
     'git-commit,G/T|step up patch version, and prepare a git commit'
   ) ],
-  [ 'test-root,T/AP,O|root path to look test file from, default to "."', parseCompactList(
+  [ 'test,test-root,T/AP,O|list of path to look test file from, default to "."', parseCompactList( // TODO: deprecate `test-root`
     'test-file-suffix,TFS/AS,O|pattern for test file, default to ".js"',
     'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"',
     'test-timeout,TT/SI,O|timeout for each test, in msec, default to 42*1000 (42sec)'

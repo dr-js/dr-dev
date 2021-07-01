@@ -5,7 +5,7 @@ import { readFileSync } from 'fs'
 import { doCheckOutdated } from './mode/checkOutdated.js'
 import { doPack } from './mode/pack.js'
 import { doStepPackageVersion } from './mode/stepPackageVersion.js'
-import { doTestRootList } from './mode/testRoot.js'
+import { doTest } from './mode/test.js'
 import { doInit } from './mode/init.js'
 import { doExec, doExecLoad } from './mode/exec.js'
 import { doCacheStep } from './mode/cacheStep.js'
@@ -57,8 +57,8 @@ const runMode = async (optionData, modeName) => {
         isSortKey: getToggle('sort-key'),
         isGitCommit: getToggle('git-commit')
       })
-    case 'test-root':
-      return doTestRootList({
+    case 'test':
+      return doTest({
         testRootList: argumentList || [ process.cwd() ],
         testFileSuffixList: tryGet('test-file-suffix') || [ '.js' ],
         testRequireList: tryGet('test-require') || [],
