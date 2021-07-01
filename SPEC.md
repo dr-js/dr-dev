@@ -71,6 +71,10 @@
   - `npxLazy`, `runNpx`, `runNpxLazy`
 + 📄 [source/node/npm/parseScript.js](source/node/npm/parseScript.js)
   - `parseCommand`, `parsePackageScript`, `warpBashSubShell`, `wrapJoinBashArgs`
++ 📄 [source/node/package/Npm.js](source/node/package/Npm.js)
+  - `outdatedJSON`, `outdatedWithTempJSON`
++ 📄 [source/node/package/function.js](source/node/package/function.js)
+  - `loadPackageCombo`, `loadPackageInfo`, `loadPackageInfoList`, `toPackageJSONPath`, `toPackageRootPath`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)
