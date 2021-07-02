@@ -1,8 +1,6 @@
-import { readFileSync } from 'fs'
+import { runGitSync } from '@dr-js/core/module/node/module/Software/git.js'
 
-import { runSync } from '@dr-js/core/module/node/run.js'
-
-import { formatPackagePath, writePackageJSON } from '../function.js'
+import { loadPackageInfo, savePackageJSON } from 'source/node/package/function.js'
 
 const REGEXP_PACKAGE_VERSION = /^(\d+\.\d+\.\d+(?:-\w+\.\d+)*?)(?:-local\.)?(\d+)?$/ // check: https://regexr.com/419ol
 
@@ -37,13 +35,16 @@ const doStepPackageVersion = async ({
   isGitCommit = false,
   log = console.log
 }) => {
-  const { packageFile, packagePath } = formatPackagePath(pathInput)
-  const packageJSON = JSON.parse(String(readFileSync(packageFile)))
+  const {
+    packageJSON, // allow edit
+    packageJSONPath, packageRootPath
+  } = await loadPackageInfo(pathInput)
+
   const { name, version } = packageJSON
   const { nextVersion, nextMainVersion } = stepPackageVersion(version, isGitCommit)
 
   log(`[StepPackageVersion] next: ${nextVersion}, prev: ${version}`)
-  writePackageJSON({ path: packageFile, packageJSON: { ...packageJSON, version: nextVersion }, isSortKey })
+  await savePackageJSON({ packageJSONPath, packageJSON: { ...packageJSON, version: nextVersion }, isSortKey })
 
   if (!isGitCommit) return
 
@@ -60,8 +61,8 @@ const doStepPackageVersion = async ({
   ].join('\n')
 
   log(`[StepPackageVersion] git commit message: '${messageTitle}'`)
-  runSync([ 'git', 'add', packageFile ], { cwd: packagePath })
-  runSync([ 'git', 'commit', '-m', messageTitle, '-m', messageContent ], { cwd: packagePath })
+  runGitSync([ 'add', packageJSONPath ], { cwd: packageRootPath })
+  runGitSync([ 'commit', '-m', messageTitle, '-m', messageContent ], { cwd: packageRootPath })
 }
 
 export { doStepPackageVersion }

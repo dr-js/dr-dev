@@ -4,9 +4,8 @@ import { objectFromEntries } from '@dr-js/core/module/common/immutable/Object.js
 
 import { findUpPackageRoot } from '@dr-js/core/module/node/module/Software/npm.js'
 
+import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from 'source/common/packageJSON/function.js'
 import { runPassThrough } from 'source/node/run.js'
-
-import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from '../function.js'
 
 const doExec = async (argList, {
   env,

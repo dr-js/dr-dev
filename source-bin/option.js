@@ -1,20 +1,11 @@
 import { Preset, getOptionalFormatFlag, prepareOption } from '@dr-js/core/module/node/module/Option/preset.js'
 
+import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from 'source/common/packageJSON/function.js'
 import { COMBO_COMMAND_CONFIG_MAP } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
-import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from './function.js'
 
 const { Config, parseCompactList, pickOneOf } = Preset
 
 const MODE_FORMAT_LIST = parseCompactList(
-  [ 'pack/T', parseCompactList(
-    'path-output/SP|output path',
-    'output-name/SS,O|output package name',
-    'output-version/SS,O|output package version',
-    'output-description/SS,O|output package description',
-    'publish/T|run npm publish',
-    'publish-dev/T|run npm publish-dev',
-    'dry-run/T|for testing publish procedure'
-  ) ],
   [ 'check-outdated,C/T', parseCompactList(
     'path-temp/SP,O'
   ) ],

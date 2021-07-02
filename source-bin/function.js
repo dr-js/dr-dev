@@ -1,7 +1,5 @@
-import { resolve, dirname, basename } from 'path'
+import { resolve, basename } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
-import { binary } from '@dr-js/core/module/common/format.js'
-import { objectMergeDeep, objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'
 import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path.js'
 import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
 import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify.js'
@@ -13,77 +11,15 @@ import { modulePathHack } from '@dr-js/core/bin/function.js'
 //   `.../.npm/_npx/####/lib/node_modules/@dr-js/*/bin/function.js` + `../../../../` = `.../.npm/_npx/####/lib/node_modules/` // allow this and related module to resolve
 const patchModulePath = () => modulePathHack(resolve(module.filename, '../../../../'))
 
-const PACKAGE_KEY_DEV_EXEC_COMMAND_MAP = 'devExecCommands'
-
-const formatPackagePath = (packagePath) => {
-  const packageFile = packagePath.endsWith('.json') ? packagePath : resolve(packagePath, 'package.json')
-  if (packagePath.endsWith('.json')) packagePath = dirname(packagePath)
-  return { packageFile, packagePath }
-}
-
-const PACKAGE_KEY_SORT_REQUIRED = [
-  'bundledDependencies',
-  'peerDependencies',
-  'dependencies',
-  'devDependencies',
-  'optionalDependencies'
-]
-
-const PACKAGE_KEY_ORDER = [
-  'private',
-  'name', 'version', 'description',
-  'author', 'contributors', 'maintainers',
-  'license', 'keywords',
-  'repository', 'homepage', 'bugs',
-  'main', 'bin', 'browser',
-  'man', 'files', 'directories',
-  'scripts',
-  PACKAGE_KEY_DEV_EXEC_COMMAND_MAP, // extend from this package
-  'config', 'publishConfig',
-  'os', 'cpu', 'engines', 'engineStrict',
-  ...PACKAGE_KEY_SORT_REQUIRED
-]
-const getPackageKeyOrder = (key) => {
-  const index = PACKAGE_KEY_ORDER.indexOf(key)
-  return index === -1 ? Infinity : index
-}
-
-const writePackageJSON = ({
-  path,
-  packageJSON,
-  isSortKey = true,
-  log = console.log
-}) => {
-  isSortKey && PACKAGE_KEY_SORT_REQUIRED.forEach((key) => { packageJSON[ key ] && objectSortKey(packageJSON[ key ]) })
-  isSortKey && objectSortKey(packageJSON, (a, b) => getPackageKeyOrder(a) - getPackageKeyOrder(b))
-  const packageBuffer = Buffer.from(`${JSON.stringify(packageJSON, null, 2)}\n`)
-  writeFileSync(path, packageBuffer)
-  log(`[writePackageJSON] ${path} [${binary(packageBuffer.length)}B]`)
-}
-
 const NAME_PACK_EXPORT = 'EXPORT'
 const NAME_PACK_EXPORT_INIT_JSON = 'INIT.json'
 
 const getFromPackExport = (pathPackage) => (...args) => resolve(pathPackage, NAME_PACK_EXPORT, ...args)
 
-const copyAndSavePackExportInitJSON = async ({
+const writePackExportInitJSON = async ({
   pathPackage,
-  exportPairList
+  fromPackExport = getFromPackExport(pathPackage)
 }) => {
-  const fromPackExport = getFromPackExport(pathPackage)
-  const targetFileMap = {} // deduplicate
-  const targetPackageJSONMap = {} // merge
-  for (const [ source, targetRelative ] of exportPairList) {
-    if (targetRelative.endsWith('package.json')) {
-      let packageJSON = JSON.parse(String(readFileSync(source)))
-      if (targetPackageJSONMap[ targetRelative ]) packageJSON = objectMergeDeep(targetPackageJSONMap[ targetRelative ], packageJSON)
-      targetPackageJSONMap[ targetRelative ] = packageJSON
-    } else targetFileMap[ targetRelative ] = source
-  }
-
-  for (const [ targetRelative, source ] of Object.entries(targetFileMap)) await modifyCopy(source, fromPackExport(targetRelative))
-  for (const [ targetRelative, packageJSON ] of Object.entries(targetPackageJSONMap)) writePackageJSON({ path: fromPackExport(targetRelative), packageJSON })
-
   const initFilePrefix = fromPackExport('INIT#')
   writeFileSync(
     fromPackExport(NAME_PACK_EXPORT_INIT_JSON),
@@ -128,10 +64,7 @@ const REGEXP_TEXT_FILE = /\.(js|json|md|ya?ml|gitignore)$/
 export {
   patchModulePath,
 
-  PACKAGE_KEY_DEV_EXEC_COMMAND_MAP,
-  formatPackagePath,
-  writePackageJSON,
   getFromPackExport,
-  copyAndSavePackExportInitJSON,
+  writePackExportInitJSON,
   loadAndCopyPackExportInitJSON
 }

@@ -103,22 +103,6 @@
 >       common option
 >   --path-input [ARGUMENT=1]
 >       path to "package.json", or directory with "package.json" inside
->   --pack [OPTIONAL] [ARGUMENT=0-1]
->       set to ANY value to enable, except "false/no/n/0"
->     --path-output [ARGUMENT=1]
->         output path
->     --output-name [ARGUMENT=1]
->         output package name
->     --output-version [ARGUMENT=1]
->         output package version
->     --output-description [ARGUMENT=1]
->         output package description
->     --publish [ARGUMENT=0-1]
->         run npm publish
->     --publish-dev [ARGUMENT=0-1]
->         run npm publish-dev
->     --dry-run [ARGUMENT=0-1]
->         for testing publish procedure
 >   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0-1]
 >       set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
@@ -204,14 +188,6 @@
 >     export DR_DEV_OUTPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
 >     export DR_DEV_PATH_INPUT="[ARGUMENT=1]"
->     export DR_DEV_PACK="[OPTIONAL] [ARGUMENT=0-1]"
->     export DR_DEV_PATH_OUTPUT="[ARGUMENT=1]"
->     export DR_DEV_OUTPUT_NAME="[ARGUMENT=1]"
->     export DR_DEV_OUTPUT_VERSION="[ARGUMENT=1]"
->     export DR_DEV_OUTPUT_DESCRIPTION="[ARGUMENT=1]"
->     export DR_DEV_PUBLISH="[ARGUMENT=0-1]"
->     export DR_DEV_PUBLISH_DEV="[ARGUMENT=0-1]"
->     export DR_DEV_DRY_RUN="[ARGUMENT=0-1]"
 >     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
@@ -260,14 +236,6 @@
 >     "outputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
 >     "pathInput": [ "[ARGUMENT=1]" ],
->     "pack": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
->     "pathOutput": [ "[ARGUMENT=1]" ],
->     "outputName": [ "[ARGUMENT=1]" ],
->     "outputVersion": [ "[ARGUMENT=1]" ],
->     "outputDescription": [ "[ARGUMENT=1]" ],
->     "publish": [ "[ARGUMENT=0-1]" ],
->     "publishDev": [ "[ARGUMENT=0-1]" ],
->     "dryRun": [ "[ARGUMENT=0-1]" ],
 >     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "pathTemp": [ "[ARGUMENT=1]" ],
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0-1]" ],

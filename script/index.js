@@ -6,6 +6,8 @@ import { getTerserOption, minifyFileListWithTerser } from 'source/minify.js'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor.js'
 import { runMain, argvFlag, commonCombo } from 'source/main.js'
 
+import { doPackResource } from './packResource.js'
+
 runMain(async (logger) => {
   const { RUN, fromRoot, fromOutput } = commonCombo(logger)
   const fromPackageOutput = (...args) => fromRoot('output-package-gitignore/', ...args)
@@ -46,22 +48,21 @@ runMain(async (logger) => {
     logger.log('clear pack')
     await resetDirectory(fromPackageOutput())
 
-    const configFileList = await getFileListFromPathList([ './resource/__config__/' ], fromRoot, (path) => /dev-[\w-]+\.json/.test(path))
-    configFileList.forEach((file) => {
-      const { __FLAVOR__: { name, description } } = require(file)
+    const configJSONFileList = await getFileListFromPathList([ './resource/__config__/' ], fromRoot, (path) => /dev-[\w-]+\.json/.test(path))
+    for (const configJSONFile of configJSONFileList) {
+      const { __FLAVOR__: { name, description } } = require(configJSONFile)
       logger.padLog(`pack package ${name}`)
-      RUN([ process.execPath, './output-gitignore/bin',
-        '--pack',
-        '--path-input', file,
-        '--path-output', `./output-package-gitignore/${name}/`,
-        '--output-version', version,
-        '--output-name', name,
-        '--output-description', description,
-        isPublish && '--publish',
-        isPublishDev && '--publish-dev',
-        argvFlag('dry-run') && '--dry-run'
-      ].filter(Boolean))
-    })
+      await doPackResource({
+        configJSONFile,
+        pathOutput: `./output-package-gitignore/${name}/`,
+        outputName: name,
+        outputVersion: version,
+        outputDescription: description,
+        isPublish,
+        isPublishDev,
+        isDryRun: argvFlag('dry-run')
+      })
+    }
   }
 
   await verifyNoGitignore({ path: fromRoot('source'), logger })

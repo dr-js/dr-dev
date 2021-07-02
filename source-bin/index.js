@@ -3,7 +3,6 @@
 import { readFileSync } from 'fs'
 
 import { doCheckOutdated } from './mode/checkOutdated.js'
-import { doPack } from './mode/pack.js'
 import { doStepPackageVersion } from './mode/stepPackageVersion.js'
 import { doTest } from './mode/test.js'
 import { doInit } from './mode/init.js'
@@ -39,17 +38,6 @@ const runMode = async (optionData, modeName) => {
       return doCheckOutdated({
         pathInput: getFirst('path-input'),
         pathTemp: tryGetFirst('path-temp')
-      })
-    case 'pack':
-      return doPack({
-        pathInput: getFirst('path-input'),
-        pathOutput: getFirst('path-output'),
-        outputName: tryGetFirst('output-name'),
-        outputVersion: tryGetFirst('output-version'),
-        outputDescription: tryGetFirst('output-description'),
-        isPublish: getToggle('publish'),
-        isPublishDev: getToggle('publish-dev'),
-        isDryRun: getToggle('dry-run')
       })
     case 'step-package-version':
       return doStepPackageVersion({
