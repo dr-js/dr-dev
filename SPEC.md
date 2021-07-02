@@ -103,6 +103,26 @@
 >       common option
 >   --path-input [ARGUMENT=1]
 >       path to "package.json", or directory with "package.json" inside
+>   --test --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
+>       list of path to look test file from, default to "."
+>     --test-file-suffix --TFS [ARGUMENT=1+]
+>         pattern for test file, default to ".js"
+>     --test-require --TR [ARGUMENT=1+]
+>         module or file to require before test files, mostly for "@babel/register"
+>     --test-timeout --TT [ARGUMENT=1]
+>         timeout for each test, in msec, default to 42*1000 (42sec)
+>   --parse-script --ps [OPTIONAL] [ARGUMENT=1+]
+>       parse and echo: $@=scriptName,...extraArgs
+>   --parse-script-list --psl [OPTIONAL] [ARGUMENT=1+]
+>       combine multi-script, but no extraArgs: $@=...scriptNameList
+>   --run-script --rs [OPTIONAL] [ARGUMENT=1+]
+>       parse and run: $@=scriptName,...extraArgs
+>   --run-script-list --rsl [OPTIONAL] [ARGUMENT=1+]
+>       combine multi-script, but no extraArgs: $@=...scriptNameList
+>   --eval --e -e [OPTIONAL] [ARGUMENT=0+]
+>       eval file or string: -O=outputFile, -I/$0=scriptFile/scriptString, $@=...evalArgv
+>   --repl --i -i [OPTIONAL] [ARGUMENT=0-1]
+>       start node REPL
 >   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0-1]
 >       set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
@@ -112,14 +132,6 @@
 >         sort keys in package.json
 >     --git-commit --G -G [ARGUMENT=0-1]
 >         step up patch version, and prepare a git commit
->   --test --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
->       list of path to look test file from, default to "."
->     --test-file-suffix --TFS [ARGUMENT=1+]
->         pattern for test file, default to ".js"
->     --test-require --TR [ARGUMENT=1+]
->         module or file to require before test files, mostly for "@babel/register"
->     --test-timeout --TT [ARGUMENT=1]
->         timeout for each test, in msec, default to 42*1000 (42sec)
 >   --init [OPTIONAL] [ARGUMENT=0-1]
 >       path for init a package, will not reset existing file, default to "."
 >     --init-resource-package --P -P [ARGUMENT=1]
@@ -136,6 +148,8 @@
 >         use URLSearchParams format String, or key-value Object
 >     --exec-cwd --EC [ARGUMENT=0-1]
 >         reset cwd to path
+>   --exec-load --EL [OPTIONAL] [ARGUMENT=1+]
+>       load and exec command from package.json[ "devExecCommands" ]: $@=commandName, ...extraArgList
 >   --cache-step --cs [OPTIONAL] [ARGUMENT=1]
 >       one of:
 >         setup mark prune is-hash-changed
@@ -155,24 +169,10 @@
 >         path for generated stale-check report file, also useful for debugging
 >     --max-stale-day [ARGUMENT=1]
 >         how old unused file is stale, default: 8day
->   --exec-load --EL [OPTIONAL] [ARGUMENT=1+]
->       load and exec command from package.json[ "devExecCommands" ]: $@=commandName, ...extraArgList
->   --parse-script --ps [OPTIONAL] [ARGUMENT=1+]
->       parse and echo: $@=scriptName,...extraArgs
->   --parse-script-list --psl [OPTIONAL] [ARGUMENT=1+]
->       combine multi-script, but no extraArgs: $@=...scriptNameList
->   --run-script --rs [OPTIONAL] [ARGUMENT=1+]
->       parse and run: $@=scriptName,...extraArgs
->   --run-script-list --rsl [OPTIONAL] [ARGUMENT=1+]
->       combine multi-script, but no extraArgs: $@=...scriptNameList
 >   --npm-combo --nc --M -M [OPTIONAL] [ARGUMENT=1+]
 >       useful npm combo, one of: config|c|install-offline|io|install-clear|ic|package-dedupe|ddp|pd|package-reset|pr
 >   --npx-lazy --npx --nl --X -X [OPTIONAL] [ARGUMENT=1+]
 >       skip npx re-install if package version fit: $@=package@version,...extraArgs
->   --eval --e -e [OPTIONAL] [ARGUMENT=0+]
->       eval file or string: -O=outputFile, -I/$0=scriptFile/scriptString, $@=...evalArgv
->   --repl --i -i [OPTIONAL] [ARGUMENT=0-1]
->       start node REPL
 >   --fetch --f -f [OPTIONAL] [ARGUMENT=1-4]
 >       fetch url with http_proxy env support: -I=requestBody/null, -O=outputFile/stdout, $@=initialUrl,method/GET,jumpMax/4,timeout/0
 > ENV Usage:
@@ -188,15 +188,21 @@
 >     export DR_DEV_OUTPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
 >     export DR_DEV_PATH_INPUT="[ARGUMENT=1]"
+>     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
+>     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
+>     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
+>     export DR_DEV_TEST_TIMEOUT="[ARGUMENT=1] [ALIAS=DR_DEV_TT]"
+>     export DR_DEV_PARSE_SCRIPT="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PS]"
+>     export DR_DEV_PARSE_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PSL]"
+>     export DR_DEV_RUN_SCRIPT="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_RS]"
+>     export DR_DEV_RUN_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_RSL]"
+>     export DR_DEV_EVAL="[OPTIONAL] [ARGUMENT=0+]"
+>     export DR_DEV_REPL="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_SORT_KEY="[ARGUMENT=0-1]"
 >     export DR_DEV_GIT_COMMIT="[ARGUMENT=0-1]"
->     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
->     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
->     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
->     export DR_DEV_TEST_TIMEOUT="[ARGUMENT=1] [ALIAS=DR_DEV_TT]"
 >     export DR_DEV_INIT="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_INIT_RESOURCE_PACKAGE="[ARGUMENT=1]"
 >     export DR_DEV_INIT_RESET="[ARGUMENT=0-1]"
@@ -205,6 +211,7 @@
 >     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1] [ALIAS=DR_DEV_EE]"
 >     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1] [ALIAS=DR_DEV_EC]"
+>     export DR_DEV_EXEC_LOAD="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_EL]"
 >     export DR_DEV_CACHE_STEP="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_CS]"
 >     export DR_DEV_PRUNE_POLICY="[ARGUMENT=1]"
 >     export DR_DEV_PATH_STAT_FILE="[ARGUMENT=1]"
@@ -213,15 +220,8 @@
 >     export DR_DEV_PATH_STALE_CHECK_LIST="[ARGUMENT=0+]"
 >     export DR_DEV_PATH_STALE_CHECK_FILE="[ARGUMENT=1]"
 >     export DR_DEV_MAX_STALE_DAY="[ARGUMENT=1]"
->     export DR_DEV_EXEC_LOAD="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_EL]"
->     export DR_DEV_PARSE_SCRIPT="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PS]"
->     export DR_DEV_PARSE_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PSL]"
->     export DR_DEV_RUN_SCRIPT="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_RS]"
->     export DR_DEV_RUN_SCRIPT_LIST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_RSL]"
 >     export DR_DEV_NPM_COMBO="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_NC]"
 >     export DR_DEV_NPX_LAZY="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_NPX,DR_DEV_NL]"
->     export DR_DEV_EVAL="[OPTIONAL] [ARGUMENT=0+]"
->     export DR_DEV_REPL="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_FETCH="[OPTIONAL] [ARGUMENT=1-4]"
 >   "
 > CONFIG Usage:
@@ -236,15 +236,21 @@
 >     "outputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
 >     "pathInput": [ "[ARGUMENT=1]" ],
+>     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
+>     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
+>     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],
+>     "testTimeout": [ "[ARGUMENT=1] [ALIAS=TT]" ],
+>     "parseScript": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=ps]" ],
+>     "parseScriptList": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=psl]" ],
+>     "runScript": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=rs]" ],
+>     "runScriptList": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=rsl]" ],
+>     "eval": [ "[OPTIONAL] [ARGUMENT=0+]" ],
+>     "repl": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "pathTemp": [ "[ARGUMENT=1]" ],
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "sortKey": [ "[ARGUMENT=0-1]" ],
 >     "gitCommit": [ "[ARGUMENT=0-1]" ],
->     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
->     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
->     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],
->     "testTimeout": [ "[ARGUMENT=1] [ALIAS=TT]" ],
 >     "init": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "initResourcePackage": [ "[ARGUMENT=1]" ],
 >     "initReset": [ "[ARGUMENT=0-1]" ],
@@ -253,6 +259,7 @@
 >     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "execEnv": [ "[ARGUMENT=0-1] [ALIAS=EE]" ],
 >     "execCwd": [ "[ARGUMENT=0-1] [ALIAS=EC]" ],
+>     "execLoad": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=EL]" ],
 >     "cacheStep": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=cs]" ],
 >     "prunePolicy": [ "[ARGUMENT=1]" ],
 >     "pathStatFile": [ "[ARGUMENT=1]" ],
@@ -261,15 +268,8 @@
 >     "pathStaleCheckList": [ "[ARGUMENT=0+]" ],
 >     "pathStaleCheckFile": [ "[ARGUMENT=1]" ],
 >     "maxStaleDay": [ "[ARGUMENT=1]" ],
->     "execLoad": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=EL]" ],
->     "parseScript": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=ps]" ],
->     "parseScriptList": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=psl]" ],
->     "runScript": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=rs]" ],
->     "runScriptList": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=rsl]" ],
 >     "npmCombo": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=nc]" ],
 >     "npxLazy": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=npx,nl]" ],
->     "eval": [ "[OPTIONAL] [ARGUMENT=0+]" ],
->     "repl": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "fetch": [ "[OPTIONAL] [ARGUMENT=1-4]" ],
 >   }
 > ```

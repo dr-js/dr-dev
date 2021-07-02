@@ -34,17 +34,9 @@ const runMode = async (optionData, modeName) => {
     : () => {}
 
   switch (modeName) {
-    case 'check-outdated' :
-      return doCheckOutdated({
-        pathInput: getFirst('path-input'),
-        pathTemp: tryGetFirst('path-temp')
-      })
-    case 'step-package-version':
-      return doStepPackageVersion({
-        pathInput: tryGetFirst('path-input') || '.',
-        isSortKey: getToggle('sort-key'),
-        isGitCommit: getToggle('git-commit')
-      })
+    // new mode (no short commands for now to avoid conflict)
+
+    // keep mode
     case 'test':
       return doTest({
         testRootList: argumentList || [ process.cwd() ],
@@ -52,36 +44,7 @@ const runMode = async (optionData, modeName) => {
         testRequireList: tryGet('test-require') || [],
         testTimeout: tryGet('test-timeout') || 42 * 1000
       })
-    case 'init':
-      return doInit({
-        pathOutput: argumentList[ 0 ] || '.',
-        pathResourcePackage: tryGetFirst('init-resource-package') || '.',
-        isReset: getToggle('init-reset'),
-        isVerify: getToggle('init-verify'),
-        pathVerifyRule: tryGetFirst('init-verify-rule')
-      })
-    case 'exec':
-      return doExec(argumentList, {
-        env: tryGetFirst('exec-env'),
-        cwd: tryGetFirst('exec-cwd')
-      })
-    case 'cache-step':
-      return doCacheStep({
-        cacheStepType: argumentList[ 0 ],
-        prunePolicyType: tryGetFirst('prune-policy') || 'unused',
-        pathStatFile: tryGetFirst('path-stat-file'), // TODO: only when 'checksum-file-only'
-        pathChecksumList: get('path-checksum-list'),
-        pathChecksumFile: getFirst('path-checksum-file'),
-        pathStaleCheckList: tryGet('path-stale-check-list') || [],
-        pathStaleCheckFile: tryGetFirst('path-stale-check-file') || undefined,
-        maxStaleDay: tryGetFirst('max-stale-day') || 8
-      })
-    case 'exec-load':
-      return doExecLoad({
-        pathInput: tryGetFirst('path-input') || '.',
-        name: argumentList[ 0 ],
-        extraArgList: argumentList.slice(1)
-      })
+
     case 'parse-script':
     case 'parse-script-list':
     case 'run-script':
@@ -103,6 +66,49 @@ const runMode = async (optionData, modeName) => {
       //   bash -ec "false ; echo PASS" # will stop on error
       return run([ 'bash', '-ec', command ]).promise // TODO: inline `set -e`, or join command with `&&`?
     }
+
+    // TODO: DEPRECATE: reorder & rename options
+    case 'check-outdated' :
+      return doCheckOutdated({
+        pathInput: getFirst('path-input'),
+        pathTemp: tryGetFirst('path-temp')
+      })
+    case 'step-package-version':
+      return doStepPackageVersion({
+        pathInput: tryGetFirst('path-input') || '.',
+        isSortKey: getToggle('sort-key'),
+        isGitCommit: getToggle('git-commit')
+      })
+    case 'init':
+      return doInit({
+        pathOutput: argumentList[ 0 ] || '.',
+        pathResourcePackage: tryGetFirst('init-resource-package') || '.',
+        isReset: getToggle('init-reset'),
+        isVerify: getToggle('init-verify'),
+        pathVerifyRule: tryGetFirst('init-verify-rule')
+      })
+    case 'exec':
+      return doExec(argumentList, {
+        env: tryGetFirst('exec-env'),
+        cwd: tryGetFirst('exec-cwd') // TODO: naming
+      })
+    case 'exec-load':
+      return doExecLoad({
+        pathInput: tryGetFirst('path-input') || '.', // TODO: naming
+        name: argumentList[ 0 ],
+        extraArgList: argumentList.slice(1)
+      })
+    case 'cache-step':
+      return doCacheStep({
+        cacheStepType: argumentList[ 0 ],
+        prunePolicyType: tryGetFirst('prune-policy') || 'unused',
+        pathStatFile: tryGetFirst('path-stat-file'), // TODO: only when 'checksum-file-only'
+        pathChecksumList: get('path-checksum-list'),
+        pathChecksumFile: getFirst('path-checksum-file'),
+        pathStaleCheckList: tryGet('path-stale-check-list') || [],
+        pathStaleCheckFile: tryGetFirst('path-stale-check-file') || undefined,
+        maxStaleDay: tryGetFirst('max-stale-day') || 8
+      })
     case 'npm-combo': { // TODO: DEPRECATE: unused
       for (const name of argumentList) await comboCommand({ name, tabLog })
       return
