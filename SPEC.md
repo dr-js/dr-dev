@@ -33,6 +33,10 @@
   - `createTransformCacheWithInfo`, `hijackSetTimeoutInterval`
 + 📄 [source/common/test.js](source/common/test.js)
   - `createTest`
++ 📄 [source/common/packageJSON/Version.js](source/common/packageJSON/Version.js)
+  - `isVersionSpecComplex`, `versionBumpByGitBranch`, `versionBumpLastNumber`, `versionBumpToIdentifier`, `versionBumpToLocal`
++ 📄 [source/common/packageJSON/function.js](source/common/packageJSON/function.js)
+  - `collectDependency`, `toPackageInfo`
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
