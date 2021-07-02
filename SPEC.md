@@ -36,7 +36,7 @@
 + 📄 [source/common/packageJSON/Version.js](source/common/packageJSON/Version.js)
   - `isVersionSpecComplex`, `versionBumpByGitBranch`, `versionBumpLastNumber`, `versionBumpToIdentifier`, `versionBumpToLocal`
 + 📄 [source/common/packageJSON/function.js](source/common/packageJSON/function.js)
-  - `collectDependency`, `toPackageInfo`
+  - `PACKAGE_KEY_DEV_EXEC_COMMAND_MAP`, `collectDependency`, `packPackageJSON`, `sortPackageJSON`, `toPackageInfo`
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
@@ -74,7 +74,7 @@
 + 📄 [source/node/package/Npm.js](source/node/package/Npm.js)
   - `outdatedJSON`, `outdatedWithTempJSON`
 + 📄 [source/node/package/function.js](source/node/package/function.js)
-  - `loadPackageCombo`, `loadPackageInfo`, `loadPackageInfoList`, `toPackageJSONPath`, `toPackageRootPath`
+  - `loadPackageCombo`, `loadPackageInfo`, `loadPackageInfoList`, `savePackageJSON`, `toPackageJSONPath`, `toPackageRootPath`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)

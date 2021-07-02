@@ -1,8 +1,8 @@
 import { resolve, basename } from 'path'
-import { readJSON } from '@dr-js/core/module/node/fs/File.js'
+import { readJSON, writeText } from '@dr-js/core/module/node/fs/File.js'
 import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
 
-import { toPackageInfo, collectDependency } from 'source/common/packageJSON/function.js'
+import { sortPackageJSON, packPackageJSON, toPackageInfo, collectDependency } from 'source/common/packageJSON/function.js'
 
 const toPackageJSONPath = (path = process.cwd()) => resolve(...[
   path,
@@ -40,7 +40,17 @@ const loadPackageCombo = async (pathRoot) => {
   }
 }
 
+const savePackageJSON = async ({
+  packageJSON, packageJSONPath,
+  isSortKey = true
+}) => writeText(packageJSONPath, packPackageJSON(
+  isSortKey
+    ? sortPackageJSON(packageJSON)
+    : packageJSON
+))
+
 export {
   toPackageJSONPath, toPackageRootPath,
-  loadPackageInfo, loadPackageInfoList, loadPackageCombo
+  loadPackageInfo, loadPackageInfoList, loadPackageCombo,
+  savePackageJSON
 }
