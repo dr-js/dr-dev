@@ -6,7 +6,7 @@ import { isVersionSpecComplex } from 'source/common/packageJSON/Version.js'
 import { loadPackageCombo } from 'source/node/package/function.js'
 import { outdatedWithTempJSON } from 'source/node/package/Npm.js'
 
-const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput }) => {
+const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput, log = console.log }) => {
   const sameTable = []
   const complexTable = []
   const outdatedTable = []
@@ -23,7 +23,7 @@ const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput }) => {
   return { sameTable, complexTable, outdatedTable }
 }
 
-const logResult = ({ sameTable, complexTable, outdatedTable }) => {
+const logResult = ({ sameTable, complexTable, outdatedTable, log = console.log }) => {
   const total = sameTable.length + complexTable.length + outdatedTable.length
   __DEV__ && console.log(`Total: ${total} | Same: ${sameTable.length} | Complex: ${complexTable.length} | Outdated: ${outdatedTable.length}`)
 
@@ -36,22 +36,23 @@ const logResult = ({ sameTable, complexTable, outdatedTable }) => {
   sortPushTable(complexTable, 'COMPLEX')
   sortPushTable(outdatedTable, 'OUTDATED')
 
-  console.log(outputList.join('\n'))
+  log(outputList.join('\n'))
 }
 
 const doCheckOutdated = async ({
   pathInput,
-  pathTemp
+  pathTemp,
+  log = console.log
 }) => {
-  console.log(`[checkOutdated] checking '${pathInput}'`)
+  log(`[checkOutdated] checking '${pathInput}'`)
   const { packageInfoList, dependencyMap, dependencyInfoMap, duplicateInfoList } = await loadPackageCombo(pathInput)
-  console.log(`[checkOutdated] get ${packageInfoList.length} package`)
+  log(`[checkOutdated] get ${packageInfoList.length} package`)
   for (const { name, versionSpec, packageInfo: { packageJSONPath }, existPackageInfo } of duplicateInfoList) {
-    console.warn(`[WARN] dropped duplicate package: ${name} at ${relative(pathInput, packageJSONPath)} with version: ${versionSpec}, checking: ${existPackageInfo.versionSpec}`)
+    log(`[WARN] dropped duplicate package: ${name} at ${relative(pathInput, packageJSONPath)} with version: ${versionSpec}, checking: ${existPackageInfo.versionSpec}`)
   }
   const outdatedMap = await outdatedWithTempJSON({ packageJSON: { dependencies: dependencyMap }, pathTemp })
-  const { sameTable, complexTable, outdatedTable } = sortResult({ dependencyInfoMap, outdatedMap, pathInput })
-  logResult({ sameTable, complexTable, outdatedTable })
+  const { sameTable, complexTable, outdatedTable } = sortResult({ dependencyInfoMap, outdatedMap, pathInput, log })
+  logResult({ sameTable, complexTable, outdatedTable, log })
   outdatedTable.length && process.exit(outdatedTable.length)
 }
 

@@ -9,8 +9,6 @@ import { getLogger } from 'source/node/logger.js'
 import { packOutput, publishOutput } from 'source/output.js'
 import { getFromPackExport, writePackExportInitJSON } from 'source-bin/function.js'
 
-const GET_INITIAL_PACKAGE_INFO = () => ({ packageJSON: {}, exportPairList: [] })
-
 const copyAndSavePackExportInitJSON = async ({
   pathPackage,
   exportPairList
@@ -32,26 +30,31 @@ const copyAndSavePackExportInitJSON = async ({
   await writePackExportInitJSON({ pathPackage })
 }
 
-const loadPackage = async (configJSONFile, packageInfo = GET_INITIAL_PACKAGE_INFO(), loadedSet = new Set()) => {
-  const configRootPath = dirname(configJSONFile)
+const loadConfig = async ({
+  configJSONFile, logger,
+  packageJSON = {}, exportPairList = [], loadedSet = new Set()
+}) => {
+  const loopLoad = async (configJSONFile) => {
+    if (loadedSet.has(configJSONFile)) return
+    loadedSet.add(configJSONFile)
 
-  if (loadedSet.has(configJSONFile)) return packageInfo
-  loadedSet.add(configJSONFile)
+    const {
+      __FLAVOR__, // drop __FLAVOR__ from packageJSON
+      IMPORT: importList = [],
+      EXPORT: exportList = [],
+      ...mergePackageJSON
+    } = await readJSON(configJSONFile)
 
-  const {
-    __FLAVOR__, // drop __FLAVOR__ from packageJSON
-    IMPORT: importList = [],
-    EXPORT: exportList = [],
-    ...mergePackageJSON
-  } = require(configJSONFile)
-  const { packageJSON, exportPairList } = packageInfo
+    const configRootPath = dirname(configJSONFile)
+    for (const importPackagePath of importList) await loopLoad(resolve(configRootPath, importPackagePath, 'package.json'))
 
-  for (const importPackagePath of importList) await loadPackage(resolve(configRootPath, importPackagePath, 'package.json'), packageInfo, loadedSet)
+    logger.log(`load: ${configJSONFile}`)
+    exportList && exportList.forEach((filePath) => exportPairList.push(parseResourcePath(filePath, configRootPath)))
+    mergePackageJSON && objectMergeDeep(packageJSON, mergePackageJSON)
+  }
 
-  console.log(`[loadPackage] load: ${configJSONFile}`)
-  exportList && exportList.forEach((filePath) => exportPairList.push(parseResourcePath(filePath, configRootPath)))
-  mergePackageJSON && objectMergeDeep(packageJSON, mergePackageJSON)
-  return packageInfo
+  await loopLoad(configJSONFile)
+  return { packageJSON, exportPairList }
 }
 
 const parseResourcePath = (resourcePath, configRootPath) => typeof (resourcePath) === 'object'
@@ -59,22 +62,17 @@ const parseResourcePath = (resourcePath, configRootPath) => typeof (resourcePath
   : [ resolve(configRootPath, resourcePath), resourcePath ]
 
 const doPackResource = async ({
-  configJSONFile,
-  pathOutput,
-  outputName,
-  outputVersion,
-  outputDescription,
-  isPublish = false,
-  isPublishDev = false,
-  isDryRun = false
+  configJSONFile, pathOutput,
+  outputName, outputVersion, outputDescription,
+  isPublish = false, isPublishDev = false, isDryRun = false,
+  logger = getLogger('pack')
 }) => {
-  const { packageJSON, exportPairList } = await loadPackage(configJSONFile)
+  const { packageJSON, exportPairList } = await loadConfig({ configJSONFile, logger })
   if (outputName) packageJSON.name = outputName
   if (outputVersion) packageJSON.version = outputVersion
   if (outputDescription) packageJSON.description = outputDescription
 
   const fromOutput = (...args) => resolve(pathOutput, ...args)
-  const logger = getLogger('pack')
 
   // custom initOutput
   await resetDirectory(pathOutput)

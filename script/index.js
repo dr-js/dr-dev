@@ -6,24 +6,12 @@ import { getTerserOption, minifyFileListWithTerser } from 'source/minify.js'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor.js'
 import { runMain, argvFlag, commonCombo } from 'source/main.js'
 
+import { doCheckOutdated } from 'source-bin/mode/checkOutdated.js'
+
 import { doPackResource } from './packResource.js'
 
 runMain(async (logger) => {
   const { RUN, fromRoot, fromOutput } = commonCombo(logger)
-  const fromPackageOutput = (...args) => fromRoot('output-package-gitignore/', ...args)
-
-  const buildOutput = async ({ logger }) => {
-    logger.padLog('generate spec')
-    RUN('npm run script-generate-spec')
-    logger.padLog('build library')
-    RUN('npm run build-library')
-    logger.padLog('build module')
-    RUN('npm run build-module')
-    logger.padLog('build browser')
-    RUN('npm run build-browser')
-    logger.padLog('build bin')
-    RUN('npm run build-bin')
-  }
 
   const processOutput = async ({ logger }) => {
     const fileListBrowserBin = await getSourceJsFileListFromPathList([ 'browser', 'bin' ], fromOutput)
@@ -37,15 +25,14 @@ runMain(async (logger) => {
 
   const packResource = async ({ packageJSON: { version }, logger }) => {
     const { isPublish, isPublishDev } = getPublishFlag(process.argv, version)
-    logger.padLog(`pack resource package: ${version}, isPublish: ${isPublish}, isPublishDev: ${isPublishDev}`)
-
     if (!argvFlag('unsafe')) {
       logger.padLog('run check-outdated')
-      RUN('npm run check-outdated')
+      await doCheckOutdated({ pathInput: fromRoot('resource/'), log: logger.log })
     } else if (isPublish || isPublishDev) throw new Error('[unsafe] should not be used when publish')
     else logger.padLog('[unsafe] skipped check-outdated')
 
-    logger.log('clear pack')
+    logger.log('clear resource package output')
+    const fromPackageOutput = (...args) => fromRoot('output-package-gitignore/', ...args)
     await resetDirectory(fromPackageOutput())
 
     const configJSONFileList = await getFileListFromPathList([ './resource/__config__/' ], fromRoot, (path) => /dev-[\w-]+\.json/.test(path))
@@ -53,14 +40,10 @@ runMain(async (logger) => {
       const { __FLAVOR__: { name, description } } = require(configJSONFile)
       logger.padLog(`pack package ${name}`)
       await doPackResource({
-        configJSONFile,
-        pathOutput: `./output-package-gitignore/${name}/`,
-        outputName: name,
-        outputVersion: version,
-        outputDescription: description,
-        isPublish,
-        isPublishDev,
-        isDryRun: argvFlag('dry-run')
+        configJSONFile, pathOutput: fromPackageOutput(name),
+        outputName: name, outputVersion: version, outputDescription: description,
+        isPublish, isPublishDev, isDryRun: argvFlag('dry-run'),
+        logger
       })
     }
   }
@@ -69,8 +52,20 @@ runMain(async (logger) => {
   await verifyNoGitignore({ path: fromRoot('source-bin'), logger })
   const packageJSON = await initOutput({ fromRoot, fromOutput, logger })
   if (!argvFlag('pack')) return
-  await buildOutput({ logger })
-  if (argvFlag('resource')) return packResource({ packageJSON, logger }) // do not run both
+
+  logger.padLog('generate spec')
+  RUN('npm run script-generate-spec')
+  logger.padLog('build library')
+  RUN('npm run build-library')
+  logger.padLog('build module')
+  RUN('npm run build-module')
+  logger.padLog('build browser')
+  RUN('npm run build-browser')
+  logger.padLog('build bin')
+  RUN('npm run build-bin')
+
+  await packResource({ packageJSON, logger })
+
   await processOutput({ logger })
   const isTest = argvFlag('test', 'publish-auto', 'publish', 'publish-dev')
   isTest && logger.padLog('lint source')
