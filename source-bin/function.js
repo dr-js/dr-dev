@@ -1,4 +1,4 @@
-import { resolve, dirname, basename, relative } from 'path'
+import { resolve, dirname, basename } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { objectMergeDeep, objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'
@@ -59,44 +59,6 @@ const writePackageJSON = ({
   const packageBuffer = Buffer.from(`${JSON.stringify(packageJSON, null, 2)}\n`)
   writeFileSync(path, packageBuffer)
   log(`[writePackageJSON] ${path} [${binary(packageBuffer.length)}B]`)
-}
-
-const loadPackage = (pathInput, path, collect) => {
-  const packageSource = relative(pathInput, path)
-  __DEV__ && console.log(`[loadPackage] ${packageSource}`)
-  const {
-    dependencies,
-    devDependencies,
-    peerDependencies,
-    optionalDependencies
-  } = JSON.parse(String(readFileSync(path)))
-  dependencies && collect(dependencies, packageSource)
-  devDependencies && collect(devDependencies, packageSource)
-  peerDependencies && collect(peerDependencies, packageSource)
-  optionalDependencies && collect(optionalDependencies, packageSource)
-}
-
-const createDependencyCollector = () => {
-  let packageInfoMap = {} // [name]: { name, version, source }
-  const collect = (dependencyObject, source) => Object.entries(dependencyObject).forEach(([ name, version ]) => {
-    if (packageInfoMap[ name ]) return console.warn(`[collect] dropped duplicate package: ${name} at ${source} with version: ${version}, checking: ${packageInfoMap[ name ].version}`)
-    packageInfoMap[ name ] = { name, version, source }
-  })
-  const getResult = () => {
-    const result = objectSortKey(packageInfoMap)
-    packageInfoMap = {}
-    return result
-  }
-  return { collect, getResult }
-}
-
-const collectDependency = async (pathInput, isRecursive) => {
-  const packageJsonList = isRecursive
-    ? (await getFileList(pathInput)).filter((path) => basename(path) === 'package.json')
-    : [ pathInput ]
-  const { collect, getResult } = createDependencyCollector()
-  packageJsonList.forEach((path) => loadPackage(pathInput, path, collect))
-  return getResult()
 }
 
 const NAME_PACK_EXPORT = 'EXPORT'
@@ -169,7 +131,6 @@ export {
   PACKAGE_KEY_DEV_EXEC_COMMAND_MAP,
   formatPackagePath,
   writePackageJSON,
-  collectDependency,
   getFromPackExport,
   copyAndSavePackExportInitJSON,
   loadAndCopyPackExportInitJSON
