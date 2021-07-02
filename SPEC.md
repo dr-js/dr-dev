@@ -10,7 +10,7 @@
 + 📄 [source/ci.js](source/ci.js)
   - `commonInfoPatchCombo`
 + 📄 [source/docker.js](source/docker.js)
-  - `checkImageExist`, `checkLocalImage`, `checkPullImage`, `compose`, `composeSync`, `docker`, `dockerSync`, `dockerWithTee`, `getContainerLsList`, `getContainerPsList`, `matchContainerLsList`, `matchContainerPsList`, `patchContainerLsListStartedAt`, `pullImage`, `runDocker`
+  - `checkImageExist`, `checkLocalImage`, `checkPullImage`, `compose`, `composeSync`, `docker`, `dockerSync`, `dockerWithTee`, `getContainerLsList`, `getContainerPsList`, `matchContainerLsList`, `matchContainerPsList`, `patchContainerLsListStartedAt`, `pullImage`, `runDocker`, `runDockerWithTee`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
   - `fileProcessorBabel`, `fileProcessorWebpack`, `processFileList`
 + 📄 [source/license.js](source/license.js)
