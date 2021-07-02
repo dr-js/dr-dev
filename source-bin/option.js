@@ -18,7 +18,7 @@ const MODE_FORMAT_LIST = parseCompactList(
     'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"',
     'test-timeout,TT/SI,O|timeout for each test, in msec, default to 42*1000 (42sec)'
   ) ],
-  [ 'init/AP,O/0-1|path for init a package, will not reset existing file, default to "."', parseCompactList(
+  [ 'init/AP,O/0-1|path for init a package, will not reset existing file, default to "."', parseCompactList( // TODO: DEPRECATE: simplify or remove
     'init-resource-package,P/SP,O|path to resource package, default search for "./node_modules/@dr-js/dev-*/"',
     'init-reset,R/T|allow init to reset existing file',
     'init-verify,V/T|do common init file content check, will skip file modify',

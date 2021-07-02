@@ -11,7 +11,7 @@ import { getFromPackExport, loadAndCopyPackExportInitJSON } from '../function.js
 
 const NAME_PACK_EXPORT_INIT_VERIFY_RULE = 'INIT_VERIFY_RULE' // TODO: better lock file name
 
-const doInit = async ({
+const doInit = async ({ // TODO: DEPRECATE: simplify or remove
   pathOutput,
   pathResourcePackage,
   isReset = false,
@@ -82,4 +82,4 @@ const initVerify = async (pathRoot, VERIFY_RULE_LIST) => {
   }
   process.exit(Math.min(failedFileInfoMap.size, 42))
 }
-export { doInit }
+export { doInit } // TODO: DEPRECATE: simplify or remove
