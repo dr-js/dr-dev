@@ -3,7 +3,7 @@ import { join, dirname } from 'path'
 import { writeFileSync } from 'fs'
 
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory.js'
+import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { addExitListenerAsync } from '@dr-js/core/module/node/system/ExitListener.js'
 
 import { __VERBOSE__, argvFlag } from './node/env.js'

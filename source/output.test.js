@@ -3,9 +3,9 @@ import { readFileSync } from 'fs'
 
 import { indentLine } from '@dr-js/core/module/common/string.js'
 import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } from '@dr-js/core/module/common/verify.js'
-import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path.js'
-import { resetDirectory } from '@dr-js/core/module/node/file/Directory.js'
-import { modifyDelete } from '@dr-js/core/module/node/file/Modify.js'
+import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/fs/Path.js'
+import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
 import {
   fromPathCombo,

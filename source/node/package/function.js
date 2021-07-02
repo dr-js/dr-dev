@@ -1,6 +1,6 @@
 import { resolve, basename } from 'path'
 import { readJSON, writeText } from '@dr-js/core/module/node/fs/File.js'
-import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
+import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 
 import { sortPackageJSON, packPackageJSON, toPackageInfo, collectDependency } from 'source/common/packageJSON/function.js'
 

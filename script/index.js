@@ -1,4 +1,4 @@
-import { resetDirectory } from '@dr-js/core/module/node/file/Directory.js'
+import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { getFileListFromPathList } from 'source/node/file.js'
 import { getSourceJsFileListFromPathList } from 'source/node/filePreset.js'
 import { initOutput, packOutput, clearOutput, verifyOutputBin, verifyNoGitignore, verifyGitStatusClean, getPublishFlag, publishOutput } from 'source/output.js'

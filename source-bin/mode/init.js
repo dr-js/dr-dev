@@ -3,7 +3,7 @@ import { readFileSync } from 'fs'
 
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { indentLine } from '@dr-js/core/module/common/string.js'
-import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
+import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 
 import { findPathFragList } from 'source/node/file.js'
 

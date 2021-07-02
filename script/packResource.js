@@ -1,8 +1,8 @@
 import { resolve, dirname } from 'path'
 import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object.js'
 import { readJSON, writeText } from '@dr-js/core/module/node/fs/File.js'
-import { resetDirectory } from '@dr-js/core/module/node/file/Directory.js'
-import { modifyCopy } from '@dr-js/core/module/node/file/Modify.js'
+import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+import { modifyCopy } from '@dr-js/core/module/node/fs/Modify.js'
 
 import { savePackageJSON } from 'source/node/package/function.js'
 import { getLogger } from 'source/node/logger.js'

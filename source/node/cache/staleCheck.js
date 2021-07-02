@@ -3,8 +3,8 @@ import { promises as fsAsync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common/module/AsyncLane.js'
 
-import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/file/Path.js'
-import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/file/Directory.js'
+import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/fs/Path.js'
+import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 
 import { packTime, parseTime, loadStat, saveStat } from './function.js'
 

@@ -1,7 +1,7 @@
 import { relative } from 'path'
 
-import { toPosixPath } from '@dr-js/core/module/node/file/Path.js'
-import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
+import { toPosixPath } from '@dr-js/core/module/node/fs/Path.js'
+import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener.js'
 import { configureTerminalColor } from '@dr-js/core/module/node/module/TerminalColor.js'
 

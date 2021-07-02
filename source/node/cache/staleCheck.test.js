@@ -2,8 +2,8 @@ import { resolve } from 'path'
 import { promises as fsAsync } from 'fs'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
 import { getSampleRange } from '@dr-js/core/module/common/math/sample.js'
-import { createDirectory, resetDirectory } from '@dr-js/core/module/node/file/Directory.js'
-import { modifyDelete } from '@dr-js/core/module/node/file/Modify.js'
+import { createDirectory, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
 import {
   staleCheckSetup, staleCheckMark, staleCheckCalcReport,

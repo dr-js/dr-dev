@@ -7,8 +7,8 @@ import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common
 
 import { calcHash } from '@dr-js/core/module/node/data/Buffer.js'
 import { setupStreamPipe, readableStreamToBufferAsync } from '@dr-js/core/module/node/data/Stream.js'
-import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/file/Path.js'
-import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/file/Directory.js'
+import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/fs/Path.js'
+import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 
 import { packTime, parseTime, loadStat, saveStat } from './function.js'
 

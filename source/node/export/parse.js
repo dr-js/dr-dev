@@ -3,7 +3,7 @@ import { readFileSync } from 'fs'
 import { parse as parseAST } from '@babel/parser'
 import { compareString } from '@dr-js/core/module/common/compare.js'
 import { objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'
-import { getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/file/Path.js'
+import { getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/fs/Path.js'
 
 const getExportListFromParsedAST = (fileString, sourceFilename, parserPluginList) => {
   const resultAST = parseAST(fileString, {

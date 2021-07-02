@@ -1,8 +1,8 @@
 import { resolve, basename } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
-import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path.js'
-import { getFileList } from '@dr-js/core/module/node/file/Directory.js'
-import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify.js'
+import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/fs/Path.js'
+import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
+import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/fs/Modify.js'
 
 import { modulePathHack } from '@dr-js/core/bin/function.js'
 

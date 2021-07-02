@@ -1,7 +1,7 @@
 import { relative } from 'path'
 import { padTable } from '@dr-js/core/module/common/format.js'
 import { indentLine, forEachRegExpExec } from '@dr-js/core/module/common/string.js'
-import { toPosixPath } from '@dr-js/core/module/node/file/Path.js'
+import { toPosixPath } from '@dr-js/core/module/node/fs/Path.js'
 import { HOIST_LIST_KEY, EXPORT_LIST_KEY, EXPORT_HOIST_LIST_KEY } from './generate.js'
 
 // check: https://gist.github.com/asabaylus/3071099

@@ -3,7 +3,7 @@ import { createWriteStream } from 'fs'
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
 import { run } from '@dr-js/core/module/node/run.js'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory.js'
+import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { resolveCommandAsync } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import {
   getProcessListAsync,

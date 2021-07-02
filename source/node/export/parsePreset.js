@@ -1,4 +1,4 @@
-import { getDirInfoTree, walkDirInfoTreeAsync } from '@dr-js/core/module/node/file/Directory.js'
+import { getDirInfoTree, walkDirInfoTreeAsync } from '@dr-js/core/module/node/fs/Directory.js'
 import { FILTER_SOURCE_PATH } from '../preset.js'
 import { createExportParser } from './parse.js'
 
