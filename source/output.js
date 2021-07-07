@@ -45,11 +45,12 @@ const commonCombo = (
   }
 ) => {
   const pathConfig = fromPathCombo(config)
-  const RUN = (argListOrString, isDetached = false) => { // TODO: DEPRECATE: move `isDetached` in to option object
+  const RUN = (argListOrString, optionOrIsDetached) => { // TODO: DEPRECATE: move `isDetached` in to option object
+    const { isDetached = false, ...option } = isBasicObject(optionOrIsDetached) ? optionOrIsDetached : { isDetached: Boolean(optionOrIsDetached) }
     const argList = Array.isArray(argListOrString) ? [ ...argListOrString ] : argListOrString.split(' ').filter(Boolean) // prepend `'bash', '-c'` to run in bash shell
     argList[ 0 ] = resolveCommand(argList[ 0 ], pathConfig.PATH_ROOT) // mostly for finding `npm.cmd` on win32
     if (config.DRY_RUN) !config.QUIET_RUN && logger.log(`[${config.DRY_RUN ? 'RUN|DRY' : isDetached ? 'RUN|DETACHED' : 'RUN'}] "${argList.join(' ')}"`)
-    else return (isDetached ? runDetached : runSync)(argList, { cwd: pathConfig.PATH_ROOT, stdio: config.QUIET_RUN ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit' })
+    else return (isDetached ? runDetached : runSync)(argList, { cwd: pathConfig.PATH_ROOT, stdio: config.QUIET_RUN ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit', ...option })
   }
   return { config, ...pathConfig, RUN }
 }
