@@ -1,10 +1,10 @@
 {
   "scripts": {
     "// script ======================": "",
-    "script-pack": "node -r @babel/register ./script quiet pack",
-    "script-publish-auto": "node -r @babel/register ./script pack publish-auto",
-    "script-publish": "node -r @babel/register ./script pack publish",
-    "script-publish-dev": "node -r @babel/register ./script pack publish-dev",
+    "script-pack": "node -r @babel/register ./script/pack quiet pack",
+    "script-publish-auto": "node -r @babel/register ./script/pack pack publish-auto",
+    "script-publish": "node -r @babel/register ./script/pack pack publish",
+    "script-publish-dev": "node -r @babel/register ./script/pack pack publish-dev",
     "script-generate-spec": "node -r @babel/register ./script/generateSpec"
   }
 }

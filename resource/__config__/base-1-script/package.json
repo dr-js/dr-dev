@@ -1,7 +1,7 @@
 {
   "EXPORT": [
     "INIT#script#generateSpec.js",
-    "INIT#script#index.js",
+    "INIT#script#pack.js",
     "INIT#package.json"
   ],
   "dependencies": {
