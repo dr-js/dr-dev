@@ -1,13 +1,13 @@
 import { relative } from 'path'
 
-import { toPosixPath } from '@dr-js/core/module/node/file/Path'
-import { getFileList } from '@dr-js/core/module/node/file/Directory'
-import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener'
-import { configureTerminalColor } from '@dr-js/node/module/module/TerminalColor'
+import { toPosixPath } from '@dr-js/core/module/node/fs/Path.js'
+import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
+import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener.js'
+import { configureTerminalColor } from '@dr-js/core/module/node/module/TerminalColor.js'
 
-import { createTest } from 'source/common/test'
+import { createTest } from 'source/common/test.js'
 
-const doTestRoot = async ({
+const test = async ({
   testRoot = process.cwd(),
   testFileSuffixList = [ '.js' ],
   testRequireList = [],
@@ -65,14 +65,14 @@ const doTestRoot = async ({
   if (failCount) throw new Error(`${failCount} of ${testCount} test fail from ${fileList.length} file`)
 }
 
-const doTestRootList = async ({
+const doTest = async ({
   testRootList = [ process.cwd() ],
   testFileSuffixList = [ '.js' ],
   testRequireList = [],
   testTimeout = 42 * 1000
 }) => {
   for (const testRoot of testRootList) {
-    await doTestRoot({
+    await test({
       testRoot,
       testFileSuffixList,
       testRequireList,
@@ -81,7 +81,4 @@ const doTestRootList = async ({
   }
 }
 
-export {
-  doTestRoot,
-  doTestRootList
-}
+export { doTest }

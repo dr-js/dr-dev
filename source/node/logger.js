@@ -1,10 +1,10 @@
-import { clock } from '@dr-js/core/module/common/time'
-import { time } from '@dr-js/core/module/common/format'
-import { clamp } from '@dr-js/core/module/common/math/base'
+import { clock } from '@dr-js/core/module/common/time.js'
+import { time } from '@dr-js/core/module/common/format.js'
+import { clamp } from '@dr-js/core/module/common/math/base.js'
 
-import { configureTerminalColor } from '@dr-js/node/module/module/TerminalColor'
+import { configureTerminalColor } from '@dr-js/core/module/node/module/TerminalColor.js'
 
-import { loadEnvKey, saveEnvKey, __VERBOSE__ } from './env'
+import { loadEnvKey, saveEnvKey, __VERBOSE__ } from './env.js'
 
 const EMPTY_FUNC = () => {}
 

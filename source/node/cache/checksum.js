@@ -2,15 +2,15 @@ import { resolve, relative, dirname } from 'path'
 import { createReadStream, promises as fsAsync } from 'fs'
 import { createHash } from 'crypto'
 
-import { compareString } from '@dr-js/core/module/common/compare'
-import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common/module/AsyncLane'
+import { compareString } from '@dr-js/core/module/common/compare.js'
+import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common/module/AsyncLane.js'
 
-import { calcHash } from '@dr-js/core/module/node/data/Buffer'
-import { setupStreamPipe, readableStreamToBufferAsync } from '@dr-js/core/module/node/data/Stream'
-import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/file/Path'
-import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/file/Directory'
+import { calcHash } from '@dr-js/core/module/node/data/Buffer.js'
+import { setupStreamPipe, readableStreamToBufferAsync } from '@dr-js/core/module/node/data/Stream.js'
+import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/fs/Path.js'
+import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 
-import { packTime, parseTime, loadStat, saveStat } from './function'
+import { packTime, parseTime, loadStat, saveStat } from './function.js'
 
 const getChecksumInfoOfFile = async (
   absolutePath, // absolute path of file

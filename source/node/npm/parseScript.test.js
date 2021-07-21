@@ -1,13 +1,13 @@
-import { strictEqual } from '@dr-js/core/module/common/verify'
+import { strictEqual } from '@dr-js/core/module/common/verify.js'
 
 import {
   wrapJoinBashArgs,
   warpBashSubShell,
   parseCommand,
   parsePackageScript
-} from './parseScript'
+} from './parseScript.js'
 
-const { describe, it, info = console.log } = global
+const { describe, it, info = console.log } = globalThis
 
 const tabLog = (level, ...args) => info(`${'  '.repeat(level)}${args.join(' ')}`)
 

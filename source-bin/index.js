@@ -2,26 +2,26 @@
 
 import { readFileSync } from 'fs'
 
-import { doCheckOutdated } from './mode/checkOutdated'
-import { doPack } from './mode/pack'
-import { doStepPackageVersion } from './mode/stepPackageVersion'
-import { doTestRootList } from './mode/testRoot'
-import { doInit } from './mode/init'
-import { doExec, doExecLoad } from './mode/exec'
-import { doCacheStep } from './mode/cacheStep'
+import { doCheckOutdated } from './mode/checkOutdated.js'
+import { doStepPackageVersion } from './mode/stepPackageVersion.js'
+import { doTest } from './mode/test.js'
+import { doInit } from './mode/init.js'
+import { doExec, doExecLoad } from './mode/exec.js'
+import { doCacheStep } from './mode/cacheStep.js'
 
-import { run } from '@dr-js/core/module/node/run'
-import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function'
+import { run } from '@dr-js/core/module/node/run.js'
+import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function.js'
 
-import { fetchWithJumpProxy } from '@dr-js/node/module/module/Software/npm'
-import { patchModulePath as patchModulePathNode } from '@dr-js/node/bin/function'
+import { fetchWithJumpProxy } from '@dr-js/core/module/node/module/Software/npm.js'
 
-import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript'
-import { comboCommand } from 'source/node/npm/comboCommand' // TODO: DEPRECATE: unused
-import { runNpxLazy } from 'source/node/npm/npxLazy'
+import { patchModulePath as patchModulePathNode } from '@dr-js/node/bin/function.js' // TODO: DEPRECATE
 
-import { patchModulePath } from './function'
-import { MODE_NAME_LIST, parseOption, formatUsage } from './option'
+import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript.js'
+import { comboCommand } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
+import { runNpxLazy } from 'source/node/npm/npxLazy.js'
+
+import { patchModulePath } from './function.js'
+import { MODE_NAME_LIST, parseOption, formatUsage } from './option.js'
 import { name as packageName, version as packageVersion } from '../package.json'
 
 const runMode = async (optionData, modeName) => {
@@ -34,65 +34,17 @@ const runMode = async (optionData, modeName) => {
     : () => {}
 
   switch (modeName) {
-    case 'check-outdated' :
-      return doCheckOutdated({
-        pathInput: getFirst('path-input'),
-        pathTemp: tryGetFirst('path-temp')
-      })
-    case 'pack':
-      return doPack({
-        pathInput: getFirst('path-input'),
-        pathOutput: getFirst('path-output'),
-        outputName: tryGetFirst('output-name'),
-        outputVersion: tryGetFirst('output-version'),
-        outputDescription: tryGetFirst('output-description'),
-        isPublish: getToggle('publish'),
-        isPublishDev: getToggle('publish-dev'),
-        isDryRun: getToggle('dry-run')
-      })
-    case 'step-package-version':
-      return doStepPackageVersion({
-        pathInput: tryGetFirst('path-input') || '.',
-        isSortKey: getToggle('sort-key'),
-        isGitCommit: getToggle('git-commit')
-      })
-    case 'test-root':
-      return doTestRootList({
+    // new mode (no short commands for now to avoid conflict)
+
+    // keep mode
+    case 'test':
+      return doTest({
         testRootList: argumentList || [ process.cwd() ],
         testFileSuffixList: tryGet('test-file-suffix') || [ '.js' ],
         testRequireList: tryGet('test-require') || [],
         testTimeout: tryGet('test-timeout') || 42 * 1000
       })
-    case 'init':
-      return doInit({
-        pathOutput: argumentList[ 0 ] || '.',
-        pathResourcePackage: tryGetFirst('init-resource-package') || '.',
-        isReset: getToggle('init-reset'),
-        isVerify: getToggle('init-verify'),
-        pathVerifyRule: tryGetFirst('init-verify-rule')
-      })
-    case 'exec':
-      return doExec(argumentList, {
-        env: tryGetFirst('exec-env'),
-        cwd: tryGetFirst('exec-cwd')
-      })
-    case 'cache-step':
-      return doCacheStep({
-        cacheStepType: argumentList[ 0 ],
-        prunePolicyType: tryGetFirst('prune-policy') || 'unused',
-        pathStatFile: tryGetFirst('path-stat-file'), // TODO: only when 'checksum-file-only'
-        pathChecksumList: get('path-checksum-list'),
-        pathChecksumFile: getFirst('path-checksum-file'),
-        pathStaleCheckList: tryGet('path-stale-check-list') || [],
-        pathStaleCheckFile: tryGetFirst('path-stale-check-file') || undefined,
-        maxStaleDay: tryGetFirst('max-stale-day') || 8
-      })
-    case 'exec-load':
-      return doExecLoad({
-        pathInput: tryGetFirst('path-input') || '.',
-        name: argumentList[ 0 ],
-        extraArgList: argumentList.slice(1)
-      })
+
     case 'parse-script':
     case 'parse-script-list':
     case 'run-script':
@@ -114,6 +66,49 @@ const runMode = async (optionData, modeName) => {
       //   bash -ec "false ; echo PASS" # will stop on error
       return run([ 'bash', '-ec', command ]).promise // TODO: inline `set -e`, or join command with `&&`?
     }
+
+    // TODO: DEPRECATE: reorder & rename options
+    case 'check-outdated' :
+      return doCheckOutdated({
+        pathInput: getFirst('path-input'),
+        pathTemp: tryGetFirst('path-temp')
+      })
+    case 'step-package-version':
+      return doStepPackageVersion({
+        pathInput: tryGetFirst('path-input') || '.',
+        isSortKey: getToggle('sort-key'),
+        isGitCommit: getToggle('git-commit')
+      })
+    case 'init':
+      return doInit({
+        pathOutput: argumentList[ 0 ] || '.',
+        pathResourcePackage: tryGetFirst('init-resource-package') || '.',
+        isReset: getToggle('init-reset'),
+        isVerify: getToggle('init-verify'),
+        pathVerifyRule: tryGetFirst('init-verify-rule')
+      })
+    case 'exec':
+      return doExec(argumentList, {
+        env: tryGetFirst('exec-env'),
+        cwd: tryGetFirst('exec-cwd') // TODO: naming
+      })
+    case 'exec-load':
+      return doExecLoad({
+        pathInput: tryGetFirst('path-input') || '.', // TODO: naming
+        name: argumentList[ 0 ],
+        extraArgList: argumentList.slice(1)
+      })
+    case 'cache-step':
+      return doCacheStep({
+        cacheStepType: argumentList[ 0 ],
+        prunePolicyType: tryGetFirst('prune-policy') || 'unused',
+        pathStatFile: tryGetFirst('path-stat-file'), // TODO: only when 'checksum-file-only'
+        pathChecksumList: get('path-checksum-list'),
+        pathChecksumFile: getFirst('path-checksum-file'),
+        pathStaleCheckList: tryGet('path-stale-check-list') || [],
+        pathStaleCheckFile: tryGetFirst('path-stale-check-file') || undefined,
+        maxStaleDay: tryGetFirst('max-stale-day') || 8
+      })
     case 'npm-combo': { // TODO: DEPRECATE: unused
       for (const name of argumentList) await comboCommand({ name, tabLog })
       return
@@ -127,9 +122,9 @@ const runMode = async (optionData, modeName) => {
         patchMP: () => {
           patchModulePath()
           patchModulePathCore()
-          patchModulePathNode()
+          patchModulePathNode() // TODO: DEPRECATE
         },
-        fetchWJ: fetchWithJumpProxy, fetchUA: `${packageName}/${packageVersion}`
+        fetchWJ: fetchWithJumpProxy, fetchUA: `${packageName}/${packageVersion}` // TODO: DEPRECATE: drop mode 'fetch'
       })
   }
 }

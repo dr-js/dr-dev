@@ -2,53 +2,57 @@ import { ok } from 'assert'
 import { resolve } from 'path'
 import { homedir, tmpdir } from 'os'
 import { statSync, readFileSync, writeFileSync } from 'fs'
-import { binary } from '@dr-js/core/module/common/format'
-import { isBasicObject } from '@dr-js/core/module/common/check'
-import { getFileList } from '@dr-js/core/module/node/file/Directory'
-import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/file/Modify'
-import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand'
-import { run, runSync, runDetached } from '@dr-js/core/module/node/run'
+import { binary } from '@dr-js/core/module/common/format.js'
+import { isBasicObject } from '@dr-js/core/module/common/check.js'
+import { getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
+import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
+import { run, runSync, runDetached } from '@dr-js/core/module/node/run.js'
 
-import { findUpPackageRoot, toPackageTgzName, getPathNpmExecutable } from '@dr-js/node/module/module/Software/npm'
+import { findUpPackageRoot, toPackageTgzName, getPathNpmExecutable } from '@dr-js/core/module/node/module/Software/npm.js'
 
-import { __VERBOSE__, argvFlag } from './node/env'
-import { FILTER_TEST_PATH } from './node/preset'
-import { getFileListFromPathList, resetDirectory } from './node/file'
-import { writeLicenseFile } from './license'
+import { __VERBOSE__, argvFlag } from './node/env.js'
+import { FILTER_TEST_PATH } from './node/preset.js'
+import { getFileListFromPathList } from './node/file.js'
+import { writeLicenseFile } from './license.js'
 
 const fromPathCombo = ({
   PATH_ROOT = findUpPackageRoot(process.cwd()),
-  PATH_TEMP = tmpdir(),
+  PATH_OUTPUT = 'output-gitignore/', // relative
+  PATH_TEMP = '.temp-gitignore/', // relative
   PATH_HOME = homedir(),
-  PATH_OUTPUT = resolve(PATH_ROOT, 'output-gitignore')
-} = {}) => ({
-  PATH_ROOT,
-  PATH_TEMP,
-  PATH_HOME,
-  PATH_OUTPUT,
-  fromRoot: (...args) => resolve(PATH_ROOT, ...args),
-  fromTemp: (...args) => resolve(PATH_TEMP, ...args),
-  fromHome: (...args) => resolve(PATH_HOME, ...args),
-  fromOutput: (...args) => resolve(PATH_OUTPUT, ...args)
-})
+  PATH_OSTEMP = tmpdir()
+} = {}) => {
+  // allow use relative path from PATH_ROOT
+  PATH_OUTPUT = resolve(PATH_ROOT, PATH_OUTPUT)
+  PATH_TEMP = resolve(PATH_ROOT, PATH_TEMP)
+  PATH_HOME = resolve(PATH_ROOT, PATH_HOME)
+  PATH_OSTEMP = resolve(PATH_ROOT, PATH_OSTEMP)
+  return {
+    PATH_ROOT, fromRoot: (...args) => resolve(PATH_ROOT, ...args),
+    PATH_OUTPUT, fromOutput: (...args) => resolve(PATH_OUTPUT, ...args),
+    PATH_TEMP, fromTemp: (...args) => resolve(PATH_TEMP, ...args),
+    PATH_HOME, fromHome: (...args) => resolve(PATH_HOME, ...args),
+    PATH_OSTEMP, fromOsTemp: (...args) => resolve(PATH_OSTEMP, ...args)
+  }
+}
 
 const commonCombo = (
   logger,
   config = {
-    PATH_ROOT: findUpPackageRoot(process.cwd()),
     DRY_RUN: Boolean(process.env.DRY_RUN),
     QUIET_RUN: argvFlag('quiet') || Boolean(process.env.QUIET_RUN)
   }
 ) => {
-  return {
-    config, ...fromPathCombo(config),
-    RUN: (argListOrString, isDetached = false) => {
-      const argList = Array.isArray(argListOrString) ? [ ...argListOrString ] : argListOrString.split(' ').filter(Boolean) // prepend `'bash', '-c'` to run in bash shell
-      argList[ 0 ] = resolveCommand(argList[ 0 ], config.PATH_ROOT) // mostly for finding `npm.cmd` on win32
-      if (config.DRY_RUN) !config.QUIET_RUN && logger.log(`[${config.DRY_RUN ? 'RUN|DRY' : isDetached ? 'RUN|DETACHED' : 'RUN'}] "${argList.join(' ')}"`)
-      else return (isDetached ? runDetached : runSync)(argList, { cwd: config.PATH_ROOT, stdio: config.QUIET_RUN ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit' })
-    }
+  const pathConfig = fromPathCombo(config)
+  const RUN = (argListOrString, optionOrIsDetached) => { // TODO: DEPRECATE: move `isDetached` in to option object
+    const { isDetached = false, ...option } = isBasicObject(optionOrIsDetached) ? optionOrIsDetached : { isDetached: Boolean(optionOrIsDetached) }
+    const argList = Array.isArray(argListOrString) ? [ ...argListOrString ] : argListOrString.split(' ').filter(Boolean) // prepend `'bash', '-c'` to run in bash shell
+    argList[ 0 ] = resolveCommand(argList[ 0 ], pathConfig.PATH_ROOT) // mostly for finding `npm.cmd` on win32
+    if (config.DRY_RUN) !config.QUIET_RUN && logger.log(`[${config.DRY_RUN ? 'RUN|DRY' : isDetached ? 'RUN|DETACHED' : 'RUN'}] "${argList.join(' ')}"`)
+    else return (isDetached ? runDetached : runSync)(argList, { cwd: pathConfig.PATH_ROOT, stdio: config.QUIET_RUN ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit', ...option })
   }
+  return { config, ...pathConfig, RUN }
 }
 
 const initOutput = async ({
@@ -105,7 +109,7 @@ const packOutput = async ({
   logger.padLog('run pack output')
   await run([
     getPathNpmExecutable(), '--no-update-notifier', 'pack'
-  ], { cwd: fromOutput(), quiet: !__VERBOSE__, describeError: !__VERBOSE__ }).promise
+  ], { cwd: fromOutput(), quiet: !__VERBOSE__ }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {
@@ -135,7 +139,7 @@ const verifyOutputBin = async ({
   let pathBin = bin || './bin'
   if (isBasicObject(pathBin)) pathBin = pathBin[ Object.keys(pathBin)[ 0 ] ]
   logger.padLog('verify output bin working')
-  const { promise, stdoutPromise } = run([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd: fromOutput(), quiet: true, describeError: true })
+  const { promise, stdoutPromise } = run([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd: fromOutput(), quiet: true })
   await promise
   const outputBinTest = String(await stdoutPromise)
   logger.log(`bin test output: ${outputBinTest}`)

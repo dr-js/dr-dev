@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.4.15",
+  "version": "0.4.16",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -12,39 +12,31 @@
   },
   "scripts": {
     "// script ======================": "",
-    "script-pack": "node -r @babel/register ./script quiet pack",
-    "script-pack-test": "node -r @babel/register ./script verbose pack test",
-    "script-publish": "node -r @babel/register ./script pack publish",
-    "script-publish-dev": "node -r @babel/register ./script pack publish-dev",
-    "script-pack-resource": "node -r @babel/register ./script verbose pack resource unsafe",
-    "script-pack-resource-test": "node -r @babel/register ./script verbose pack resource",
-    "script-pack-resource-publish": "node -r @babel/register ./script pack resource publish",
-    "script-pack-resource-publish-dry-run": "node -r @babel/register ./script pack resource publish dry-run",
-    "script-pack-resource-publish-dev": "node -r @babel/register ./script pack resource publish-dev",
-    "script-pack-resource-publish-dev-dry-run": "node -r @babel/register ./script pack resource publish-dev dry-run",
-    "script-publish-all": "npm run script-publish && npm run script-pack-resource-publish",
-    "script-publish-dev-all": "npm run script-publish-dev && npm run script-pack-resource-publish-dev",
+    "script-pack": "node -r @babel/register ./script/pack pack unsafe",
+    "script-pack-test": "node -r @babel/register ./script/pack verbose pack test",
+    "script-publish": "node -r @babel/register ./script/pack pack publish",
+    "script-publish-dev": "node -r @babel/register ./script/pack pack publish-dev",
     "script-generate-spec": "node -r @babel/register ./script/generateSpec",
     "// build =======================": "",
-    "build-library": "babel ./source --out-dir ./output-gitignore/library",
+    "build-library": "babel ./source --out-dir ./output-gitignore/library --ignore source/browser/",
     "build-library-dev": "dr-dev --EE BABEL_ENV=dev -E -- npm run build-library -- --watch",
     "build-module": "dr-dev --EE BABEL_ENV=module -E -- babel ./source --out-dir ./output-gitignore/module",
     "build-browser": "node -r @babel/register ./script/webpack production profile",
     "build-bin": "dr-dev --EE BABEL_ENV=outputBin -E -- babel ./source-bin --out-dir ./output-gitignore/bin",
     "build-bin-dev": "dr-dev --EE BABEL_ENV=dev-outputBin -E -- babel ./source-bin --out-dir ./output-gitignore/bin --watch",
     "// test ========================": "",
-    "test-T": "node ./output-gitignore/bin --TFS .test.js -T",
-    "test-T-dev": "dr-dev --EE BABEL_ENV=dev -E -- node ./output-gitignore/bin --TR @babel/register --TFS .test.js -T",
-    "test-dev": "npm run test-T-dev -- source/docker.test.js",
-    "test-source": "npm run test-T-dev -- source/",
-    "test-output-library": "npm run test-T -- output-gitignore/library/",
-    "test-output-module": "npm run test-T-dev -- output-gitignore/module/",
+    "test-T": "dr-dev --EE BABEL_ENV=dev -E -- node ./output-gitignore/bin --TR @babel/register --TFS .test.js -T",
+    "test-T-output": "node ./output-gitignore/bin --TFS .test.js -T",
+    "test-dev": "npm run test-T -- source/common/packageVersion.test.js",
+    "test-source": "npm run test-T -- source/",
+    "test-output-library": "npm run test-T-output -- output-gitignore/library/",
+    "test-output-module": "npm run test-T -- output-gitignore/module/",
     "// =============================": "",
     "check-outdated": "node ./output-gitignore/bin -C --path-input ./resource",
     "check-outdated-self": "node ./output-gitignore/bin -C --path-input ./package.json",
     "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json output-gitignore/browser",
     "lint": "eslint ./source/ ./source-bin/ ./resource/ ./script/",
-    "test": "npm run script-pack-resource-test && npm run script-pack-test",
+    "test": "npm run script-pack-test",
     "prepack": "echo \"Error: pack with script-*\" && exit 1"
   },
   "engines": {
@@ -52,12 +44,14 @@
     "npm": ">=6.14"
   },
   "dependencies": {
-    "@dr-js/core": "^0.4.11",
-    "@dr-js/node": "^0.4.9"
+    "@dr-js/core": "^0.4.13"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.4.14",
-    "@dr-js/dev-web": "^0.4.14"
+    "@dr-js/dev": "^0.4.16-dev.4",
+    "@dr-js/dev-web": "^0.4.16-dev.4"
+  },
+  "optionalDependencies": {
+    "@dr-js/node": "^0.4.9"
   },
   "sideEffects": false
 }

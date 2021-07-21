@@ -1,13 +1,11 @@
-import { getGlobal } from '@dr-js/core/module/env/global'
-
-import { string, basicFunction } from '@dr-js/core/module/common/verify'
-import { isString, isBasicFunction } from '@dr-js/core/module/common/check'
-import { catchSync, catchAsync } from '@dr-js/core/module/common/error'
-import { clock } from '@dr-js/core/module/common/time'
-import { time } from '@dr-js/core/module/common/format'
-import { indentLine } from '@dr-js/core/module/common/string'
-import { withTimeoutAsync } from '@dr-js/core/module/common/function'
-import { createTreeDepthFirstSearchAsync } from '@dr-js/core/module/common/data/Tree'
+import { string, basicFunction } from '@dr-js/core/module/common/verify.js'
+import { isString, isBasicFunction } from '@dr-js/core/module/common/check.js'
+import { catchSync, catchAsync } from '@dr-js/core/module/common/error.js'
+import { clock } from '@dr-js/core/module/common/time.js'
+import { time } from '@dr-js/core/module/common/format.js'
+import { indentLine } from '@dr-js/core/module/common/string.js'
+import { withTimeoutAsync } from '@dr-js/core/module/common/function.js'
+import { createTreeDepthFirstSearchAsync } from '@dr-js/core/module/common/data/Tree.js'
 
 const LIST_NAME_BEFORE = 'beforeList'
 const LIST_NAME_IT = 'itList'
@@ -105,8 +103,8 @@ const createTest = ({
     RESULT = { passList: [], failList: [] }
     CONFIG = { log, logLevel, timeout }
 
-    // inject global for test script
-    !isSkipGlobalAssign && Object.assign(getGlobal(), { describe, it, before, after, info })
+    // inject globalThis for test script
+    !isSkipGlobalAssign && Object.assign(globalThis, { describe, it, before, after, info })
 
     CONFIG.log(colorMain('[TEST] setup'))
   }

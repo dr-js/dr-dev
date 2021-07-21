@@ -1,11 +1,11 @@
 {
   "EXPORT": [
     "INIT#script#generateSpec.js",
-    "INIT#script#index.js",
+    "INIT#script#pack.js",
     "INIT#package.json"
   ],
   "dependencies": {
-    "terser": "^5.7.0"
+    "terser": "^5.7.1"
   },
   "sideEffects": false
 }

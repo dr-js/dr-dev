@@ -1,17 +1,17 @@
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
 
-import { catchAsync } from '@dr-js/core/module/common/error'
-import { indentLine } from '@dr-js/core/module/common/string'
-import { getFileList } from '@dr-js/core/module/node/file/Directory'
+import { catchAsync } from '@dr-js/core/module/common/error.js'
+import { indentLine } from '@dr-js/core/module/common/string.js'
+import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 
-import { findPathFragList } from 'source/node/file'
+import { findPathFragList } from 'source/node/file.js'
 
-import { getFromPackExport, loadAndCopyPackExportInitJSON } from '../function'
+import { getFromPackExport, loadAndCopyPackExportInitJSON } from '../function.js'
 
 const NAME_PACK_EXPORT_INIT_VERIFY_RULE = 'INIT_VERIFY_RULE' // TODO: better lock file name
 
-const doInit = async ({
+const doInit = async ({ // TODO: DEPRECATE: simplify or remove
   pathOutput,
   pathResourcePackage,
   isReset = false,
@@ -82,4 +82,4 @@ const initVerify = async (pathRoot, VERIFY_RULE_LIST) => {
   }
   process.exit(Math.min(failedFileInfoMap.size, 42))
 }
-export { doInit }
+export { doInit } // TODO: DEPRECATE: simplify or remove

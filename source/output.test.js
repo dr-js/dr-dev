@@ -1,10 +1,11 @@
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
 
-import { indentLine } from '@dr-js/core/module/common/string'
-import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } from '@dr-js/core/module/common/verify'
-import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/file/Path'
-import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
+import { indentLine } from '@dr-js/core/module/common/string.js'
+import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } from '@dr-js/core/module/common/verify.js'
+import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/fs/Path.js'
+import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
 import {
   fromPathCombo,
@@ -13,11 +14,10 @@ import {
   // verifyOutputBin,
   verifyNoGitignore,
   publishOutput, getPublishFlag, verifyPublishVersion
-} from './output'
-import { getLogger } from './node/logger'
-import { resetDirectory } from './node/file'
+} from './output.js'
+import { getLogger } from './node/logger.js'
 
-const { describe, it, before, after, info = console.log } = global
+const { describe, it, before, after, info = console.log } = globalThis
 
 const PATH_TEST_ROOT = resolve(__dirname, './test-output-gitignore/')
 const PATH_ROOT = resolve(__dirname, __dirname.includes('output-gitignore') ? '../../' : '../')

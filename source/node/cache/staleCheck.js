@@ -1,12 +1,12 @@
 import { dirname } from 'path'
 import { promises as fsAsync } from 'fs'
-import { binary } from '@dr-js/core/module/common/format'
-import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common/module/AsyncLane'
+import { binary } from '@dr-js/core/module/common/format.js'
+import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common/module/AsyncLane.js'
 
-import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/file/Path'
-import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/file/Directory'
+import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/fs/Path.js'
+import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 
-import { packTime, parseTime, loadStat, saveStat } from './function'
+import { packTime, parseTime, loadStat, saveStat } from './function.js'
 
 // The stale checker will check:
 // - `birthtime`: create time, do not restore by `tar`, so just restored cache should have `mtime` older than `birthtime`

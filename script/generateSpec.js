@@ -1,10 +1,12 @@
-import { collectSourceJsRouteMap } from 'source/node/export/parsePreset'
-import { generateExportInfo } from 'source/node/export/generate'
-import { getMarkdownFileLink, renderMarkdownAutoAppendHeaderLink, renderMarkdownBlockQuote, renderMarkdownTable, renderMarkdownExportPath } from 'source/node/export/renderMarkdown'
-import { runMain, commonCombo, writeFileSync } from 'source/main'
+import { objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'
 
-import { formatUsage } from 'source-bin/option'
-import { collectDependency } from 'source-bin/function'
+import { collectSourceJsRouteMap } from 'source/node/export/parsePreset.js'
+import { generateExportInfo } from 'source/node/export/generate.js'
+import { getMarkdownFileLink, renderMarkdownAutoAppendHeaderLink, renderMarkdownBlockQuote, renderMarkdownTable, renderMarkdownExportPath } from 'source/node/export/renderMarkdown.js'
+import { runMain, commonCombo, writeFileSync } from 'source/main.js'
+
+import { loadPackageCombo } from 'source/node/package/function.js'
+import { formatUsage } from 'source-bin/option.js'
 
 runMain(async (logger) => {
   const { fromRoot } = commonCombo(logger)
@@ -14,7 +16,7 @@ runMain(async (logger) => {
   const exportInfoMap = generateExportInfo({ sourceRouteMap })
 
   logger.padLog('collect dependencyMap')
-  const packageInfoMap = await collectDependency(fromRoot('resource'), 'recursive')
+  const { dependencyMap } = await loadPackageCombo(fromRoot('resource'))
 
   logger.padLog('output: SPEC.md')
   writeFileSync(fromRoot('SPEC.md'), [
@@ -33,7 +35,7 @@ runMain(async (logger) => {
       ...renderMarkdownTable({
         headerRow: [ 'Package name', '    Version' ],
         padFuncList: [ 'L', 'R' ],
-        cellRowList: Object.entries(packageInfoMap).map(([ name, { version } ]) => [ name, version ])
+        cellRowList: Object.entries(objectSortKey(dependencyMap))
       })
     ),
     ''

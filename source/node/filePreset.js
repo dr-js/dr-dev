@@ -1,5 +1,5 @@
-import { FILTER_SOURCE_JS_FILE } from './preset'
-import { getFileListFromPathList } from './file'
+import { FILTER_SOURCE_JS_FILE } from './preset.js'
+import { getFileListFromPathList } from './file.js'
 
 const getSourceJsFileListFromPathList = async (
   pathList,

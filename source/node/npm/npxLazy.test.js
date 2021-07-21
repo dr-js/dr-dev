@@ -1,8 +1,8 @@
-import { doNotThrowAsync } from '@dr-js/core/module/common/verify'
+import { doNotThrowAsync } from '@dr-js/core/module/common/verify.js'
 
-import { runNpx } from './npxLazy'
+import { runNpx } from './npxLazy.js'
 
-const { describe, it, info = console.log } = global
+const { describe, it, info = console.log } = globalThis
 
 const tabLog = (level, ...args) => info(`${'  '.repeat(level)}${args.join(' ')}`)
 

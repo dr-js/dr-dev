@@ -1,11 +1,11 @@
 import { relative } from 'path'
 import { minify as terserMinify } from 'terser'
 
-import { clock } from '@dr-js/core/module/common/time'
-import { binary, time, padTable } from '@dr-js/core/module/common/format'
+import { clock } from '@dr-js/core/module/common/time.js'
+import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
-import { __VERBOSE__ } from './node/env'
-import { copyAfterEdit } from './node/file'
+import { __VERBOSE__ } from './node/env.js'
+import { copyAfterEdit } from './node/file.js'
 
 const getTerserOption = ({
   isReadable = false, // should be much more readable // TODO: option `beautify` is being removed
@@ -17,11 +17,10 @@ const getTerserOption = ({
     'process.env.NODE_ENV': isDevelopment ? 'development' : 'production'
   }
 } = {}) => ({
-  ecma,
-  toplevel,
-  compress: { ecma, toplevel, join_vars: false, sequences: false, global_defs: globalDefineMap },
-  mangle: isReadable ? false : { toplevel },
-  output: isReadable ? { ecma, beautify: true, indent_level: 2, width: 240 } : { ecma, beautify: false, semicolons: false },
+  ecma, toplevel, module,
+  compress: { passes: 2, join_vars: false, sequences: false, global_defs: globalDefineMap },
+  mangle: isReadable ? false : { eval: true },
+  output: isReadable ? { beautify: true, indent_level: 2, width: 240 } : { beautify: false, semicolons: false },
   sourceMap: false
 })
 

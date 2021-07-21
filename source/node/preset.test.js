@@ -1,4 +1,4 @@
-import { stringifyEqual } from '@dr-js/core/module/common/verify'
+import { stringifyEqual } from '@dr-js/core/module/common/verify.js'
 
 import {
   FILTER_TEST_PATH,
@@ -7,9 +7,9 @@ import {
   FILTER_JS_FILE,
   FILTER_TEST_JS_FILE,
   FILTER_SOURCE_JS_FILE
-} from './preset'
+} from './preset.js'
 
-const { describe, it } = global
+const { describe, it } = globalThis
 
 const TEST_PATH_LIST = []
 const EXPECT_LIST = []

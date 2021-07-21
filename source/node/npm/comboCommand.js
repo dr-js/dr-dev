@@ -1,9 +1,9 @@
 import { resolve } from 'path'
 import { execSync } from 'child_process'
 import { promises as fsAsync } from 'fs'
-import { isString, isBasicFunction } from '@dr-js/core/module/common/check'
-import { indentLine } from '@dr-js/core/module/common/string'
-import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
+import { isString, isBasicFunction } from '@dr-js/core/module/common/check.js'
+import { indentLine } from '@dr-js/core/module/common/string.js'
+import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
 // [ command or function, message ]
 const CC_CONFIG = [

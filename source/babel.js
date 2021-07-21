@@ -1,13 +1,25 @@
+const DEFAULT_BABEL_ASSUMPTIONS = { // https://babeljs.io/docs/en/assumptions
+  constantReexports: true,
+  enumerableModuleMeta: true,
+  ignoreFunctionLength: true,
+  ignoreToPrimitiveHint: true,
+  noDocumentAll: true,
+  noNewArrows: true
+}
+
 const getBabelConfig = ({
   BABEL_ENV = process.env.BABEL_ENV || '',
   isDev = BABEL_ENV.includes('dev'),
   isModule = BABEL_ENV.includes('module'),
-  isAllTransform = BABEL_ENV.includes('all-transform'), // transpile to ES5 (for max browser support, need babel-polyfill(core-js/regenerator-runtime))
+  isOutputBin = BABEL_ENV.includes('outputBin'), // map `source/*` to `../library/*` for `source-bin` in output
+  isAllTransform = BABEL_ENV.includes('allTransform') || BABEL_ENV.includes('all-transform'), // transpile to ES5 (for max browser support, need babel-polyfill(core-js/regenerator-runtime))
 
   extraPresetList = [],
   extraPluginList = [],
   extraMinifyReplaceList = [],
-  extraModuleResolverList = []
+  extraModuleResolverList = [],
+
+  assumptions = DEFAULT_BABEL_ASSUMPTIONS
 } = {}) => ({
   presets: [
     [ '@babel/preset-env', isAllTransform
@@ -28,10 +40,12 @@ const getBabelConfig = ({
       root: [ './' ],
       alias: isModule ? undefined : [
         ...extraModuleResolverList, // higher priority
+        isOutputBin && { '^source/(.+)': './library/\\1' }, // when build bin to output
         { '^@dr-js/([\\w-]+)/module/(.+)': '@dr-js/\\1/library/\\2' }
       ]
     } ]
   ].filter(Boolean),
+  assumptions,
   comments: false
 })
 
@@ -40,7 +54,9 @@ const getWebpackBabelConfig = ({
   isAllTransform = false,
 
   extraPresetList = [],
-  extraPluginList = []
+  extraPluginList = [],
+
+  assumptions = DEFAULT_BABEL_ASSUMPTIONS
 }) => ({
   configFile: false,
   babelrc: false,
@@ -54,7 +70,8 @@ const getWebpackBabelConfig = ({
   ].filter(Boolean),
   plugins: [
     ...extraPluginList
-  ].filter(Boolean)
+  ].filter(Boolean),
+  assumptions
 })
 
 export {

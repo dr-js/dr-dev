@@ -1,15 +1,15 @@
 import { resolve, relative, sep } from 'path'
 import { promises as fsAsync } from 'fs'
 
-import { catchAsync } from '@dr-js/core/module/common/error'
-import { isString } from '@dr-js/core/module/common/check'
-import { describe } from '@dr-js/core/module/common/format'
-import { getSample } from '@dr-js/core/module/common/math/sample'
-import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/node/file/Path'
-import { getDirInfoList, createDirectory, getFileList } from '@dr-js/core/module/node/file/Directory'
-import { modifyDelete, modifyDeleteForce } from '@dr-js/core/module/node/file/Modify'
+import { catchAsync } from '@dr-js/core/module/common/error.js'
+import { isString } from '@dr-js/core/module/common/check.js'
+import { describe } from '@dr-js/core/module/common/format.js'
+import { getSample } from '@dr-js/core/module/common/math/sample.js'
+import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/node/fs/Path.js'
+import { getDirInfoList, createDirectory, getFileList } from '@dr-js/core/module/node/fs/Directory.js'
+import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
-import { compressGzBrFileAsync } from '@dr-js/node/module/module/Software/function'
+import { compressGzBrFileAsync } from '@dr-js/core/module/node/module/Archive/function.js'
 
 const DEFAULT_RESOLVE_PATH = (path) => path
 
@@ -55,16 +55,29 @@ const withTempDirectory = async (tempPath, asyncTask) => { // NOTE: will always 
   return result
 }
 
-const resetDirectory = async (path) => {
-  await modifyDeleteForce(path) // maybe not exist
-  await createDirectory(path)
-}
+const loadFile = async (path) => fsAsync.readFile(path)
+const loadText = async (path) => String(await loadFile(path))
+const loadJson = async (path) => JSON.parse(await loadText(path))
+
+const saveFile = async (bufferOrString, path) => fsAsync.writeFile(path, bufferOrString)
+const saveText = saveFile
+const saveJson = async (value, path) => saveText(path, JSON.stringify(value, null, 2))
 
 const editFile = async (
-  editFunc = async (buffer) => buffer,
+  editFunc = async (buffer) => buffer, // or String
   pathFrom,
-  pathTo = pathFrom // support both copy & in-place edit
+  pathTo = pathFrom // for in-place edit
 ) => fsAsync.writeFile(pathTo, await editFunc(await fsAsync.readFile(pathFrom)))
+const editText = async (
+  editFunc = async (string) => string,
+  pathFrom,
+  pathTo
+) => editFile(async (buffer) => editFunc(String(buffer)), pathFrom, pathTo)
+const editJson = async (
+  editFunc = async (value) => value, // mostly Object
+  pathFrom,
+  pathTo
+) => editText(async (string) => JSON.stringify(await editFunc(JSON.parse(string)), null, 2), pathFrom, pathTo)
 
 // for remove dup before zip/packing
 // given a list of file, return which file should keep, and which is just pre-compressed dup
@@ -126,11 +139,15 @@ export {
   getFileListFromPathList,
   findPathFragList,
   withTempDirectory,
-  resetDirectory,
-  editFile,
+
+  loadFile, loadText, loadJson,
+  saveFile, saveText, saveJson,
+  editFile, editText, editJson,
 
   filterPrecompressFileList,
   generatePrecompressForPath, trimPrecompressForPath,
 
   copyAfterEdit // TODO: DEPRECATE: use `editFile`
 }
+
+export { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js' // TODO: DEPRECATE

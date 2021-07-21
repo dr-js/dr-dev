@@ -1,10 +1,10 @@
 import Puppeteer from 'puppeteer'
-import { promises as fsAsync } from 'fs'
+import { readFileSync } from 'fs'
 
-import { catchAsync } from '@dr-js/core/module/common/error'
-import { time } from '@dr-js/core/module/common/format'
-import { createInsideOutPromise } from '@dr-js/core/module/common/function'
-import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener'
+import { catchAsync } from '@dr-js/core/module/common/error.js'
+import { time } from '@dr-js/core/module/common/format.js'
+import { createInsideOutPromise } from '@dr-js/core/module/common/function.js'
+import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener.js'
 
 const puppeteerBrowserDisconnectListener = () => {
   console.warn('[Puppeteer] unexpected browser disconnect, exiting')
@@ -69,8 +69,9 @@ const runWithPuppeteer = async ({
 const DEFAULT_TIMEOUT_PAGE = 42 * 1000
 const DEFAULT_TIMEOUT_TEST = 8 * 60 * 1000 // should done test in 8min
 
-const wrapTestScriptStringToHTML = async ({
-  testScriptString,
+const wrapTestScriptStringToHTML = ({
+  testSetupScriptString = readFileSync(require.resolve('@dr-js/dev/browser/test.js')), // script with test setup
+  testScriptString, // bundled(webpack) script with test describe/it
   testTag,
   timeoutTest = DEFAULT_TIMEOUT_TEST
 }) => [
@@ -78,19 +79,47 @@ const wrapTestScriptStringToHTML = async ({
   '<meta charset="utf-8">',
   '<link rel="icon" href="data:,">', // stop fetch favicon
   `<title>${testTag}</title>`,
-  `<script>${await fsAsync.readFile(require.resolve('@dr-js/dev/browser/test.js'))}</script>`,
-  `<script>(window.CURRENT_TEST = window.DrDevTest.createTest()).TEST_SETUP({ timeout: ${timeoutTest} })</script>`,
-  `<script>${testScriptString}</script>`,
-  `<script>window.addEventListener('load', () => window.CURRENT_TEST.TEST_RUN().then(({ failList }) => { console.log(JSON.stringify({ "${testTag}": { failCount: failList.length } })) }))</script>`
+  // NOTE: each script tag can fail independently, so check should be done in the script tag after
+  // if `window.TEST_SCRIPT_*` is set, meaning the script syntax is ok, and sync init pass, may still got async issues
+  `<script>
+    ${testSetupScriptString};
+    window.TEST_SCRIPT_0 = true
+  </script>`,
+  `<script>
+    window.TEST_REPORT = (failCount = 0) => console.log(JSON.stringify({ "${testTag}": { failCount } }))
+    if (!window.TEST_SCRIPT_0) window.TEST_REPORT(-10) 
+    else if (!window.DrDevTest) window.TEST_REPORT(-20) 
+    else {
+      const test = window.DrDevTest.createTest()
+      test.TEST_SETUP({ timeout: ${timeoutTest} })
+      window.addEventListener('load', () => test.TEST_RUN().then(
+        ({ failList }) => { window.TEST_REPORT(failList.length) },
+        (error) => { console.error(error); window.TEST_REPORT(-21) }
+      ))
+      window.TEST_CURRENT = test
+    }
+  </script>`,
+  `<script>
+    ${testScriptString};
+    window.TEST_SCRIPT_1 = true
+  </script>`,
+  `<script>
+    if (!window.TEST_SCRIPT_1) window.TEST_REPORT(-11)
+  </script>`
 ].join('\n')
 
 const testWithPuppeteer = async ({
-  testScriptString,
-  testUrl,
   testTag = `BROWSER_TEST[${new Date().toISOString()}]`, // string mark for test complete
-
   timeoutPage = DEFAULT_TIMEOUT_PAGE,
   timeoutTest = DEFAULT_TIMEOUT_TEST,
+
+  // test with script/HTML
+  testScriptString,
+  testHTML = testScriptString && wrapTestScriptStringToHTML({ testScriptString, testTag, timeoutTest }),
+
+  // test with server page
+  testUrl, // prepared script with server
+
   logger
 }) => runWithPuppeteer({
   taskFunc: async ({ puppeteerPage }) => {
@@ -116,10 +145,9 @@ const testWithPuppeteer = async ({
     if (testUrl) {
       const response = await puppeteerPage.goto(testUrl)
       logger.log('[test] page navigate status:', response.status())
-    } else if (testScriptString) {
-      const testHTML = await wrapTestScriptStringToHTML({ testScriptString, testTag, timeoutTest })
+    } else if (testHTML) {
       await puppeteerPage.setContent(testHTML)
-    } else throw new Error('expect set either `testUrl` or `testScriptString`')
+    } else throw new Error('expect set either `testUrl` or `testScriptString/testHTML`')
 
     logger.log('[test] loaded')
     const timeoutToken = setTimeout(() => reject(new Error(`${testTag} test timeout`)), timeoutTest)

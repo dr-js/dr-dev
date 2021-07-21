@@ -1,17 +1,16 @@
 import { resolve } from 'path'
 import { promises as fsAsync } from 'fs'
-import { setTimeoutAsync } from '@dr-js/core/module/common/time'
-import { getSampleRange } from '@dr-js/core/module/common/math/sample'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory'
-import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
-import { resetDirectory } from '../file'
+import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
+import { getSampleRange } from '@dr-js/core/module/common/math/sample.js'
+import { createDirectory, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
 import {
   staleCheckSetup, staleCheckMark, staleCheckCalcReport,
   loadStatFile, saveStatFile
-} from './staleCheck'
+} from './staleCheck.js'
 
-const { describe, it, before, after, info = console.log } = global
+const { describe, it, before, after, info = console.log } = globalThis
 
 const TEST_ROOT = resolve(__dirname, './test-stale-check-gitignore/')
 const fromRoot = (...args) => resolve(TEST_ROOT, ...args)

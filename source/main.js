@@ -1,14 +1,14 @@
-import { resolve } from 'path'
-import { readFileSync, writeFileSync } from 'fs'
+import { resolve, sep } from 'path'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
 
-import { clock } from '@dr-js/core/module/common/time'
-import { time } from '@dr-js/core/module/common/format'
-import { isString } from '@dr-js/core/module/common/check'
+import { clock } from '@dr-js/core/module/common/time.js'
+import { time } from '@dr-js/core/module/common/format.js'
+import { isString } from '@dr-js/core/module/common/check.js'
 
-import { argvFlag } from './node/env'
-import { getLogger } from './node/logger'
-import { commonCombo } from './output'
-import { commonInfoPatchCombo } from './ci'
+import { argvFlag } from './node/env.js'
+import { getLogger } from './node/logger.js'
+import { commonCombo } from './output.js'
+import { commonInfoPatchCombo } from './ci.js'
 
 const runMain = (
   mainAsyncFunc,
@@ -31,5 +31,7 @@ const runMain = (
 
 export {
   runMain,
-  argvFlag, commonCombo, commonInfoPatchCombo, resolve, readFileSync, writeFileSync // quick import
+  // quick import // TODO: DEPRECATE: move to `combo.js`
+  argvFlag, commonCombo, commonInfoPatchCombo,
+  resolve, sep, readFileSync, writeFileSync, existsSync
 }

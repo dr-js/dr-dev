@@ -1,6 +1,6 @@
 import { ProgressPlugin } from 'webpack'
-import { percent, time } from '@dr-js/core/module/common/format'
-import { autoEllipsis } from '@dr-js/core/module/common/string'
+import { percent, time } from '@dr-js/core/module/common/format.js'
+import { autoEllipsis } from '@dr-js/core/module/common/string.js'
 
 const createProgressPlugin = ({
   debounce = 256, // set higher for less log, but also may miss more info

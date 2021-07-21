@@ -1,19 +1,18 @@
 import { promises as fsAsync } from 'fs'
 import { resolve } from 'path'
-import { strictEqual, doThrowAsync } from '@dr-js/core/module/common/verify'
-import { getSampleRange } from '@dr-js/core/module/common/math/sample'
-import { createDirectory } from '@dr-js/core/module/node/file/Directory'
-import { modifyDelete } from '@dr-js/core/module/node/file/Modify'
-import { resetDirectory } from '../file'
+import { strictEqual, doThrowAsync } from '@dr-js/core/module/common/verify.js'
+import { getSampleRange } from '@dr-js/core/module/common/math/sample.js'
+import { createDirectory, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
 import {
   describeChecksumOfPathList,
 
   loadStatFile, saveStatFile,
   checksumUpdate, checksumDetectChange
-} from './checksum'
+} from './checksum.js'
 
-const { describe, it, before, after, info = console.log } = global
+const { describe, it, before, after, info = console.log } = globalThis
 
 const TEST_ROOT = resolve(__dirname, './test-checksum-gitignore/')
 const fromRoot = (...args) => resolve(TEST_ROOT, ...args)

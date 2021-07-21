@@ -1,12 +1,12 @@
 import { resolve } from 'path'
-import { stringifyEqual, doThrowAsync } from '@dr-js/core/module/common/verify'
+import { stringifyEqual, doThrowAsync } from '@dr-js/core/module/common/verify.js'
 
 import {
   findPathFragList,
   filterPrecompressFileList
 } from './file'
 
-const { describe, it } = global
+const { describe, it } = globalThis
 
 const PATH_ROOT = resolve(__dirname, __dirname.includes('output-gitignore') ? '../../../' : '../../')
 

@@ -1,39 +1,18 @@
-import { catchAsync } from '@dr-js/core/module/common/error'
-import { run, runSync } from '@dr-js/core/module/node/run'
-import { verify, verifyCompose } from '@dr-js/node/module/module/Software/docker'
-import { runWithTee } from './node/run'
+import { catchAsync } from '@dr-js/core/module/common/error.js'
+import { run } from '@dr-js/core/module/node/run.js'
+import { verify, runDocker } from '@dr-js/core/module/node/module/Software/docker.js'
+import { runWithTee } from './node/run.js'
 
-const docker = (argList = [], option = {}) => run(
-  [ ...verify(), ...argList ],
-  { describeError: !option.quiet, ...option } // describeError only when output is redirected
-)
-const dockerSync = (argList = [], option = {}) => runSync(
-  [ ...verify(), ...argList ],
-  { describeError: !option.quiet, ...option } // describeError only when output is redirected
-)
-const dockerWithTee = async (argList = [], option = {}, teeLogFile) => runWithTee(
-  [ ...verify(), ...argList ],
-  { describeError: teeLogFile || !option.quiet, ...option }, // describeError only when output is redirected
-  teeLogFile
-)
-
-const compose = (argList = [], option = {}) => run(
-  [ ...verifyCompose(), ...argList ],
-  { describeError: !option.quiet, ...option } // describeError only when output is redirected
-)
-const composeSync = (argList = [], option = {}) => runSync(
-  [ ...verifyCompose(), ...argList ],
-  { describeError: !option.quiet, ...option } // describeError only when output is redirected
-)
+const runDockerWithTee = async (argList = [], option = {}, teeLogFile) => runWithTee([ ...verify(), ...argList ], option, teeLogFile)
 
 const checkLocalImage = async (imageRepo, imageTag) => {
-  const { promise, stdoutPromise } = docker([ 'image', 'ls', `${imageRepo}:${imageTag}` ], { quiet: true })
+  const { promise, stdoutPromise } = runDocker([ 'image', 'ls', `${imageRepo}:${imageTag}` ], { quiet: true })
   await promise
   const stdoutString = String(await stdoutPromise)
   return stdoutString.includes(imageRepo) && stdoutString.includes(imageTag)
 }
 const pullImage = async (imageRepo, imageTag) => {
-  const { promise } = docker([ 'pull', `${imageRepo}:${imageTag}` ], { quiet: true })
+  const { promise } = runDocker([ 'pull', `${imageRepo}:${imageTag}` ], { quiet: true })
   await promise
 }
 
@@ -44,7 +23,7 @@ const checkPullImage = async (imageRepo, imageTag) => {
 }
 
 const getContainerLsList = async (isListAll = false) => {
-  const { promise, stdoutPromise } = docker([ 'container', 'ls',
+  const { promise, stdoutPromise } = runDocker([ 'container', 'ls',
     '--format', '{{.ID}}|{{.Image}}|{{.Names}}',
     isListAll && '--all'
   ].filter(Boolean), { quiet: true })
@@ -61,7 +40,7 @@ const patchContainerLsListStartedAt = async (
   containerLsList = [] // will mutate and added `startedAt: Date` to containerLsList
 ) => {
   const idList = containerLsList.map(({ id }) => id)
-  const { promise, stdoutPromise } = docker([ 'container', 'inspect',
+  const { promise, stdoutPromise } = runDocker([ 'container', 'inspect',
     '--format', '{{.Id}}|{{.State.StartedAt}}', // https://unix.stackexchange.com/questions/492279/convert-docker-container-dates-to-milliseconds-since-epoch/492291#492291
     ...idList
   ], { quiet: true })
@@ -84,20 +63,25 @@ const matchContainerLsList = (
   })
 }
 
-const runDocker = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWithTee : run)( // TODO: DEPRECATE: bad design, await is SOMETIMES needed
+const runDockerLegacy = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWithTee : run)( // TODO: DEPRECATE: bad design, await is SOMETIMES needed
   [ ...verify(), ...argList ],
-  { describeError: teeLogFile || !option.quiet, ...option }, // describeError only when output is redirected
+  option,
   teeLogFile
 )
 
 export {
-  docker, dockerSync, dockerWithTee,
-  compose, composeSync,
+  runDockerWithTee,
 
   checkLocalImage, pullImage, checkPullImage,
   getContainerLsList, patchContainerLsListStartedAt, matchContainerLsList,
 
+  runDockerWithTee as dockerWithTee, // TODO: DEPRECATE
   checkPullImage as checkImageExist, // TODO: DEPRECATE
   getContainerLsList as getContainerPsList, matchContainerLsList as matchContainerPsList, // TODO: DEPRECATE
-  runDocker // TODO: DEPRECATE: bad design, await is SOMETIMES needed
+  runDockerLegacy as runDocker // TODO: DEPRECATE: bad design, await is SOMETIMES needed
 }
+
+export {
+  runDocker as docker, runDockerSync as dockerSync, // TODO: DEPRECATE
+  runCompose as compose, runComposeSync as composeSync // TODO: DEPRECATE
+} from '@dr-js/core/module/node/module/Software/docker.js'
