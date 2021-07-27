@@ -301,4 +301,4 @@
 | react                          |     ^17.0.2 |
 | styled-components              |      ^5.3.0 |
 | terser                         |      ^5.7.1 |
-| webpack                        |     ^5.45.1 |
+| webpack                        |     ^5.46.0 |
