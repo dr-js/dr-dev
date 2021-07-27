@@ -73,6 +73,8 @@
   - `parseCommand`, `parsePackageScript`, `warpBashSubShell`, `wrapJoinBashArgs`
 + 📄 [source/node/package/Npm.js](source/node/package/Npm.js)
   - `outdatedJSON`, `outdatedWithTempJSON`
++ 📄 [source/node/package/Trim.js](source/node/package/Trim.js)
+  - `trimFile`, `trimFileNodeModules`, `trimFileRubyGem`
 + 📄 [source/node/package/function.js](source/node/package/function.js)
   - `loadPackageCombo`, `loadPackageInfo`, `loadPackageInfoList`, `savePackageJSON`, `toPackageJSONPath`, `toPackageRootPath`
 
