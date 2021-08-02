@@ -14,8 +14,8 @@ const commonInfoPatchCombo = (logger, initConfig) => {
   const { config, RUN, ...extra } = commonCombo(logger, initConfig)
 
   // patch config
-  config.IS_WIN32 = process.platform === 'win32'
-  config.COMMAND_SUDO_NPM = config.IS_WIN32 ? 'npm.cmd' : 'sudo npm' // win32 has no sudo & need .cmd extension
+  config.IS_WIN32 = process.platform === 'win32' // TODO: DEPRECATE
+  config.COMMAND_SUDO_NPM = config.IS_WIN32 ? 'npm.cmd' : 'sudo npm' // win32 has no sudo & need .cmd extension // TODO: DEPRECATE
 
   logger.padLog('Log info')
   logger.log(`system: ${process.platform}-${release()}[${arch()}]`)
@@ -24,7 +24,7 @@ const commonInfoPatchCombo = (logger, initConfig) => {
   logger.log(`with: ${[ '@dr-js/core', '@dr-js/dev' ].map((v) => `${v}@${require(`${v}/package.json`).version}`).join(', ')}`)
   logger.log(`config:\n${prettyStringifyConfigObject(config, '  ', '    ')}`)
 
-  if (config.IS_WIN32) {
+  if (process.platform === 'win32') {
     logger.padLog('Patch git') // fix win32 CI cause `something to commit` test error: https://github.com/actions/checkout/issues/135#issuecomment-602171132
     RUN('git config core.autocrlf false')
     RUN('git config core.eol lf')
