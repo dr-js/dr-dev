@@ -7,10 +7,10 @@ import { isBasicObject } from '@dr-js/core/module/common/check.js'
 import { getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
-import { run, runSync, runStdout, runDetached } from '@dr-js/core/module/node/run.js'
+import { runSync, runStdout, runDetached } from '@dr-js/core/module/node/run.js'
 
-import { findUpPackageRoot, toPackageTgzName, getPathNpmExecutable } from '@dr-js/core/module/node/module/Software/npm.js'
-import { runGit, runGitSync } from '@dr-js/core/module/node/module/Software/git.js'
+import { findUpPackageRoot, toPackageTgzName, runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
+import { runGitStdout, runGitStdoutSync } from '@dr-js/core/module/node/module/Software/git.js'
 
 import { __VERBOSE__, argvFlag } from './node/env.js'
 import { FILTER_TEST_PATH } from './node/preset.js'
@@ -108,9 +108,7 @@ const packOutput = async ({
   logger
 }) => {
   logger.padLog('run pack output')
-  await run([
-    getPathNpmExecutable(), '--no-update-notifier', 'pack'
-  ], { cwd: fromOutput(), quiet: !__VERBOSE__ }).promise
+  await runNpm([ '--no-update-notifier', 'pack' ], { cwd: fromOutput(), quiet: !__VERBOSE__ }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {
@@ -155,9 +153,7 @@ const verifyNoGitignore = async ({ path, logger }) => {
 const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger }) => {
   logger.padLog('verify git has nothing to commit')
   // https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes/25149786#25149786
-  const { promise, stdoutPromise } = runGit([ 'status', '--porcelain' ], { quiet: true })
-  await promise
-  if (String(await stdoutPromise) !== '') throw new Error(`[verifyGitStatusClean] change to commit:\n${runGitSync([ 'status', '-vv' ], { quiet: true }).stdout}`)
+  if (String(await runGitStdout([ 'status', '--porcelain' ])) !== '') throw new Error(`[verifyGitStatusClean] change to commit:\n${runGitStdoutSync([ 'status', '-vv' ])}`)
 }
 
 const publishOutput = async ({
@@ -188,7 +184,7 @@ const publishOutput = async ({
   // - `npm config get userconfig`
   // - `npm config get registry`
   // - `npm whoami`
-  await run([ getPathNpmExecutable(), '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]).promise
+  await runNpm([ '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]).promise
 }
 const getPublishFlag = (flagList, packageVersion) => {
   const isPublishAuto = flagList.includes('publish-auto') // no version verify for auto + dev, and do not limit dev version format to `REGEXP_PUBLISH_VERSION_DEV`
