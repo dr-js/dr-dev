@@ -3,10 +3,10 @@ import { relative } from 'path'
 import { padTable } from '@dr-js/core/module/common/format.js'
 
 import { isVersionSpecComplex } from 'source/common/packageJSON/Version.js'
-import { loadPackageCombo } from 'source/node/package/function.js'
+import { loadPackageCombo, writePackageJSON } from 'source/node/package/function.js'
 import { outdatedWithTempJSON } from 'source/node/package/Npm.js'
 
-const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput, log = console.log }) => {
+const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput }) => {
   const sameTable = []
   const complexTable = []
   const outdatedTable = []
@@ -39,9 +39,27 @@ const logResult = ({ sameTable, complexTable, outdatedTable, log = console.log }
   log(outputList.join('\n'))
 }
 
+const writeBack = async ({ dependencyInfoMap, outdatedTable, log = console.log }) => {
+  for (const [ name, versionSpec, versionWanted ] of outdatedTable) {
+    const { packageInfo: { packageJSON, packageJSONPath } } = dependencyInfoMap[ name ]
+    const versionSpecNext = [ versionSpec.split(/\d/)[ 0 ], versionWanted ].join('') // keep prefix like "^" & "~"
+    const tryUpdate = (key) => {
+      if (!packageJSON[ key ] || packageJSON[ key ][ name ] !== versionSpec) return
+      log(`[writeBack] update ${key}/${name} from "${versionSpec}" to "${versionSpecNext}" in: ${packageJSONPath}`)
+      packageJSON[ key ][ name ] = versionSpecNext
+    }
+    tryUpdate('dependencies')
+    tryUpdate('devDependencies')
+    tryUpdate('peerDependencies')
+    tryUpdate('optionalDependencies')
+    await writePackageJSON(packageJSONPath, packageJSON)
+  }
+}
+
 const doCheckOutdated = async ({
   pathInput,
   pathTemp,
+  isWriteBack = false,
   log = console.log
 }) => {
   log(`[checkOutdated] checking '${pathInput}'`)
@@ -51,9 +69,10 @@ const doCheckOutdated = async ({
     log(`[WARN] dropped duplicate package: ${name} at ${relative(pathInput, packageJSONPath)} with version: ${versionSpec}, checking: ${existPackageInfo.versionSpec}`)
   }
   const outdatedMap = await outdatedWithTempJSON({ packageJSON: { dependencies: dependencyMap }, pathTemp })
-  const { sameTable, complexTable, outdatedTable } = sortResult({ dependencyInfoMap, outdatedMap, pathInput, log })
+  const { sameTable, complexTable, outdatedTable } = sortResult({ dependencyInfoMap, outdatedMap, pathInput })
   logResult({ sameTable, complexTable, outdatedTable, log })
-  outdatedTable.length && process.exit(outdatedTable.length)
+  if (isWriteBack) await writeBack({ dependencyInfoMap, outdatedTable, log })
+  else outdatedTable.length && process.exit(outdatedTable.length)
 }
 
 export { doCheckOutdated }

@@ -26,6 +26,7 @@ const MODE_FORMAT_LIST = parseCompactList(
 
   // TODO: DEPRECATE: reorder & rename options
   [ 'check-outdated,C/T', parseCompactList(
+    'write-back,wb/T',
     'path-temp/SP,O'
   ) ],
 

@@ -127,6 +127,8 @@
 >       start node REPL
 >   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0-1]
 >       set to ANY value to enable, except "false/no/n/0"
+>     --write-back --wb [ARGUMENT=0-1]
+>         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
 >   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0-1]
 >       step up package version (expect "0.0.0-dev.0-local.0" format)
@@ -201,6 +203,7 @@
 >     export DR_DEV_EVAL="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_REPL="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_WRITE_BACK="[ARGUMENT=0-1] [ALIAS=DR_DEV_WB]"
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_SORT_KEY="[ARGUMENT=0-1]"
@@ -249,6 +252,7 @@
 >     "eval": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "repl": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "writeBack": [ "[ARGUMENT=0-1] [ALIAS=wb]" ],
 >     "pathTemp": [ "[ARGUMENT=1]" ],
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "sortKey": [ "[ARGUMENT=0-1]" ],

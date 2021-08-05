@@ -69,7 +69,8 @@ const runMode = async (optionData, modeName) => {
     case 'check-outdated' :
       return doCheckOutdated({
         pathInput: getFirst('path-input'),
-        pathTemp: tryGetFirst('path-temp')
+        pathTemp: tryGetFirst('path-temp'),
+        isWriteBack: getToggle('write-back')
       })
     case 'step-package-version':
       return doStepPackageVersion({
