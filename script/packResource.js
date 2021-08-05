@@ -4,7 +4,7 @@ import { readJSON, writeText } from '@dr-js/core/module/node/fs/File.js'
 import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy } from '@dr-js/core/module/node/fs/Modify.js'
 
-import { savePackageJSON } from 'source/node/package/function.js'
+import { writePackageJSON } from 'source/node/package/function.js'
 import { getLogger } from 'source/node/logger.js'
 import { packOutput, publishOutput } from 'source/output.js'
 import { getFromPackExport, writePackExportInitJSON } from 'source-bin/function.js'
@@ -25,7 +25,7 @@ const copyAndSavePackExportInitJSON = async ({
   }
 
   for (const [ targetRelative, source ] of Object.entries(targetFileMap)) await modifyCopy(source, fromPackExport(targetRelative))
-  for (const [ targetRelative, packageJSON ] of Object.entries(targetPackageJSONMap)) await savePackageJSON({ packageJSONPath: fromPackExport(targetRelative), packageJSON })
+  for (const [ targetRelative, packageJSON ] of Object.entries(targetPackageJSONMap)) await writePackageJSON(fromPackExport(targetRelative), packageJSON, 'sort-key')
 
   await writePackExportInitJSON({ pathPackage })
 }
@@ -76,7 +76,7 @@ const doPackResource = async ({
 
   // custom initOutput
   await resetDirectory(pathOutput)
-  await savePackageJSON({ packageJSONPath: resolve(pathOutput, 'package.json'), packageJSON })
+  await writePackageJSON(resolve(pathOutput, 'package.json'), packageJSON, 'sort-key')
   await writeText(resolve(pathOutput, 'README.md'), getREADME(packageJSON))
   await copyAndSavePackExportInitJSON({ pathPackage: pathOutput, exportPairList })
 

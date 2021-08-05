@@ -76,7 +76,7 @@
 + 📄 [source/node/package/Trim.js](source/node/package/Trim.js)
   - `trimFile`, `trimFileNodeModules`, `trimFileRubyGem`
 + 📄 [source/node/package/function.js](source/node/package/function.js)
-  - `loadPackageCombo`, `loadPackageInfo`, `loadPackageInfoList`, `savePackageJSON`, `toPackageJSONPath`, `toPackageRootPath`
+  - `editPackageJSON`, `loadPackageCombo`, `loadPackageInfo`, `loadPackageInfoList`, `savePackageInfo`, `savePackageJSON`, `toPackageJSONPath`, `toPackageRootPath`, `writePackageJSON`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)

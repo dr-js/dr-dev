@@ -1,6 +1,6 @@
 import { runGitSync } from '@dr-js/core/module/node/module/Software/git.js'
 
-import { loadPackageInfo, savePackageJSON } from 'source/node/package/function.js'
+import { loadPackageInfo, savePackageInfo } from 'source/node/package/function.js'
 
 const REGEXP_PACKAGE_VERSION = /^(\d+\.\d+\.\d+(?:-\w+\.\d+)*?)(?:-local\.)?(\d+)?$/ // check: https://regexr.com/419ol
 
@@ -44,7 +44,7 @@ const doStepPackageVersion = async ({
   const { nextVersion, nextMainVersion } = stepPackageVersion(version, isGitCommit)
 
   log(`[StepPackageVersion] next: ${nextVersion}, prev: ${version}`)
-  await savePackageJSON({ packageJSONPath, packageJSON: { ...packageJSON, version: nextVersion }, isSortKey })
+  await savePackageInfo({ packageJSONPath, packageJSON: { ...packageJSON, version: nextVersion }, isSortKey })
 
   if (!isGitCommit) return
 
