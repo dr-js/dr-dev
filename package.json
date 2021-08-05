@@ -48,8 +48,8 @@
     "@dr-js/core": "^0.4.14"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.4.17-dev.1",
-    "@dr-js/dev-web": "^0.4.17-dev.1"
+    "@dr-js/dev": "^0.4.17",
+    "@dr-js/dev-web": "^0.4.17"
   },
   "optionalDependencies": {
     "@dr-js/node": "^0.4.9"
