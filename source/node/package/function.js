@@ -1,5 +1,5 @@
 import { resolve, basename } from 'path'
-import { readJSON, writeText } from '@dr-js/core/module/node/fs/File.js'
+import { editText, readJSON, writeText } from '@dr-js/core/module/node/fs/File.js'
 import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 
 import { sortPackageJSON, packPackageJSON, toPackageInfo, collectDependency } from 'source/common/packageJSON/function.js'
@@ -13,6 +13,13 @@ const toPackageRootPath = (path = process.cwd()) => resolve(...[
   path,
   path.endsWith('package.json') ? '..' : ''
 ].filter(Boolean))
+
+const writePackageJSON = async (path, packageJSON, isSortKey = false) => writeText(path, packPackageJSON(isSortKey ? sortPackageJSON(packageJSON) : packageJSON))
+const editPackageJSON = async (editFunc, pathFrom, pathTo) => editText(async (string) => {
+  let packageJSON = JSON.parse(string)
+  packageJSON = await editFunc(packageJSON)
+  return packPackageJSON(packageJSON)
+}, pathFrom, pathTo)
 
 const loadPackageInfo = async (path) => {
   const packageJSONPath = toPackageJSONPath(path)
@@ -40,17 +47,18 @@ const loadPackageCombo = async (pathRoot) => {
   }
 }
 
-const savePackageJSON = async ({
+const savePackageInfo = async ({
   packageJSON, packageJSONPath,
-  isSortKey = true
-}) => writeText(packageJSONPath, packPackageJSON(
-  isSortKey
-    ? sortPackageJSON(packageJSON)
-    : packageJSON
-))
+  isSortKey = false
+}) => writePackageJSON(packageJSONPath, packageJSON, isSortKey)
 
 export {
   toPackageJSONPath, toPackageRootPath,
+
+  writePackageJSON, editPackageJSON,
+
   loadPackageInfo, loadPackageInfoList, loadPackageCombo,
-  savePackageJSON
+  savePackageInfo,
+
+  savePackageInfo as savePackageJSON // TODO: DEPRECATE: bad naming
 }

@@ -1,20 +1,15 @@
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { run } from '@dr-js/core/module/node/run.js'
-import { verify, runDocker } from '@dr-js/core/module/node/module/Software/docker.js'
+import { verify, runDockerStdout } from '@dr-js/core/module/node/module/Software/docker.js'
 import { runWithTee } from './node/run.js'
 
 const runDockerWithTee = async (argList = [], option = {}, teeLogFile) => runWithTee([ ...verify(), ...argList ], option, teeLogFile)
 
 const checkLocalImage = async (imageRepo, imageTag) => {
-  const { promise, stdoutPromise } = runDocker([ 'image', 'ls', `${imageRepo}:${imageTag}` ], { quiet: true })
-  await promise
-  const stdoutString = String(await stdoutPromise)
+  const stdoutString = String(await runDockerStdout([ 'image', 'ls', `${imageRepo}:${imageTag}` ]))
   return stdoutString.includes(imageRepo) && stdoutString.includes(imageTag)
 }
-const pullImage = async (imageRepo, imageTag) => {
-  const { promise } = runDocker([ 'pull', `${imageRepo}:${imageTag}` ], { quiet: true })
-  await promise
-}
+const pullImage = async (imageRepo, imageTag) => runDockerStdout([ 'pull', `${imageRepo}:${imageTag}` ])
 
 const checkPullImage = async (imageRepo, imageTag) => {
   if (await checkLocalImage(imageRepo, imageTag)) return true
@@ -22,36 +17,26 @@ const checkPullImage = async (imageRepo, imageTag) => {
   return checkLocalImage(imageRepo, imageTag) // check local again
 }
 
-const getContainerLsList = async (isListAll = false) => {
-  const { promise, stdoutPromise } = runDocker([ 'container', 'ls',
-    '--format', '{{.ID}}|{{.Image}}|{{.Names}}',
-    isListAll && '--all'
-  ].filter(Boolean), { quiet: true })
-  await promise
-  return String(await stdoutPromise).trim().split('\n')
-    .filter(Boolean)
-    .map((string) => {
-      const [ id, image, names ] = string.split('|')
-      return { id, image, names }
-    })
-}
+const getContainerLsList = async (isListAll = false) => String(await runDockerStdout([ 'container', 'ls',
+  '--format', '{{.ID}}|{{.Image}}|{{.Names}}',
+  isListAll && '--all'
+].filter(Boolean))).trim().split('\n').filter(Boolean).map((string) => {
+  const [ id, image, names ] = string.split('|')
+  return { id, image, names }
+})
 
 const patchContainerLsListStartedAt = async (
   containerLsList = [] // will mutate and added `startedAt: Date` to containerLsList
 ) => {
   const idList = containerLsList.map(({ id }) => id)
-  const { promise, stdoutPromise } = runDocker([ 'container', 'inspect',
+  String(await runDockerStdout([ 'container', 'inspect',
     '--format', '{{.Id}}|{{.State.StartedAt}}', // https://unix.stackexchange.com/questions/492279/convert-docker-container-dates-to-milliseconds-since-epoch/492291#492291
     ...idList
-  ], { quiet: true })
-  await promise
-  String(await stdoutPromise).trim().split('\n')
-    .filter(Boolean)
-    .forEach((string) => {
-      const [ id, startedAtString ] = string.split('|') // the full id & ISO time string
-      const item = containerLsList[ idList.findIndex((v) => id.startsWith(v)) ]
-      if (item) item.startedAt = new Date(startedAtString)
-    })
+  ])).trim().split('\n').filter(Boolean).forEach((string) => {
+    const [ id, startedAtString ] = string.split('|') // the full id & ISO time string
+    const item = containerLsList[ idList.findIndex((v) => id.startsWith(v)) ]
+    if (item) item.startedAt = new Date(startedAtString)
+  })
 }
 
 const matchContainerLsList = (

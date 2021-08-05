@@ -7,9 +7,10 @@ import { isBasicObject } from '@dr-js/core/module/common/check.js'
 import { getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
-import { run, runSync, runDetached } from '@dr-js/core/module/node/run.js'
+import { runSync, runStdout, runDetached } from '@dr-js/core/module/node/run.js'
 
-import { findUpPackageRoot, toPackageTgzName, getPathNpmExecutable } from '@dr-js/core/module/node/module/Software/npm.js'
+import { findUpPackageRoot, toPackageTgzName, runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
+import { runGitStdout, runGitStdoutSync } from '@dr-js/core/module/node/module/Software/git.js'
 
 import { __VERBOSE__, argvFlag } from './node/env.js'
 import { FILTER_TEST_PATH } from './node/preset.js'
@@ -107,9 +108,7 @@ const packOutput = async ({
   logger
 }) => {
   logger.padLog('run pack output')
-  await run([
-    getPathNpmExecutable(), '--no-update-notifier', 'pack'
-  ], { cwd: fromOutput(), quiet: !__VERBOSE__ }).promise
+  await runNpm([ '--no-update-notifier', 'pack' ], { cwd: fromOutput(), quiet: !__VERBOSE__ }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {
@@ -139,9 +138,7 @@ const verifyOutputBin = async ({
   let pathBin = bin || './bin'
   if (isBasicObject(pathBin)) pathBin = pathBin[ Object.keys(pathBin)[ 0 ] ]
   logger.padLog('verify output bin working')
-  const { promise, stdoutPromise } = run([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd: fromOutput(), quiet: true })
-  await promise
-  const outputBinTest = String(await stdoutPromise)
+  const outputBinTest = String(await runStdout([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd: fromOutput() }))
   logger.log(`bin test output: ${outputBinTest}`)
   for (const testString of matchStringList) ok(outputBinTest.includes(testString), `should output contain: ${testString}`)
 }
@@ -155,10 +152,8 @@ const verifyNoGitignore = async ({ path, logger }) => {
 
 const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger }) => {
   logger.padLog('verify git has nothing to commit')
-  const { promise, stdoutPromise } = run([ 'git', 'status', '-vv' ], { cwd, quiet: true }) // NOTE: use -vv to log diff detail
-  await promise
-  const outputGitStatus = String(await stdoutPromise)
-  ok(outputGitStatus.includes('nothing to commit, working tree clean'), `git change to commit: ${outputGitStatus}`)
+  // https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes/25149786#25149786
+  if (String(await runGitStdout([ 'status', '--porcelain' ])) !== '') throw new Error(`[verifyGitStatusClean] change to commit:\n${runGitStdoutSync([ 'status', '-vv' ])}`)
 }
 
 const publishOutput = async ({
@@ -189,7 +184,7 @@ const publishOutput = async ({
   // - `npm config get userconfig`
   // - `npm config get registry`
   // - `npm whoami`
-  await run([ getPathNpmExecutable(), '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]).promise
+  await runNpm([ '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]).promise
 }
 const getPublishFlag = (flagList, packageVersion) => {
   const isPublishAuto = flagList.includes('publish-auto') // no version verify for auto + dev, and do not limit dev version format to `REGEXP_PUBLISH_VERSION_DEV`

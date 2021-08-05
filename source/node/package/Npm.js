@@ -2,13 +2,12 @@ import { resolve } from 'path'
 import { withTimeoutPromise } from '@dr-js/core/module/common/function.js'
 import { writeJSON } from '@dr-js/core/module/node/fs/File.js'
 import { withTempDirectory } from '@dr-js/core/module/node/fs/Directory.js'
-import { getPathNpmExecutable } from '@dr-js/core/module/node/module/Software/npm.js'
+import { runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
 import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from '@dr-js/core/module/node/system/Process.js'
-import { run } from '@dr-js/core/module/node/run.js'
 import { toPackageInfo, collectDependency } from 'source/common/packageJSON/function.js'
 
 const outdatedJSON = async ({ packageRoot }) => { // run outdated in place
-  const { promise, subProcess, stdoutPromise } = run([ getPathNpmExecutable(), '--update-notifier=false',
+  const { promise, subProcess, stdoutPromise } = runNpm([ '--no-update-notifier',
     '--json', 'outdated'
   ], { cwd: packageRoot, quiet: true, describeError: false })
 

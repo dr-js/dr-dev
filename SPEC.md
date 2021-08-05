@@ -73,8 +73,10 @@
   - `parseCommand`, `parsePackageScript`, `warpBashSubShell`, `wrapJoinBashArgs`
 + 📄 [source/node/package/Npm.js](source/node/package/Npm.js)
   - `outdatedJSON`, `outdatedWithTempJSON`
++ 📄 [source/node/package/Trim.js](source/node/package/Trim.js)
+  - `trimFile`, `trimFileNodeModules`, `trimFileRubyGem`
 + 📄 [source/node/package/function.js](source/node/package/function.js)
-  - `loadPackageCombo`, `loadPackageInfo`, `loadPackageInfoList`, `savePackageJSON`, `toPackageJSONPath`, `toPackageRootPath`
+  - `editPackageJSON`, `loadPackageCombo`, `loadPackageInfo`, `loadPackageInfoList`, `savePackageInfo`, `savePackageJSON`, `toPackageJSONPath`, `toPackageRootPath`, `writePackageJSON`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)
@@ -125,6 +127,8 @@
 >       start node REPL
 >   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0-1]
 >       set to ANY value to enable, except "false/no/n/0"
+>     --write-back --wb [ARGUMENT=0-1]
+>         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
 >   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0-1]
 >       step up package version (expect "0.0.0-dev.0-local.0" format)
@@ -199,6 +203,7 @@
 >     export DR_DEV_EVAL="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_REPL="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_WRITE_BACK="[ARGUMENT=0-1] [ALIAS=DR_DEV_WB]"
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_SORT_KEY="[ARGUMENT=0-1]"
@@ -247,6 +252,7 @@
 >     "eval": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "repl": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "writeBack": [ "[ARGUMENT=0-1] [ALIAS=wb]" ],
 >     "pathTemp": [ "[ARGUMENT=1]" ],
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "sortKey": [ "[ARGUMENT=0-1]" ],
@@ -280,23 +286,23 @@
 | Package name                   |     Version |
 | :----                          |       ----: |
 | @babel/cli                     |     ^7.14.8 |
-| @babel/core                    |     ^7.14.8 |
-| @babel/eslint-parser           |     ^7.14.7 |
-| @babel/preset-env              |     ^7.14.8 |
+| @babel/core                    |     ^7.15.0 |
+| @babel/eslint-parser           |     ^7.15.0 |
+| @babel/preset-env              |     ^7.15.0 |
 | @babel/preset-react            |     ^7.14.5 |
 | @babel/register                |     ^7.14.5 |
 | babel-loader                   |      ^8.2.2 |
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |     ^1.13.2 |
-| eslint                         |     ^7.31.0 |
+| eslint                         |     ^7.32.0 |
 | eslint-plugin-import           |     ^2.23.4 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^5.1.0 |
 | eslint-plugin-react            |     ^7.24.0 |
 | prop-types                     |     ^15.7.2 |
-| puppeteer                      |     ^10.1.0 |
+| puppeteer                      |     ^10.2.0 |
 | react                          |     ^17.0.2 |
 | styled-components              |      ^5.3.0 |
 | terser                         |      ^5.7.1 |
-| webpack                        |     ^5.45.1 |
+| webpack                        |     ^5.48.0 |
