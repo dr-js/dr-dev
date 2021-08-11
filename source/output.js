@@ -150,10 +150,14 @@ const verifyNoGitignore = async ({ path, logger }) => {
   ok(badFileList.length === 0, `${badFileList.length} gitignore file found`)
 }
 
-const verifyGitStatusClean = async ({ fromRoot, cwd = fromRoot(), logger }) => {
+const verifyGitStatusClean = async ({
+  fromRoot, cwd = fromRoot(),
+  extraArgList = [], // mostly set path to check
+  logger
+}) => {
   logger.padLog('verify git has nothing to commit')
   // https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes/25149786#25149786
-  if (String(await runGitStdout([ 'status', '--porcelain' ], { cwd })) !== '') throw new Error(`[verifyGitStatusClean] change to commit:\n${runGitStdoutSync([ 'status', '-vv' ], { cwd })}`)
+  if (String(await runGitStdout([ 'status', '--porcelain', ...extraArgList ], { cwd })) !== '') throw new Error(`[verifyGitStatusClean] change to commit:\n${runGitStdoutSync([ 'status', '-vv', ...extraArgList ], { cwd })}`)
 }
 
 const publishOutput = async ({
