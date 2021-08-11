@@ -102,13 +102,13 @@ const initOutput = async ({
 }
 
 const packOutput = async ({
-  fromOutput,
+  fromOutput, cwd = fromOutput(),
   fromRoot = fromOutput, // OPTIONAL, for move output .tgz file to root
   packageJSON = require(fromOutput('package.json')),
   logger
 }) => {
   logger.padLog('run pack output')
-  await runNpm([ '--no-update-notifier', 'pack' ], { cwd: fromOutput(), quiet: !__VERBOSE__ }).promise
+  await runNpm([ '--no-update-notifier', 'pack' ], { cwd, quiet: !__VERBOSE__ }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {
@@ -128,7 +128,7 @@ const clearOutput = async ({ fromOutput, pathList = [ '.' ], filterFile = FILTER
 }
 
 const verifyOutputBin = async ({
-  fromOutput,
+  fromOutput, cwd = fromOutput(),
   versionArgList = [ '--version' ], // DEFAULT: request version
   packageJSON: { name, version, bin },
   pathExe = process.execPath, // allow set to '' for other non-node executable
@@ -138,7 +138,7 @@ const verifyOutputBin = async ({
   let pathBin = bin || './bin'
   if (isBasicObject(pathBin)) pathBin = pathBin[ Object.keys(pathBin)[ 0 ] ]
   logger.padLog('verify output bin working')
-  const outputBinTest = String(await runStdout([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd: fromOutput() }))
+  const outputBinTest = String(await runStdout([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd }))
   logger.log(`bin test output: ${outputBinTest}`)
   for (const testString of matchStringList) ok(outputBinTest.includes(testString), `should output contain: ${testString}`)
 }
