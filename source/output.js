@@ -4,6 +4,7 @@ import { homedir, tmpdir } from 'os'
 import { statSync, readFileSync, writeFileSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { isBasicObject } from '@dr-js/core/module/common/check.js'
+import { getFirstBinPath } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
@@ -131,13 +132,12 @@ const verifyOutputBin = async ({
   fromOutput, cwd = fromOutput(),
   versionArgList = [ '--version' ], // DEFAULT: request version
   packageJSON: { name, version, bin },
-  pathExe = process.execPath, // allow set to '' for other non-node executable
+  pathExe = process.execPath, // allow set to '' to skip, or use other non-node executable
   matchStringList = [ name, version ], // DEFAULT: expect output with full package name & version
   logger
 }) => {
-  let pathBin = bin || './bin'
-  if (isBasicObject(pathBin)) pathBin = pathBin[ Object.keys(pathBin)[ 0 ] ]
-  logger.padLog('verify output bin working')
+  const pathBin = getFirstBinPath({ bin })
+  logger.padLog(`verify output bin working: "${pathBin}"`)
   const outputBinTest = String(await runStdout([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd }))
   logger.log(`bin test output: ${outputBinTest}`)
   for (const testString of matchStringList) ok(outputBinTest.includes(testString), `should output contain: ${testString}`)

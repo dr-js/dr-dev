@@ -1,11 +1,11 @@
 import { objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'
+import { loadPackageCombo } from '@dr-js/core/module/node/module/PackageJSON.js'
 
 import { collectSourceJsRouteMap } from 'source/node/export/parsePreset.js'
 import { generateExportInfo } from 'source/node/export/generate.js'
 import { getMarkdownFileLink, renderMarkdownAutoAppendHeaderLink, renderMarkdownBlockQuote, renderMarkdownTable, renderMarkdownExportPath } from 'source/node/export/renderMarkdown.js'
 import { runMain, commonCombo, writeFileSync } from 'source/main.js'
 
-import { loadPackageCombo } from 'source/node/package/function.js'
 import { formatUsage } from 'source-bin/option.js'
 
 runMain(async (logger) => {

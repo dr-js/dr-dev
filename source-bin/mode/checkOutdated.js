@@ -1,9 +1,9 @@
 import { relative } from 'path'
 
 import { padTable } from '@dr-js/core/module/common/format.js'
+import { isVersionSpecComplex } from '@dr-js/core/module/common/module/SemVer.js'
+import { loadPackageCombo, writePackageJSON } from '@dr-js/core/module/node/module/PackageJSON.js'
 
-import { isVersionSpecComplex } from 'source/common/packageJSON/Version.js'
-import { loadPackageCombo, writePackageJSON } from 'source/node/package/function.js'
 import { outdatedWithTempJSON } from 'source/node/package/Npm.js'
 
 const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput }) => {

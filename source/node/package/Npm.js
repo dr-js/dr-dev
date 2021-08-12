@@ -1,10 +1,10 @@
 import { resolve } from 'path'
 import { withTimeoutPromise } from '@dr-js/core/module/common/function.js'
+import { toPackageInfo, collectDependency } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { writeJSON } from '@dr-js/core/module/node/fs/File.js'
 import { withTempDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
 import { getProcessListAsync, toProcessTree, findProcessTreeInfo, killProcessTreeInfoAsync } from '@dr-js/core/module/node/system/Process.js'
-import { toPackageInfo, collectDependency } from 'source/common/packageJSON/function.js'
 
 const outdatedJSON = async ({ packageRoot }) => { // run outdated in place
   const { promise, subProcess, stdoutPromise } = runNpm([ '--no-update-notifier',

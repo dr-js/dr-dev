@@ -1,6 +1,5 @@
 import { runGitSync } from '@dr-js/core/module/node/module/Software/git.js'
-
-import { loadPackageInfo, savePackageInfo } from 'source/node/package/function.js'
+import { loadPackageInfo, savePackageInfo } from '@dr-js/core/module/node/module/PackageJSON.js'
 
 const REGEXP_PACKAGE_VERSION = /^(\d+\.\d+\.\d+(?:-\w+\.\d+)*?)(?:-local\.)?(\d+)?$/ // check: https://regexr.com/419ol
 
