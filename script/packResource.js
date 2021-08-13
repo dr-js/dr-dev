@@ -4,8 +4,8 @@ import { readJSON, writeText } from '@dr-js/core/module/node/fs/File.js'
 import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy } from '@dr-js/core/module/node/fs/Modify.js'
 import { writePackageJSON } from '@dr-js/core/module/node/module/PackageJSON.js'
+import { getKitLogger } from '@dr-js/core/module/node/kit.js'
 
-import { getLogger } from 'source/node/logger.js'
 import { packOutput, publishOutput } from 'source/output.js'
 import { getFromPackExport, writePackExportInitJSON } from 'source-bin/function.js'
 
@@ -65,7 +65,7 @@ const doPackResource = async ({
   configJSONFile, pathOutput,
   outputName, outputVersion, outputDescription,
   isPublish = false, isPublishDev = false, isDryRun = false,
-  logger = getLogger('pack')
+  logger = getKitLogger({ title: 'pack' })
 }) => {
   const { packageJSON, exportPairList } = await loadConfig({ configJSONFile, logger })
   if (outputName) packageJSON.name = outputName

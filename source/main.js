@@ -1,37 +1,25 @@
 import { resolve, sep } from 'path'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
-
-import { clock } from '@dr-js/core/module/common/time.js'
-import { time } from '@dr-js/core/module/common/format.js'
 import { isString } from '@dr-js/core/module/common/check.js'
-
-import { argvFlag } from './node/env.js'
-import { getLogger } from './node/logger.js'
-import { commonCombo } from './output.js'
-import { commonInfoPatchCombo } from './ci.js'
+import { getKit, runKit } from '@dr-js/core/module/node/kit.js'
 
 const runMain = (
   mainAsyncFunc,
-  loggerOrTitle = process.argv.slice(2).join('+'),
+  kitLoggerOrTitle = process.argv.slice(2).join('+'),
   ...args
-) => {
-  const startTime = clock()
-  const logger = isString(loggerOrTitle)
-    ? getLogger(loggerOrTitle, argvFlag('quiet'))
-    : loggerOrTitle
-  new Promise((resolve) => resolve(mainAsyncFunc(logger, ...args))).then(
-    () => { logger.padLog(`done in ${time(clock() - startTime)}`) },
-    (error) => {
-      console.warn(error)
-      logger.padLog(`error after ${time(clock() - startTime)}: ${error}`)
-      process.exit(-1)
-    }
-  )
-}
+) => runKit(
+  (kit) => mainAsyncFunc(kit, ...args),
+  isString(kitLoggerOrTitle)
+    ? { title: kitLoggerOrTitle }
+    : { kit: { ...getKit(), ...kitLoggerOrTitle } }
+)
 
 export {
-  runMain,
+  runMain, // TODO: DEPRECATE
   // quick import // TODO: DEPRECATE: move to `combo.js`
-  argvFlag, commonCombo, commonInfoPatchCombo,
-  resolve, sep, readFileSync, writeFileSync, existsSync
+  resolve, sep, readFileSync, writeFileSync, existsSync // TODO: DEPRECATE
 }
+
+export { commonCombo } from './output.js' // TODO: DEPRECATE
+export { runInfoPatchCombo, commonInfoPatchCombo } from './ci.js' // TODO: DEPRECATE
+export { argvFlag } from '@dr-js/core/module/node/kit.js' // TODO: DEPRECATE

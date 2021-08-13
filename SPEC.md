@@ -8,7 +8,7 @@
 + 📄 [source/babel.js](source/babel.js)
   - `getBabelConfig`, `getWebpackBabelConfig`
 + 📄 [source/ci.js](source/ci.js)
-  - `commonInfoPatchCombo`
+  - `commonInfoPatchCombo`, `runInfoPatchCombo`
 + 📄 [source/docker.js](source/docker.js)
   - `checkImageExist`, `checkLocalImage`, `checkPullImage`, `compose`, `composeSync`, `docker`, `dockerSync`, `dockerWithTee`, `getContainerLsList`, `getContainerPsList`, `matchContainerLsList`, `matchContainerPsList`, `patchContainerLsListStartedAt`, `pullImage`, `runDocker`, `runDockerWithTee`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
@@ -16,7 +16,7 @@
 + 📄 [source/license.js](source/license.js)
   - `writeLicenseFile`
 + 📄 [source/main.js](source/main.js)
-  - `argvFlag`, `commonCombo`, `commonInfoPatchCombo`, `existsSync`, `readFileSync`, `resolve`, `runMain`, `sep`, `writeFileSync`
+  - `argvFlag`, `commonCombo`, `commonInfoPatchCombo`, `existsSync`, `readFileSync`, `resolve`, `runInfoPatchCombo`, `runMain`, `sep`, `writeFileSync`
 + 📄 [source/minify.js](source/minify.js)
   - `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
 + 📄 [source/output.js](source/output.js)

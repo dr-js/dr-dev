@@ -6,16 +6,15 @@ import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } fr
 import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/fs/Path.js'
 import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
+import { getKitLogger } from '@dr-js/core/module/node/kit.js'
 
 import {
-  fromPathCombo,
   initOutput,
   packOutput,
   // verifyOutputBin,
   verifyNoGitignore,
   publishOutput, getPublishFlag, verifyPublishVersion
 } from './output.js'
-import { getLogger } from './node/logger.js'
 
 const { describe, it, before, after, info = console.log } = globalThis
 
@@ -30,19 +29,17 @@ describe('Output', () => {
   const fromTestRoot = (...args) => resolve(PATH_TEST_ROOT, ...args)
   const fromRoot = (...args) => resolve(PATH_ROOT, ...args) // use outer package
   const logList = []
-  const logger = getLogger(undefined, undefined, undefined, (log) => {
-    logList.unshift(log)
-    logList.length = 8
-    info(log)
+  const logger = getKitLogger({
+    logFunc: (log) => {
+      logList.unshift(log)
+      logList.length = 8
+      info(log)
+    }
   })
   const verifyLog = (expectLog) => {
     if (logList.some((log) => log && log.includes(expectLog))) return
     throw new Error(`[verifyLog] expectLog: ${expectLog}, get:\n${logList.map((log) => indentLine(log, '  > ', ' >> ')).join('\n')}`)
   }
-
-  it('fromPathCombo()', async () => {
-    info(fromPathCombo({ PATH_ROOT: '/aa/bb' }).fromOutput('cc', 'dd'))
-  })
 
   it('initOutput()', async () => {
     const fromOutput = (...args) => fromTestRoot('output-initOutput', ...args)

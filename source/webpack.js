@@ -5,8 +5,9 @@ import { writeFileSync } from 'fs'
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { addExitListenerAsync } from '@dr-js/core/module/node/system/ExitListener.js'
+import { argvFlag } from '@dr-js/core/module/node/kit.js'
 
-import { __VERBOSE__, argvFlag } from './node/env.js'
+import { __VERBOSE__ } from './node/env.js'
 import { getWebpackBabelConfig } from './babel.js'
 import { createProgressPlugin } from './webpack-progress-plugin.js'
 

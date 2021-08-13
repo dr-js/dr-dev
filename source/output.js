@@ -1,59 +1,34 @@
 import { ok } from 'assert'
-import { resolve } from 'path'
-import { homedir, tmpdir } from 'os'
 import { statSync, readFileSync, writeFileSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { isBasicObject } from '@dr-js/core/module/common/check.js'
 import { getFirstBinPath } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
-import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
-import { runSync, runStdout, runDetached } from '@dr-js/core/module/node/run.js'
+import { runStdout } from '@dr-js/core/module/node/run.js'
+import { argvFlag, getKitPathCombo, getKitRun } from '@dr-js/core/module/node/kit.js'
 
-import { findUpPackageRoot, toPackageTgzName, runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
+import { toPackageTgzName, runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
 import { runGitStdout, runGitStdoutSync } from '@dr-js/core/module/node/module/Software/git.js'
 
-import { __VERBOSE__, argvFlag } from './node/env.js'
+import { __VERBOSE__ } from './node/env.js'
 import { FILTER_TEST_PATH } from './node/preset.js'
 import { getFileListFromPathList } from './node/file.js'
 import { writeLicenseFile } from './license.js'
 
-const fromPathCombo = ({
-  PATH_ROOT = findUpPackageRoot(process.cwd()),
-  PATH_OUTPUT = 'output-gitignore/', // relative
-  PATH_TEMP = '.temp-gitignore/', // relative
-  PATH_HOME = homedir(),
-  PATH_OSTEMP = tmpdir()
-} = {}) => {
-  // allow use relative path from PATH_ROOT
-  PATH_OUTPUT = resolve(PATH_ROOT, PATH_OUTPUT)
-  PATH_TEMP = resolve(PATH_ROOT, PATH_TEMP)
-  PATH_HOME = resolve(PATH_ROOT, PATH_HOME)
-  PATH_OSTEMP = resolve(PATH_ROOT, PATH_OSTEMP)
-  return {
-    PATH_ROOT, fromRoot: (...args) => resolve(PATH_ROOT, ...args),
-    PATH_OUTPUT, fromOutput: (...args) => resolve(PATH_OUTPUT, ...args),
-    PATH_TEMP, fromTemp: (...args) => resolve(PATH_TEMP, ...args),
-    PATH_HOME, fromHome: (...args) => resolve(PATH_HOME, ...args),
-    PATH_OSTEMP, fromOsTemp: (...args) => resolve(PATH_OSTEMP, ...args)
-  }
-}
-
-const commonCombo = (
+const commonCombo = ( // TODO: DEPRECATE
   logger,
   config = {
     DRY_RUN: Boolean(process.env.DRY_RUN),
     QUIET_RUN: argvFlag('quiet') || Boolean(process.env.QUIET_RUN)
   }
 ) => {
-  const pathConfig = fromPathCombo(config)
-  const RUN = (argListOrString, optionOrIsDetached) => { // TODO: DEPRECATE: move `isDetached` in to option object
-    const { isDetached = false, ...option } = isBasicObject(optionOrIsDetached) ? optionOrIsDetached : { isDetached: Boolean(optionOrIsDetached) }
-    const argList = Array.isArray(argListOrString) ? [ ...argListOrString ] : argListOrString.split(' ').filter(Boolean) // prepend `'bash', '-c'` to run in bash shell
-    argList[ 0 ] = resolveCommand(argList[ 0 ], pathConfig.PATH_ROOT) // mostly for finding `npm.cmd` on win32
-    if (config.DRY_RUN) !config.QUIET_RUN && logger.log(`[${config.DRY_RUN ? 'RUN|DRY' : isDetached ? 'RUN|DETACHED' : 'RUN'}] "${argList.join(' ')}"`)
-    else return (isDetached ? runDetached : runSync)(argList, { cwd: pathConfig.PATH_ROOT, stdio: config.QUIET_RUN ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit', ...option })
-  }
+  const pathConfig = getKitPathCombo(config)
+  const kitRun = getKitRun({ ...config, ...pathConfig, log: logger.log, isQuiet: config.QUIET_RUN, isDryRun: config.DRY_RUN })
+  const RUN = (argListOrString, optionOrIsDetached) => kitRun.RUN( // TODO: DEPRECATE: move `isDetached` in to option object
+    argListOrString,
+    isBasicObject(optionOrIsDetached) ? optionOrIsDetached : { isDetached: Boolean(optionOrIsDetached) }
+  )
   return { config, ...pathConfig, RUN }
 }
 
@@ -213,7 +188,7 @@ const REGEXP_PUBLISH_VERSION = /^\d+\.\d+\.\d+$/ // 0.0.0
 const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0
 
 export {
-  fromPathCombo, commonCombo,
+  commonCombo,
   initOutput,
   packOutput,
   clearOutput,
@@ -221,3 +196,7 @@ export {
   verifyNoGitignore, verifyGitStatusClean,
   publishOutput, getPublishFlag, verifyPublishVersion, REGEXP_PUBLISH_VERSION, REGEXP_PUBLISH_VERSION_DEV
 }
+
+export {
+  getKitPathCombo as fromPathCombo // TODO: DEPRECATE
+} from '@dr-js/core/module/node/kit.js'
