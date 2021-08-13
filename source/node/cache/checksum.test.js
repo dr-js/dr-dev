@@ -1,13 +1,12 @@
 import { promises as fsAsync } from 'fs'
 import { resolve } from 'path'
-import { strictEqual, doThrowAsync } from '@dr-js/core/module/common/verify.js'
+import { strictEqual } from '@dr-js/core/module/common/verify.js'
 import { getSampleRange } from '@dr-js/core/module/common/math/sample.js'
 import { createDirectory, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
+import { describeChecksumOfPathList } from '@dr-js/core/module/node/fs/Checksum.js'
 
 import {
-  describeChecksumOfPathList,
-
   loadStatFile, saveStatFile,
   checksumUpdate, checksumDetectChange
 } from './checksum.js'
@@ -45,32 +44,6 @@ after(async () => {
 })
 
 describe('Node.Cache.Checksum', () => {
-  it('getChecksumFileOfPathList', async () => strictEqual(
-    await describeChecksumOfPathList({
-      pathList: [
-        fromRoot('sample-cache-file-0'),
-        fromRoot('sample-cache-file-1'),
-        fromRoot('sample-cache-dir-0/'),
-        fromRoot('sample-cache-dir-1/')
-      ]
-    }),
-    await describeChecksumOfPathList({
-      pathList: [
-        fromRoot('sample-cache-dir-0/'),
-        fromRoot('sample-cache-dir-1/'),
-        fromRoot('sample-cache-file-0'),
-        fromRoot('sample-cache-file-1')
-      ]
-    }),
-    'path order should not matter'
-  ))
-
-  it('getChecksumFileOfPathList path must exist', async () => doThrowAsync(() => describeChecksumOfPathList({
-    pathList: [
-      fromRoot('sample-cache-file-not-exist')
-    ]
-  })))
-
   it('checksumUpdate', async () => {
     __DEV__ && info(await describeChecksumOfPathList({ pathList: TEST_CONFIG.pathChecksumList }))
 
