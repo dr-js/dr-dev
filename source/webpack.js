@@ -65,24 +65,27 @@ const getLogStats = (isWatch, { padLog, log }) => {
 const formatSize = (size) => `${binary(size)}B`
 const formatTag = (tagMap) => Object.entries(tagMap).map(([ k, v ]) => v && k).filter(Boolean).join(',')
 
-const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGroupOutput, logger }) => {
+const compileWithWebpack = async ({
+  config, isWatch, profileOutput, namedChunkGroupOutput,
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+}) => {
   if (profileOutput) {
     isWatch && console.warn('[watch] warning: skipped generate profileOutput')
     config.profile = true
   }
 
   const compiler = Webpack(config)
-  const logStats = getLogStats(isWatch, logger)
+  const logStats = getLogStats(isWatch, kitLogger)
 
   if (isWatch) {
-    logger.log('[watch] start')
-    const watching = compiler.watch({ aggregateTimeout: 512, poll: undefined }, getStatsCheck((error) => logger.log(`error: ${error}`), logStats))
+    kitLogger.log('[watch] start')
+    const watching = compiler.watch({ aggregateTimeout: 512, poll: undefined }, getStatsCheck((error) => kitLogger.log(`error: ${error}`), logStats))
     addExitListenerAsync(async (eventPack) => {
       await new Promise((resolve) => watching.close(resolve))
-      logger.log(`[watch] exit with state: ${JSON.stringify(eventPack)}`)
+      kitLogger.log(`[watch] exit with state: ${JSON.stringify(eventPack)}`)
     })
   } else {
-    logger.log('[compile] start')
+    kitLogger.log('[compile] start')
     const stats = await new Promise((resolve, reject) => compiler.run(getStatsCheck(reject, resolve)))
     await new Promise((resolve, reject) => compiler.close((error, result) => error ? reject(error) : resolve(result))) // close for Webpack5
     logStats(stats)
@@ -94,7 +97,7 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGr
     if (profileOutput) {
       await createDirectory(dirname(profileOutput))
       writeFileSync(profileOutput, JSON.stringify(getStatsJSON()))
-      logger.log(`[compile] generated profileOutput at: ${profileOutput}`)
+      kitLogger.log(`[compile] generated profileOutput at: ${profileOutput}`)
     }
     if (namedChunkGroupOutput) {
       await createDirectory(dirname(namedChunkGroupOutput))
@@ -104,22 +107,23 @@ const compileWithWebpack = async ({ config, isWatch, profileOutput, namedChunkGr
         (children && children.map(({ name, namedChunkGroups }) => ({ name, namedChunkGroups }))) ||
         {}
       ))
-      logger.log(`[compile] generated namedChunkGroupOutput at: ${namedChunkGroupOutput}`)
+      kitLogger.log(`[compile] generated namedChunkGroupOutput at: ${namedChunkGroupOutput}`)
     }
     return stats
   }
 }
 
 const commonFlag = async ({
-  fromRoot, // optional if directly set `profileOutput`
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromRoot = kit && kit.fromRoot, // optional if directly set `profileOutput`
+
   mode = argvFlag('development', 'production') || 'production',
   isWatch = Boolean(argvFlag('watch')),
   isProduction = mode === 'production',
   profileOutput = argvFlag('profile') ? fromRoot('.temp-gitignore/profile-stat.json') : null,
-  namedChunkGroupOutput = '',
-  logger
+  namedChunkGroupOutput = ''
 }) => {
-  logger.log(`compile flag: ${JSON.stringify({ mode, isWatch, isProduction, profileOutput, namedChunkGroupOutput }, null, '  ')}`)
+  kitLogger.log(`compile flag: ${JSON.stringify({ mode, isWatch, isProduction, profileOutput, namedChunkGroupOutput }, null, '  ')}`)
 
   const getCommonWebpackConfig = ({
     babelOption = getWebpackBabelConfig({ isProduction }),
@@ -156,7 +160,7 @@ const commonFlag = async ({
       ].filter(Boolean)
     },
     plugins: [
-      createProgressPlugin({ log: logger.log }),
+      createProgressPlugin({ log: kitLogger.log }),
       new DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(mode),
         __DEV__: !isProduction,

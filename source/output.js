@@ -17,14 +17,14 @@ import { getFileListFromPathList } from './node/file.js'
 import { writeLicenseFile } from './license.js'
 
 const commonCombo = ( // TODO: DEPRECATE
-  logger,
+  kitLogger,
   config = {
     DRY_RUN: Boolean(process.env.DRY_RUN),
     QUIET_RUN: argvFlag('quiet') || Boolean(process.env.QUIET_RUN)
   }
 ) => {
   const pathConfig = getKitPathCombo(config)
-  const kitRun = getKitRun({ ...config, ...pathConfig, log: logger.log, isQuiet: config.QUIET_RUN, isDryRun: config.DRY_RUN })
+  const kitRun = getKitRun({ ...config, ...pathConfig, log: kitLogger.log, isQuiet: config.QUIET_RUN, isDryRun: config.DRY_RUN })
   const RUN = (argListOrString, optionOrIsDetached) => kitRun.RUN( // TODO: DEPRECATE: move `isDetached` in to option object
     argListOrString,
     isBasicObject(optionOrIsDetached) ? optionOrIsDetached : { isDetached: Boolean(optionOrIsDetached) }
@@ -33,104 +33,120 @@ const commonCombo = ( // TODO: DEPRECATE
 }
 
 const initOutput = async ({
-  fromOutput,
-  fromRoot,
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromOutput = kit && kit.fromOutput,
+  fromRoot = kit && kit.fromRoot,
+
   deleteKeyList = [ 'private', 'scripts', 'devExecCommands', 'devDependencies' ],
   copyPathList = [ 'README.md' ],
   copyMapPathList = [],
   replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip
-  pathAutoLicenseFile = 'LICENSE', // set to false, or do not set `packageJSON.license` to skip
-  logger
+  pathAutoLicenseFile = 'LICENSE' // set to false, or do not set `packageJSON.license` to skip
 }) => {
-  logger.padLog('reset output')
+  kitLogger.padLog('reset output')
   await resetDirectory(fromOutput())
 
-  logger.padLog('init output package.json')
+  kitLogger.padLog('init output package.json')
   const packageJSON = require(fromRoot('package.json'))
   for (const deleteKey of deleteKeyList) {
     delete packageJSON[ deleteKey ]
-    logger.log(`dropped key: ${deleteKey}`)
+    kitLogger.log(`dropped key: ${deleteKey}`)
   }
   writeFileSync(fromOutput('package.json'), JSON.stringify(packageJSON))
 
   const { license, author } = packageJSON
   if (pathAutoLicenseFile && license && author) {
-    logger.padLog('update source license file')
+    kitLogger.padLog('update source license file')
     writeLicenseFile(fromRoot(pathAutoLicenseFile), license, author)
     copyPathList.push(pathAutoLicenseFile)
   }
 
-  logger.padLog('init output file')
+  kitLogger.padLog('init output file')
   for (const [ pathFrom, pathTo ] of [ ...copyPathList.map((v) => [ v, v ]), ...copyMapPathList ]) {
     if (replaceReadmeNonPackageContent && pathFrom.endsWith('README.md')) { // change README.md NON_PACKAGE_CONTENT
       const packageContentList = String(readFileSync(fromRoot(pathFrom))).split('[//]: # (NON_PACKAGE_CONTENT)')
       if (packageContentList.length >= 2) {
         writeFileSync(fromOutput(pathTo), `${packageContentList[ 0 ].trim()}${replaceReadmeNonPackageContent}`)
-        logger.log(`copied: ${pathFrom} (with NON_PACKAGE_CONTENT replaced to: ${JSON.stringify(replaceReadmeNonPackageContent)})`)
+        kitLogger.log(`copied: ${pathFrom} (with NON_PACKAGE_CONTENT replaced to: ${JSON.stringify(replaceReadmeNonPackageContent)})`)
         continue
       }
     }
     await modifyCopy(fromRoot(pathFrom), fromOutput(pathTo))
-    logger.log(`copied: ${pathFrom}`)
+    kitLogger.log(`copied: ${pathFrom}`)
   }
 
   return packageJSON
 }
 
 const packOutput = async ({
-  fromOutput, cwd = fromOutput(),
-  fromRoot = fromOutput, // OPTIONAL, for move output .tgz file to root
-  packageJSON = require(fromOutput('package.json')),
-  logger
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromOutput = kit && kit.fromOutput,
+  fromRoot = (kit && kit.fromRoot) || fromOutput, // OPTIONAL, for move output .tgz file to root
+
+  cwd = fromOutput(),
+  packageJSON = require(fromOutput('package.json'))
 }) => {
-  logger.padLog('run pack output')
+  kitLogger.padLog('run pack output')
   await runNpm([ '--no-update-notifier', 'pack' ], { cwd, quiet: !__VERBOSE__ }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {
-    logger.log('move to root path')
+    kitLogger.log('move to root path')
     await modifyRename(fromOutput(packName), fromRoot(packName))
   }
-  logger.padLog(`pack size: ${binary(statSync(fromRoot(packName)).size)}B`)
+  kitLogger.padLog(`pack size: ${binary(statSync(fromRoot(packName)).size)}B`)
 
   return fromRoot(packName)
 }
 
-const clearOutput = async ({ fromOutput, pathList = [ '.' ], filterFile = FILTER_TEST_PATH, logger }) => {
+const clearOutput = async ({
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromOutput = kit && kit.fromOutput,
+
+  pathList = [ '.' ],
+  filterFile = FILTER_TEST_PATH
+}) => {
   if (!fromOutput) throw new Error('[clearOutput] expect fromOutput')
-  logger.padLog('clear output')
+  kitLogger.padLog('clear output')
   const fileList = await getFileListFromPathList(pathList, fromOutput, filterFile)
   for (const filePath of fileList) await modifyDelete(filePath)
 }
 
 const verifyOutputBin = async ({
-  fromOutput, cwd = fromOutput(),
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromOutput = kit && kit.fromOutput,
+
+  cwd = fromOutput(),
   versionArgList = [ '--version' ], // DEFAULT: request version
   packageJSON: { name, version, bin },
   pathExe = process.execPath, // allow set to '' to skip, or use other non-node executable
-  matchStringList = [ name, version ], // DEFAULT: expect output with full package name & version
-  logger
+  matchStringList = [ name, version ] // DEFAULT: expect output with full package name & version
 }) => {
   const pathBin = getFirstBinPath({ bin })
-  logger.padLog(`verify output bin working: "${pathBin}"`)
+  kitLogger.padLog(`verify output bin working: "${pathBin}"`)
   const outputBinTest = String(await runStdout([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd }))
-  logger.log(`bin test output: ${outputBinTest}`)
+  kitLogger.log(`bin test output: ${outputBinTest}`)
   for (const testString of matchStringList) ok(outputBinTest.includes(testString), `should output contain: ${testString}`)
 }
 
-const verifyNoGitignore = async ({ path, logger }) => {
-  logger.padLog('verify no gitignore file left')
+const verifyNoGitignore = async ({
+  path,
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+}) => {
+  kitLogger.padLog('verify no gitignore file left')
   const badFileList = (await getFileList(path)).filter((path) => path.includes('gitignore'))
-  badFileList.length && logger.log(`found gitignore file:\n  - ${badFileList.join('\n  - ')}`)
+  badFileList.length && kitLogger.log(`found gitignore file:\n  - ${badFileList.join('\n  - ')}`)
   ok(badFileList.length === 0, `${badFileList.length} gitignore file found`)
 }
 
 const verifyGitStatusClean = async ({
-  fromRoot, cwd = fromRoot(),
-  extraArgList = [], // mostly set path to check
-  logger
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromRoot = kit && kit.fromRoot,
+
+  cwd = fromRoot(),
+  extraArgList = [] // mostly set path to check
 }) => {
-  logger.padLog('verify git has nothing to commit')
+  kitLogger.padLog('verify git has nothing to commit')
   // https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes/25149786#25149786
   if (String(await runGitStdout([ 'status', '--porcelain', ...extraArgList ], { cwd })) !== '') throw new Error(`[verifyGitStatusClean] change to commit:\n${runGitStdoutSync([ 'status', '-vv', ...extraArgList ], { cwd })}`)
 }
@@ -145,13 +161,13 @@ const publishOutput = async ({
   isPublishVerify = !(isPublishAuto && isPublishDev), // skip verify only for auto + dev
   isAccessRestricted = false,
   extraArgs = [],
-  logger
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
 }) => {
-  if (!isPublish && !isPublishDev) return logger.padLog('skipped publish output, no flag found')
+  if (!isPublish && !isPublishDev) return kitLogger.padLog('skipped publish output, no flag found')
   if (!pathPackagePack || !pathPackagePack.endsWith('.tgz')) throw new Error(`[publishOutput] invalid pathPackagePack: ${pathPackagePack}`)
   isPublishVerify && verifyPublishVersion({ version, isPublishDev })
 
-  logger.padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
+  kitLogger.padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
 
   // Patch tag
   !extraArgs.includes('--tag') && extraArgs.push('--tag', isPublishDev ? 'dev' : 'latest')

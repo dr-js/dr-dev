@@ -5,8 +5,11 @@ import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
 import { __VERBOSE__ } from './node/env.js'
 
-const processFileList = async ({ fileList, processor, rootPath = '', logger }) => {
-  logger.padLog(`process ${fileList.length} file`)
+const processFileList = async ({
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fileList, processor, rootPath = (kit && kit.fromRoot()) || ''
+}) => {
+  kitLogger.padLog(`process ${fileList.length} file`)
 
   const table = []
   const totalTimeStart = clock()
@@ -18,7 +21,7 @@ const processFileList = async ({ fileList, processor, rootPath = '', logger }) =
     const sizeSource = (await fsAsync.stat(filePath)).size
     let sizeOutput
     if (inputString === outputString) {
-      logger.devLog(`process skipped ${filePath}`)
+      kitLogger.devLog(`process skipped ${filePath}`)
       sizeOutput = sizeSource
     } else if (outputString) {
       await fsAsync.writeFile(filePath, outputString)
@@ -42,7 +45,7 @@ const processFileList = async ({ fileList, processor, rootPath = '', logger }) =
     `TOTAL of ${fileList.length} file (${binary(totalSizeSource)}B|${time(clock() - totalTimeStart)})`
   ])
 
-  logger.log(`result:\n  ${padTable({ table, padFuncList: [ 'L', 'L' ], cellPad: ' | ', rowPad: '\n  ' })}`)
+  kitLogger.log(`result:\n  ${padTable({ table, padFuncList: [ 'L', 'L' ], cellPad: ' | ', rowPad: '\n  ' })}`)
 
   return totalSizeDelta
 }

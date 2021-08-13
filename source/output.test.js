@@ -29,7 +29,7 @@ describe('Output', () => {
   const fromTestRoot = (...args) => resolve(PATH_TEST_ROOT, ...args)
   const fromRoot = (...args) => resolve(PATH_ROOT, ...args) // use outer package
   const logList = []
-  const logger = getKitLogger({
+  const kitLogger = getKitLogger({
     logFunc: (log) => {
       logList.unshift(log)
       logList.length = 8
@@ -53,7 +53,7 @@ describe('Output', () => {
       copyMapPathList: [ [ '.gitignore', '.gitignore-map-0' ], [ '.gitignore', '.gitignore-map-1' ] ],
       replaceReadmeNonPackageContent, // set to false to skip
       // pathAutoLicenseFile = fromRoot('LICENSE'), // set to false, or do not set `packageJSON.license` to skip
-      logger
+      kitLogger
     })
 
     stringifyEqual(
@@ -80,30 +80,30 @@ describe('Output', () => {
 
   it('packOutput()', async () => {
     const fromOutput = (...args) => fromTestRoot('output-packOutput', ...args)
-    const packageJSON = await initOutput({ fromOutput, fromRoot, logger })
-    const pathPackagePack = await packOutput({ fromOutput, fromRoot: fromTestRoot, packageJSON, logger })
+    const packageJSON = await initOutput({ fromOutput, fromRoot, kitLogger })
+    const pathPackagePack = await packOutput({ fromOutput, fromRoot: fromTestRoot, packageJSON, kitLogger })
     info(`[pathPackagePack]: ${pathPackagePack}`)
   })
 
   it('verifyNoGitignore()', async () => {
-    await doNotThrowAsync(async () => verifyNoGitignore({ path: fromRoot('script'), logger }))
-    await doThrowAsync(async () => verifyNoGitignore({ path: fromTestRoot(), logger }))
+    await doNotThrowAsync(async () => verifyNoGitignore({ path: fromRoot('script'), kitLogger }))
+    await doThrowAsync(async () => verifyNoGitignore({ path: fromTestRoot(), kitLogger }))
   })
 
   it('publishOutput()', async () => {
     const fromOutput = (...args) => fromTestRoot('output-publishOutput', ...args)
-    const packageJSON = await initOutput({ fromOutput, fromRoot, logger })
-    const pathPackagePack = await packOutput({ fromOutput, fromRoot: fromTestRoot, logger })
+    const packageJSON = await initOutput({ fromOutput, fromRoot, kitLogger })
+    const pathPackagePack = await packOutput({ fromOutput, fromRoot: fromTestRoot, kitLogger })
 
     packageJSON.version = '0.0.0-dev.0' // reset for test
 
     // should do nothing
-    await publishOutput({ isPublishAuto: false, isPublish: false, isPublishDev: false, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], logger })
+    await publishOutput({ isPublishAuto: false, isPublish: false, isPublishDev: false, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], kitLogger })
     verifyLog('skipped publish output, no flag found')
 
     // should --dry-run
     info('test publish with --dry-run')
-    await publishOutput({ isPublishAuto: false, isPublish: false, isPublishDev: true, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], logger })
+    await publishOutput({ isPublishAuto: false, isPublish: false, isPublishDev: true, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], kitLogger })
     verifyLog('publish-dev')
   })
 

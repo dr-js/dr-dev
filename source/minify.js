@@ -24,7 +24,10 @@ const getTerserOption = ({
   sourceMap: false
 })
 
-const minifyFileWithTerser = async ({ filePath, option, logger }) => {
+const minifyFileWithTerser = async ({
+  filePath, option,
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+}) => {
   const result = {
     timeStart: clock()
     // timeEnd: 0,
@@ -34,7 +37,7 @@ const minifyFileWithTerser = async ({ filePath, option, logger }) => {
   await copyAfterEdit(filePath, filePath, async (buffer) => {
     const { error, code: scriptOutput } = await terserMinify(String(buffer), option)
     if (error) {
-      logger.padLog(`[minifyFileWithTerser] failed to minify file: ${filePath}`)
+      kitLogger.padLog(`[minifyFileWithTerser] failed to minify file: ${filePath}`)
       throw error
     }
     const bufferOutput = Buffer.from(scriptOutput)
@@ -46,15 +49,18 @@ const minifyFileWithTerser = async ({ filePath, option, logger }) => {
   return result
 }
 
-const minifyFileListWithTerser = async ({ fileList, option, rootPath = '', logger }) => {
-  logger.padLog(`minify ${fileList.length} file with terser`)
+const minifyFileListWithTerser = async ({
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fileList, option, rootPath = (kit && kit.fromRoot()) || ''
+}) => {
+  kitLogger.padLog(`minify ${fileList.length} file with terser`)
 
   const table = []
   const totalTimeStart = clock()
   let totalSizeSource = 0
   let totalSizeDelta = 0
   for (const filePath of fileList) {
-    const { sizeSource, sizeOutput, timeStart, timeEnd } = await minifyFileWithTerser({ filePath, option, logger })
+    const { sizeSource, sizeOutput, timeStart, timeEnd } = await minifyFileWithTerser({ filePath, option, logger, kit, kitLogger })
     const sizeDelta = sizeOutput - sizeSource
     totalSizeSource += sizeSource
     totalSizeDelta += sizeDelta
@@ -71,7 +77,7 @@ const minifyFileListWithTerser = async ({ fileList, option, rootPath = '', logge
     `TOTAL of ${fileList.length} file (${binary(totalSizeSource)}B)`
   ])
 
-  logger.log(`result:\n  ${padTable({ table, padFuncList: [ 'L', 'R', 'L' ], cellPad: ' | ', rowPad: '\n  ' })}`)
+  kitLogger.log(`result:\n  ${padTable({ table, padFuncList: [ 'L', 'R', 'L' ], cellPad: ' | ', rowPad: '\n  ' })}`)
 
   return totalSizeDelta
 }

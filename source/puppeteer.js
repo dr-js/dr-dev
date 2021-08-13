@@ -19,8 +19,10 @@ const clearPuppeteerBrowser = ({ puppeteerBrowser }) => {
   })
 }
 
-const initPuppeteerBrowser = async ({ logger }) => {
-  logger.log('[Puppeteer|Browser] init')
+const initPuppeteerBrowser = async ({
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+}) => {
+  kitLogger.log('[Puppeteer|Browser] init')
   const puppeteerBrowser = await Puppeteer.launch({
     args: [ '--no-sandbox' ],
     headless: true,
@@ -30,36 +32,39 @@ const initPuppeteerBrowser = async ({ logger }) => {
     handleSIGTERM: false
   })
   puppeteerBrowser.addListener('disconnected', puppeteerBrowserDisconnectListener)
-  logger.log('[Puppeteer|Browser] init complete')
+  kitLogger.log('[Puppeteer|Browser] init complete')
   return puppeteerBrowser
 }
 
 const clearPuppeteerPage = ({ puppeteerPage }) => puppeteerPage.close()
   .catch((error) => { __DEV__ && console.warn('[Puppeteer] puppeteerPage clear error:', String(error)) })
 
-const initPuppeteerPage = async ({ puppeteerBrowser, logger }) => {
-  logger.log('[Puppeteer|Page] init start')
+const initPuppeteerPage = async ({
+  puppeteerBrowser,
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+}) => {
+  kitLogger.log('[Puppeteer|Page] init start')
   const puppeteerPage = await puppeteerBrowser.newPage()
-  puppeteerPage.on('error', (error) => logger.log(`[Puppeteer|Page] error: ${error.stack || error}`)) // Emitted when the puppeteerPage crashes.
-  puppeteerPage.on('pageerror', (exceptionMessage) => logger.log(`[Puppeteer|Page] page error: ${exceptionMessage}`)) // Emitted when an uncaught exception happens within the puppeteerPage.
-  puppeteerPage.on('requestfailed', (request) => logger.log(`[Puppeteer|Page] request failed with errorText: ${request.failure().errorText}, method: ${request.method()}, url: ${request.url()}`))
-  puppeteerPage.on('response', (response) => response.status() >= 400 && logger.log(`[Puppeteer|Page] abnormal response status: ${response.status()}, url: ${response.url()}`))
-  // __DEV__ && puppeteerPage.on('console', (consoleMessage) => logger.log(`[Puppeteer|Page] console [${consoleMessage.type()}] ${consoleMessage.text()} `))
-  // __DEV__ && puppeteerPage.on('request', (request) => logger.log(`[Puppeteer|Page] request method: ${request.method()}, url: ${request.url()}`))
-  // __DEV__ && puppeteerPage.on('response', (response) => logger.log(`[Puppeteer|Page] response status: ${response.status()}, url: ${response.url()}`))
-  logger.log('[Puppeteer|Page] init complete')
+  puppeteerPage.on('error', (error) => kitLogger.log(`[Puppeteer|Page] error: ${error.stack || error}`)) // Emitted when the puppeteerPage crashes.
+  puppeteerPage.on('pageerror', (exceptionMessage) => kitLogger.log(`[Puppeteer|Page] page error: ${exceptionMessage}`)) // Emitted when an uncaught exception happens within the puppeteerPage.
+  puppeteerPage.on('requestfailed', (request) => kitLogger.log(`[Puppeteer|Page] request failed with errorText: ${request.failure().errorText}, method: ${request.method()}, url: ${request.url()}`))
+  puppeteerPage.on('response', (response) => response.status() >= 400 && kitLogger.log(`[Puppeteer|Page] abnormal response status: ${response.status()}, url: ${response.url()}`))
+  // __DEV__ && puppeteerPage.on('console', (consoleMessage) => kitLogger.log(`[Puppeteer|Page] console [${consoleMessage.type()}] ${consoleMessage.text()} `))
+  // __DEV__ && puppeteerPage.on('request', (request) => kitLogger.log(`[Puppeteer|Page] request method: ${request.method()}, url: ${request.url()}`))
+  // __DEV__ && puppeteerPage.on('response', (response) => kitLogger.log(`[Puppeteer|Page] response status: ${response.status()}, url: ${response.url()}`))
+  kitLogger.log('[Puppeteer|Page] init complete')
   return puppeteerPage
 }
 
 const runWithPuppeteer = async ({
   taskFunc,
-  logger
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
 }) => {
-  const puppeteerBrowser = await initPuppeteerBrowser({ logger })
-  const puppeteerPage = await initPuppeteerPage({ puppeteerBrowser, logger })
-  logger.log('[Puppeteer|Page] test start')
-  const { result, error } = await catchAsync(taskFunc, { puppeteerPage, logger })
-  logger.log('[Puppeteer|Page] test done')
+  const puppeteerBrowser = await initPuppeteerBrowser({ logger, kit, kitLogger })
+  const puppeteerPage = await initPuppeteerPage({ puppeteerBrowser, logger, kit, kitLogger })
+  kitLogger.log('[Puppeteer|Page] test start')
+  const { result, error } = await catchAsync(taskFunc, { puppeteerPage, logger, kit, kitLogger })
+  kitLogger.log('[Puppeteer|Page] test done')
   await clearPuppeteerPage({ puppeteerPage })
   await clearPuppeteerBrowser({ puppeteerBrowser })
   if (error) throw error
@@ -120,20 +125,20 @@ const testWithPuppeteer = async ({
   // test with server page
   testUrl, // prepared script with server
 
-  logger
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
 }) => runWithPuppeteer({
   taskFunc: async ({ puppeteerPage }) => {
-    logger.padLog(`[testWithPuppeteer] timeoutPage: ${time(timeoutPage)}, timeoutTest: ${time(timeoutTest)}`)
+    kitLogger.padLog(`[testWithPuppeteer] timeoutPage: ${time(timeoutPage)}, timeoutTest: ${time(timeoutTest)}`)
 
     await puppeteerPage.setDefaultTimeout(timeoutPage) // for all page operation
     await puppeteerPage.setViewport({ width: 0, height: 0 }) // TODO: CHECK: if this will save render time
 
-    logger.log('[test] init')
+    kitLogger.log('[test] init')
     const { promise, resolve, reject } = createInsideOutPromise()
     puppeteerPage.on('console', (consoleMessage) => {
       const logType = consoleMessage.type()
       const logText = consoleMessage.text()
-      logger.log(`[test|${logType}] ${logText}`)
+      kitLogger.log(`[test|${logType}] ${logText}`)
       if (!logText.includes(testTag)) return
       const { [ testTag ]: { failCount } } = JSON.parse(logText)
       failCount
@@ -141,15 +146,15 @@ const testWithPuppeteer = async ({
         : resolve()
     })
 
-    logger.log('[test] load')
+    kitLogger.log('[test] load')
     if (testUrl) {
       const response = await puppeteerPage.goto(testUrl)
-      logger.log('[test] page navigate status:', response.status())
+      kitLogger.log('[test] page navigate status:', response.status())
     } else if (testHTML) {
       await puppeteerPage.setContent(testHTML)
     } else throw new Error('expect set either `testUrl` or `testScriptString/testHTML`')
 
-    logger.log('[test] loaded')
+    kitLogger.log('[test] loaded')
     const timeoutToken = setTimeout(() => reject(new Error(`${testTag} test timeout`)), timeoutTest)
     await guardPromiseEarlyExit(
       () => {
@@ -159,9 +164,9 @@ const testWithPuppeteer = async ({
       promise
     )
     clearTimeout(timeoutToken)
-    logger.log('[test] done')
+    kitLogger.log('[test] done')
   },
-  logger
+  logger, kit, kitLogger
 })
 
 export {

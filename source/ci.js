@@ -26,14 +26,14 @@ const runInfoPatchCombo = ({ RUN, padLog, log }) => {
 // NOTE: test local ci-patch with command like:
 //   DRY_RUN=1 npx dr-js-dev-*.tgz -eI .github/ci-patch.js
 
-const commonInfoPatchCombo = (logger, initConfig) => { // TODO: DEPRECATE
-  const { config, RUN, ...extra } = commonCombo(logger, initConfig)
+const commonInfoPatchCombo = (kitLogger, initConfig) => { // TODO: DEPRECATE
+  const { config, RUN, ...extra } = commonCombo(kitLogger, initConfig)
 
   // patch config
   config.IS_WIN32 = process.platform === 'win32' // TODO: DEPRECATE
   config.COMMAND_SUDO_NPM = config.IS_WIN32 ? 'npm.cmd' : 'sudo npm' // win32 has no sudo & need .cmd extension // TODO: DEPRECATE
-  logger.log(`config:\n${prettyStringifyConfigObject(config, '  ', '    ')}`)
-  runInfoPatchCombo({ ...logger, RUN })
+  kitLogger.log(`config:\n${prettyStringifyConfigObject(config, '  ', '    ')}`)
+  runInfoPatchCombo({ ...kitLogger, RUN })
 
   return { config, RUN, ...extra }
 }
