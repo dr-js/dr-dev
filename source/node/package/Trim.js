@@ -29,8 +29,8 @@ const shouldTrimNodeModules = (relativeFile) => {
 
   // special keep
   for (const mark of [
-    '/.bin',
-    '/.local-chromium'
+    '/.bin/',
+    '/.local-chromium/'
   ]) if (relativeFile.includes(mark)) return false
 
   // trim all dot file & folder

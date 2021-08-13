@@ -61,7 +61,7 @@ const parseResourcePath = (resourcePath, configRootPath) => typeof (resourcePath
   : [ resolve(configRootPath, resourcePath), resourcePath ]
 
 const doPackResource = async ({
-  configJSONFile, pathOutput,
+  configJSONFile, fromPackOutput,
   outputName, outputVersion, outputDescription,
   isPublish = false, isPublishDev = false, isDryRun = false,
   kit
@@ -72,12 +72,12 @@ const doPackResource = async ({
   if (outputDescription) packageJSON.description = outputDescription
 
   // custom initOutput
-  await resetDirectory(pathOutput)
-  await writePackageJSON(resolve(pathOutput, 'package.json'), packageJSON, 'sort-key')
-  await writeText(resolve(pathOutput, 'README.md'), getREADME(packageJSON))
-  await copyAndSavePackExportInitJSON({ pathPackage: pathOutput, exportPairList })
+  await resetDirectory(fromPackOutput())
+  await writePackageJSON(fromPackOutput('package.json'), packageJSON, 'sort-key')
+  await writeText(fromPackOutput('README.md'), getREADME(packageJSON))
+  await copyAndSavePackExportInitJSON({ pathPackage: fromPackOutput(), exportPairList })
 
-  const pathPackagePack = await packOutput({ kit, fromOutput: (...args) => resolve(pathOutput, ...args) })
+  const pathPackagePack = await packOutput({ kit, fromOutput: fromPackOutput })
   await publishOutput({
     extraArgs: isDryRun ? [ '--dry-run' ] : [],
     isPublishAuto: false, isPublish, isPublishDev,

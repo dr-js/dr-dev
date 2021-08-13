@@ -72,7 +72,7 @@ const doCheckOutdated = async ({
   const { sameTable, complexTable, outdatedTable } = sortResult({ dependencyInfoMap, outdatedMap, pathInput })
   logResult({ sameTable, complexTable, outdatedTable, log })
   if (isWriteBack) await writeBack({ dependencyInfoMap, outdatedTable, log })
-  else outdatedTable.length && process.exit(outdatedTable.length)
+  else if (outdatedTable.length) throw new Error(`[checkOutdated] found ${outdatedTable.length} outdated package`)
 }
 
 export { doCheckOutdated }

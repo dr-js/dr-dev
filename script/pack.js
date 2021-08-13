@@ -28,15 +28,15 @@ runKit(async (kit) => {
     else kit.padLog('[unsafe] skipped check-outdated')
 
     kit.log('clear resource package output')
-    const fromPackageOutput = (...args) => kit.fromRoot('output-package-gitignore/', ...args)
-    await resetDirectory(fromPackageOutput())
+    const fromResourceOutput = (...args) => kit.fromRoot('output-resource-gitignore/', ...args)
+    await resetDirectory(fromResourceOutput())
 
     const configJSONFileList = await getFileListFromPathList([ './resource/__config__/' ], kit.fromRoot, (path) => /dev-[\w-]+\.json/.test(path))
     for (const configJSONFile of configJSONFileList) {
       const { __FLAVOR__: { name, description } } = require(configJSONFile)
       kit.padLog(`pack package ${name}`)
       await doPackResource({
-        configJSONFile, pathOutput: fromPackageOutput(name),
+        configJSONFile, fromPackOutput: (...argList) => fromResourceOutput(name, ...argList),
         outputName: name, outputVersion: version, outputDescription: description,
         isPublish, isPublishDev, isDryRun: argvFlag('dry-run'),
         kit
