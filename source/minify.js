@@ -1,11 +1,19 @@
 import { relative } from 'path'
-import { minify as terserMinify } from 'terser'
 
+import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { clock } from '@dr-js/core/module/common/time.js'
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
 import { __VERBOSE__ } from './node/env.js'
 import { copyAfterEdit } from './node/file.js'
+
+const GET_TERSER = (kitLogger) => {
+  const Terser = tryRequire('terser')
+  if (Terser) return Terser
+  const error = new Error('[Terser] failed to load package "terser"')
+  kitLogger.log(error)
+  throw error
+}
 
 const getTerserOption = ({
   isReadable = false, // should be much more readable // TODO: option `beautify` is being removed
@@ -25,8 +33,10 @@ const getTerserOption = ({
 })
 
 const minifyFileWithTerser = async ({
-  filePath, option,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  Terser = GET_TERSER(kitLogger),
+
+  filePath, option
 }) => {
   const result = {
     timeStart: clock()
@@ -35,7 +45,7 @@ const minifyFileWithTerser = async ({
     // sizeOutput: 0
   }
   await copyAfterEdit(filePath, filePath, async (buffer) => {
-    const { error, code: scriptOutput } = await terserMinify(String(buffer), option)
+    const { error, code: scriptOutput } = await Terser.minify(String(buffer), option)
     if (error) {
       kitLogger.padLog(`[minifyFileWithTerser] failed to minify file: ${filePath}`)
       throw error

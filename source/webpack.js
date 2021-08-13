@@ -1,8 +1,8 @@
-import Webpack, { DefinePlugin, BannerPlugin } from 'webpack'
 import { join, dirname } from 'path'
-import { writeFileSync } from 'fs'
 
+import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
+import { writeJSON } from '@dr-js/core/module/node/fs/File.js'
 import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { addExitListenerAsync } from '@dr-js/core/module/node/system/ExitListener.js'
 import { argvFlag } from '@dr-js/core/module/node/kit.js'
@@ -12,6 +12,14 @@ import { getWebpackBabelConfig } from './babel.js'
 import { createProgressPlugin } from './webpack-progress-plugin.js'
 
 // https://webpack.js.org/api/stats/
+
+const GET_WEBPACK = (kitLogger) => {
+  const Webpack = tryRequire('webpack')
+  if (Webpack) return Webpack
+  const error = new Error('[Webpack] failed to load package "webpack"')
+  kitLogger.log(error)
+  throw error
+}
 
 const getStatsCheck = (onError, onStats) => (error, stats) => {
   if (error) return onError(error)
@@ -66,8 +74,10 @@ const formatSize = (size) => `${binary(size)}B`
 const formatTag = (tagMap) => Object.entries(tagMap).map(([ k, v ]) => v && k).filter(Boolean).join(',')
 
 const compileWithWebpack = async ({
-  config, isWatch, profileOutput, namedChunkGroupOutput,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  Webpack = GET_WEBPACK(kitLogger),
+
+  config, isWatch, profileOutput, namedChunkGroupOutput
 }) => {
   if (profileOutput) {
     isWatch && console.warn('[watch] warning: skipped generate profileOutput')
@@ -96,13 +106,13 @@ const compileWithWebpack = async ({
     }
     if (profileOutput) {
       await createDirectory(dirname(profileOutput))
-      writeFileSync(profileOutput, JSON.stringify(getStatsJSON()))
+      await writeJSON(profileOutput, getStatsJSON())
       kitLogger.log(`[compile] generated profileOutput at: ${profileOutput}`)
     }
     if (namedChunkGroupOutput) {
       await createDirectory(dirname(namedChunkGroupOutput))
       const { namedChunkGroups, children } = getStatsJSON() // for MultiStats, should check each Stats in statsJSON.children
-      writeFileSync(namedChunkGroupOutput, JSON.stringify(
+      await writeJSON(namedChunkGroupOutput, (
         namedChunkGroups ||
         (children && children.map(({ name, namedChunkGroups }) => ({ name, namedChunkGroups }))) ||
         {}
@@ -116,6 +126,7 @@ const compileWithWebpack = async ({
 const commonFlag = async ({
   logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
   fromRoot = kit && kit.fromRoot, // optional if directly set `profileOutput`
+  Webpack = GET_WEBPACK(kitLogger),
 
   mode = argvFlag('development', 'production') || 'production',
   isWatch = Boolean(argvFlag('watch')),
@@ -161,12 +172,12 @@ const commonFlag = async ({
     },
     plugins: [
       createProgressPlugin({ log: kitLogger.log }),
-      new DefinePlugin({
+      new Webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(mode),
         __DEV__: !isProduction,
         ...extraDefine
       }),
-      isNodeBin && new BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
+      isNodeBin && new Webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
       ...extraPluginList
     ].filter(Boolean),
     optimization: { minimize: isMinimize },
