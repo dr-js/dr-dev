@@ -51,6 +51,8 @@
   - `loadJSON`, `loadLocalJSON`, `loadLocalScript`, `loadRemoteJSON`, `loadRemoteScript`, `loadScript`
 + 📄 [source/node/run.js](source/node/run.js)
   - `runAndHandover`, `runPassThrough`, `runWithAsyncFunc`, `runWithTee`, `withCwd`, `withRunBackground`
++ 📄 [source/node/ssh.js](source/node/ssh.js)
+  - `GET_SSH2`, `LOG_CONFIG`, `LOG_ERROR`, `LOG_EXEC`, `createColorLog`, `quickSSH`, `startDryRunSSHClient`, `startSSHClient`
 + 📄 [source/node/cache/checksum.js](source/node/cache/checksum.js)
   - `checksumDetectChange`, `checksumUpdate`, `describeChecksumInfoList`, `describeChecksumOfPathList`, `getChecksumInfoListOfPath`, `getChecksumInfoListOfPathList`, `getChecksumInfoOfFile`, `loadStatFile`, `saveStatFile`
 + 📄 [source/node/cache/function.js](source/node/cache/function.js)
