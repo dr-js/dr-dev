@@ -18,13 +18,13 @@
 + 📄 [source/main.js](source/main.js)
   - `argvFlag`, `commonCombo`, `commonInfoPatchCombo`, `existsSync`, `readFileSync`, `resolve`, `runInfoPatchCombo`, `runMain`, `sep`, `writeFileSync`
 + 📄 [source/minify.js](source/minify.js)
-  - `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
+  - `GET_TERSER`, `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
 + 📄 [source/output.js](source/output.js)
   - `REGEXP_PUBLISH_VERSION`, `REGEXP_PUBLISH_VERSION_DEV`, `clearOutput`, `commonCombo`, `fromPathCombo`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
-  - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `reloadPuppeteerPage`, `runWithPuppeteer`, `setupPuppeteerPage`, `testBootPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
+  - `GET_PUPPETEER`, `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `reloadPuppeteerPage`, `runWithPuppeteer`, `setupPuppeteerPage`, `testBootPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
 + 📄 [source/webpack.js](source/webpack.js)
-  - `commonFlag`, `compileWithWebpack`
+  - `GET_WEBPACK`, `commonFlag`, `compileWithWebpack`
 + 📄 [source/webpack-progress-plugin.js](source/webpack-progress-plugin.js)
   - `createProgressPlugin`
 + 📄 [source/browser/resource.js](source/browser/resource.js)

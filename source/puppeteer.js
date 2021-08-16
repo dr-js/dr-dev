@@ -6,6 +6,14 @@ import { time } from '@dr-js/core/module/common/format.js'
 import { createInsideOutPromise } from '@dr-js/core/module/common/function.js'
 import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener.js'
 
+const GET_PUPPETEER = (log = console.warn) => {
+  const Puppeteer = tryRequire('puppeteer')
+  if (Puppeteer) return Puppeteer
+  const error = new Error('[Puppeteer] failed to load package "puppeteer"')
+  log(error)
+  throw error
+}
+
 const puppeteerBrowserDisconnectListener = () => {
   console.warn('[Puppeteer] unexpected browser disconnect, exiting')
   process.exit(-2)
@@ -24,8 +32,8 @@ const clearPuppeteerBrowser = ({
 }
 
 const initPuppeteerBrowser = async ({
-  Puppeteer = tryRequire('puppeteer'),
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  Puppeteer = GET_PUPPETEER(kitLogger.log)
 }) => {
   if (!Puppeteer) {
     const error = new Error('[Puppeteer] failed to load package "puppeteer"')
@@ -220,6 +228,7 @@ const testWithPuppeteer = async ({
 })
 
 export {
+  GET_PUPPETEER,
   initPuppeteerBrowser, clearPuppeteerBrowser,
   initPuppeteerPage, clearPuppeteerPage, setupPuppeteerPage, reloadPuppeteerPage,
   testBootPuppeteer,

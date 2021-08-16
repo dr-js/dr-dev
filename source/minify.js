@@ -7,11 +7,11 @@ import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 import { __VERBOSE__ } from './node/env.js'
 import { copyAfterEdit } from './node/file.js'
 
-const GET_TERSER = (kitLogger) => {
+const GET_TERSER = (log = console.warn) => {
   const Terser = tryRequire('terser')
   if (Terser) return Terser
   const error = new Error('[Terser] failed to load package "terser"')
-  kitLogger.log(error)
+  log(error)
   throw error
 }
 
@@ -34,7 +34,7 @@ const getTerserOption = ({
 
 const minifyFileWithTerser = async ({
   logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
-  Terser = GET_TERSER(kitLogger),
+  Terser = GET_TERSER(kitLogger.log),
 
   filePath, option
 }) => {
@@ -93,6 +93,7 @@ const minifyFileListWithTerser = async ({
 }
 
 export {
+  GET_TERSER,
   getTerserOption,
   minifyFileWithTerser,
   minifyFileListWithTerser

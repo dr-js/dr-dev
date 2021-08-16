@@ -13,11 +13,11 @@ import { createProgressPlugin } from './webpack-progress-plugin.js'
 
 // https://webpack.js.org/api/stats/
 
-const GET_WEBPACK = (kitLogger) => {
+const GET_WEBPACK = (log = console.warn) => {
   const Webpack = tryRequire('webpack')
   if (Webpack) return Webpack
   const error = new Error('[Webpack] failed to load package "webpack"')
-  kitLogger.log(error)
+  log(error)
   throw error
 }
 
@@ -75,7 +75,7 @@ const formatTag = (tagMap) => Object.entries(tagMap).map(([ k, v ]) => v && k).f
 
 const compileWithWebpack = async ({
   logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
-  Webpack = GET_WEBPACK(kitLogger),
+  Webpack = GET_WEBPACK(kitLogger.log),
 
   config, isWatch, profileOutput, namedChunkGroupOutput
 }) => {
@@ -189,6 +189,7 @@ const commonFlag = async ({
 }
 
 export {
+  GET_WEBPACK,
   compileWithWebpack,
   commonFlag
 }
