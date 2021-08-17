@@ -1,0 +1,45 @@
+import { resolve, dirname } from 'path'
+import { binary } from '@dr-js/core/module/common/format.js'
+import { writeBuffer } from '@dr-js/core/module/node/fs/File.js'
+import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+
+import { stringifyYAML } from './YAML.js'
+import { stringifyNginxConf } from './Nginx.js'
+
+const outputConfig = async (
+  pathCombo = '', // 'file-path.json|file-path.yml|file-path.yaml'
+  config = {},
+  { fromRoot, onOutput }
+) => {
+  for (const path of pathCombo.split('|')) {
+    const buffer = (path.endsWith('.yml') || path.endsWith('.yaml')) ? Buffer.from(stringifyYAML(config))
+      : path.endsWith('.json') ? Buffer.from(JSON.stringify(config, null, 2))
+        : path.endsWith('.nginx.conf') ? Buffer.from(stringifyNginxConf(config))
+          : null
+    if (!buffer) throw new Error(`invalid output path: ${path}`)
+    await createDirectory(dirname(fromRoot(path)))
+    await writeBuffer(fromRoot(path), buffer)
+    onOutput && onOutput(path, buffer)
+  }
+}
+
+const outputConfigMap = async (
+  configMap = {},
+  {
+    outputRoot = process.cwd(),
+    fromRoot = (...args) => resolve(outputRoot, ...args),
+    log = () => {},
+    onOutput = (path, buffer) => log(`- ${path} (${binary(buffer.length)}B)`)
+  } = {}
+) => {
+  const option = { fromRoot, onOutput }
+  for (const [ pathCombo, config ] of Object.entries(configMap)) {
+    log(`[${pathCombo}]`)
+    await outputConfig(pathCombo, config, option)
+  }
+}
+
+export {
+  outputConfig,
+  outputConfigMap
+}

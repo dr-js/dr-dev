@@ -59,6 +59,14 @@
   - `loadStat`, `packTime`, `parseTime`, `saveStat`
 + 📄 [source/node/cache/staleCheck.js](source/node/cache/staleCheck.js)
   - `describeStaleReport`, `loadStatFile`, `saveStatFile`, `staleCheckCalcReport`, `staleCheckMark`, `staleCheckSetup`
++ 📄 [source/node/config/Nginx.js](source/node/config/Nginx.js)
+  - `COMBO_BROTLI`, `COMBO_BROTLI_STATIC`, `COMBO_COMPRESS`, `COMBO_COMPRESS_STATIC`, `COMBO_GZIP`, `COMBO_GZIP_STATIC`, `COMBO_MIME`, `COMMON_COMPRESS_MIME_LIST`, `COMMON_MIME_MAP`, `DEFAULT_MIME`, `stringifyNginxConf`
++ 📄 [source/node/config/Object.js](source/node/config/Object.js)
+  - `SECRET_PREFIX`, `mergeFlavor`, `pickFlavor`, `useFlavor`, `useSecret`
++ 📄 [source/node/config/Output.js](source/node/config/Output.js)
+  - `outputConfig`, `outputConfigMap`
++ 📄 [source/node/config/YAML.js](source/node/config/YAML.js)
+  - `GET_YAML`, `USE_YAML`, `parseYAML`, `readYAML`, `stringifyYAML`, `writeYAML`
 + 📄 [source/node/export/generate.js](source/node/export/generate.js)
   - `EXPORT_HOIST_LIST_KEY`, `EXPORT_LIST_KEY`, `HOIST_LIST_KEY`, `generateExportInfo`, `generateIndexScript`
 + 📄 [source/node/export/parse.js](source/node/export/parse.js)

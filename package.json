@@ -51,7 +51,8 @@
     "@dr-js/dev": "^0.4.19-dev.0",
     "@dr-js/dev-web": "^0.4.19-dev.0",
     "ssh2": "^1.2.0",
-    "ssh2-legacy": "npm:ssh2@^0.8.9"
+    "ssh2-legacy": "npm:ssh2@^0.8.9",
+    "yaml": "^1.10.2"
   },
   "optionalDependencies": {
     "@dr-js/node": "^0.4.9"
