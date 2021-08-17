@@ -109,7 +109,7 @@ const clearOutput = async ({
   if (!fromOutput) throw new Error('[clearOutput] expect fromOutput')
   kitLogger.padLog('clear output')
   const fileList = await getFileListFromPathList(pathList, fromOutput, filterFile)
-  for (const filePath of fileList) await modifyDelete(filePath)
+  for (const filePath of fileList) await modifyDelete(filePath) // NOTE: will keep empty test folder
 }
 
 const verifyOutputBin = async ({

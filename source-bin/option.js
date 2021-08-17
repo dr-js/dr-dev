@@ -43,7 +43,7 @@ const MODE_FORMAT_LIST = parseCompactList(
   ) ],
 
   [ 'exec,E/AS,O|exec command, allow set env and cwd: $@=command, ...argList', parseCompactList(
-    'exec-env,EE/O/0-1|use URLSearchParams format String, or key-value Object',
+    'exec-env,EE/O/0-1|use URLSearchParams format String, or key-value Object', // TODO: "&" will cause command split in win32
     'exec-cwd,EC/P,O/0-1|reset cwd to path'
   ) ],
   `exec-load,EL/AS,O|load and exec command from package.json[ "${PACKAGE_KEY_DEV_EXEC_COMMAND_MAP}" ]: $@=commandName, ...extraArgList`,

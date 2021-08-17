@@ -86,7 +86,7 @@ const runMode = async (optionData, modeName) => {
         isVerify: getToggle('init-verify'),
         pathVerifyRule: tryGetFirst('init-verify-rule')
       })
-    case 'exec':
+    case 'exec': // TODO: support run z64string?
       return doExec(argumentList, {
         env: tryGetFirst('exec-env'),
         cwd: tryGetFirst('exec-cwd') // TODO: naming
