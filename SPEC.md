@@ -117,6 +117,16 @@
 >       common option
 >   --root --path-input --R -R [OPTIONAL] [ARGUMENT=1]
 >       common option, may be path to repo folder, or "package.json" file: $0=path/cwd
+>   --git-commit --G -G [OPTIONAL] [ARGUMENT=0-1]
+>       common option, mostly for version marking
+>   --version-bump-git-branch --VBGB [OPTIONAL] [ARGUMENT=0-1]
+>       bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $0=gitBranch/current
+>   --version-bump-last-number --VBLN [OPTIONAL] [ARGUMENT=0-1]
+>       bump the last number found in package version: -G, -D
+>   --version-bump-to-identifier --VBTI [OPTIONAL] [ARGUMENT=0-1]
+>       bump package version to identifier: -G, -D, $0=labelIdentifier/dev
+>   --version-bump-to-local --VBTL [OPTIONAL] [ARGUMENT=0-1]
+>       bump package version to append identifier "local", for local testing: -G, -D
 >   --test --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
 >       list of path to look test file from, default to "."
 >     --test-file-suffix --TFS [ARGUMENT=1+]
@@ -143,11 +153,9 @@
 >         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
 >   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0-1]
->       step up package version (expect "0.0.0-dev.0-local.0" format)
+>       step up package version (expect "0.0.0-dev.0-local.0" format): -G=isGitCommit
 >     --sort-key --K -K [ARGUMENT=0-1]
 >         sort keys in package.json
->     --git-commit --G -G [ARGUMENT=0-1]
->         step up patch version, and prepare a git commit
 >   --init [OPTIONAL] [ARGUMENT=0-1]
 >       path for init a package, will not reset existing file, default to "."
 >     --init-resource-package [ARGUMENT=1]
@@ -204,6 +212,11 @@
 >     export DR_DEV_OUTPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
 >     export DR_DEV_ROOT="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PATH_INPUT]"
+>     export DR_DEV_GIT_COMMIT="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_VERSION_BUMP_GIT_BRANCH="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBGB]"
+>     export DR_DEV_VERSION_BUMP_LAST_NUMBER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBLN]"
+>     export DR_DEV_VERSION_BUMP_TO_IDENTIFIER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTI]"
+>     export DR_DEV_VERSION_BUMP_TO_LOCAL="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTL]"
 >     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
 >     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
 >     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
@@ -219,7 +232,6 @@
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_SORT_KEY="[ARGUMENT=0-1]"
->     export DR_DEV_GIT_COMMIT="[ARGUMENT=0-1]"
 >     export DR_DEV_INIT="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_INIT_RESOURCE_PACKAGE="[ARGUMENT=1]"
 >     export DR_DEV_INIT_RESET="[ARGUMENT=0-1]"
@@ -253,6 +265,11 @@
 >     "outputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
 >     "root": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pathInput]" ],
+>     "gitCommit": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "versionBumpGitBranch": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBGB]" ],
+>     "versionBumpLastNumber": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBLN]" ],
+>     "versionBumpToIdentifier": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTI]" ],
+>     "versionBumpToLocal": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTL]" ],
 >     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
 >     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
 >     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],
@@ -268,7 +285,6 @@
 >     "pathTemp": [ "[ARGUMENT=1]" ],
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "sortKey": [ "[ARGUMENT=0-1]" ],
->     "gitCommit": [ "[ARGUMENT=0-1]" ],
 >     "init": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "initResourcePackage": [ "[ARGUMENT=1]" ],
 >     "initReset": [ "[ARGUMENT=0-1]" ],

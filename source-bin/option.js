@@ -7,12 +7,17 @@ const { Config, parseCompactList, pickOneOf } = Preset
 
 const MODE_FORMAT_LIST = parseCompactList(
   // new mode (no short commands for now to avoid conflict)
+  // version-bump
+  'version-bump-git-branch,VBGB/T|bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $0=gitBranch/current',
+  'version-bump-last-number,VBLN/T|bump the last number found in package version: -G, -D',
+  'version-bump-to-identifier,VBTI/AS,O/0-1|bump package version to identifier: -G, -D, $0=labelIdentifier/dev',
+  'version-bump-to-local,VBTL/T|bump package version to append identifier "local", for local testing: -G, -D',
 
   // keep mode
   [ 'test,test-root,T/AP,O|list of path to look test file from, default to "."', parseCompactList( // TODO: DEPRECATE: name `test-root`
     'test-file-suffix,TFS/AS,O|pattern for test file, default to ".js"',
     'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"',
-    'test-timeout,TT/SI,O|timeout for each test, in msec, default to 42*1000 (42sec)'
+    'test-timeout,TT/SI,O|timeout for each test, in msec, default to 42*1000 (42sec)' // TODO: move to "timeout"
   ) ],
 
   'parse-script,ps/AS,O|parse and echo: $@=scriptName,...extraArgs',
@@ -30,9 +35,8 @@ const MODE_FORMAT_LIST = parseCompactList(
     'path-temp/SP,O'
   ) ],
 
-  [ 'step-package-version,S/T|step up package version (expect "0.0.0-dev.0-local.0" format)', parseCompactList(
-    'sort-key,K/T|sort keys in package.json',
-    'git-commit,G/T|step up patch version, and prepare a git commit'
+  [ 'step-package-version,S/T|step up package version (expect "0.0.0-dev.0-local.0" format): -G=isGitCommit', parseCompactList(
+    'sort-key,K/T|sort keys in package.json'
   ) ],
 
   [ 'init/AP,O/0-1|path for init a package, will not reset existing file, default to "."', parseCompactList( // TODO: DEPRECATE: simplify or remove
@@ -87,7 +91,9 @@ const OPTION_CONFIG = {
       'input-file,I/SP,O|common option',
       'output-file,O/SP,O|common option',
       'pid-file,pid/SP,O|common option',
-      'root,path-input,R/SP,O|common option, may be path to repo folder, or "package.json" file: $0=path/cwd' // TODO: DEPRECATE: name "path-input"
+      'root,path-input,R/SP,O|common option, may be path to repo folder, or "package.json" file: $0=path/cwd', // TODO: DEPRECATE: name "path-input"
+
+      'git-commit,G/T|common option, mostly for version marking'
 
       // 'timeout,T/SI,O|common option, 0 for unlimited: $0=msec/undefined',
       // 'json,J/T|output JSON, if supported',
