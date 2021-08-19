@@ -150,13 +150,13 @@
 >         step up patch version, and prepare a git commit
 >   --init [OPTIONAL] [ARGUMENT=0-1]
 >       path for init a package, will not reset existing file, default to "."
->     --init-resource-package --P -P [ARGUMENT=1]
+>     --init-resource-package [ARGUMENT=1]
 >         path to resource package, default search for "./node_modules/@dr-js/dev-*/"
->     --init-reset --R -R [ARGUMENT=0-1]
+>     --init-reset [ARGUMENT=0-1]
 >         allow init to reset existing file
->     --init-verify --V -V [ARGUMENT=0-1]
+>     --init-verify [ARGUMENT=0-1]
 >         do common init file content check, will skip file modify
->     --init-verify-rule --IVR [ARGUMENT=1+]
+>     --init-verify-rule [ARGUMENT=1+]
 >         path to verify rule, default search in "init-resource-package"
 >   --exec --E -E [OPTIONAL] [ARGUMENT=1+]
 >       exec command, allow set env and cwd: $@=command, ...argList
@@ -224,7 +224,7 @@
 >     export DR_DEV_INIT_RESOURCE_PACKAGE="[ARGUMENT=1]"
 >     export DR_DEV_INIT_RESET="[ARGUMENT=0-1]"
 >     export DR_DEV_INIT_VERIFY="[ARGUMENT=0-1]"
->     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+] [ALIAS=DR_DEV_IVR]"
+>     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+]"
 >     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1] [ALIAS=DR_DEV_EE]"
 >     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1] [ALIAS=DR_DEV_EC]"
@@ -273,7 +273,7 @@
 >     "initResourcePackage": [ "[ARGUMENT=1]" ],
 >     "initReset": [ "[ARGUMENT=0-1]" ],
 >     "initVerify": [ "[ARGUMENT=0-1]" ],
->     "initVerifyRule": [ "[ARGUMENT=1+] [ALIAS=IVR]" ],
+>     "initVerifyRule": [ "[ARGUMENT=1+]" ],
 >     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "execEnv": [ "[ARGUMENT=0-1] [ALIAS=EE]" ],
 >     "execCwd": [ "[ARGUMENT=0-1] [ALIAS=EC]" ],

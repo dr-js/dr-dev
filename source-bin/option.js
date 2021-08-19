@@ -36,10 +36,10 @@ const MODE_FORMAT_LIST = parseCompactList(
   ) ],
 
   [ 'init/AP,O/0-1|path for init a package, will not reset existing file, default to "."', parseCompactList( // TODO: DEPRECATE: simplify or remove
-    'init-resource-package,P/SP,O|path to resource package, default search for "./node_modules/@dr-js/dev-*/"',
-    'init-reset,R/T|allow init to reset existing file',
-    'init-verify,V/T|do common init file content check, will skip file modify',
-    'init-verify-rule,IVR/AP,O|path to verify rule, default search in "init-resource-package"'
+    'init-resource-package/SP,O|path to resource package, default search for "./node_modules/@dr-js/dev-*/"',
+    'init-reset/T|allow init to reset existing file',
+    'init-verify/T|do common init file content check, will skip file modify',
+    'init-verify-rule/AP,O|path to verify rule, default search in "init-resource-package"'
   ) ],
 
   [ 'exec,E/AS,O|exec command, allow set env and cwd: $@=command, ...argList', parseCompactList(
