@@ -68,13 +68,13 @@ const runMode = async (optionData, modeName) => {
     // TODO: DEPRECATE: reorder & rename options
     case 'check-outdated' :
       return doCheckOutdated({
-        pathInput: getFirst('path-input'),
+        pathInput: tryGetFirst('root') || '.',
         pathTemp: tryGetFirst('path-temp'),
         isWriteBack: getToggle('write-back')
       })
     case 'step-package-version':
       return doStepPackageVersion({
-        pathInput: tryGetFirst('path-input') || '.',
+        pathInput: tryGetFirst('root') || '.',
         isSortKey: getToggle('sort-key'),
         isGitCommit: getToggle('git-commit')
       })
@@ -93,7 +93,7 @@ const runMode = async (optionData, modeName) => {
       })
     case 'exec-load':
       return doExecLoad({
-        pathInput: tryGetFirst('path-input') || '.', // TODO: naming
+        pathInput: tryGetFirst('root') || '.', // TODO: naming
         name: argumentList[ 0 ],
         extraArgList: argumentList.slice(1)
       })

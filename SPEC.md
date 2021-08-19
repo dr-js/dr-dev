@@ -115,8 +115,8 @@
 >       common option
 >   --pid-file --pid [OPTIONAL] [ARGUMENT=1]
 >       common option
->   --path-input [ARGUMENT=1]
->       path to "package.json", or directory with "package.json" inside
+>   --root --path-input --R -R [OPTIONAL] [ARGUMENT=1]
+>       common option, may be path to repo folder, or "package.json" file: $0=path/cwd
 >   --test --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
 >       list of path to look test file from, default to "."
 >     --test-file-suffix --TFS [ARGUMENT=1+]
@@ -138,7 +138,7 @@
 >   --repl --i -i [OPTIONAL] [ARGUMENT=0-1]
 >       start node REPL
 >   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0-1]
->       set to ANY value to enable, except "false/no/n/0"
+>       check dependency version from "package.json", or all under the folder: -R=checkFileOrFolder/cwd
 >     --write-back --wb [ARGUMENT=0-1]
 >         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
@@ -203,7 +203,7 @@
 >     export DR_DEV_INPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_OUTPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
->     export DR_DEV_PATH_INPUT="[ARGUMENT=1]"
+>     export DR_DEV_ROOT="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PATH_INPUT]"
 >     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
 >     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
 >     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
@@ -252,7 +252,7 @@
 >     "inputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "outputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
->     "pathInput": [ "[ARGUMENT=1]" ],
+>     "root": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pathInput]" ],
 >     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
 >     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
 >     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],

@@ -1,4 +1,4 @@
-import { Preset, getOptionalFormatFlag, prepareOption } from '@dr-js/core/module/node/module/Option/preset.js'
+import { Preset, prepareOption } from '@dr-js/core/module/node/module/Option/preset.js'
 
 import { COMBO_COMMAND_CONFIG_MAP } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
 import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from './mode/exec.js'
@@ -25,7 +25,7 @@ const MODE_FORMAT_LIST = parseCompactList(
   'repl,i/T|start node REPL',
 
   // TODO: DEPRECATE: reorder & rename options
-  [ 'check-outdated,C/T', parseCompactList(
+  [ 'check-outdated,C/T|check dependency version from "package.json", or all under the folder: -R=checkFileOrFolder/cwd', parseCompactList( // TODO: get path from this option
     'write-back,wb/T',
     'path-temp/SP,O'
   ) ],
@@ -87,10 +87,10 @@ const OPTION_CONFIG = {
       'input-file,I/SP,O|common option',
       'output-file,O/SP,O|common option',
       'pid-file,pid/SP,O|common option',
+      'root,path-input,R/SP,O|common option, may be path to repo folder, or "package.json" file: $0=path/cwd' // TODO: DEPRECATE: name "path-input"
 
-      [ 'path-input/SP|path to "package.json", or directory with "package.json" inside', { // TODO: DEPRECATE: change to input-file
-        optional: getOptionalFormatFlag('check-outdated')
-      } ]
+      // 'timeout,T/SI,O|common option, 0 for unlimited: $0=msec/undefined',
+      // 'json,J/T|output JSON, if supported',
     ),
     ...MODE_FORMAT_LIST
   ]
