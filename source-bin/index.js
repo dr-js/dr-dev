@@ -68,7 +68,7 @@ const runMode = async (optionData, modeName) => {
     // TODO: DEPRECATE: reorder & rename options
     case 'check-outdated' :
       return doCheckOutdated({
-        pathInput: tryGetFirst('root') || '.',
+        pathInput: argumentList[ 0 ] || tryGetFirst('root') || './package.json',
         pathTemp: tryGetFirst('path-temp'),
         isWriteBack: getToggle('write-back')
       })

@@ -138,7 +138,7 @@
 >   --repl --i -i [OPTIONAL] [ARGUMENT=0-1]
 >       start node REPL
 >   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0-1]
->       check dependency version from "package.json", or all under the folder: -R=checkFileOrFolder/cwd
+>       check dependency version from "package.json", or all under the folder: $0/-R=checkPath/"./package.json"
 >     --write-back --wb [ARGUMENT=0-1]
 >         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]

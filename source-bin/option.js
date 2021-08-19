@@ -25,7 +25,7 @@ const MODE_FORMAT_LIST = parseCompactList(
   'repl,i/T|start node REPL',
 
   // TODO: DEPRECATE: reorder & rename options
-  [ 'check-outdated,C/T|check dependency version from "package.json", or all under the folder: -R=checkFileOrFolder/cwd', parseCompactList( // TODO: get path from this option
+  [ 'check-outdated,C/AP,O/0-1|check dependency version from "package.json", or all under the folder: $0/-R=checkPath/"./package.json"', parseCompactList( // TODO: get path from this option
     'write-back,wb/T',
     'path-temp/SP,O'
   ) ],
