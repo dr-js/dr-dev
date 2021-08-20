@@ -31,6 +31,7 @@
     "test-source": "npm run test-T -- source/",
     "test-output-library": "npm run test-T-output -- output-gitignore/library/",
     "test-output-module": "npm run test-T -- output-gitignore/module/",
+    "test-output-bin": "npm run test-T-output -- output-gitignore/bin/",
     "// =============================": "",
     "check-outdated": "node ./output-gitignore/bin --check-outdated ./resource",
     "check-outdated-write-back": "npm run check-outdated -- --write-back",

@@ -119,6 +119,8 @@
 >       common option, may be path to repo folder, or "package.json" file: $0=path/cwd
 >   --git-commit --G -G [OPTIONAL] [ARGUMENT=0-1]
 >       common option, mostly for version marking
+>   --shell-alias --SA --A -A [OPTIONAL] [ARGUMENT=1+]
+>       run shell alias: $@=aliasName,...aliasArgList
 >   --version-bump-git-branch --VBGB [OPTIONAL] [ARGUMENT=0-1]
 >       bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $0=gitBranch/current
 >   --version-bump-last-number --VBLN [OPTIONAL] [ARGUMENT=0-1]
@@ -213,6 +215,7 @@
 >     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
 >     export DR_DEV_ROOT="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PATH_INPUT]"
 >     export DR_DEV_GIT_COMMIT="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_SHELL_ALIAS="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_SA]"
 >     export DR_DEV_VERSION_BUMP_GIT_BRANCH="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBGB]"
 >     export DR_DEV_VERSION_BUMP_LAST_NUMBER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBLN]"
 >     export DR_DEV_VERSION_BUMP_TO_IDENTIFIER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTI]"
@@ -266,6 +269,7 @@
 >     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
 >     "root": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pathInput]" ],
 >     "gitCommit": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "shellAlias": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=SA]" ],
 >     "versionBumpGitBranch": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBGB]" ],
 >     "versionBumpLastNumber": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBLN]" ],
 >     "versionBumpToIdentifier": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTI]" ],

@@ -70,6 +70,7 @@ runKit(async (kit) => {
   isTest && kit.padLog('test output')
   isTest && kit.RUN('npm run test-output-library')
   isTest && kit.RUN('npm run test-output-module')
+  isTest && kit.RUN('npm run test-output-bin')
   await clearOutput({ kit })
   await verifyOutputBin({ packageJSON, kit })
   isTest && await verifyGitStatusClean({ kit })

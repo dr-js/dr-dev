@@ -9,6 +9,7 @@ import { doInit } from './mode/init.js'
 import { doExec, doExecLoad } from './mode/exec.js'
 import { doCacheStep } from './mode/cacheStep.js'
 import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
+import { doShellAlias } from './mode/shellAlias.js'
 
 import { versionBumpByGitBranch, versionBumpLastNumber, versionBumpToIdentifier, versionBumpToLocal } from '@dr-js/core/module/common/module/SemVer.js'
 import { getGitBranch } from '@dr-js/core/module/node/module/Software/git.js'
@@ -40,6 +41,13 @@ const runMode = async (optionData, modeName) => {
 
   switch (modeName) {
     // new mode (no short commands for now to avoid conflict)
+    case 'shell-alias':
+      return doShellAlias({
+        aliasName: argumentList[ 0 ],
+        aliasArgList: argumentList.slice(1),
+        log
+      })
+
     case 'version-bump-git-branch':
       return doVersionBump(await commonVersionBump(versionBumpByGitBranch, { gitBranch: getGitBranch() }))
     case 'version-bump-last-number':

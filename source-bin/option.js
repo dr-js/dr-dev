@@ -7,6 +7,8 @@ const { Config, parseCompactList, pickOneOf } = Preset
 
 const MODE_FORMAT_LIST = parseCompactList(
   // new mode (no short commands for now to avoid conflict)
+  'shell-alias,SA,A/AS,O|run shell alias: $@=aliasName,...aliasArgList',
+
   // version-bump
   'version-bump-git-branch,VBGB/T|bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $0=gitBranch/current',
   'version-bump-last-number,VBLN/T|bump the last number found in package version: -G, -D',
