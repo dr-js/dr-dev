@@ -308,7 +308,7 @@
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |     ^1.13.2 |
 | eslint                         |     ^7.32.0 |
-| eslint-plugin-import           |     ^2.24.0 |
+| eslint-plugin-import           |     ^2.24.1 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^5.1.0 |
 | eslint-plugin-react            |     ^7.24.0 |
@@ -317,4 +317,4 @@
 | react                          |     ^17.0.2 |
 | styled-components              |      ^5.3.0 |
 | terser                         |      ^5.7.1 |
-| webpack                        |     ^5.50.0 |
+| webpack                        |     ^5.51.1 |
