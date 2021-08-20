@@ -34,7 +34,10 @@ const sortSourceRouteMap = (sourceRouteMap) => {
   return sourceRouteMap
 }
 
-const createExportParser = ({ parserPluginList, logger }) => {
+const createExportParser = ({
+  parserPluginList,
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+}) => {
   let sourceRouteMap = {
     // 'source/route': {
     //   routeList: [ 'source' ],
@@ -55,18 +58,18 @@ const createExportParser = ({ parserPluginList, logger }) => {
     const name = routeList.pop()
 
     if (fileStat.isDirectory()) {
-      logger.devLog(`[directory] ${path}`)
+      kitLogger.devLog(`[directory] ${path}`)
       getRoute(routeList).directoryList.push(name)
     } else if (fileStat.isFile() && name.endsWith('.js')) {
       const fileString = String(readFileSync(path))
       const exportList = getExportListFromParsedAST(fileString, path, parserPluginList)
 
-      logger.devLog(`[file] ${path}`)
+      kitLogger.devLog(`[file] ${path}`)
       if (!exportList.length) return
 
       getRoute(routeList).fileList.push({ name: name.slice(0, -3), exportList }) // remove `.js` from name
-      logger.devLog(`  export [${exportList.length}]: ${exportList.join(', ')}`)
-    } else logger.devLog(`[skipped] ${path} (${getPathTypeFromStat(fileStat)})`)
+      kitLogger.devLog(`  export [${exportList.length}]: ${exportList.join(', ')}`)
+    } else kitLogger.devLog(`[skipped] ${path} (${getPathTypeFromStat(fileStat)})`)
   }
 
   return {

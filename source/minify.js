@@ -1,11 +1,19 @@
 import { relative } from 'path'
-import { minify as terserMinify } from 'terser'
 
+import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { clock } from '@dr-js/core/module/common/time.js'
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
 import { __VERBOSE__ } from './node/env.js'
 import { copyAfterEdit } from './node/file.js'
+
+const GET_TERSER = (log = console.warn) => {
+  const Terser = tryRequire('terser')
+  if (Terser) return Terser
+  const error = new Error('[Terser] failed to load package "terser"')
+  log(error)
+  throw error
+}
 
 const getTerserOption = ({
   isReadable = false, // should be much more readable // TODO: option `beautify` is being removed
@@ -24,7 +32,12 @@ const getTerserOption = ({
   sourceMap: false
 })
 
-const minifyFileWithTerser = async ({ filePath, option, logger }) => {
+const minifyFileWithTerser = async ({
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  Terser = GET_TERSER(kitLogger.log),
+
+  filePath, option
+}) => {
   const result = {
     timeStart: clock()
     // timeEnd: 0,
@@ -32,9 +45,9 @@ const minifyFileWithTerser = async ({ filePath, option, logger }) => {
     // sizeOutput: 0
   }
   await copyAfterEdit(filePath, filePath, async (buffer) => {
-    const { error, code: scriptOutput } = await terserMinify(String(buffer), option)
+    const { error, code: scriptOutput } = await Terser.minify(String(buffer), option)
     if (error) {
-      logger.padLog(`[minifyFileWithTerser] failed to minify file: ${filePath}`)
+      kitLogger.padLog(`[minifyFileWithTerser] failed to minify file: ${filePath}`)
       throw error
     }
     const bufferOutput = Buffer.from(scriptOutput)
@@ -46,15 +59,18 @@ const minifyFileWithTerser = async ({ filePath, option, logger }) => {
   return result
 }
 
-const minifyFileListWithTerser = async ({ fileList, option, rootPath = '', logger }) => {
-  logger.padLog(`minify ${fileList.length} file with terser`)
+const minifyFileListWithTerser = async ({
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fileList, option, rootPath = (kit && kit.fromRoot()) || ''
+}) => {
+  kitLogger.padLog(`minify ${fileList.length} file with terser`)
 
   const table = []
   const totalTimeStart = clock()
   let totalSizeSource = 0
   let totalSizeDelta = 0
   for (const filePath of fileList) {
-    const { sizeSource, sizeOutput, timeStart, timeEnd } = await minifyFileWithTerser({ filePath, option, logger })
+    const { sizeSource, sizeOutput, timeStart, timeEnd } = await minifyFileWithTerser({ filePath, option, logger, kit, kitLogger })
     const sizeDelta = sizeOutput - sizeSource
     totalSizeSource += sizeSource
     totalSizeDelta += sizeDelta
@@ -71,12 +87,13 @@ const minifyFileListWithTerser = async ({ fileList, option, rootPath = '', logge
     `TOTAL of ${fileList.length} file (${binary(totalSizeSource)}B)`
   ])
 
-  logger.log(`result:\n  ${padTable({ table, padFuncList: [ 'L', 'R', 'L' ], cellPad: ' | ', rowPad: '\n  ' })}`)
+  kitLogger.log(`result:\n  ${padTable({ table, padFuncList: [ 'L', 'R', 'L' ], cellPad: ' | ', rowPad: '\n  ' })}`)
 
   return totalSizeDelta
 }
 
 export {
+  GET_TERSER,
   getTerserOption,
   minifyFileWithTerser,
   minifyFileListWithTerser

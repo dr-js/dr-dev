@@ -43,7 +43,7 @@ const findPathFragList = async (root, pathFragList = []) => {
 }
 const REGEXP_FRAG = /^[/\\]/
 
-const withTempDirectory = async (tempPath, asyncTask) => { // NOTE: will always reset the directory, before & after the task
+const withTempDirectory = async (tempPath, asyncTask) => { // NOTE: will always reset the directory, before & after the task // TODO: DEPRECATE: move to `@dr-js/core`, also code is different
   const existPath = await nearestExistPath(tempPath)
   const deletePath = resolve(existPath, relative(existPath, tempPath).split(sep)[ 0 ] || '.')
   __DEV__ && console.log('[withTempDirectory]', { tempPath, existPath, deletePath })
@@ -55,25 +55,25 @@ const withTempDirectory = async (tempPath, asyncTask) => { // NOTE: will always 
   return result
 }
 
-const loadFile = async (path) => fsAsync.readFile(path)
-const loadText = async (path) => String(await loadFile(path))
-const loadJson = async (path) => JSON.parse(await loadText(path))
+const loadFile = async (path) => fsAsync.readFile(path) // TODO: DEPRECATE: move to `@dr-js/core`
+const loadText = async (path) => String(await loadFile(path)) // TODO: DEPRECATE: move to `@dr-js/core`
+const loadJson = async (path) => JSON.parse(await loadText(path)) // TODO: DEPRECATE: move to `@dr-js/core`
 
-const saveFile = async (bufferOrString, path) => fsAsync.writeFile(path, bufferOrString)
-const saveText = saveFile
-const saveJson = async (value, path) => saveText(path, JSON.stringify(value, null, 2))
+const saveFile = async (bufferOrString, path) => fsAsync.writeFile(path, bufferOrString) // TODO: DEPRECATE: move to `@dr-js/core`
+const saveText = saveFile // TODO: DEPRECATE: move to `@dr-js/core`
+const saveJson = async (value, path) => saveText(path, JSON.stringify(value, null, 2)) // TODO: DEPRECATE: move to `@dr-js/core`
 
-const editFile = async (
+const editFile = async ( // TODO: DEPRECATE: move to `@dr-js/core`
   editFunc = async (buffer) => buffer, // or String
   pathFrom,
   pathTo = pathFrom // for in-place edit
 ) => fsAsync.writeFile(pathTo, await editFunc(await fsAsync.readFile(pathFrom)))
-const editText = async (
+const editText = async ( // TODO: DEPRECATE: move to `@dr-js/core`
   editFunc = async (string) => string,
   pathFrom,
   pathTo
 ) => editFile(async (buffer) => editFunc(String(buffer)), pathFrom, pathTo)
-const editJson = async (
+const editJson = async ( // TODO: DEPRECATE: move to `@dr-js/core`
   editFunc = async (value) => value, // mostly Object
   pathFrom,
   pathTo
@@ -138,11 +138,11 @@ const copyAfterEdit = async (pathFrom, pathTo, editFunc) => editFile(editFunc, p
 export {
   getFileListFromPathList,
   findPathFragList,
-  withTempDirectory,
+  withTempDirectory, // TODO: DEPRECATE: move to `@dr-js/core`
 
-  loadFile, loadText, loadJson,
-  saveFile, saveText, saveJson,
-  editFile, editText, editJson,
+  loadFile, loadText, loadJson, // TODO: DEPRECATE: move to `@dr-js/core`
+  saveFile, saveText, saveJson, // TODO: DEPRECATE: move to `@dr-js/core`
+  editFile, editText, editJson, // TODO: DEPRECATE: move to `@dr-js/core`
 
   filterPrecompressFileList,
   generatePrecompressForPath, trimPrecompressForPath,

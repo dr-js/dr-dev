@@ -8,7 +8,11 @@ import { doTest } from './mode/test.js'
 import { doInit } from './mode/init.js'
 import { doExec, doExecLoad } from './mode/exec.js'
 import { doCacheStep } from './mode/cacheStep.js'
+import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
+import { doShellAlias } from './mode/shellAlias.js'
 
+import { versionBumpByGitBranch, versionBumpLastNumber, versionBumpToIdentifier, versionBumpToLocal } from '@dr-js/core/module/common/module/SemVer.js'
+import { getGitBranch } from '@dr-js/core/module/node/module/Software/git.js'
 import { run } from '@dr-js/core/module/node/run.js'
 import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function.js'
 
@@ -27,12 +31,31 @@ const runMode = async (optionData, modeName) => {
   const { get, tryGet, getFirst, tryGetFirst, getToggle } = optionData
   const { argumentList, log } = sharedPack
 
-  const tabLog = getToggle('debug')
+  const isDebug = getToggle('debug')
+  const isGitCommit = getToggle('git-commit')
+  const commonVersionBump = getCommonVersionBump(tryGetFirst('root'), isGitCommit, isDebug, log)
+
+  const tabLog = isDebug
     ? (level, ...args) => log(`${'  '.repeat(level)}${args.join(' ')}`)
     : () => {}
 
   switch (modeName) {
     // new mode (no short commands for now to avoid conflict)
+    case 'shell-alias':
+      return doShellAlias({
+        aliasName: argumentList[ 0 ],
+        aliasArgList: argumentList.slice(1),
+        log
+      })
+
+    case 'version-bump-git-branch':
+      return doVersionBump(await commonVersionBump(versionBumpByGitBranch, { gitBranch: getGitBranch() }))
+    case 'version-bump-last-number':
+      return doVersionBump(await commonVersionBump(versionBumpLastNumber))
+    case 'version-bump-to-identifier':
+      return doVersionBump(await commonVersionBump(versionBumpToIdentifier, { identifier: argumentList[ 0 ] || 'dev' }))
+    case 'version-bump-to-local':
+      return doVersionBump(await commonVersionBump(versionBumpToLocal))
 
     // keep mode
     case 'test':
@@ -68,15 +91,15 @@ const runMode = async (optionData, modeName) => {
     // TODO: DEPRECATE: reorder & rename options
     case 'check-outdated' :
       return doCheckOutdated({
-        pathInput: getFirst('path-input'),
+        pathInput: argumentList[ 0 ] || tryGetFirst('root') || './package.json',
         pathTemp: tryGetFirst('path-temp'),
         isWriteBack: getToggle('write-back')
       })
     case 'step-package-version':
       return doStepPackageVersion({
-        pathInput: tryGetFirst('path-input') || '.',
+        pathInput: tryGetFirst('root') || '.',
         isSortKey: getToggle('sort-key'),
-        isGitCommit: getToggle('git-commit')
+        isGitCommit
       })
     case 'init':
       return doInit({
@@ -86,14 +109,14 @@ const runMode = async (optionData, modeName) => {
         isVerify: getToggle('init-verify'),
         pathVerifyRule: tryGetFirst('init-verify-rule')
       })
-    case 'exec':
+    case 'exec': // TODO: support run z64string?
       return doExec(argumentList, {
         env: tryGetFirst('exec-env'),
         cwd: tryGetFirst('exec-cwd') // TODO: naming
       })
     case 'exec-load':
       return doExecLoad({
-        pathInput: tryGetFirst('path-input') || '.', // TODO: naming
+        pathInput: tryGetFirst('root') || '.', // TODO: naming
         name: argumentList[ 0 ],
         extraArgList: argumentList.slice(1)
       })

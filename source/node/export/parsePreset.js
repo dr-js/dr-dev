@@ -5,9 +5,9 @@ import { createExportParser } from './parse.js'
 const collectSourceJsRouteMap = async ({
   pathRootList = [],
   pathInfoFilter = (info) => FILTER_SOURCE_PATH(info.path), // return true to keep
-  logger
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
 }) => {
-  const { parseExport, getSourceRouteMap } = createExportParser({ logger })
+  const { parseExport, getSourceRouteMap } = createExportParser({ logger, kit, kitLogger })
   const parseWalkExport = async (dirInfo) => { pathInfoFilter(dirInfo) && await parseExport(dirInfo.path) }
   for (const pathRoot of pathRootList) await walkDirInfoTreeAsync(await getDirInfoTree(pathRoot), parseWalkExport)
   return getSourceRouteMap()

@@ -1,13 +1,13 @@
-import { getLogger } from 'source/node/logger.js'
-import { commonInfoPatchCombo } from './ci.js'
+import { getKit } from '@dr-js/core/module/node/kit.js'
+import { runInfoPatchCombo } from './ci.js'
 
 const { describe, it, info = console.log } = globalThis
 
 describe('CI', () => {
-  it('commonInfoPatchCombo()', async () => {
-    process.env.DRY_RUN = true
-    const result = commonInfoPatchCombo(getLogger('test-ci', false, 32, info))
-    delete process.env.DRY_RUN
-    __DEV__ && console.log(result)
+  it('runInfoPatchCombo()', async () => {
+    runInfoPatchCombo(getKit({
+      title: 'test-ci', isQuiet: false, padWidth: 32, logFunc: info,
+      isDryrun: true
+    }))
   })
 })

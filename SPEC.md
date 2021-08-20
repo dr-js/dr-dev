@@ -8,7 +8,7 @@
 + 📄 [source/babel.js](source/babel.js)
   - `getBabelConfig`, `getWebpackBabelConfig`
 + 📄 [source/ci.js](source/ci.js)
-  - `commonInfoPatchCombo`
+  - `commonInfoPatchCombo`, `runInfoPatchCombo`
 + 📄 [source/docker.js](source/docker.js)
   - `checkImageExist`, `checkLocalImage`, `checkPullImage`, `compose`, `composeSync`, `docker`, `dockerSync`, `dockerWithTee`, `getContainerLsList`, `getContainerPsList`, `matchContainerLsList`, `matchContainerPsList`, `patchContainerLsListStartedAt`, `pullImage`, `runDocker`, `runDockerWithTee`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
@@ -16,15 +16,15 @@
 + 📄 [source/license.js](source/license.js)
   - `writeLicenseFile`
 + 📄 [source/main.js](source/main.js)
-  - `argvFlag`, `commonCombo`, `commonInfoPatchCombo`, `existsSync`, `readFileSync`, `resolve`, `runMain`, `sep`, `writeFileSync`
+  - `argvFlag`, `commonCombo`, `commonInfoPatchCombo`, `existsSync`, `readFileSync`, `resolve`, `runInfoPatchCombo`, `runMain`, `sep`, `writeFileSync`
 + 📄 [source/minify.js](source/minify.js)
-  - `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
+  - `GET_TERSER`, `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
 + 📄 [source/output.js](source/output.js)
   - `REGEXP_PUBLISH_VERSION`, `REGEXP_PUBLISH_VERSION_DEV`, `clearOutput`, `commonCombo`, `fromPathCombo`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
-  - `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `runWithPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
+  - `GET_PUPPETEER`, `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `reloadPuppeteerPage`, `runWithPuppeteer`, `setupPuppeteerPage`, `testBootPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
 + 📄 [source/webpack.js](source/webpack.js)
-  - `commonFlag`, `compileWithWebpack`
+  - `GET_WEBPACK`, `commonFlag`, `compileWithWebpack`
 + 📄 [source/webpack-progress-plugin.js](source/webpack-progress-plugin.js)
   - `createProgressPlugin`
 + 📄 [source/browser/resource.js](source/browser/resource.js)
@@ -36,7 +36,7 @@
 + 📄 [source/common/packageJSON/Version.js](source/common/packageJSON/Version.js)
   - `isVersionSpecComplex`, `versionBumpByGitBranch`, `versionBumpLastNumber`, `versionBumpToIdentifier`, `versionBumpToLocal`
 + 📄 [source/common/packageJSON/function.js](source/common/packageJSON/function.js)
-  - `PACKAGE_KEY_DEV_EXEC_COMMAND_MAP`, `collectDependency`, `packPackageJSON`, `sortPackageJSON`, `toPackageInfo`
+  - `PACKAGE_KEY_DEV_EXEC_COMMAND_MAP`, `collectDependency`, `getFirstBinPath`, `packPackageJSON`, `sortPackageJSON`, `toPackageInfo`
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
@@ -51,12 +51,24 @@
   - `loadJSON`, `loadLocalJSON`, `loadLocalScript`, `loadRemoteJSON`, `loadRemoteScript`, `loadScript`
 + 📄 [source/node/run.js](source/node/run.js)
   - `runAndHandover`, `runPassThrough`, `runWithAsyncFunc`, `runWithTee`, `withCwd`, `withRunBackground`
++ 📄 [source/node/ssh.js](source/node/ssh.js)
+  - `GET_SSH2`, `LOG_CONFIG`, `LOG_ERROR`, `LOG_EXEC`, `createColorLog`, `quickSSH`, `startDryRunSSHClient`, `startSSHClient`
++ 📄 [source/node/verify.js](source/node/verify.js)
+  - `runTaskList`, `toTask`, `useKitLogger`, `verifyCommand`, `verifyCommandSemVer`, `verifyFile`, `verifyFileString`, `verifySemVer`, `verifyString`, `verifyTaskList`
 + 📄 [source/node/cache/checksum.js](source/node/cache/checksum.js)
   - `checksumDetectChange`, `checksumUpdate`, `describeChecksumInfoList`, `describeChecksumOfPathList`, `getChecksumInfoListOfPath`, `getChecksumInfoListOfPathList`, `getChecksumInfoOfFile`, `loadStatFile`, `saveStatFile`
 + 📄 [source/node/cache/function.js](source/node/cache/function.js)
   - `loadStat`, `packTime`, `parseTime`, `saveStat`
 + 📄 [source/node/cache/staleCheck.js](source/node/cache/staleCheck.js)
   - `describeStaleReport`, `loadStatFile`, `saveStatFile`, `staleCheckCalcReport`, `staleCheckMark`, `staleCheckSetup`
++ 📄 [source/node/config/Nginx.js](source/node/config/Nginx.js)
+  - `COMBO_BROTLI`, `COMBO_BROTLI_STATIC`, `COMBO_COMPRESS`, `COMBO_COMPRESS_STATIC`, `COMBO_GZIP`, `COMBO_GZIP_STATIC`, `COMBO_MIME`, `COMMON_COMPRESS_MIME_LIST`, `COMMON_MIME_MAP`, `DEFAULT_MIME`, `stringifyNginxConf`
++ 📄 [source/node/config/Object.js](source/node/config/Object.js)
+  - `SECRET_PREFIX`, `mergeFlavor`, `pickFlavor`, `useFlavor`, `useSecret`
++ 📄 [source/node/config/Output.js](source/node/config/Output.js)
+  - `outputConfig`, `outputConfigMap`
++ 📄 [source/node/config/YAML.js](source/node/config/YAML.js)
+  - `GET_YAML`, `USE_YAML`, `parseYAML`, `readYAML`, `stringifyYAML`, `writeYAML`
 + 📄 [source/node/export/generate.js](source/node/export/generate.js)
   - `EXPORT_HOIST_LIST_KEY`, `EXPORT_LIST_KEY`, `HOIST_LIST_KEY`, `generateExportInfo`, `generateIndexScript`
 + 📄 [source/node/export/parse.js](source/node/export/parse.js)
@@ -103,8 +115,20 @@
 >       common option
 >   --pid-file --pid [OPTIONAL] [ARGUMENT=1]
 >       common option
->   --path-input [ARGUMENT=1]
->       path to "package.json", or directory with "package.json" inside
+>   --root --path-input --R -R [OPTIONAL] [ARGUMENT=1]
+>       common option, may be path to repo folder, or "package.json" file: $0=path/cwd
+>   --git-commit --G -G [OPTIONAL] [ARGUMENT=0-1]
+>       common option, mostly for version marking
+>   --shell-alias --SA --A -A [OPTIONAL] [ARGUMENT=1+]
+>       run shell alias: $@=aliasName,...aliasArgList
+>   --version-bump-git-branch --VBGB [OPTIONAL] [ARGUMENT=0-1]
+>       bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $0=gitBranch/current
+>   --version-bump-last-number --VBLN [OPTIONAL] [ARGUMENT=0-1]
+>       bump the last number found in package version: -G, -D
+>   --version-bump-to-identifier --VBTI [OPTIONAL] [ARGUMENT=0-1]
+>       bump package version to identifier: -G, -D, $0=labelIdentifier/dev
+>   --version-bump-to-local --VBTL [OPTIONAL] [ARGUMENT=0-1]
+>       bump package version to append identifier "local", for local testing: -G, -D
 >   --test --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
 >       list of path to look test file from, default to "."
 >     --test-file-suffix --TFS [ARGUMENT=1+]
@@ -126,25 +150,23 @@
 >   --repl --i -i [OPTIONAL] [ARGUMENT=0-1]
 >       start node REPL
 >   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0-1]
->       set to ANY value to enable, except "false/no/n/0"
+>       check dependency version from "package.json", or all under the folder: $0/-R=checkPath/"./package.json"
 >     --write-back --wb [ARGUMENT=0-1]
 >         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
 >   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0-1]
->       step up package version (expect "0.0.0-dev.0-local.0" format)
+>       step up package version (expect "0.0.0-dev.0-local.0" format): -G=isGitCommit
 >     --sort-key --K -K [ARGUMENT=0-1]
 >         sort keys in package.json
->     --git-commit --G -G [ARGUMENT=0-1]
->         step up patch version, and prepare a git commit
 >   --init [OPTIONAL] [ARGUMENT=0-1]
 >       path for init a package, will not reset existing file, default to "."
->     --init-resource-package --P -P [ARGUMENT=1]
+>     --init-resource-package [ARGUMENT=1]
 >         path to resource package, default search for "./node_modules/@dr-js/dev-*/"
->     --init-reset --R -R [ARGUMENT=0-1]
+>     --init-reset [ARGUMENT=0-1]
 >         allow init to reset existing file
->     --init-verify --V -V [ARGUMENT=0-1]
+>     --init-verify [ARGUMENT=0-1]
 >         do common init file content check, will skip file modify
->     --init-verify-rule --IVR [ARGUMENT=1+]
+>     --init-verify-rule [ARGUMENT=1+]
 >         path to verify rule, default search in "init-resource-package"
 >   --exec --E -E [OPTIONAL] [ARGUMENT=1+]
 >       exec command, allow set env and cwd: $@=command, ...argList
@@ -191,7 +213,13 @@
 >     export DR_DEV_INPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_OUTPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
->     export DR_DEV_PATH_INPUT="[ARGUMENT=1]"
+>     export DR_DEV_ROOT="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PATH_INPUT]"
+>     export DR_DEV_GIT_COMMIT="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_SHELL_ALIAS="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_SA]"
+>     export DR_DEV_VERSION_BUMP_GIT_BRANCH="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBGB]"
+>     export DR_DEV_VERSION_BUMP_LAST_NUMBER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBLN]"
+>     export DR_DEV_VERSION_BUMP_TO_IDENTIFIER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTI]"
+>     export DR_DEV_VERSION_BUMP_TO_LOCAL="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTL]"
 >     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
 >     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
 >     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
@@ -207,12 +235,11 @@
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
 >     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_SORT_KEY="[ARGUMENT=0-1]"
->     export DR_DEV_GIT_COMMIT="[ARGUMENT=0-1]"
 >     export DR_DEV_INIT="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_INIT_RESOURCE_PACKAGE="[ARGUMENT=1]"
 >     export DR_DEV_INIT_RESET="[ARGUMENT=0-1]"
 >     export DR_DEV_INIT_VERIFY="[ARGUMENT=0-1]"
->     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+] [ALIAS=DR_DEV_IVR]"
+>     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+]"
 >     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1] [ALIAS=DR_DEV_EE]"
 >     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1] [ALIAS=DR_DEV_EC]"
@@ -240,7 +267,13 @@
 >     "inputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "outputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
->     "pathInput": [ "[ARGUMENT=1]" ],
+>     "root": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pathInput]" ],
+>     "gitCommit": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "shellAlias": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=SA]" ],
+>     "versionBumpGitBranch": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBGB]" ],
+>     "versionBumpLastNumber": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBLN]" ],
+>     "versionBumpToIdentifier": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTI]" ],
+>     "versionBumpToLocal": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTL]" ],
 >     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
 >     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
 >     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],
@@ -256,12 +289,11 @@
 >     "pathTemp": [ "[ARGUMENT=1]" ],
 >     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "sortKey": [ "[ARGUMENT=0-1]" ],
->     "gitCommit": [ "[ARGUMENT=0-1]" ],
 >     "init": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "initResourcePackage": [ "[ARGUMENT=1]" ],
 >     "initReset": [ "[ARGUMENT=0-1]" ],
 >     "initVerify": [ "[ARGUMENT=0-1]" ],
->     "initVerifyRule": [ "[ARGUMENT=1+] [ALIAS=IVR]" ],
+>     "initVerifyRule": [ "[ARGUMENT=1+]" ],
 >     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "execEnv": [ "[ARGUMENT=0-1] [ALIAS=EE]" ],
 >     "execCwd": [ "[ARGUMENT=0-1] [ALIAS=EC]" ],
@@ -290,13 +322,13 @@
 | @babel/eslint-parser           |     ^7.15.0 |
 | @babel/preset-env              |     ^7.15.0 |
 | @babel/preset-react            |     ^7.14.5 |
-| @babel/register                |     ^7.14.5 |
+| @babel/register                |     ^7.15.3 |
 | babel-loader                   |      ^8.2.2 |
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |     ^1.13.2 |
 | eslint                         |     ^7.32.0 |
-| eslint-plugin-import           |     ^2.24.0 |
+| eslint-plugin-import           |     ^2.24.1 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^5.1.0 |
 | eslint-plugin-react            |     ^7.24.0 |
@@ -305,4 +337,4 @@
 | react                          |     ^17.0.2 |
 | styled-components              |      ^5.3.0 |
 | terser                         |      ^5.7.1 |
-| webpack                        |     ^5.50.0 |
+| webpack                        |     ^5.51.1 |

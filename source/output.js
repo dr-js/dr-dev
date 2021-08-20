@@ -1,161 +1,152 @@
 import { ok } from 'assert'
-import { resolve } from 'path'
-import { homedir, tmpdir } from 'os'
 import { statSync, readFileSync, writeFileSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { isBasicObject } from '@dr-js/core/module/common/check.js'
+import { getFirstBinPath } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
-import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
-import { runSync, runStdout, runDetached } from '@dr-js/core/module/node/run.js'
+import { runStdout } from '@dr-js/core/module/node/run.js'
+import { argvFlag, getKitPathCombo, getKitRun } from '@dr-js/core/module/node/kit.js'
 
-import { findUpPackageRoot, toPackageTgzName, runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
+import { toPackageTgzName, runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
 import { runGitStdout, runGitStdoutSync } from '@dr-js/core/module/node/module/Software/git.js'
 
-import { __VERBOSE__, argvFlag } from './node/env.js'
+import { __VERBOSE__ } from './node/env.js'
 import { FILTER_TEST_PATH } from './node/preset.js'
 import { getFileListFromPathList } from './node/file.js'
 import { writeLicenseFile } from './license.js'
 
-const fromPathCombo = ({
-  PATH_ROOT = findUpPackageRoot(process.cwd()),
-  PATH_OUTPUT = 'output-gitignore/', // relative
-  PATH_TEMP = '.temp-gitignore/', // relative
-  PATH_HOME = homedir(),
-  PATH_OSTEMP = tmpdir()
-} = {}) => {
-  // allow use relative path from PATH_ROOT
-  PATH_OUTPUT = resolve(PATH_ROOT, PATH_OUTPUT)
-  PATH_TEMP = resolve(PATH_ROOT, PATH_TEMP)
-  PATH_HOME = resolve(PATH_ROOT, PATH_HOME)
-  PATH_OSTEMP = resolve(PATH_ROOT, PATH_OSTEMP)
-  return {
-    PATH_ROOT, fromRoot: (...args) => resolve(PATH_ROOT, ...args),
-    PATH_OUTPUT, fromOutput: (...args) => resolve(PATH_OUTPUT, ...args),
-    PATH_TEMP, fromTemp: (...args) => resolve(PATH_TEMP, ...args),
-    PATH_HOME, fromHome: (...args) => resolve(PATH_HOME, ...args),
-    PATH_OSTEMP, fromOsTemp: (...args) => resolve(PATH_OSTEMP, ...args)
-  }
-}
-
-const commonCombo = (
-  logger,
+const commonCombo = ( // TODO: DEPRECATE
+  kitLogger,
   config = {
     DRY_RUN: Boolean(process.env.DRY_RUN),
     QUIET_RUN: argvFlag('quiet') || Boolean(process.env.QUIET_RUN)
   }
 ) => {
-  const pathConfig = fromPathCombo(config)
-  const RUN = (argListOrString, optionOrIsDetached) => { // TODO: DEPRECATE: move `isDetached` in to option object
-    const { isDetached = false, ...option } = isBasicObject(optionOrIsDetached) ? optionOrIsDetached : { isDetached: Boolean(optionOrIsDetached) }
-    const argList = Array.isArray(argListOrString) ? [ ...argListOrString ] : argListOrString.split(' ').filter(Boolean) // prepend `'bash', '-c'` to run in bash shell
-    argList[ 0 ] = resolveCommand(argList[ 0 ], pathConfig.PATH_ROOT) // mostly for finding `npm.cmd` on win32
-    if (config.DRY_RUN) !config.QUIET_RUN && logger.log(`[${config.DRY_RUN ? 'RUN|DRY' : isDetached ? 'RUN|DETACHED' : 'RUN'}] "${argList.join(' ')}"`)
-    else return (isDetached ? runDetached : runSync)(argList, { cwd: pathConfig.PATH_ROOT, stdio: config.QUIET_RUN ? [ 'ignore', 'ignore', 'inherit' ] : 'inherit', ...option })
-  }
+  const pathConfig = getKitPathCombo(config)
+  const kitRun = getKitRun({ ...config, ...pathConfig, log: kitLogger.log, isQuiet: config.QUIET_RUN, isDryRun: config.DRY_RUN })
+  const RUN = (argListOrString, optionOrIsDetached) => kitRun.RUN( // TODO: DEPRECATE: move `isDetached` in to option object
+    argListOrString,
+    isBasicObject(optionOrIsDetached) ? optionOrIsDetached : { isDetached: Boolean(optionOrIsDetached) }
+  )
   return { config, ...pathConfig, RUN }
 }
 
 const initOutput = async ({
-  fromOutput,
-  fromRoot,
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromOutput = kit && kit.fromOutput,
+  fromRoot = kit && kit.fromRoot,
+
   deleteKeyList = [ 'private', 'scripts', 'devExecCommands', 'devDependencies' ],
   copyPathList = [ 'README.md' ],
   copyMapPathList = [],
   replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip
-  pathAutoLicenseFile = 'LICENSE', // set to false, or do not set `packageJSON.license` to skip
-  logger
+  pathAutoLicenseFile = 'LICENSE' // set to false, or do not set `packageJSON.license` to skip
 }) => {
-  logger.padLog('reset output')
+  kitLogger.padLog('reset output')
   await resetDirectory(fromOutput())
 
-  logger.padLog('init output package.json')
+  kitLogger.padLog('init output package.json')
   const packageJSON = require(fromRoot('package.json'))
   for (const deleteKey of deleteKeyList) {
     delete packageJSON[ deleteKey ]
-    logger.log(`dropped key: ${deleteKey}`)
+    kitLogger.log(`dropped key: ${deleteKey}`)
   }
   writeFileSync(fromOutput('package.json'), JSON.stringify(packageJSON))
 
   const { license, author } = packageJSON
   if (pathAutoLicenseFile && license && author) {
-    logger.padLog('update source license file')
+    kitLogger.padLog('update source license file')
     writeLicenseFile(fromRoot(pathAutoLicenseFile), license, author)
     copyPathList.push(pathAutoLicenseFile)
   }
 
-  logger.padLog('init output file')
+  kitLogger.padLog('init output file')
   for (const [ pathFrom, pathTo ] of [ ...copyPathList.map((v) => [ v, v ]), ...copyMapPathList ]) {
     if (replaceReadmeNonPackageContent && pathFrom.endsWith('README.md')) { // change README.md NON_PACKAGE_CONTENT
       const packageContentList = String(readFileSync(fromRoot(pathFrom))).split('[//]: # (NON_PACKAGE_CONTENT)')
       if (packageContentList.length >= 2) {
         writeFileSync(fromOutput(pathTo), `${packageContentList[ 0 ].trim()}${replaceReadmeNonPackageContent}`)
-        logger.log(`copied: ${pathFrom} (with NON_PACKAGE_CONTENT replaced to: ${JSON.stringify(replaceReadmeNonPackageContent)})`)
+        kitLogger.log(`copied: ${pathFrom} (with NON_PACKAGE_CONTENT replaced to: ${JSON.stringify(replaceReadmeNonPackageContent)})`)
         continue
       }
     }
     await modifyCopy(fromRoot(pathFrom), fromOutput(pathTo))
-    logger.log(`copied: ${pathFrom}`)
+    kitLogger.log(`copied: ${pathFrom}`)
   }
 
   return packageJSON
 }
 
 const packOutput = async ({
-  fromOutput, cwd = fromOutput(),
-  fromRoot = fromOutput, // OPTIONAL, for move output .tgz file to root
-  packageJSON = require(fromOutput('package.json')),
-  logger
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromOutput = kit && kit.fromOutput,
+  fromRoot = (kit && kit.fromRoot) || fromOutput, // OPTIONAL, for move output .tgz file to root
+
+  cwd = fromOutput(),
+  packageJSON = require(fromOutput('package.json'))
 }) => {
-  logger.padLog('run pack output')
+  kitLogger.padLog('run pack output')
   await runNpm([ '--no-update-notifier', 'pack' ], { cwd, quiet: !__VERBOSE__ }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot !== fromOutput) {
-    logger.log('move to root path')
+    kitLogger.log('move to root path')
     await modifyRename(fromOutput(packName), fromRoot(packName))
   }
-  logger.padLog(`pack size: ${binary(statSync(fromRoot(packName)).size)}B`)
+  kitLogger.padLog(`pack size: ${binary(statSync(fromRoot(packName)).size)}B`)
 
   return fromRoot(packName)
 }
 
-const clearOutput = async ({ fromOutput, pathList = [ '.' ], filterFile = FILTER_TEST_PATH, logger }) => {
+const clearOutput = async ({
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromOutput = kit && kit.fromOutput,
+
+  pathList = [ '.' ],
+  filterFile = FILTER_TEST_PATH
+}) => {
   if (!fromOutput) throw new Error('[clearOutput] expect fromOutput')
-  logger.padLog('clear output')
+  kitLogger.padLog('clear output')
   const fileList = await getFileListFromPathList(pathList, fromOutput, filterFile)
-  for (const filePath of fileList) await modifyDelete(filePath)
+  for (const filePath of fileList) await modifyDelete(filePath) // NOTE: will keep empty test folder
 }
 
 const verifyOutputBin = async ({
-  fromOutput, cwd = fromOutput(),
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromOutput = kit && kit.fromOutput,
+
+  cwd = fromOutput(),
   versionArgList = [ '--version' ], // DEFAULT: request version
   packageJSON: { name, version, bin },
-  pathExe = process.execPath, // allow set to '' for other non-node executable
-  matchStringList = [ name, version ], // DEFAULT: expect output with full package name & version
-  logger
+  pathExe = process.execPath, // allow set to '' to skip, or use other non-node executable
+  matchStringList = [ name, version ] // DEFAULT: expect output with full package name & version
 }) => {
-  let pathBin = bin || './bin'
-  if (isBasicObject(pathBin)) pathBin = pathBin[ Object.keys(pathBin)[ 0 ] ]
-  logger.padLog('verify output bin working')
+  const pathBin = getFirstBinPath({ bin })
+  kitLogger.padLog(`verify output bin working: "${pathBin}"`)
   const outputBinTest = String(await runStdout([ pathExe, pathBin, ...versionArgList ].filter(Boolean), { cwd }))
-  logger.log(`bin test output: ${outputBinTest}`)
+  kitLogger.log(`bin test output: ${outputBinTest}`)
   for (const testString of matchStringList) ok(outputBinTest.includes(testString), `should output contain: ${testString}`)
 }
 
-const verifyNoGitignore = async ({ path, logger }) => {
-  logger.padLog('verify no gitignore file left')
+const verifyNoGitignore = async ({
+  path,
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+}) => {
+  kitLogger.padLog('verify no gitignore file left')
   const badFileList = (await getFileList(path)).filter((path) => path.includes('gitignore'))
-  badFileList.length && logger.log(`found gitignore file:\n  - ${badFileList.join('\n  - ')}`)
+  badFileList.length && kitLogger.log(`found gitignore file:\n  - ${badFileList.join('\n  - ')}`)
   ok(badFileList.length === 0, `${badFileList.length} gitignore file found`)
 }
 
 const verifyGitStatusClean = async ({
-  fromRoot, cwd = fromRoot(),
-  extraArgList = [], // mostly set path to check
-  logger
+  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  fromRoot = kit && kit.fromRoot,
+
+  cwd = fromRoot(),
+  extraArgList = [] // mostly set path to check
 }) => {
-  logger.padLog('verify git has nothing to commit')
+  kitLogger.padLog('verify git has nothing to commit')
   // https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes/25149786#25149786
   if (String(await runGitStdout([ 'status', '--porcelain', ...extraArgList ], { cwd })) !== '') throw new Error(`[verifyGitStatusClean] change to commit:\n${runGitStdoutSync([ 'status', '-vv', ...extraArgList ], { cwd })}`)
 }
@@ -170,13 +161,13 @@ const publishOutput = async ({
   isPublishVerify = !(isPublishAuto && isPublishDev), // skip verify only for auto + dev
   isAccessRestricted = false,
   extraArgs = [],
-  logger
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
 }) => {
-  if (!isPublish && !isPublishDev) return logger.padLog('skipped publish output, no flag found')
+  if (!isPublish && !isPublishDev) return kitLogger.padLog('skipped publish output, no flag found')
   if (!pathPackagePack || !pathPackagePack.endsWith('.tgz')) throw new Error(`[publishOutput] invalid pathPackagePack: ${pathPackagePack}`)
   isPublishVerify && verifyPublishVersion({ version, isPublishDev })
 
-  logger.padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
+  kitLogger.padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
 
   // Patch tag
   !extraArgs.includes('--tag') && extraArgs.push('--tag', isPublishDev ? 'dev' : 'latest')
@@ -213,7 +204,7 @@ const REGEXP_PUBLISH_VERSION = /^\d+\.\d+\.\d+$/ // 0.0.0
 const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0
 
 export {
-  fromPathCombo, commonCombo,
+  commonCombo,
   initOutput,
   packOutput,
   clearOutput,
@@ -221,3 +212,7 @@ export {
   verifyNoGitignore, verifyGitStatusClean,
   publishOutput, getPublishFlag, verifyPublishVersion, REGEXP_PUBLISH_VERSION, REGEXP_PUBLISH_VERSION_DEV
 }
+
+export {
+  getKitPathCombo as fromPathCombo // TODO: DEPRECATE
+} from '@dr-js/core/module/node/kit.js'

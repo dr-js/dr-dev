@@ -1,30 +1,29 @@
 import { objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'
+import { writeText } from '@dr-js/core/module/node/fs/File.js'
+import { loadPackageCombo } from '@dr-js/core/module/node/module/PackageJSON.js'
+import { runKit } from '@dr-js/core/module/node/kit.js'
 
 import { collectSourceJsRouteMap } from 'source/node/export/parsePreset.js'
 import { generateExportInfo } from 'source/node/export/generate.js'
 import { getMarkdownFileLink, renderMarkdownAutoAppendHeaderLink, renderMarkdownBlockQuote, renderMarkdownTable, renderMarkdownExportPath } from 'source/node/export/renderMarkdown.js'
-import { runMain, commonCombo, writeFileSync } from 'source/main.js'
 
-import { loadPackageCombo } from 'source/node/package/function.js'
 import { formatUsage } from 'source-bin/option.js'
 
-runMain(async (logger) => {
-  const { fromRoot } = commonCombo(logger)
-
-  logger.padLog('generate exportInfoMap')
-  const sourceRouteMap = await collectSourceJsRouteMap({ pathRootList: [ fromRoot('source') ], logger })
+runKit(async (kit) => {
+  kit.padLog('generate exportInfoMap')
+  const sourceRouteMap = await collectSourceJsRouteMap({ pathRootList: [ kit.fromRoot('source') ], kit })
   const exportInfoMap = generateExportInfo({ sourceRouteMap })
 
-  logger.padLog('collect dependencyMap')
-  const { dependencyMap } = await loadPackageCombo(fromRoot('resource'))
+  kit.padLog('collect dependencyMap')
+  const { dependencyMap } = await loadPackageCombo(kit.fromRoot('resource'))
 
-  logger.padLog('output: SPEC.md')
-  writeFileSync(fromRoot('SPEC.md'), [
+  kit.padLog('output: SPEC.md')
+  await writeText(kit.fromRoot('SPEC.md'), [
     '# Specification',
     '',
     ...renderMarkdownAutoAppendHeaderLink(
       '#### Export Path',
-      ...renderMarkdownExportPath({ exportInfoMap, rootPath: fromRoot() }),
+      ...renderMarkdownExportPath({ exportInfoMap, rootPath: kit.fromRoot() }),
       '',
       '#### Bin Option Format',
       getMarkdownFileLink('source-bin/option.js'),
@@ -40,4 +39,4 @@ runMain(async (logger) => {
     ),
     ''
   ].join('\n'))
-}, 'generate-spec')
+}, { title: 'generate-spec' })

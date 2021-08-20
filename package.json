@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.4.18",
+  "version": "0.4.19",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -31,10 +31,11 @@
     "test-source": "npm run test-T -- source/",
     "test-output-library": "npm run test-T-output -- output-gitignore/library/",
     "test-output-module": "npm run test-T -- output-gitignore/module/",
+    "test-output-bin": "npm run test-T-output -- output-gitignore/bin/",
     "// =============================": "",
-    "check-outdated": "node ./output-gitignore/bin -C --path-input ./resource",
+    "check-outdated": "node ./output-gitignore/bin --check-outdated ./resource",
     "check-outdated-write-back": "npm run check-outdated -- --write-back",
-    "check-outdated-self": "node ./output-gitignore/bin -C --path-input ./package.json",
+    "check-outdated-self": "node ./output-gitignore/bin --check-outdated",
     "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json output-gitignore/browser",
     "lint": "eslint ./source/ ./source-bin/ ./resource/ ./script/",
     "test": "npm run script-pack-test",
@@ -45,11 +46,14 @@
     "npm": ">=6.14"
   },
   "dependencies": {
-    "@dr-js/core": "^0.4.14"
+    "@dr-js/core": "^0.4.15"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.4.17",
-    "@dr-js/dev-web": "^0.4.17"
+    "@dr-js/dev": "^0.4.19-dev.2",
+    "@dr-js/dev-web": "^0.4.19-dev.2",
+    "ssh2": "^1.3.0",
+    "ssh2-legacy": "npm:ssh2@^0.8.9",
+    "yaml": "^1.10.2"
   },
   "optionalDependencies": {
     "@dr-js/node": "^0.4.9"

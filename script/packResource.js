@@ -3,9 +3,8 @@ import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object.js'
 import { readJSON, writeText } from '@dr-js/core/module/node/fs/File.js'
 import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy } from '@dr-js/core/module/node/fs/Modify.js'
+import { writePackageJSON } from '@dr-js/core/module/node/module/PackageJSON.js'
 
-import { writePackageJSON } from 'source/node/package/function.js'
-import { getLogger } from 'source/node/logger.js'
 import { packOutput, publishOutput } from 'source/output.js'
 import { getFromPackExport, writePackExportInitJSON } from 'source-bin/function.js'
 
@@ -31,7 +30,7 @@ const copyAndSavePackExportInitJSON = async ({
 }
 
 const loadConfig = async ({
-  configJSONFile, logger,
+  configJSONFile, kit,
   packageJSON = {}, exportPairList = [], loadedSet = new Set()
 }) => {
   const loopLoad = async (configJSONFile) => {
@@ -48,7 +47,7 @@ const loadConfig = async ({
     const configRootPath = dirname(configJSONFile)
     for (const importPackagePath of importList) await loopLoad(resolve(configRootPath, importPackagePath, 'package.json'))
 
-    logger.log(`load: ${configJSONFile}`)
+    kit.log(`load: ${configJSONFile}`)
     exportList && exportList.forEach((filePath) => exportPairList.push(parseResourcePath(filePath, configRootPath)))
     mergePackageJSON && objectMergeDeep(packageJSON, mergePackageJSON)
   }
@@ -62,30 +61,28 @@ const parseResourcePath = (resourcePath, configRootPath) => typeof (resourcePath
   : [ resolve(configRootPath, resourcePath), resourcePath ]
 
 const doPackResource = async ({
-  configJSONFile, pathOutput,
+  configJSONFile, fromPackOutput,
   outputName, outputVersion, outputDescription,
   isPublish = false, isPublishDev = false, isDryRun = false,
-  logger = getLogger('pack')
+  kit
 }) => {
-  const { packageJSON, exportPairList } = await loadConfig({ configJSONFile, logger })
+  const { packageJSON, exportPairList } = await loadConfig({ configJSONFile, kit })
   if (outputName) packageJSON.name = outputName
   if (outputVersion) packageJSON.version = outputVersion
   if (outputDescription) packageJSON.description = outputDescription
 
-  const fromOutput = (...args) => resolve(pathOutput, ...args)
-
   // custom initOutput
-  await resetDirectory(pathOutput)
-  await writePackageJSON(resolve(pathOutput, 'package.json'), packageJSON, 'sort-key')
-  await writeText(resolve(pathOutput, 'README.md'), getREADME(packageJSON))
-  await copyAndSavePackExportInitJSON({ pathPackage: pathOutput, exportPairList })
+  await resetDirectory(fromPackOutput())
+  await writePackageJSON(fromPackOutput('package.json'), packageJSON, 'sort-key')
+  await writeText(fromPackOutput('README.md'), getREADME(packageJSON))
+  await copyAndSavePackExportInitJSON({ pathPackage: fromPackOutput(), exportPairList })
 
-  const pathPackagePack = await packOutput({ fromOutput, logger })
+  const pathPackagePack = await packOutput({ kit, fromOutput: fromPackOutput })
   await publishOutput({
     extraArgs: isDryRun ? [ '--dry-run' ] : [],
     isPublishAuto: false, isPublish, isPublishDev,
     packageJSON, pathPackagePack,
-    logger
+    kit
   })
 }
 

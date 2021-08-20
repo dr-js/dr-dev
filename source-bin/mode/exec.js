@@ -4,8 +4,9 @@ import { objectFromEntries } from '@dr-js/core/module/common/immutable/Object.js
 
 import { findUpPackageRoot } from '@dr-js/core/module/node/module/Software/npm.js'
 
-import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from 'source/common/packageJSON/function.js'
 import { runPassThrough } from 'source/node/run.js'
+
+const PACKAGE_KEY_DEV_EXEC_COMMAND_MAP = 'devExecCommands' // TODO: DEPRECATE
 
 const doExec = async (argList, {
   env,
@@ -49,6 +50,8 @@ const parseCommandStringOrArray = (commandStringOrArray) => {
 }
 
 export {
+  PACKAGE_KEY_DEV_EXEC_COMMAND_MAP,
+
   doExec,
   doExecLoad
 }

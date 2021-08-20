@@ -1,19 +1,17 @@
+import { runKit } from '@dr-js/core/module/node/kit.js'
 import { compileWithWebpack, commonFlag } from '@dr-js/dev/module/webpack.js'
-import { runMain, commonCombo } from '@dr-js/dev/module/main.js'
 
-runMain(async (logger) => {
-  const { fromRoot, fromOutput } = commonCombo(logger)
-
+runKit(async (kit) => {
   const { mode, isWatch, isProduction, profileOutput, namedChunkGroupOutput, getCommonWebpackConfig } = await commonFlag({
-    namedChunkGroupOutput: fromOutput('library/namedChunkGroup.json'),
-    fromRoot, logger
+    namedChunkGroupOutput: kit.fromOutput('library/namedChunkGroup.json'),
+    kit
   })
 
   const config = getCommonWebpackConfig({
-    output: { path: fromOutput('library'), filename: isProduction ? '[name].[chunkhash:8].js' : '[name].js', library: 'PACKAGE_NAME', libraryTarget: 'umd' },
+    output: { path: kit.fromOutput('library'), filename: isProduction ? '[name].[chunkhash:8].js' : '[name].js', library: 'PACKAGE_NAME', libraryTarget: 'umd' },
     entry: { 'index': 'source/index' }
   })
 
-  logger.padLog(`compile with webpack mode: ${mode}, isWatch: ${Boolean(isWatch)}`)
-  await compileWithWebpack({ config, isWatch, profileOutput, namedChunkGroupOutput, logger })
-}, 'webpack')
+  kit.padLog(`compile with webpack mode: ${mode}, isWatch: ${Boolean(isWatch)}`)
+  await compileWithWebpack({ config, isWatch, profileOutput, namedChunkGroupOutput, kit })
+}, { title: 'webpack' })
