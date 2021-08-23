@@ -7,7 +7,9 @@ import { __VERBOSE__ } from './node/env.js'
 
 const processFileList = async ({
   logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
-  fileList, processor, rootPath = (kit && kit.fromRoot()) || ''
+  fileList, processor,
+  rootPath, // TODO: DEPRECATE: use outputPath
+  outputPath = rootPath || (kit && kit.fromOutput()) || ''
 }) => {
   kitLogger.padLog(`process ${fileList.length} file`)
 
@@ -35,7 +37,7 @@ const processFileList = async ({
     totalSizeDelta += sizeDelta
     __VERBOSE__ && table.push([
       `∆ ${(100 * sizeDelta / sizeSource).toFixed(2)}% (${binary(sizeDelta)}B)`,
-      `${relative(rootPath, filePath)}`
+      `${relative(outputPath, filePath)}`
     ])
   }
 

@@ -61,7 +61,9 @@ const minifyFileWithTerser = async ({
 
 const minifyFileListWithTerser = async ({
   logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
-  fileList, option, rootPath = (kit && kit.fromRoot()) || ''
+  fileList, option,
+  rootPath, // TODO: DEPRECATE: use outputPath
+  outputPath = rootPath || (kit && kit.fromOutput()) || ''
 }) => {
   kitLogger.padLog(`minify ${fileList.length} file with terser`)
 
@@ -77,7 +79,7 @@ const minifyFileListWithTerser = async ({
     __VERBOSE__ && table.push([
       `∆ ${(100 * sizeDelta / sizeSource).toFixed(2)}% (${binary(sizeDelta)}B)`,
       time(timeEnd - timeStart),
-      `${relative(rootPath, filePath)}`
+      `${relative(outputPath, filePath)}`
     ])
   }
   __VERBOSE__ && table.push([ '--', '--', '--' ])
