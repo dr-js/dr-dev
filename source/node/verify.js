@@ -7,10 +7,11 @@ import { autoEllipsis, indentLine } from '@dr-js/core/module/common/string.js'
 
 import { readBuffer } from '@dr-js/core/module/node/fs/File.js'
 import { fromNpmNodeModules } from '@dr-js/core/module/node/module/Software/npm.js'
-import { configureTerminalColor } from '@dr-js/core/module/node/module/TerminalColor.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import { runStdoutSync } from '@dr-js/core/module/node/run.js'
 import { getKitLogger } from '@dr-js/core/module/node/kit.js'
+
+import { color } from './color.js'
 
 const textS = (value) => autoEllipsis(JSON.stringify(String(value)), 128, 64, 32)
 const textM = (value) => autoEllipsis(JSON.stringify(String(value)), 256, 128, 64)
@@ -20,8 +21,6 @@ const toList = (value) => isBasicArray(value) ? value : [ value ]
 
 const KIT_LOGGER = getKitLogger({ title: 'verify', isNoEnvKey: true })
 const useKitLogger = (nextKitLogger) => Object.assign(KIT_LOGGER, nextKitLogger)
-
-const COLOR_FG = configureTerminalColor().fg
 
 const verifyString = (string, matchStringOrRegExpList) => {
   matchStringOrRegExpList = toList(matchStringOrRegExpList)
@@ -95,7 +94,7 @@ const runTaskList = async (taskList = []) => {
       KIT_LOGGER.log('PASS')
     } catch (error) {
       (allowFail ? warnList : errorList).push({ error, task, title, message })
-      KIT_LOGGER.log((allowFail ? COLOR_FG.yellow : COLOR_FG.red)(`FAIL: ${error.message}`))
+      KIT_LOGGER.log((allowFail ? color.yellow : color.red)(`FAIL: ${error.message}`))
     }
   }
   const formatOutcomeList = (tag, outcomeList) => [
@@ -108,8 +107,8 @@ const runTaskList = async (taskList = []) => {
     ].join('\n')),
     `[${tag}] failed: ${outcomeList.length}`
   ].join('\n')
-  warnList.length && KIT_LOGGER.log(COLOR_FG.yellow(formatOutcomeList('WARN', warnList)))
-  errorList.length && KIT_LOGGER.log(COLOR_FG.red(formatOutcomeList('ERROR', errorList)))
+  warnList.length && KIT_LOGGER.log(color.yellow(formatOutcomeList('WARN', warnList)))
+  errorList.length && KIT_LOGGER.log(color.red(formatOutcomeList('ERROR', errorList)))
 
   const summary = `[verifyTaskList] pass: ${passList.length}, warn: ${warnList.length}, error: ${errorList.length}`
   KIT_LOGGER.padLog(summary)
