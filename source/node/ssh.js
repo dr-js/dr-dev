@@ -182,7 +182,7 @@ const DEFAULT_ON_OUTPUT_BUFFER = (type, buffer) => {
 }
 
 export {
-  GET_SSH2,
+  GET_SSH2, getConnectOption,
   startSSHClient, startDryRunSSHClient,
 
   quickSSH,
