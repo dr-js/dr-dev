@@ -13,7 +13,8 @@ import {
   packOutput,
   // verifyOutputBin,
   verifyNoGitignore,
-  publishOutput, getPublishFlag, verifyPublishVersion
+  verifyPackageVersionStrict,
+  publishPackage
 } from './output.js'
 
 const { describe, it, before, after, info = console.log } = globalThis
@@ -90,55 +91,29 @@ describe('Output', () => {
     await doThrowAsync(async () => verifyNoGitignore({ path: fromTestRoot(), kitLogger }))
   })
 
-  it('publishOutput()', async () => {
-    const fromOutput = (...args) => fromTestRoot('output-publishOutput', ...args)
+  it('verifyPackageVersionStrict()', () => {
+    doNotThrow(() => verifyPackageVersionStrict('1.1.1'))
+    doNotThrow(() => verifyPackageVersionStrict('1111.1111.1111'))
+    doNotThrow(() => verifyPackageVersionStrict('1.1.1-dev.1'))
+    doNotThrow(() => verifyPackageVersionStrict('1111.1111.1111-dev.1111'))
+
+    doThrow(() => verifyPackageVersionStrict(''))
+    doThrow(() => verifyPackageVersionStrict('1'))
+    doThrow(() => verifyPackageVersionStrict('1.1'))
+    doThrow(() => verifyPackageVersionStrict('1.1.1.1'))
+    doThrow(() => verifyPackageVersionStrict('1.1.1-dev.1-local.1'))
+  })
+
+  it('publishPackage()', async () => {
+    const fromOutput = (...args) => fromTestRoot('output-publishPackage', ...args)
     const packageJSON = await initOutput({ fromOutput, fromRoot, kitLogger })
     const pathPackagePack = await packOutput({ fromOutput, fromRoot: fromTestRoot, kitLogger })
 
     packageJSON.version = '0.0.0-dev.0' // reset for test
 
-    // should do nothing
-    await publishOutput({ isPublishAuto: false, isPublish: false, isPublishDev: false, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], kitLogger })
-    verifyLog('skipped publish output, no flag found')
-
-    // should --dry-run
+    // should run all code, but pass "--dry-run" to npm and skip publish
     info('test publish with --dry-run')
-    await publishOutput({ isPublishAuto: false, isPublish: false, isPublishDev: true, packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], kitLogger })
-    verifyLog('publish-dev')
-  })
-
-  it('getPublishFlag()', () => {
-    stringifyEqual(getPublishFlag([ 'a', 'b', 'c', 'dev' ]), { isPublishAuto: false, isPublish: false, isPublishDev: false })
-    stringifyEqual(getPublishFlag([ 'publish' ]), { isPublishAuto: false, isPublish: true, isPublishDev: false })
-    stringifyEqual(getPublishFlag([ 'publish-dev' ]), { isPublishAuto: false, isPublish: false, isPublishDev: true })
-    stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0'), { isPublishAuto: true, isPublish: true, isPublishDev: false })
-    stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0-dev.0'), { isPublishAuto: true, isPublish: false, isPublishDev: true })
-    stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0-dev.0-local.0'), { isPublishAuto: true, isPublish: false, isPublishDev: true })
-    stringifyEqual(getPublishFlag([ 'publish-auto' ], '0.0.0-random'), { isPublishAuto: true, isPublish: false, isPublishDev: true })
-
-    doThrow(() => getPublishFlag([ 'publish-auto', 'publish' ]), 'should prevent set both flag')
-    doThrow(() => getPublishFlag([ 'publish-auto', 'publish-dev' ]), 'should prevent set both flag')
-    doThrow(() => getPublishFlag([ 'publish', 'publish-dev' ]), 'should prevent set both flag')
-    doThrow(() => getPublishFlag([ 'publish-auto', 'publish', 'publish-dev' ]), 'should prevent set all flag')
-
-    doThrow(() => getPublishFlag([ 'publish-auto' ]), 'should require packageVersion')
-    doThrow(() => getPublishFlag([ 'publish-auto' ], ''), 'should require packageVersion')
-  })
-
-  it('verifyPublishVersion()', () => {
-    doNotThrow(() => verifyPublishVersion({ version: '1.1.1', isPublishDev: false }))
-    doNotThrow(() => verifyPublishVersion({ version: '1111.1111.1111', isPublishDev: false }))
-    doNotThrow(() => verifyPublishVersion({ version: '1.1.1-dev.1', isPublishDev: true }))
-    doNotThrow(() => verifyPublishVersion({ version: '1111.1111.1111-dev.1111', isPublishDev: true }))
-
-    doThrow(() => verifyPublishVersion({ version: '', isPublishDev: false }))
-    doThrow(() => verifyPublishVersion({ version: '1', isPublishDev: false }))
-    doThrow(() => verifyPublishVersion({ version: '1.1', isPublishDev: false }))
-    doThrow(() => verifyPublishVersion({ version: '1.1.1.1', isPublishDev: false }))
-    doThrow(() => verifyPublishVersion({ version: '', isPublishDev: true }))
-    doThrow(() => verifyPublishVersion({ version: '1', isPublishDev: true }))
-    doThrow(() => verifyPublishVersion({ version: '1.1', isPublishDev: true }))
-    doThrow(() => verifyPublishVersion({ version: '1.1.1.1', isPublishDev: true }))
-    doThrow(() => verifyPublishVersion({ version: '1.1.1-dev.1-local.1', isPublishDev: true }))
+    await publishPackage({ packageJSON, pathPackagePack, extraArgs: [ '--dry-run' ], kitLogger })
+    verifyLog('0.0.0-dev.0')
   })
 })
