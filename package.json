@@ -50,8 +50,8 @@
     "@dr-js/core": "^0.4.16"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.4.19",
-    "@dr-js/dev-web": "^0.4.19",
+    "@dr-js/dev": "^0.4.20-dev.0",
+    "@dr-js/dev-web": "^0.4.20-dev.0",
     "ssh2": "^1.3.0",
     "ssh2-legacy": "npm:ssh2@^0.8.9",
     "yaml": "^1.10.2"
