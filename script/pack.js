@@ -60,7 +60,6 @@ runKit(async (kit) => {
   kit.padLog('build bin')
   kit.RUN('npm run build-bin')
 
-  await packResource()
   await processOutput()
   const isTest = argvFlag('test', 'publish')
   isTest && kit.padLog('lint source')
@@ -73,6 +72,9 @@ runKit(async (kit) => {
   await clearOutput({ kit })
   await verifyOutputBin({ packageJSON, kit })
   isTest && await verifyGitStatusClean({ kit })
+
+  await packResource()
+
   const pathPackagePack = await packOutput({ kit })
   isPublish && await publishPackage({ packageJSON, pathPackagePack, kit })
 })
