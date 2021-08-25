@@ -32,14 +32,14 @@
     "test-output-module": "npm run test-T -- output-gitignore/module/",
     "test-output-bin": "npm run test-T-output -- output-gitignore/bin/",
     "// =============================": "",
+    "version-bump": "dr-dev --version-bump-git-branch --git-commit --debug",
+    "tag-push": "dr-dev --shell-alias quick-git-push-combo",
     "check-outdated": "node ./output-gitignore/bin --check-outdated ./resource",
     "check-outdated-write-back": "npm run check-outdated -- --write-back",
     "check-outdated-self": "node ./output-gitignore/bin --check-outdated",
     "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json output-gitignore/browser",
     "lint": "eslint ./source/ ./source-bin/ ./resource/ ./script/",
     "test": "npm run script-pack-test",
-    "version-bump": "dr-dev --version-bump-git-branch --git-commit --debug",
-    "tag-push": "dr-dev --shell-alias quick-git-push-combo",
     "prepack": "echo \"Error: pack with script-*\" && exit 1"
   },
   "engines": {
