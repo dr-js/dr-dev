@@ -4,7 +4,7 @@ import { padTable } from '@dr-js/core/module/common/format.js'
 import { isVersionSpecComplex } from '@dr-js/core/module/common/module/SemVer.js'
 import { loadPackageCombo, writePackageJSON } from '@dr-js/core/module/node/module/PackageJSON.js'
 
-import { outdatedWithTempJSON } from 'source/node/package/Npm.js'
+import { outdatedJSON, outdatedWithTempJSON } from 'source/node/package/Npm.js'
 
 const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput }) => {
   const sameTable = []
@@ -68,7 +68,9 @@ const doCheckOutdated = async ({
   for (const { name, versionSpec, packageInfo: { packageJSONPath }, existPackageInfo } of duplicateInfoList) {
     log(`[WARN] dropped duplicate package: ${name} at ${relative(pathInput, packageJSONPath)} with version: ${versionSpec}, checking: ${existPackageInfo.versionSpec}`)
   }
-  const outdatedMap = await outdatedWithTempJSON({ packageJSON: { dependencies: dependencyMap }, pathTemp })
+  const outdatedMap = packageInfoList.length === 1
+    ? await outdatedJSON({ packageRoot: packageInfoList[ 0 ].packageRootPath }) // check in-place
+    : await outdatedWithTempJSON({ packageJSON: { dependencies: dependencyMap }, pathTemp }) // create temp path, do not work for private repo or altered ".npmrc"
   const { sameTable, complexTable, outdatedTable } = sortResult({ dependencyInfoMap, outdatedMap, pathInput })
   logResult({ sameTable, complexTable, outdatedTable, log })
   if (isWriteBack) await writeBack({ dependencyInfoMap, outdatedTable, log })
