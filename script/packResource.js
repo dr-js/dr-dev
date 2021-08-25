@@ -5,7 +5,7 @@ import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy } from '@dr-js/core/module/node/fs/Modify.js'
 import { writePackageJSON } from '@dr-js/core/module/node/module/PackageJSON.js'
 
-import { packOutput, publishOutput } from 'source/output.js'
+import { packOutput, publishPackage } from 'source/output.js'
 import { getFromPackExport, writePackExportInitJSON } from 'source-bin/function.js'
 
 const copyAndSavePackExportInitJSON = async ({
@@ -62,14 +62,11 @@ const parseResourcePath = (resourcePath, configRootPath) => typeof (resourcePath
 
 const doPackResource = async ({
   configJSONFile, fromPackOutput,
-  outputName, outputVersion, outputDescription,
-  isPublish = false, isPublishDev = false, isDryRun = false,
-  kit
+  packageJSONOverwrite, // { name, version, description },
+  isPublish = false, kit
 }) => {
   const { packageJSON, exportPairList } = await loadConfig({ configJSONFile, kit })
-  if (outputName) packageJSON.name = outputName
-  if (outputVersion) packageJSON.version = outputVersion
-  if (outputDescription) packageJSON.description = outputDescription
+  Object.assign(packageJSON, packageJSONOverwrite)
 
   // custom initOutput
   await resetDirectory(fromPackOutput())
@@ -78,12 +75,7 @@ const doPackResource = async ({
   await copyAndSavePackExportInitJSON({ pathPackage: fromPackOutput(), exportPairList })
 
   const pathPackagePack = await packOutput({ kit, fromOutput: fromPackOutput })
-  await publishOutput({
-    extraArgs: isDryRun ? [ '--dry-run' ] : [],
-    isPublishAuto: false, isPublish, isPublishDev,
-    packageJSON, pathPackagePack,
-    kit
-  })
+  isPublish && await publishPackage({ packageJSON, pathPackagePack, kit })
 }
 
 const getREADME = ({ name, description }) => [

@@ -1,7 +1,7 @@
 import { runKit, argvFlag } from '@dr-js/core/module/node/kit.js'
 
 import { getSourceJsFileListFromPathList } from '@dr-js/dev/module/node/filePreset.js'
-import { initOutput, packOutput, clearOutput, verifyNoGitignore, verifyGitStatusClean, verifyOutputBin, publishOutput } from '@dr-js/dev/module/output.js'
+import { initOutput, packOutput, clearOutput, verifyNoGitignore, verifyGitStatusClean, verifyOutputBin, verifyPackageVersionStrict, publishPackage } from '@dr-js/dev/module/output.js'
 import { getTerserOption, minifyFileListWithTerser } from '@dr-js/dev/module/minify.js'
 import { processFileList, fileProcessorBabel } from '@dr-js/dev/module/fileProcessor.js'
 
@@ -22,13 +22,15 @@ runKit(async (kit) => {
   })
   if (!argvFlag('pack')) return
 
+  const isPublish = argvFlag('publish')
+  isPublish && verifyPackageVersionStrict(packageJSON.version)
   kit.padLog('generate spec')
   kit.RUN('npm run script-generate-spec')
   kit.padLog('build library')
   kit.RUN('npm run build-library')
 
   await processOutput()
-  const isTest = argvFlag('test', 'publish-auto', 'publish', 'publish-dev')
+  const isTest = argvFlag('test', 'publish')
   isTest && kit.padLog('lint source')
   isTest && kit.RUN('npm run lint')
   isTest && await processOutput() // once more
@@ -38,5 +40,5 @@ runKit(async (kit) => {
   await verifyOutputBin({ packageJSON, kit })
   isTest && await verifyGitStatusClean({ kit })
   const pathPackagePack = await packOutput({ kit })
-  await publishOutput({ packageJSON, pathPackagePack, kit })
+  isPublish && await publishPackage({ packageJSON, pathPackagePack, kit })
 })

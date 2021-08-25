@@ -3,7 +3,7 @@ import { runKit, argvFlag } from '@dr-js/core/module/node/kit.js'
 
 import { getFileListFromPathList } from 'source/node/file.js'
 import { getSourceJsFileListFromPathList } from 'source/node/filePreset.js'
-import { initOutput, packOutput, clearOutput, verifyOutputBin, verifyNoGitignore, verifyGitStatusClean, getPublishFlag, publishOutput } from 'source/output.js'
+import { initOutput, packOutput, clearOutput, verifyOutputBin, verifyNoGitignore, verifyGitStatusClean, verifyPackageVersionStrict, publishPackage } from 'source/output.js'
 import { getTerserOption, minifyFileListWithTerser } from 'source/minify.js'
 import { processFileList, fileProcessorBabel } from 'source/fileProcessor.js'
 
@@ -19,12 +19,11 @@ runKit(async (kit) => {
     kit.padLog(`size reduce: ${sizeReduce}B`)
   }
 
-  const packResource = async ({ packageJSON: { version } }) => {
-    const { isPublish, isPublishDev } = getPublishFlag(process.argv, version)
+  const packResource = async () => {
     if (!argvFlag('unsafe')) {
       kit.padLog('run check-outdated')
       await doCheckOutdated({ pathInput: kit.fromRoot('resource/'), log: kit.log })
-    } else if (isPublish || isPublishDev) throw new Error('[unsafe] should not be used when publish')
+    } else if (isPublish) throw new Error('[unsafe] should not be used when publish')
     else kit.padLog('[unsafe] skipped check-outdated')
 
     kit.log('clear resource package output')
@@ -37,9 +36,8 @@ runKit(async (kit) => {
       kit.padLog(`pack package ${name}`)
       await doPackResource({
         configJSONFile, fromPackOutput: (...argList) => fromResourceOutput(name, ...argList),
-        outputName: name, outputVersion: version, outputDescription: description,
-        isPublish, isPublishDev, isDryRun: argvFlag('dry-run'),
-        kit
+        packageJSONOverwrite: { name, version: packageJSON.version, description },
+        isPublish, kit
       })
     }
   }
@@ -49,6 +47,8 @@ runKit(async (kit) => {
   const packageJSON = await initOutput({ kit })
   if (!argvFlag('pack')) return
 
+  const isPublish = argvFlag('publish')
+  isPublish && verifyPackageVersionStrict(packageJSON.version)
   kit.padLog('generate spec')
   kit.RUN('npm run script-generate-spec')
   kit.padLog('build library')
@@ -60,10 +60,9 @@ runKit(async (kit) => {
   kit.padLog('build bin')
   kit.RUN('npm run build-bin')
 
-  await packResource({ packageJSON })
-
+  await packResource()
   await processOutput()
-  const isTest = argvFlag('test', 'publish-auto', 'publish', 'publish-dev')
+  const isTest = argvFlag('test', 'publish')
   isTest && kit.padLog('lint source')
   isTest && kit.RUN('npm run lint')
   isTest && await processOutput() // once more
@@ -75,5 +74,5 @@ runKit(async (kit) => {
   await verifyOutputBin({ packageJSON, kit })
   isTest && await verifyGitStatusClean({ kit })
   const pathPackagePack = await packOutput({ kit })
-  await publishOutput({ packageJSON, pathPackagePack, kit })
+  isPublish && await publishPackage({ packageJSON, pathPackagePack, kit })
 })
