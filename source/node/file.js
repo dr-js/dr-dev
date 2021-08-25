@@ -6,7 +6,7 @@ import { isString } from '@dr-js/core/module/common/check.js'
 import { describe } from '@dr-js/core/module/common/format.js'
 import { getSample } from '@dr-js/core/module/common/math/sample.js'
 import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/node/fs/Path.js'
-import { getDirInfoList, createDirectory, getFileList } from '@dr-js/core/module/node/fs/Directory.js'
+import { getDirInfoList, createDirectory, getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
 import { compressGzBrFileAsync } from '@dr-js/core/module/node/module/Archive/function.js'
@@ -134,6 +134,7 @@ const trimPrecompressForPath = async (path, filterResult) => {
 }
 
 /** @deprecated */ const copyAfterEdit = async (pathFrom, pathTo, editFunc) => editFile(editFunc, pathFrom, pathTo) // TODO: DEPRECATE: use `editFile`
+/** @deprecated */ const resetDirectoryExport = resetDirectory // TODO: DEPRECATE
 
 export {
   getFileListFromPathList,
@@ -147,7 +148,6 @@ export {
   filterPrecompressFileList,
   generatePrecompressForPath, trimPrecompressForPath,
 
-  copyAfterEdit // TODO: DEPRECATE: use `editFile`
+  copyAfterEdit, // TODO: DEPRECATE: use `editFile`
+  resetDirectoryExport as resetDirectory // TODO: DEPRECATE
 }
-
-export { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js' // TODO: DEPRECATE

@@ -26,12 +26,13 @@ import { writeLicenseFile } from './license.js'
 ) => {
   const pathConfig = getKitPathCombo(config)
   const kitRun = getKitRun({ ...config, ...pathConfig, log: kitLogger.log, isQuiet: config.QUIET_RUN, isDryRun: config.DRY_RUN })
-  const RUN = (argListOrString, optionOrIsDetached) => kitRun.RUN( // TODO: DEPRECATE: move `isDetached` in to option object
+  /** @deprecated */ const RUN = (argListOrString, optionOrIsDetached) => kitRun.RUN( // TODO: DEPRECATE: move `isDetached` in to option object
     argListOrString,
     isBasicObject(optionOrIsDetached) ? optionOrIsDetached : { isDetached: Boolean(optionOrIsDetached) }
   )
   return { config, ...pathConfig, RUN }
 }
+/** @deprecated */ const fromPathCombo = getKitPathCombo // TODO: DEPRECATE
 
 const initOutput = async ({
   logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
@@ -222,7 +223,6 @@ const publishPackage = async ({
 /** @deprecated */ const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0 // TODO: DEPRECATE
 
 export {
-  commonCombo, // TODO: DEPRECATE
   initOutput,
   packOutput,
   clearOutput,
@@ -230,9 +230,7 @@ export {
   verifyNoGitignore, verifyGitStatusClean,
   verifyPackageVersionStrict,
   publishPackage,
+
+  commonCombo, fromPathCombo, // TODO: DEPRECATE
   publishOutput, getPublishFlag, verifyPublishVersion, REGEXP_PUBLISH_VERSION, REGEXP_PUBLISH_VERSION_DEV // TODO: DEPRECATE
 }
-
-export {
-  getKitPathCombo as fromPathCombo // TODO: DEPRECATE
-} from '@dr-js/core/module/node/kit.js'
