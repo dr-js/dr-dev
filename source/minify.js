@@ -23,12 +23,13 @@ const getTerserOption = ({
   globalDefineMap = {
     '__DEV__': Boolean(isDevelopment),
     'process.env.NODE_ENV': isDevelopment ? 'development' : 'production'
-  }
+  },
+  comments = /@(license|preserve|deprecated)/
 } = {}) => ({
   ecma, toplevel, module,
   compress: { passes: 2, join_vars: false, sequences: false, global_defs: globalDefineMap },
   mangle: isReadable ? false : { eval: true },
-  output: isReadable ? { beautify: true, indent_level: 2, width: 240 } : { beautify: false, semicolons: false },
+  output: isReadable ? { beautify: true, indent_level: 2, width: 240, comments } : { beautify: false, semicolons: false, comments },
   sourceMap: false
 })
 
