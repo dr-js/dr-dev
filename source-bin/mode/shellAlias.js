@@ -4,7 +4,7 @@ import { hostname } from 'os'
 import { describe } from '@dr-js/core/module/common/format.js'
 import { isBasicArray, isBasicFunction, isBasicObject, isString } from '@dr-js/core/module/common/check.js'
 import { getUTCDateTag } from '@dr-js/core/module/common/time.js'
-import { resolveHome } from '@dr-js/core/module/node/fs/Path.js'
+import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import { runSync, runStdoutSync } from '@dr-js/core/module/node/run.js'
 
@@ -340,7 +340,7 @@ const SHELL_ALIAS_LIST = {
   'quick-df': 'df -h',
   'quick-df-current': 'df -h .',
   'quick-du': 'du -hd1',
-  'quick-ssh-key-md5-list': [ 'ssh-keygen', '-E', 'md5', '-lf', resolveHome('~/.ssh/authorized_keys') ],
+  'quick-ssh-key-md5-list': [ 'ssh-keygen', '-E', 'md5', '-lf', expandHome('~/.ssh/authorized_keys') ],
   'quick-ssh-keygen': (
     $1 = `KEY_${getUTCDateTag()}_4096`, // TZ=UTC0 date +%Y%m%d
     $2 = `${$1}@${hostname() || 'unknown-host'}`

@@ -1,3 +1,4 @@
+import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
 import { modifyDeleteForce } from '@dr-js/core/module/node/fs/Modify.js'
 
 import { checksumUpdate, checksumDetectChange } from 'source/node/cache/checksum.js'
@@ -14,7 +15,9 @@ const doCacheStep = async ({
   const config = {
     pathStatFile,
     pathChecksumList, pathChecksumFile,
-    pathStaleCheckList, pathStaleCheckFile, maxStaleDay
+    pathStaleCheckList: pathStaleCheckList && pathStaleCheckList.map((v) => expandHome(v)),
+    pathStaleCheckFile: pathStaleCheckFile && expandHome(pathStaleCheckFile),
+    maxStaleDay
   }
 
   switch (cacheStepType) {
