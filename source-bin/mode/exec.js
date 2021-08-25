@@ -6,7 +6,7 @@ import { findUpPackageRoot } from '@dr-js/core/module/node/module/Software/npm.j
 
 import { runPassThrough } from 'source/node/run.js'
 
-const PACKAGE_KEY_DEV_EXEC_COMMAND_MAP = 'devExecCommands' // TODO: DEPRECATE
+/** @deprecated */ const PACKAGE_KEY_DEV_EXEC_COMMAND_MAP = 'devExecCommands' // TODO: DEPRECATE
 
 const doExec = async (argList, {
   env,

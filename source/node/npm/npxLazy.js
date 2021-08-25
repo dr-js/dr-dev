@@ -54,7 +54,7 @@ const runNpxLazy = async (
   return runNpx([ command, ...extraArgs ], tabLog)
 }
 
-const npxLazy = async ({ argList, tabLog }) => runNpxLazy(argList, tabLog) // TODO: DEPRECATE
+/** @deprecated */ const npxLazy = async ({ argList, tabLog }) => runNpxLazy(argList, tabLog) // TODO: DEPRECATE
 
 export {
   runNpx, runNpxLazy,

@@ -17,7 +17,7 @@ import { FILTER_TEST_PATH } from './node/preset.js'
 import { getFileListFromPathList } from './node/file.js'
 import { writeLicenseFile } from './license.js'
 
-const commonCombo = ( // TODO: DEPRECATE
+/** @deprecated */ const commonCombo = ( // TODO: DEPRECATE
   kitLogger,
   config = {
     DRY_RUN: Boolean(process.env.DRY_RUN),
@@ -178,7 +178,7 @@ const publishPackage = async ({
   await runNpm([ '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]).promise
 }
 
-const publishOutput = async ({ // TODO: DEPRECATE
+/** @deprecated */ const publishOutput = async ({ // TODO: DEPRECATE
   packageJSON: { name, version },
   pathPackagePack, // the .tgz output of pack
   flagList = process.argv,
@@ -199,7 +199,7 @@ const publishOutput = async ({ // TODO: DEPRECATE
     kitLogger
   })
 }
-const getPublishFlag = (flagList, packageVersion) => { // TODO: DEPRECATE
+/** @deprecated */ const getPublishFlag = (flagList, packageVersion) => { // TODO: DEPRECATE
   const isPublishAuto = flagList.includes('publish-auto') // no version verify for auto + dev, and do not limit dev version format to `REGEXP_PUBLISH_VERSION_DEV`
   let isPublish = flagList.includes('publish')
   let isPublishDev = flagList.includes('publish-dev')
@@ -211,18 +211,18 @@ const getPublishFlag = (flagList, packageVersion) => { // TODO: DEPRECATE
   }
   return { isPublishAuto, isPublish, isPublishDev }
 }
-const verifyPublishVersion = ({ version, isPublishDev }) => { // TODO: DEPRECATE
+/** @deprecated */ const verifyPublishVersion = ({ version, isPublishDev }) => { // TODO: DEPRECATE
   if (isPublishDev
     ? REGEXP_PUBLISH_VERSION_DEV.test(version)
     : REGEXP_PUBLISH_VERSION.test(version)
   ) return
   throw new Error(`[verifyPublishVersion] invalid version: ${version}, isPublishDev: ${isPublishDev}`)
 }
-const REGEXP_PUBLISH_VERSION = /^\d+\.\d+\.\d+$/ // 0.0.0 // TODO: DEPRECATE
-const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0 // TODO: DEPRECATE
+/** @deprecated */ const REGEXP_PUBLISH_VERSION = /^\d+\.\d+\.\d+$/ // 0.0.0 // TODO: DEPRECATE
+/** @deprecated */ const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0 // TODO: DEPRECATE
 
 export {
-  commonCombo,
+  commonCombo, // TODO: DEPRECATE
   initOutput,
   packOutput,
   clearOutput,

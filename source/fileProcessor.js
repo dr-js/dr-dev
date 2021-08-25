@@ -66,7 +66,7 @@ const fileProcessorBabel = (inputString) => inputString
 // don't:
 //  - function(){return a}()       =>  ()=>a()
 //  - function(){return this.a}()  =>  ()=>this.a
-const fileProcessorWebpack = (inputString) => inputString // TODO: DEPRECATE: risk breaking code & replaceable `function()` is less often seem in minified webpack output
+/** @deprecated */ const fileProcessorWebpack = (inputString) => inputString // TODO: DEPRECATE: risk breaking code & replaceable `function()` is less often seem in minified webpack output
 // .replace(/function\s*\(\)\s*{\s*return\s+([\w$]+(?:\.[\w$]+)?)\s*}([\s;)\]])/g, '()=>$1$2') // TODO: may break code?
 
 export {

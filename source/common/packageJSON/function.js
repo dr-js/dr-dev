@@ -1,4 +1,4 @@
-const PACKAGE_KEY_DEV_EXEC_COMMAND_MAP = 'devExecCommands' // TODO: DEPRECATE
+/** @deprecated */ const PACKAGE_KEY_DEV_EXEC_COMMAND_MAP = 'devExecCommands' // TODO: DEPRECATE
 
 export { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } // TODO: DEPRECATE
 

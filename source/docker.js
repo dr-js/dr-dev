@@ -48,7 +48,7 @@ const matchContainerLsList = (
   })
 }
 
-const runDockerLegacy = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWithTee : run)( // TODO: DEPRECATE: bad design, await is SOMETIMES needed
+/** @deprecated */ const runDockerLegacy = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWithTee : run)( // TODO: DEPRECATE: bad design, await is SOMETIMES needed
   [ ...verify(), ...argList ],
   option,
   teeLogFile
