@@ -7,6 +7,8 @@ const DEFAULT_BABEL_ASSUMPTIONS = { // https://babeljs.io/docs/en/assumptions
   noNewArrows: true
 }
 
+// https://babeljs.io/docs/en/options
+
 const getBabelConfig = ({
   BABEL_ENV = process.env.BABEL_ENV || '',
   isDev = BABEL_ENV.includes('dev'),
