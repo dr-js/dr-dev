@@ -3,6 +3,7 @@ import { statSync, readFileSync, writeFileSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { isBasicObject } from '@dr-js/core/module/common/check.js'
 import { getFirstBinPath } from '@dr-js/core/module/common/module/PackageJSON.js'
+import { parseSemVer } from '@dr-js/core/module/common/module/SemVer.js'
 import { getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 import { runStdout } from '@dr-js/core/module/node/run.js'
@@ -16,7 +17,7 @@ import { FILTER_TEST_PATH } from './node/preset.js'
 import { getFileListFromPathList } from './node/file.js'
 import { writeLicenseFile } from './license.js'
 
-const commonCombo = ( // TODO: DEPRECATE
+/** @deprecated */ const commonCombo = ( // TODO: DEPRECATE
   kitLogger,
   config = {
     DRY_RUN: Boolean(process.env.DRY_RUN),
@@ -25,12 +26,13 @@ const commonCombo = ( // TODO: DEPRECATE
 ) => {
   const pathConfig = getKitPathCombo(config)
   const kitRun = getKitRun({ ...config, ...pathConfig, log: kitLogger.log, isQuiet: config.QUIET_RUN, isDryRun: config.DRY_RUN })
-  const RUN = (argListOrString, optionOrIsDetached) => kitRun.RUN( // TODO: DEPRECATE: move `isDetached` in to option object
+  /** @deprecated */ const RUN = (argListOrString, optionOrIsDetached) => kitRun.RUN( // TODO: DEPRECATE: move `isDetached` in to option object
     argListOrString,
     isBasicObject(optionOrIsDetached) ? optionOrIsDetached : { isDetached: Boolean(optionOrIsDetached) }
   )
   return { config, ...pathConfig, RUN }
 }
+/** @deprecated */ const fromPathCombo = getKitPathCombo // TODO: DEPRECATE
 
 const initOutput = async ({
   logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
@@ -151,7 +153,33 @@ const verifyGitStatusClean = async ({
   if (String(await runGitStdout([ 'status', '--porcelain', ...extraArgList ], { cwd })) !== '') throw new Error(`[verifyGitStatusClean] change to commit:\n${runGitStdoutSync([ 'status', '-vv', ...extraArgList ], { cwd })}`)
 }
 
-const publishOutput = async ({
+const verifyPackageVersionStrict = (packageVersion) => { // allow only major or dev version
+  const { label } = parseSemVer(packageVersion)
+  if (
+    !label || // 0.0.0
+    /^-dev\.\d+$/.test(label) // 0.0.0-dev.0
+  ) return
+  throw new Error(`[verifyPackageVersionStrict] invalid version: ${packageVersion}`)
+}
+const publishPackage = async ({
+  packageJSON: { name, version },
+  pathPackagePack, // the .tgz output of pack
+  extraArgs = [],
+  tag = parseSemVer(version).label ? 'dev' : 'latest', // default to `latest` for major version, `dev` for other labeled version
+  isAccessRestricted = false, // default to public access for scoped package
+  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+}) => {
+  kitLogger.padLog(`publish package: ${version} (${tag})`)
+  !extraArgs.includes('--tag') && extraArgs.push('--tag', tag) // Patch tag
+  !extraArgs.includes('--access') && name.startsWith('@') && extraArgs.push('--access', isAccessRestricted ? 'restricted' : 'public') // Patch for scoped packages, check: https://docs.npmjs.com/cli/publish
+  // NOTE: if this process is run under yarn, the registry will be pointing to `https://registry.yarnpkg.com/`, and auth for publish will not work, check:
+  // - `npm config get userconfig`
+  // - `npm config get registry`
+  // - `npm whoami`
+  await runNpm([ '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]).promise
+}
+
+/** @deprecated */ const publishOutput = async ({ // TODO: DEPRECATE
   packageJSON: { name, version },
   pathPackagePack, // the .tgz output of pack
   flagList = process.argv,
@@ -166,22 +194,13 @@ const publishOutput = async ({
   if (!isPublish && !isPublishDev) return kitLogger.padLog('skipped publish output, no flag found')
   if (!pathPackagePack || !pathPackagePack.endsWith('.tgz')) throw new Error(`[publishOutput] invalid pathPackagePack: ${pathPackagePack}`)
   isPublishVerify && verifyPublishVersion({ version, isPublishDev })
-
-  kitLogger.padLog(`${isPublishDev ? 'publish-dev' : 'publish'}: ${version}`)
-
-  // Patch tag
-  !extraArgs.includes('--tag') && extraArgs.push('--tag', isPublishDev ? 'dev' : 'latest')
-
-  // Patch only for scoped packages, default to restricted, check: https://docs.npmjs.com/cli/publish
-  !extraArgs.includes('--access') && name.startsWith('@') && extraArgs.push('--access', isAccessRestricted ? 'restricted' : 'public')
-
-  // NOTE: if this process is run under yarn, the registry will be pointing to `https://registry.yarnpkg.com/`, and auth for publish will not work, check:
-  // - `npm config get userconfig`
-  // - `npm config get registry`
-  // - `npm whoami`
-  await runNpm([ '--no-update-notifier', 'publish', pathPackagePack, ...extraArgs ]).promise
+  await publishPackage({
+    packageJSON: { name, version }, pathPackagePack,
+    extraArgs, tag: isPublishDev ? 'dev' : 'latest', isAccessRestricted,
+    kitLogger
+  })
 }
-const getPublishFlag = (flagList, packageVersion) => {
+/** @deprecated */ const getPublishFlag = (flagList, packageVersion) => { // TODO: DEPRECATE
   const isPublishAuto = flagList.includes('publish-auto') // no version verify for auto + dev, and do not limit dev version format to `REGEXP_PUBLISH_VERSION_DEV`
   let isPublish = flagList.includes('publish')
   let isPublishDev = flagList.includes('publish-dev')
@@ -193,26 +212,25 @@ const getPublishFlag = (flagList, packageVersion) => {
   }
   return { isPublishAuto, isPublish, isPublishDev }
 }
-const verifyPublishVersion = ({ version, isPublishDev }) => {
+/** @deprecated */ const verifyPublishVersion = ({ version, isPublishDev }) => { // TODO: DEPRECATE
   if (isPublishDev
     ? REGEXP_PUBLISH_VERSION_DEV.test(version)
     : REGEXP_PUBLISH_VERSION.test(version)
   ) return
   throw new Error(`[verifyPublishVersion] invalid version: ${version}, isPublishDev: ${isPublishDev}`)
 }
-const REGEXP_PUBLISH_VERSION = /^\d+\.\d+\.\d+$/ // 0.0.0
-const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0
+/** @deprecated */ const REGEXP_PUBLISH_VERSION = /^\d+\.\d+\.\d+$/ // 0.0.0 // TODO: DEPRECATE
+/** @deprecated */ const REGEXP_PUBLISH_VERSION_DEV = /^\d+\.\d+\.\d+-dev\.\d+$/ // 0.0.0-dev.0 // TODO: DEPRECATE
 
 export {
-  commonCombo,
   initOutput,
   packOutput,
   clearOutput,
   verifyOutputBin,
   verifyNoGitignore, verifyGitStatusClean,
-  publishOutput, getPublishFlag, verifyPublishVersion, REGEXP_PUBLISH_VERSION, REGEXP_PUBLISH_VERSION_DEV
-}
+  verifyPackageVersionStrict,
+  publishPackage,
 
-export {
-  getKitPathCombo as fromPathCombo // TODO: DEPRECATE
-} from '@dr-js/core/module/node/kit.js'
+  commonCombo, fromPathCombo, // TODO: DEPRECATE
+  publishOutput, getPublishFlag, verifyPublishVersion, REGEXP_PUBLISH_VERSION, REGEXP_PUBLISH_VERSION_DEV // TODO: DEPRECATE
+}

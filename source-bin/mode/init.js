@@ -11,7 +11,7 @@ import { getFromPackExport, loadAndCopyPackExportInitJSON } from '../function.js
 
 const NAME_PACK_EXPORT_INIT_VERIFY_RULE = 'INIT_VERIFY_RULE' // TODO: better lock file name
 
-const doInit = async ({ // TODO: DEPRECATE: simplify or remove
+/** @deprecated */ const doInit = async ({ // TODO: DEPRECATE: simplify or remove
   pathOutput,
   pathResourcePackage,
   isReset = false,

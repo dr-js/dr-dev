@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.4.19",
+  "version": "0.4.20",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -12,11 +12,10 @@
   },
   "scripts": {
     "// script ======================": "",
-    "script-pack": "node -r @babel/register ./script/pack pack unsafe",
-    "script-pack-test": "node -r @babel/register ./script/pack verbose pack test",
-    "script-publish": "node -r @babel/register ./script/pack pack publish",
-    "script-publish-dev": "node -r @babel/register ./script/pack pack publish-dev",
-    "script-generate-spec": "node -r @babel/register ./script/generateSpec",
+    "script-pack": "node -r @babel/register ./script/pack.js pack unsafe",
+    "script-pack-test": "node -r @babel/register ./script/pack.js verbose pack test",
+    "script-publish": "node -r @babel/register ./script/pack.js pack publish",
+    "script-generate-spec": "node -r @babel/register ./script/generateSpec.js",
     "// build =======================": "",
     "build-library": "babel ./source --out-dir ./output-gitignore/library --ignore source/browser/",
     "build-library-dev": "dr-dev --EE BABEL_ENV=dev -E -- npm run build-library -- --watch",
@@ -33,6 +32,8 @@
     "test-output-module": "npm run test-T -- output-gitignore/module/",
     "test-output-bin": "npm run test-T-output -- output-gitignore/bin/",
     "// =============================": "",
+    "version-bump": "dr-dev --version-bump-git-branch --git-commit --debug",
+    "tag-push": "dr-dev --shell-alias quick-git-push-combo",
     "check-outdated": "node ./output-gitignore/bin --check-outdated ./resource",
     "check-outdated-write-back": "npm run check-outdated -- --write-back",
     "check-outdated-self": "node ./output-gitignore/bin --check-outdated",
@@ -46,11 +47,11 @@
     "npm": ">=6.14"
   },
   "dependencies": {
-    "@dr-js/core": "^0.4.15"
+    "@dr-js/core": "^0.4.17"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.4.19-dev.2",
-    "@dr-js/dev-web": "^0.4.19-dev.2",
+    "@dr-js/dev": "^0.4.20-dev.1",
+    "@dr-js/dev-web": "^0.4.20-dev.1",
     "ssh2": "^1.3.0",
     "ssh2-legacy": "npm:ssh2@^0.8.9",
     "yaml": "^1.10.2"

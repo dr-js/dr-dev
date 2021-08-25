@@ -1,6 +1,11 @@
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { run } from '@dr-js/core/module/node/run.js'
-import { verify, runDockerStdout } from '@dr-js/core/module/node/module/Software/docker.js'
+import {
+  verify,
+  runDocker, runDockerSync,
+  runDockerStdout,
+  runCompose, runComposeSync
+} from '@dr-js/core/module/node/module/Software/docker.js'
 import { runWithTee } from './node/run.js'
 
 const runDockerWithTee = async (argList = [], option = {}, teeLogFile) => runWithTee([ ...verify(), ...argList ], option, teeLogFile)
@@ -48,7 +53,15 @@ const matchContainerLsList = (
   })
 }
 
-const runDockerLegacy = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWithTee : run)( // TODO: DEPRECATE: bad design, await is SOMETIMES needed
+/** @deprecated */ const docker = runDocker // TODO: DEPRECATE
+/** @deprecated */ const dockerSync = runDockerSync // TODO: DEPRECATE
+/** @deprecated */ const compose = runCompose // TODO: DEPRECATE
+/** @deprecated */ const composeSync = runComposeSync // TODO: DEPRECATE
+/** @deprecated */ const dockerWithTee = runDockerWithTee // TODO: DEPRECATE
+/** @deprecated */ const checkImageExist = checkPullImage // TODO: DEPRECATE
+/** @deprecated */ const getContainerPsList = getContainerLsList // TODO: DEPRECATE
+/** @deprecated */ const matchContainerPsList = matchContainerLsList // TODO: DEPRECATE
+/** @deprecated */ const runDockerLegacy = (argList = [], option = {}, teeLogFile) => (teeLogFile ? runWithTee : run)( // TODO: DEPRECATE: bad design, await is SOMETIMES needed
   [ ...verify(), ...argList ],
   option,
   teeLogFile
@@ -60,13 +73,10 @@ export {
   checkLocalImage, pullImage, checkPullImage,
   getContainerLsList, patchContainerLsListStartedAt, matchContainerLsList,
 
-  runDockerWithTee as dockerWithTee, // TODO: DEPRECATE
-  checkPullImage as checkImageExist, // TODO: DEPRECATE
-  getContainerLsList as getContainerPsList, matchContainerLsList as matchContainerPsList, // TODO: DEPRECATE
+  docker, dockerSync, // TODO: DEPRECATE
+  compose, composeSync, // TODO: DEPRECATE
+  dockerWithTee, // TODO: DEPRECATE
+  checkImageExist, // TODO: DEPRECATE
+  getContainerPsList, matchContainerPsList, // TODO: DEPRECATE
   runDockerLegacy as runDocker // TODO: DEPRECATE: bad design, await is SOMETIMES needed
 }
-
-export {
-  runDocker as docker, runDockerSync as dockerSync, // TODO: DEPRECATE
-  runCompose as compose, runComposeSync as composeSync // TODO: DEPRECATE
-} from '@dr-js/core/module/node/module/Software/docker.js'

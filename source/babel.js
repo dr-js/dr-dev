@@ -7,6 +7,8 @@ const DEFAULT_BABEL_ASSUMPTIONS = { // https://babeljs.io/docs/en/assumptions
   noNewArrows: true
 }
 
+// https://babeljs.io/docs/en/options
+
 const getBabelConfig = ({
   BABEL_ENV = process.env.BABEL_ENV || '',
   isDev = BABEL_ENV.includes('dev'),
@@ -46,7 +48,8 @@ const getBabelConfig = ({
     } ]
   ].filter(Boolean),
   assumptions,
-  comments: false
+  comments: false,
+  shouldPrintComment: isModule ? (string) => /@(license|preserve|deprecated)/.test(string) : undefined // NOTE: only keep comment mark for module output, babel commonjs will inject `module.exports` between comment & code
 })
 
 const getWebpackBabelConfig = ({
@@ -74,6 +77,7 @@ const getWebpackBabelConfig = ({
   assumptions
 })
 
+// HACK: @MARK_REPO_SYNC_IMPORT
 export {
   getBabelConfig,
   getWebpackBabelConfig

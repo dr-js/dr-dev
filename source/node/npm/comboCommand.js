@@ -27,7 +27,7 @@ const CC_PACKAGE_RESET = [
   [ 'npm i', 're-install' ]
 ]
 
-const COMBO_COMMAND_CONFIG_MAP = { // TODO: add more combo?
+/** @deprecated */ const COMBO_COMMAND_CONFIG_MAP = { // TODO: add more combo?
   'config': CC_CONFIG, 'c': CC_CONFIG,
   'install-offline': CC_INSTALL_OFFLINE, 'io': CC_INSTALL_OFFLINE,
   'install-clear': CC_INSTALL_CLEAR, 'ic': CC_INSTALL_CLEAR,
@@ -35,7 +35,7 @@ const COMBO_COMMAND_CONFIG_MAP = { // TODO: add more combo?
   'package-reset': CC_PACKAGE_RESET, 'pr': CC_PACKAGE_RESET
 }
 
-const comboCommand = async ({
+/** @deprecated */ const comboCommand = async ({
   name,
   pathRoot = process.cwd(), // current all default to cwd
   tabLog = (level, ...args) => {}

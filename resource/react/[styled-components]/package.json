@@ -1,6 +1,8 @@
 {
-  "IMPORT": [ "../" ],
+  "IMPORT": [
+    "../"
+  ],
   "dependencies": {
-    "styled-components": "^5.3.0"
+    "styled-components": "^5.3.1"
   }
 }

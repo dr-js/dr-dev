@@ -20,7 +20,7 @@
 + 📄 [source/minify.js](source/minify.js)
   - `GET_TERSER`, `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
 + 📄 [source/output.js](source/output.js)
-  - `REGEXP_PUBLISH_VERSION`, `REGEXP_PUBLISH_VERSION_DEV`, `clearOutput`, `commonCombo`, `fromPathCombo`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPublishVersion`
+  - `REGEXP_PUBLISH_VERSION`, `REGEXP_PUBLISH_VERSION_DEV`, `clearOutput`, `commonCombo`, `fromPathCombo`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `publishPackage`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPackageVersionStrict`, `verifyPublishVersion`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
   - `GET_PUPPETEER`, `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `reloadPuppeteerPage`, `runWithPuppeteer`, `setupPuppeteerPage`, `testBootPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
 + 📄 [source/webpack.js](source/webpack.js)
@@ -37,6 +37,8 @@
   - `isVersionSpecComplex`, `versionBumpByGitBranch`, `versionBumpLastNumber`, `versionBumpToIdentifier`, `versionBumpToLocal`
 + 📄 [source/common/packageJSON/function.js](source/common/packageJSON/function.js)
   - `PACKAGE_KEY_DEV_EXEC_COMMAND_MAP`, `collectDependency`, `getFirstBinPath`, `packPackageJSON`, `sortPackageJSON`, `toPackageInfo`
++ 📄 [source/node/color.js](source/node/color.js)
+  - `color`
 + 📄 [source/node/env.js](source/node/env.js)
   - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
@@ -52,7 +54,7 @@
 + 📄 [source/node/run.js](source/node/run.js)
   - `runAndHandover`, `runPassThrough`, `runWithAsyncFunc`, `runWithTee`, `withCwd`, `withRunBackground`
 + 📄 [source/node/ssh.js](source/node/ssh.js)
-  - `GET_SSH2`, `LOG_CONFIG`, `LOG_ERROR`, `LOG_EXEC`, `createColorLog`, `quickSSH`, `startDryRunSSHClient`, `startSSHClient`
+  - `GET_SSH2`, `LOG_CONFIG`, `LOG_ERROR`, `LOG_EXEC`, `createColorLog`, `getConnectOption`, `quickSSH`, `startDryRunSSHClient`, `startSSHClient`
 + 📄 [source/node/verify.js](source/node/verify.js)
   - `runTaskList`, `toTask`, `useKitLogger`, `verifyCommand`, `verifyCommandSemVer`, `verifyFile`, `verifyFileString`, `verifySemVer`, `verifyString`, `verifyTaskList`
 + 📄 [source/node/cache/checksum.js](source/node/cache/checksum.js)
@@ -328,13 +330,13 @@
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |     ^1.13.2 |
 | eslint                         |     ^7.32.0 |
-| eslint-plugin-import           |     ^2.24.1 |
+| eslint-plugin-import           |     ^2.24.2 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^5.1.0 |
 | eslint-plugin-react            |     ^7.24.0 |
 | prop-types                     |     ^15.7.2 |
 | puppeteer                      |     ^10.2.0 |
 | react                          |     ^17.0.2 |
-| styled-components              |      ^5.3.0 |
-| terser                         |      ^5.7.1 |
+| styled-components              |      ^5.3.1 |
+| terser                         |      ^5.7.2 |
 | webpack                        |     ^5.51.1 |

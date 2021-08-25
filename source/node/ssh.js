@@ -6,9 +6,10 @@ import { indentLine, autoEllipsis } from '@dr-js/core/module/common/string.js'
 import { createStepper } from '@dr-js/core/module/common/time.js'
 import { createInsideOutPromise } from '@dr-js/core/module/common/function.js'
 
-import { resolveHome } from '@dr-js/core/module/node/fs/Path.js'
+import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
 import { joinCommand } from '@dr-js/core/module/node/module/Software/bash.js'
-import { configureTerminalColor } from '@dr-js/core/module/node/module/TerminalColor.js'
+
+import { color } from './color.js'
 
 const GET_SSH2 = (log = console.warn) => {
   const SSH2 = tryRequire('ssh2')
@@ -24,7 +25,7 @@ const getConnectOption = ({
   port = 22,
   username = 'root',
   privateKeyPath = '~/.ssh/id_rsa',
-  privateKeyBuffer = privateKeyPath && readFileSync(resolveHome(privateKeyPath)),
+  privateKeyBuffer = privateKeyPath && readFileSync(expandHome(privateKeyPath)),
   privateKeyPassphrase, // optional
   readyTimeout = 16 * 1000, // in msec, 16sec
   isAutoSetAgent = true, // also try use ssh-agent (usually for OSX)
@@ -169,20 +170,19 @@ const createColorLog = (colorTitle, colorText) => (title, ...args) => console.lo
   ...args.map((v) => colorText(indentLine(v, '    ')))
 ].filter(Boolean).join('\n'))
 
-const { fg } = configureTerminalColor()
-const LOG_EXEC = createColorLog(fg.lightYellow, fg.yellow)
-const LOG_ERROR = createColorLog(fg.lightRed, fg.red)
-const LOG_CONFIG = createColorLog(fg.lightGreen, fg.green)
+const LOG_EXEC = createColorLog(color.lightYellow, color.yellow)
+const LOG_ERROR = createColorLog(color.lightRed, color.red)
+const LOG_CONFIG = createColorLog(color.lightGreen, color.green)
 const DEFAULT_ON_OUTPUT_BUFFER = (type, buffer) => {
   const outputString = String(buffer).trimEnd() // drop extra '\n'
   if (outputString.length === 0) return
   type === 'stderr'
-    ? console.error(fg.red(indentLine(outputString, ' E> ')))
-    : console.log(fg.darkGray(indentLine(outputString, ' O> ')))
+    ? console.error(color.red(indentLine(outputString, ' E> ')))
+    : console.log(color.darkGray(indentLine(outputString, ' O> ')))
 }
 
 export {
-  GET_SSH2,
+  GET_SSH2, getConnectOption,
   startSSHClient, startDryRunSSHClient,
 
   quickSSH,

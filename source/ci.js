@@ -26,7 +26,7 @@ const runInfoPatchCombo = ({ RUN, padLog, log }) => {
 // NOTE: test local ci-patch with command like:
 //   DRY_RUN=1 npx dr-js-dev-*.tgz -eI .github/ci-patch.js
 
-const commonInfoPatchCombo = (kitLogger, initConfig) => { // TODO: DEPRECATE
+/** @deprecated */ const commonInfoPatchCombo = (kitLogger, initConfig) => { // TODO: DEPRECATE
   const { config, RUN, ...extra } = commonCombo(kitLogger, initConfig)
 
   // patch config

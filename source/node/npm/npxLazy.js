@@ -3,7 +3,7 @@ import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { run } from '@dr-js/core/module/node/run.js'
 import { parsePackageNameAndVersion, findUpPackageRoot, fromNpmNodeModules, getPathNpmGlobalRoot } from '@dr-js/core/module/node/module/Software/npm.js'
 
-const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnpx` package will be dropped since `npm@7` and may later break the usage
+/** @deprecated */ const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnpx` package will be dropped since `npm@7` and may later break the usage
   argList = [],
   tabLog
 ) => {
@@ -29,7 +29,7 @@ const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnp
   // ))
 }
 
-const runNpxLazy = async (
+/** @deprecated */ const runNpxLazy = async (
   [ command, ...extraArgs ],
   tabLog = (level, ...args) => {}
 ) => {
@@ -54,10 +54,9 @@ const runNpxLazy = async (
   return runNpx([ command, ...extraArgs ], tabLog)
 }
 
-const npxLazy = async ({ argList, tabLog }) => runNpxLazy(argList, tabLog) // TODO: DEPRECATE
+/** @deprecated */ const npxLazy = async ({ argList, tabLog }) => runNpxLazy(argList, tabLog) // TODO: DEPRECATE
 
 export {
-  runNpx, runNpxLazy,
-
+  runNpx, runNpxLazy, // TODO: DEPRECATE: no good usage
   npxLazy // TODO: DEPRECATE
 }

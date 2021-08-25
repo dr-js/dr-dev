@@ -4,7 +4,7 @@ import { hostname } from 'os'
 import { describe } from '@dr-js/core/module/common/format.js'
 import { isBasicArray, isBasicFunction, isBasicObject, isString } from '@dr-js/core/module/common/check.js'
 import { getUTCDateTag } from '@dr-js/core/module/common/time.js'
-import { resolveHome } from '@dr-js/core/module/node/fs/Path.js'
+import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import { runSync, runStdoutSync } from '@dr-js/core/module/node/run.js'
 
@@ -122,6 +122,8 @@ const SHELL_ALIAS_LIST = {
     'git-log-16': _A('git-log', '-16'),
     'git-log-oneline': [ 'git', 'log', '--date=short', '--pretty=format:%C(auto,yellow)%h %C(auto,blue)%>(12,trunc)%ad %C(auto,green)%<(7,trunc)%aN%C(auto,reset)%s%C(auto,red)% gD% D' ],
     'git-log-oneline-16': _A('git-log-oneline', '-16'),
+    'git-log-brief': [ 'git', 'log', '--pretty=format:- %s' ],
+    'git-log-brief-16': _A('git-log-brief', '-16'),
     'git-log-graph': 'git log --graph --oneline',
     'git-log-graph-16': _A('git-log-graph', '-16'),
 
@@ -158,6 +160,8 @@ const SHELL_ALIAS_LIST = {
     'GL16': _A('git-log-16'),
     'GLO': _A('git-log-oneline'),
     'GLO16': _A('git-log-oneline-16'),
+    'GLB': _A('git-log-brief'),
+    'GLB16': _A('git-log-brief-16'),
     'GLG': _A('git-log-graph'),
     'GLG16': _A('git-log-graph-16')
   },
@@ -208,6 +212,7 @@ const SHELL_ALIAS_LIST = {
     'npm-list-global': 'npm ls --global --depth=0',
     'npm-install': 'npm install',
     'npm-install-global': 'sudo npm install --global',
+    'npm-install-global-npm-6': _A('npm-install-global', 'npm@6'),
     'npm-install-prefer-offline': 'npm install --prefer-offline',
     'npm-install-package-lock-only': 'npm install --package-lock-only',
     'npm-outdated': 'npm outdated',
@@ -219,6 +224,7 @@ const SHELL_ALIAS_LIST = {
     'NLSG': _A('npm-list-global'),
     'NI': _A('npm-install'),
     'NIG': _A('npm-install-global'),
+    'NIGN6': _A('npm-install-global-npm-6'),
     'NIO': _A('npm-install-prefer-offline'),
     'NIPLO': _A('npm-install-package-lock-only'),
     'NO': _A('npm-outdated'),
@@ -334,7 +340,7 @@ const SHELL_ALIAS_LIST = {
   'quick-df': 'df -h',
   'quick-df-current': 'df -h .',
   'quick-du': 'du -hd1',
-  'quick-ssh-key-md5-list': [ 'ssh-keygen', '-E', 'md5', '-lf', resolveHome('~/.ssh/authorized_keys') ],
+  'quick-ssh-key-md5-list': [ 'ssh-keygen', '-E', 'md5', '-lf', expandHome('~/.ssh/authorized_keys') ],
   'quick-ssh-keygen': (
     $1 = `KEY_${getUTCDateTag()}_4096`, // TZ=UTC0 date +%Y%m%d
     $2 = `${$1}@${hostname() || 'unknown-host'}`

@@ -145,7 +145,7 @@ const commonFlag = async ({
     externals = undefined,
     isNodeEnv = false,
     isNodeBin = false, // add `#!/usr/bin/env node`
-    isMinimize = false,
+    isMinimize = false, // expect later manual run for each file
     extraModuleRuleList = [],
     extraPluginList = [],
     extraDefine = {},
@@ -174,7 +174,7 @@ const commonFlag = async ({
       createProgressPlugin({ log: kitLogger.log }),
       new Webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(mode),
-        __DEV__: !isProduction,
+        '__DEV__': !isProduction,
         ...extraDefine
       }),
       isNodeBin && new Webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),

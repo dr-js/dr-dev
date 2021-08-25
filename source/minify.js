@@ -23,12 +23,13 @@ const getTerserOption = ({
   globalDefineMap = {
     '__DEV__': Boolean(isDevelopment),
     'process.env.NODE_ENV': isDevelopment ? 'development' : 'production'
-  }
+  },
+  comments = /@(license|preserve|deprecated)/
 } = {}) => ({
   ecma, toplevel, module,
   compress: { passes: 2, join_vars: false, sequences: false, global_defs: globalDefineMap },
   mangle: isReadable ? false : { eval: true },
-  output: isReadable ? { beautify: true, indent_level: 2, width: 240 } : { beautify: false, semicolons: false },
+  output: isReadable ? { beautify: true, indent_level: 2, width: 240, comments } : { beautify: false, semicolons: false, comments },
   sourceMap: false
 })
 
@@ -61,7 +62,9 @@ const minifyFileWithTerser = async ({
 
 const minifyFileListWithTerser = async ({
   logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
-  fileList, option, rootPath = (kit && kit.fromRoot()) || ''
+  fileList, option,
+  rootPath, // TODO: DEPRECATE: use outputPath
+  outputPath = rootPath || (kit && kit.fromOutput()) || ''
 }) => {
   kitLogger.padLog(`minify ${fileList.length} file with terser`)
 
@@ -77,7 +80,7 @@ const minifyFileListWithTerser = async ({
     __VERBOSE__ && table.push([
       `∆ ${(100 * sizeDelta / sizeSource).toFixed(2)}% (${binary(sizeDelta)}B)`,
       time(timeEnd - timeStart),
-      `${relative(rootPath, filePath)}`
+      `${relative(outputPath, filePath)}`
     ])
   }
   __VERBOSE__ && table.push([ '--', '--', '--' ])
