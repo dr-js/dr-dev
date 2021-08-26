@@ -156,6 +156,7 @@
 >     --write-back --wb [ARGUMENT=0-1]
 >         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
+>         use "AUTO" for os temp,set will disable in-place check for single "package.json"
 >   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0-1]
 >       step up package version (expect "0.0.0-dev.0-local.0" format): -G=isGitCommit
 >     --sort-key --K -K [ARGUMENT=0-1]
