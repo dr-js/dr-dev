@@ -1,15 +1,18 @@
-import { doThrow, doThrowAsync } from '@dr-js/core/module/common/verify.js'
+import { doThrow, doThrowAsync, strictEqual } from '@dr-js/core/module/common/verify.js'
+import { readBuffer, readText } from '@dr-js/core/module/node/fs/File.js'
 import { getKitLogger } from '@dr-js/core/module/node/kit.js'
 
 import {
   verifyString,
+  verifyFile,
   verifySemVer,
   verifyCommand,
 
+  verifyFileString,
   verifyCommandSemVer,
 
   useKitLogger,
-  toTask, verifyTaskList
+  toTask, /* runTaskList, */ verifyTaskList
 } from './verify.js'
 
 const { describe, it, before, info = console.log } = global
@@ -38,6 +41,13 @@ describe('Node.Verify', () => {
     ]))
   })
 
+  it('verifyFile', async () => {
+    await verifyFile(__filename, async (buffer) => { strictEqual(Buffer.compare(await readBuffer(__filename), buffer), 0) })
+
+    await doThrowAsync(async () => verifyFile('/file/not/exist/1/2/3/4/5/6', () => {}))
+    await doThrowAsync(async () => verifyFile(__filename, () => { throw new Error('verify failed') }))
+  })
+
   it('verifyCommand', () => {
     verifyCommand('node -v')
     verifyCommand([ 'node', '-v' ])
@@ -61,6 +71,13 @@ describe('Node.Verify', () => {
     doThrow(() => verifySemVer('0.2.0', '0.1.0'))
     doThrow(() => verifySemVer('0.2.0', '^0.1.0'))
     doThrow(() => verifySemVer('0.2.0', '0.1'))
+  })
+
+  it('verifyFileString', async () => {
+    await verifyFileString(__filename, await readText(__filename))
+
+    await doThrowAsync(() => verifyFileString('/file/not/exist/1/2/3/4/5/6', 'nope'))
+    await doThrowAsync(() => verifyCommandSemVer(__filename, 'mismatch content'))
   })
 
   it('verifyCommandSemVer', async () => {
