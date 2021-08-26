@@ -9,13 +9,12 @@ import { doCacheStep } from './mode/cacheStep.js'
 import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
 import { doShellAlias } from './mode/shellAlias.js'
 
+import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { versionBumpByGitBranch, versionBumpLastNumber, versionBumpToIdentifier, versionBumpToLocal } from '@dr-js/core/module/common/module/SemVer.js'
 import { readJSONSync } from '@dr-js/core/module/node/fs/File.js'
 import { getGitBranch } from '@dr-js/core/module/node/module/Software/git.js'
 import { run } from '@dr-js/core/module/node/run.js'
 import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function.js'
-
-import { patchModulePath as patchModulePathNode } from '@dr-js/node/bin/function.js' // TODO: DEPRECATE
 
 import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript.js'
 import { comboCommand } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
@@ -143,6 +142,7 @@ const runMode = async (optionData, modeName) => {
         patchMP: () => {
           patchModulePath()
           patchModulePathCore()
+          const { patchModulePath: patchModulePathNode = () => {} } = tryRequire('@dr-js/node/bin/function.js') || {} // TODO: DEPRECATE
           patchModulePathNode() // TODO: DEPRECATE
         },
         fetchUA: `${packageName}/${packageVersion}` // TODO: DEPRECATE: drop mode 'fetch'
