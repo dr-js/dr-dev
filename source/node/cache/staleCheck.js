@@ -1,9 +1,9 @@
 import { dirname } from 'path'
-import { promises as fsAsync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common/module/AsyncLane.js'
 
 import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/fs/Path.js'
+import { writeJSONPretty } from '@dr-js/core/module/node/fs/File.js'
 import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 
 import { packTime, parseTime, loadStat, saveStat } from './function.js'
@@ -115,7 +115,7 @@ const staleCheckCalcReport = async (
   // save report if needed
   if (config.pathStaleCheckFile) {
     await createDirectory(dirname(config.pathStaleCheckFile))
-    await fsAsync.writeFile(config.pathStaleCheckFile, JSON.stringify(report, null, 2))
+    await writeJSONPretty(config.pathStaleCheckFile, report)
   }
 
   return { report }

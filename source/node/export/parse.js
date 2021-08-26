@@ -1,9 +1,9 @@
 import { sep } from 'path'
-import { readFileSync } from 'fs'
 import { parse as parseAST } from '@babel/parser'
 import { compareString } from '@dr-js/core/module/common/compare.js'
 import { objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'
 import { getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/fs/Path.js'
+import { readTextSync } from '@dr-js/core/module/node/fs/File.js'
 
 const getExportListFromParsedAST = (fileString, sourceFilename, parserPluginList) => {
   const resultAST = parseAST(fileString, {
@@ -61,7 +61,7 @@ const createExportParser = ({
       kitLogger.devLog(`[directory] ${path}`)
       getRoute(routeList).directoryList.push(name)
     } else if (fileStat.isFile() && name.endsWith('.js')) {
-      const fileString = String(readFileSync(path))
+      const fileString = readTextSync(path)
       const exportList = getExportListFromParsedAST(fileString, path, parserPluginList)
 
       kitLogger.devLog(`[file] ${path}`)

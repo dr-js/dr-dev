@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import { readFileSync } from 'fs'
-
 import { doCheckOutdated } from './mode/checkOutdated.js'
 import { doStepPackageVersion } from './mode/stepPackageVersion.js'
 import { doTest } from './mode/test.js'
@@ -12,6 +10,7 @@ import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
 import { doShellAlias } from './mode/shellAlias.js'
 
 import { versionBumpByGitBranch, versionBumpLastNumber, versionBumpToIdentifier, versionBumpToLocal } from '@dr-js/core/module/common/module/SemVer.js'
+import { readJSONSync } from '@dr-js/core/module/node/fs/File.js'
 import { getGitBranch } from '@dr-js/core/module/node/module/Software/git.js'
 import { run } from '@dr-js/core/module/node/run.js'
 import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function.js'
@@ -70,7 +69,7 @@ const runMode = async (optionData, modeName) => {
     case 'parse-script-list':
     case 'run-script':
     case 'run-script-list': {
-      const packageJSON = JSON.parse(String(readFileSync('package.json'))) // TODO: NOTE: relative to cwd
+      const packageJSON = readJSONSync('package.json') // TODO: NOTE: relative to cwd
       let command
       if (modeName.endsWith('-list')) {
         command = warpBashSubShell(argumentList

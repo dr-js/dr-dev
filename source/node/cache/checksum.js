@@ -1,7 +1,7 @@
 import { dirname } from 'path'
-import { promises as fsAsync } from 'fs'
 
 import { calcHash } from '@dr-js/core/module/node/data/Buffer.js'
+import { readBuffer, writeText } from '@dr-js/core/module/node/fs/File.js'
 import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import {
   getChecksumInfoOfFile,
@@ -39,7 +39,7 @@ const checksumUpdate = async (config, isChecksumFileOnly = false) => { // set is
   // save checksum file
   const checksumString = await describeChecksumOfPathList({ pathList: config.pathChecksumList })
   await createDirectory(dirname(config.pathChecksumFile))
-  await fsAsync.writeFile(config.pathChecksumFile, checksumString)
+  await writeText(config.pathChecksumFile, checksumString)
 
   // detect hash change, but do not update
   const checksumHash = calcHash(checksumString, 'sha256')
@@ -57,7 +57,7 @@ const checksumDetectChange = async (config, isSkipSave = false) => { // set isSk
   config = await loadStatFile(config)
 
   // load checksum file & calc hash
-  const checksumHash = calcHash(await fsAsync.readFile(config.pathChecksumFile), 'sha256')
+  const checksumHash = calcHash(await readBuffer(config.pathChecksumFile), 'sha256')
 
   // detect hash change
   const isHashChanged = Boolean(config.stat.checksumHash && (config.stat.checksumHash !== checksumHash))

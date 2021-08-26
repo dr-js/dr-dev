@@ -1,6 +1,6 @@
 import { resolve, basename } from 'path'
-import { readFileSync, writeFileSync } from 'fs'
 import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/fs/Path.js'
+import { editTextSync, readJSONSync, writeJSONPrettySync } from '@dr-js/core/module/node/fs/File.js'
 import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/fs/Modify.js'
 
@@ -21,14 +21,14 @@ const writePackExportInitJSON = async ({
   fromPackExport = getFromPackExport(pathPackage)
 }) => {
   const initFilePrefix = fromPackExport('INIT#')
-  writeFileSync(
+  writeJSONPrettySync(
     fromPackExport(NAME_PACK_EXPORT_INIT_JSON),
-    JSON.stringify((await getFileList(fromPackExport()))
+    (await getFileList(fromPackExport()))
       .filter((path) => path.startsWith(initFilePrefix))
       .map((path) => [
         basename(path), // relative source
         path.slice(initFilePrefix.length).replace(/#/g, '/') // relative output
-      ]), null, 2)
+      ])
   )
 }
 
@@ -38,7 +38,7 @@ const loadAndCopyPackExportInitJSON = async ({
   isReset = false
 }) => {
   const fromPackExport = getFromPackExport(pathPackage)
-  const initPairList = JSON.parse(String(readFileSync(fromPackExport(NAME_PACK_EXPORT_INIT_JSON)))) // get init list
+  const initPairList = readJSONSync(fromPackExport(NAME_PACK_EXPORT_INIT_JSON)) // get init list
 
   if (!isReset) { // check if file overwrite will happen
     for (const [ , relativeInitPath ] of initPairList) {
@@ -52,9 +52,11 @@ const loadAndCopyPackExportInitJSON = async ({
     await modifyDeleteForce(initPath)
     await modifyCopy(sourcePath, initPath)
     // update file content
-    REGEXP_TEXT_FILE.test(relativeInitPath) && writeFileSync(initPath, String(readFileSync(initPath))
-      .replace(/\{FLAVOR}/g, /@dr-js[/\\]dev-([\w-]+)$/.exec(pathPackage)[ 1 ])
-      .replace(/\{FLAVOR-VERSION}/g, JSON.parse(String(readFileSync(resolve(pathPackage, 'package.json')))).version)
+    REGEXP_TEXT_FILE.test(relativeInitPath) && editTextSync(
+      (string) => string
+        .replace(/{FLAVOR}/g, /@dr-js[/\\]dev-([\w-]+)$/.exec(pathPackage)[ 1 ])
+        .replace(/{FLAVOR-VERSION}/g, readJSONSync(resolve(pathPackage, 'package.json')).version)
+      , initPath
     )
     console.log(`[init] file: ${relativeInitPath}`)
   }

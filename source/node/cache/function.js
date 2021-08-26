@@ -1,5 +1,6 @@
 import { dirname } from 'path'
-import { promises as fsAsync } from 'fs'
+import { withFallbackResultAsync } from '@dr-js/core/module/common/error.js'
+import { readJSON, writeJSONPretty } from '@dr-js/core/module/node/fs/File.js'
 import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 
 const packTime = (timeDate) => timeDate === undefined ? '' : timeDate.toISOString()
@@ -14,7 +15,7 @@ const loadStat = async (
   config = { ...config }
 
   // load rawStat
-  config.rawStat = JSON.parse(String(await fsAsync.readFile(config.pathStatFile).catch(() => null))) || {}
+  config.rawStat = await withFallbackResultAsync({}, readJSON, config.pathStatFile)
   if (!config.rawStat[ statKey ]) config.rawStat[ statKey ] = {}
 
   // parse rawStat
@@ -33,7 +34,7 @@ const saveStat = async (
 
   // write out
   await createDirectory(dirname(config.pathStatFile))
-  await fsAsync.writeFile(config.pathStatFile, JSON.stringify(config.rawStat, null, 2))
+  await writeJSONPretty(config.pathStatFile, config.rawStat)
 }
 
 export {

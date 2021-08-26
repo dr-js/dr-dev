@@ -1,9 +1,8 @@
-import { readFileSync } from 'fs'
-
 import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { time } from '@dr-js/core/module/common/format.js'
 import { createInsideOutPromise } from '@dr-js/core/module/common/function.js'
+import { readTextSync } from '@dr-js/core/module/node/fs/File.js'
 import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener.js'
 
 const GET_PUPPETEER = (log = console.warn) => {
@@ -133,7 +132,7 @@ const DEFAULT_TIMEOUT_PAGE = 42 * 1000
 const DEFAULT_TIMEOUT_TEST = 8 * 60 * 1000 // should done test in 8min
 
 const wrapTestScriptStringToHTML = ({
-  testSetupScriptString = readFileSync(require.resolve('@dr-js/dev/browser/test.js')), // script with test setup
+  testSetupScriptString = readTextSync(require.resolve('@dr-js/dev/browser/test.js')), // script with test setup
   testScriptString, // bundled(webpack) script with test describe/it
   testTag,
   timeoutTest = DEFAULT_TIMEOUT_TEST

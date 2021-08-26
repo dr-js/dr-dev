@@ -1,15 +1,16 @@
 import { ok } from 'assert'
-import { statSync, readFileSync, writeFileSync } from 'fs'
+import { statSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { isBasicObject } from '@dr-js/core/module/common/check.js'
-import { getFirstBinPath } from '@dr-js/core/module/common/module/PackageJSON.js'
+import { getFirstBinPath, toPackageTgzName } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { parseSemVer } from '@dr-js/core/module/common/module/SemVer.js'
+import { readTextSync, writeTextSync, writeJSONSync } from '@dr-js/core/module/node/fs/File.js'
 import { getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyCopy, modifyRename, modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 import { runStdout } from '@dr-js/core/module/node/run.js'
 import { argvFlag, getKitPathCombo, getKitRun } from '@dr-js/core/module/node/kit.js'
 
-import { toPackageTgzName, runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
+import { runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
 import { runGitStdout, runGitStdoutSync } from '@dr-js/core/module/node/module/Software/git.js'
 
 import { __VERBOSE__ } from './node/env.js'
@@ -54,7 +55,7 @@ const initOutput = async ({
     delete packageJSON[ deleteKey ]
     kitLogger.log(`dropped key: ${deleteKey}`)
   }
-  writeFileSync(fromOutput('package.json'), JSON.stringify(packageJSON))
+  writeJSONSync(fromOutput('package.json'), packageJSON)
 
   const { license, author } = packageJSON
   if (pathAutoLicenseFile && license && author) {
@@ -66,9 +67,9 @@ const initOutput = async ({
   kitLogger.padLog('init output file')
   for (const [ pathFrom, pathTo ] of [ ...copyPathList.map((v) => [ v, v ]), ...copyMapPathList ]) {
     if (replaceReadmeNonPackageContent && pathFrom.endsWith('README.md')) { // change README.md NON_PACKAGE_CONTENT
-      const packageContentList = String(readFileSync(fromRoot(pathFrom))).split('[//]: # (NON_PACKAGE_CONTENT)')
+      const packageContentList = readTextSync(fromRoot(pathFrom)).split('[//]: # (NON_PACKAGE_CONTENT)')
       if (packageContentList.length >= 2) {
-        writeFileSync(fromOutput(pathTo), `${packageContentList[ 0 ].trim()}${replaceReadmeNonPackageContent}`)
+        writeTextSync(fromOutput(pathTo), `${packageContentList[ 0 ].trim()}${replaceReadmeNonPackageContent}`)
         kitLogger.log(`copied: ${pathFrom} (with NON_PACKAGE_CONTENT replaced to: ${JSON.stringify(replaceReadmeNonPackageContent)})`)
         continue
       }

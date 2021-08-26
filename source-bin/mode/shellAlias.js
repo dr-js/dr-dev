@@ -1,10 +1,11 @@
-import { readFileSync, existsSync } from 'fs'
+import { existsSync } from 'fs'
 import { hostname } from 'os'
 
 import { describe } from '@dr-js/core/module/common/format.js'
 import { isBasicArray, isBasicFunction, isBasicObject, isString } from '@dr-js/core/module/common/check.js'
 import { getUTCDateTag } from '@dr-js/core/module/common/time.js'
 import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
+import { readTextSync, readJSONSync } from '@dr-js/core/module/node/fs/File.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import { runSync, runStdoutSync } from '@dr-js/core/module/node/run.js'
 
@@ -68,7 +69,7 @@ const IS_ANDROID_TERMUX = (process.env.PREFIX || '').includes('com.termux') // t
 const GET_LINUX_PACKAGE_MANAGER = () => { // LSB linux: https://serverfault.com/questions/879216/how-to-detect-linux-distribution-and-version/880087#880087
   if (cacheLinuxPackageManage === undefined) {
     const nameLinuxRelease = IS_ANDROID_TERMUX ? 'Android (Termux)'
-      : (existsSync('/etc/os-release') && (/\s"?NAME"?="?([\w/)( ]+)"?/.exec(String(readFileSync('/etc/os-release'))) || [])[ 1 ]) || 'non-LSB'
+      : (existsSync('/etc/os-release') && (/\s"?NAME"?="?([\w/)( ]+)"?/.exec(readTextSync('/etc/os-release')) || [])[ 1 ]) || 'non-LSB'
     cacheLinuxPackageManage = [ 'Arch Linux', 'Arch Linux ARM' ].includes(nameLinuxRelease) ? 'pacman'
       : [ 'Ubuntu', 'Debian GNU/Linux', 'Raspbian GNU/Linux', 'Android (Termux)' ].includes(nameLinuxRelease) ? 'apt'
         : 'unknown'
@@ -360,11 +361,11 @@ const SHELL_ALIAS_LIST = {
   'quick-sudo-bash': 'sudo bash',
   'quick-git-diff': 'git diff --no-index --', // $1=old $2=new
   'quick-git-tag-push': () => {
-    const TAG = `v${JSON.parse(String(readFileSync('package.json'))).version}`
+    const TAG = `v${readJSONSync('package.json').version}`
     return _E([ 'git', 'tag', TAG ], [ 'git', 'push', 'origin', TAG ])
   },
   'quick-git-tag-push-force': () => {
-    const TAG = `v${JSON.parse(String(readFileSync('package.json'))).version}`
+    const TAG = `v${readJSONSync('package.json').version}`
     return _E([ 'git', 'tag', '--force', TAG ], [ 'git', 'push', 'origin', '--force', TAG ])
   },
   'quick-git-push-combo': _AE('git-push', 'quick-git-tag-push'),

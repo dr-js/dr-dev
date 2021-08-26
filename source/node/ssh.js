@@ -1,5 +1,3 @@
-import { readFileSync } from 'fs'
-
 import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { time } from '@dr-js/core/module/common/format.js'
 import { indentLine, autoEllipsis } from '@dr-js/core/module/common/string.js'
@@ -7,6 +5,7 @@ import { createStepper } from '@dr-js/core/module/common/time.js'
 import { createInsideOutPromise } from '@dr-js/core/module/common/function.js'
 
 import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
+import { readBufferSync } from '@dr-js/core/module/node/fs/File.js'
 import { joinCommand } from '@dr-js/core/module/node/module/Software/bash.js'
 
 import { color } from './color.js'
@@ -25,7 +24,7 @@ const getConnectOption = ({
   port = 22,
   username = 'root',
   privateKeyPath = '~/.ssh/id_rsa',
-  privateKeyBuffer = privateKeyPath && readFileSync(expandHome(privateKeyPath)),
+  privateKeyBuffer = privateKeyPath && readBufferSync(expandHome(privateKeyPath)),
   privateKeyPassphrase, // optional
   readyTimeout = 16 * 1000, // in msec, 16sec
   isAutoSetAgent = true, // also try use ssh-agent (usually for OSX)

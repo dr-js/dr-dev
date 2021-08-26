@@ -1,7 +1,7 @@
 import { resolve } from 'path'
-import { promises as fsAsync } from 'fs'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
 import { getSampleRange } from '@dr-js/core/module/common/math/sample.js'
+import { readText, writeText } from '@dr-js/core/module/node/fs/File.js'
 import { createDirectory, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
@@ -38,19 +38,19 @@ const TEST_CONFIG = {
 before(async () => {
   await resetDirectory(TEST_ROOT)
 
-  await fsAsync.writeFile(fromRoot('sample-cache-file-0'), 'sample-cache-file-0')
-  await fsAsync.writeFile(fromRoot('sample-cache-file-1'), 'sample-cache-file-1')
-  await fsAsync.writeFile(fromRoot('sample-cache-file-2'), 'sample-cache-file-2')
+  await writeText(fromRoot('sample-cache-file-0'), 'sample-cache-file-0')
+  await writeText(fromRoot('sample-cache-file-1'), 'sample-cache-file-1')
+  await writeText(fromRoot('sample-cache-file-2'), 'sample-cache-file-2')
 
   await createDirectory(fromRoot('sample-cache-dir-0'))
-  for (const index of getSampleRange(0, 5)) await fsAsync.writeFile(fromRoot('sample-cache-dir-0', `dir-0-${index}`), `dir-0-${index}`)
+  for (const index of getSampleRange(0, 5)) await writeText(fromRoot('sample-cache-dir-0', `dir-0-${index}`), `dir-0-${index}`)
 
   await setTimeoutAsync(50)
 
-  await fsAsync.writeFile(fromRoot('sample-cache-file-3'), 'sample-cache-file-3')
+  await writeText(fromRoot('sample-cache-file-3'), 'sample-cache-file-3')
 
   await createDirectory(fromRoot('sample-cache-dir-1'))
-  for (const index of getSampleRange(0, 5)) await fsAsync.writeFile(fromRoot('sample-cache-dir-1', `dir-1-${index}`), `dir-1-${index}`)
+  for (const index of getSampleRange(0, 5)) await writeText(fromRoot('sample-cache-dir-1', `dir-1-${index}`), `dir-1-${index}`)
 })
 after(async () => {
   await modifyDelete(TEST_ROOT)
@@ -61,22 +61,22 @@ describe('Node.Cache.StaleCheck', () => {
     await staleCheckSetup(TEST_CONFIG)
     await setTimeoutAsync(10)
 
-    await fsAsync.writeFile(fromRoot('sample-cache-file-4'), 'sample-cache-file-4')
+    await writeText(fromRoot('sample-cache-file-4'), 'sample-cache-file-4')
 
     await createDirectory(fromRoot('sample-cache-dir-2'))
-    for (const index of getSampleRange(0, 5)) await fsAsync.writeFile(fromRoot('sample-cache-dir-2', `dir-2-${index}`), `dir-2-${index}`)
+    for (const index of getSampleRange(0, 5)) await writeText(fromRoot('sample-cache-dir-2', `dir-2-${index}`), `dir-2-${index}`)
 
     await createDirectory(fromRoot('sample-cache-dir-3'))
-    for (const index of getSampleRange(0, 5)) await fsAsync.writeFile(fromRoot('sample-cache-dir-3', `dir-3-${index}`), `dir-3-${index}`)
+    for (const index of getSampleRange(0, 5)) await writeText(fromRoot('sample-cache-dir-3', `dir-3-${index}`), `dir-3-${index}`)
 
     await staleCheckMark(TEST_CONFIG)
     await setTimeoutAsync(10)
 
     await createDirectory(fromRoot('sample-cache-dir-3'))
-    for (const index of getSampleRange(3, 5)) await fsAsync.readFile(fromRoot('sample-cache-dir-2', `dir-2-${index}`))
-    for (const index of getSampleRange(0, 5)) await fsAsync.writeFile(fromRoot('sample-cache-dir-3', `dir-3-${index}`), `dir-3-${index}`)
+    for (const index of getSampleRange(3, 5)) await readText(fromRoot('sample-cache-dir-2', `dir-2-${index}`))
+    for (const index of getSampleRange(0, 5)) await writeText(fromRoot('sample-cache-dir-3', `dir-3-${index}`), `dir-3-${index}`)
     await createDirectory(fromRoot('sample-cache-dir-4'))
-    for (const index of getSampleRange(0, 5)) await fsAsync.writeFile(fromRoot('sample-cache-dir-4', `dir-4-${index}`), `dir-4-${index}`)
+    for (const index of getSampleRange(0, 5)) await writeText(fromRoot('sample-cache-dir-4', `dir-4-${index}`), `dir-4-${index}`)
 
     const { report } = await staleCheckCalcReport(TEST_CONFIG)
 
