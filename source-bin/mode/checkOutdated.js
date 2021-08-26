@@ -68,9 +68,12 @@ const doCheckOutdated = async ({
   for (const { name, versionSpec, packageInfo: { packageJSONPath }, existPackageInfo } of duplicateInfoList) {
     log(`[WARN] dropped duplicate package: ${name} at ${relative(pathInput, packageJSONPath)} with version: ${versionSpec}, checking: ${existPackageInfo.versionSpec}`)
   }
-  const outdatedMap = packageInfoList.length === 1
+  const outdatedMap = (!pathTemp && packageInfoList.length === 1)
     ? await outdatedJSON({ packageRoot: packageInfoList[ 0 ].packageRootPath }) // check in-place
-    : await outdatedWithTempJSON({ packageJSON: { dependencies: dependencyMap }, pathTemp }) // create temp path, do not work for private repo or altered ".npmrc"
+    : await outdatedWithTempJSON({ // create temp path, do not work for private repo or altered ".npmrc"
+      packageJSON: { dependencies: dependencyMap },
+      pathTemp: (pathTemp && pathTemp !== 'AUTO') ? pathTemp : undefined
+    })
   const { sameTable, complexTable, outdatedTable } = sortResult({ dependencyInfoMap, outdatedMap, pathInput })
   logResult({ sameTable, complexTable, outdatedTable, log })
   if (isWriteBack) await writeBack({ dependencyInfoMap, outdatedTable, log })

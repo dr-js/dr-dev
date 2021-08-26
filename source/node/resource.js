@@ -1,5 +1,5 @@
-import { promises as fsAsync } from 'fs'
 import { runInThisContext } from 'vm'
+import { readText, readJSON } from '@dr-js/core/module/node/fs/File.js'
 import { fetchLikeRequest } from '@dr-js/core/module/node/net.js'
 
 // TODO: check if is needed, or simplify
@@ -8,7 +8,7 @@ const loadRemoteScript = async (uri) => {
   return runInThisContext(scriptString, { filename: uri, displayErrors: true })
 }
 const loadLocalScript = async (filePath) => {
-  const scriptString = String(await fsAsync.readFile(filePath))
+  const scriptString = await readText(filePath)
   return runInThisContext(scriptString, { filename: filePath, displayErrors: true })
 }
 const loadScript = (uri) => uri.includes('://')
@@ -16,7 +16,7 @@ const loadScript = (uri) => uri.includes('://')
   : loadLocalScript(uri)
 
 const loadRemoteJSON = async (uri) => (await fetchLikeRequest(uri)).json()
-const loadLocalJSON = async (filePath) => JSON.parse(String(await fsAsync.readFile(filePath)))
+const loadLocalJSON = readJSON
 const loadJSON = (uri) => uri.includes('://')
   ? loadRemoteJSON(uri)
   : loadLocalJSON(uri)

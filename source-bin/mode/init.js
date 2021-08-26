@@ -1,8 +1,8 @@
 import { resolve } from 'path'
-import { readFileSync } from 'fs'
 
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { indentLine } from '@dr-js/core/module/common/string.js'
+import { readTextSync } from '@dr-js/core/module/node/fs/File.js'
 import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 
 import { findPathFragList } from 'source/node/file.js'
@@ -60,7 +60,7 @@ const initVerify = async (pathRoot, VERIFY_RULE_LIST) => {
     __DEV__ && console.log(`  - selectPath: ${selectPath}`)
     for (const file of fileList) {
       __DEV__ && console.log(`    - file: ${file}`)
-      const fileString = String(readFileSync(file))
+      const fileString = readTextSync(file)
       for (const { messageList, selectFilterFile, verifyFunc } of ruleList) {
         if (!selectFilterFile(file)) continue // filtered
         __DEV__ && console.log(`      - check: ${messageList.join(' ')}`)

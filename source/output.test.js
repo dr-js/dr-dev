@@ -1,9 +1,9 @@
 import { resolve } from 'path'
-import { readFileSync } from 'fs'
 
 import { indentLine } from '@dr-js/core/module/common/string.js'
 import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } from '@dr-js/core/module/common/verify.js'
 import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/fs/Path.js'
+import { readTextSync } from '@dr-js/core/module/node/fs/File.js'
 import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 import { getKitLogger } from '@dr-js/core/module/node/kit.js'
@@ -63,17 +63,17 @@ describe('Output', () => {
       'should apply copyMapPathList'
     )
     stringifyEqual(
-      String(readFileSync(fromRoot('.gitignore'))),
-      String(readFileSync(fromOutput('.gitignore-map-0'))),
+      readTextSync(fromRoot('.gitignore')),
+      readTextSync(fromOutput('.gitignore-map-0')),
       'should apply copyMapPathList'
     )
     stringifyEqual(
-      String(readFileSync(fromRoot('.gitignore'))),
-      String(readFileSync(fromOutput('.gitignore-map-1'))),
+      readTextSync(fromRoot('.gitignore')),
+      readTextSync(fromOutput('.gitignore-map-1')),
       'should apply copyMapPathList'
     )
     stringifyEqual(
-      String(readFileSync(fromOutput('README.md'))).includes(replaceReadmeNonPackageContent),
+      readTextSync(fromOutput('README.md')).includes(replaceReadmeNonPackageContent),
       true,
       'should apply replaceReadmeNonPackageContent'
     )

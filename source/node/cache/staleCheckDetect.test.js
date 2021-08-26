@@ -1,7 +1,7 @@
 const { resolve } = require('path')
-const { promises: fsAsync } = require('fs')
 const { setTimeoutAsync } = require('@dr-js/core/library/common/time.js')
 const { getPathStat } = require('@dr-js/core/library/node/fs/Path.js')
+const { readText, writeText } = require('@dr-js/core/library/node/fs/File.js')
 const { createDirectory } = require('@dr-js/core/library/node/fs/Directory.js')
 const { modifyDeleteForce } = require('@dr-js/core/library/node/fs/Modify.js')
 
@@ -17,23 +17,23 @@ const main = async () => {
 
   const PATH_FILE = fromRoot('test')
 
-  await fsAsync.writeFile(PATH_FILE, 'init')
+  await writeText(PATH_FILE, 'init')
   await setTimeoutAsync(10)
   console.log('init   ', getStatTime(await getPathStat(PATH_FILE)))
 
-  await fsAsync.readFile(PATH_FILE)
+  await readText(PATH_FILE)
   await setTimeoutAsync(10)
   console.log('read   ', getStatTime(await getPathStat(PATH_FILE)))
 
-  await fsAsync.writeFile(PATH_FILE, 'write')
+  await writeText(PATH_FILE, 'write')
   await setTimeoutAsync(10)
   console.log('write  ', getStatTime(await getPathStat(PATH_FILE)))
 
-  await fsAsync.readFile(PATH_FILE)
+  await readText(PATH_FILE)
   await setTimeoutAsync(10)
   console.log('read   ', getStatTime(await getPathStat(PATH_FILE)))
 
-  await fsAsync.writeFile(PATH_FILE, 'write')
+  await writeText(PATH_FILE, 'write')
   await setTimeoutAsync(10)
   console.log('write  ', getStatTime(await getPathStat(PATH_FILE)))
 

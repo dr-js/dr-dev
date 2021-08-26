@@ -34,10 +34,10 @@ const verifyString = (string, matchStringOrRegExpList) => {
   })
 }
 
-const verifyFile = async (filePath, verifyBuffer) => {
-  const { result: buffer, error } = catchAsync(readBuffer, filePath)
+const verifyFile = async (filePath, verifyBufferFunc) => {
+  const { result: buffer, error } = await catchAsync(readBuffer, filePath)
   if (error) throw new Error(`[verifyFile] failed to load file "${filePath}": ${textM(error)}`)
-  return verifyBuffer(buffer)
+  return verifyBufferFunc(buffer)
 }
 
 const verifySemVer = (actual, expect) => {

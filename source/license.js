@@ -1,4 +1,4 @@
-import { writeFileSync } from 'fs'
+import { writeTextSync } from '@dr-js/core/module/node/fs/File.js'
 
 const getLicenseMIT = (author) => `MIT License
 
@@ -33,7 +33,7 @@ const writeLicenseFile = (path, licenseType, licenseAuthor) => {
   if (!licenseAuthor) throw new Error(`invalid License author "${licenseAuthor}"`)
   const getLicense = GET_LICENSE_MAP[ licenseType.toUpperCase() ]
   if (!getLicense) throw new Error(`License type "${licenseType}" is not yet supported`)
-  writeFileSync(path, getLicense(licenseAuthor))
+  writeTextSync(path, getLicense(licenseAuthor))
 }
 
 export { writeLicenseFile }
