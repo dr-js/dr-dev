@@ -69,7 +69,7 @@ const IS_ANDROID_TERMUX = (process.env.PREFIX || '').includes('com.termux') // t
 const GET_LINUX_PACKAGE_MANAGER = () => { // LSB linux: https://serverfault.com/questions/879216/how-to-detect-linux-distribution-and-version/880087#880087
   if (cacheLinuxPackageManage === undefined) {
     const nameLinuxRelease = IS_ANDROID_TERMUX ? 'Android (Termux)'
-      : (existsSync('/etc/os-release') && (/\s"?NAME"?="?([\w/)( ]+)"?/.exec(readTextSync('/etc/os-release')) || [])[ 1 ]) || 'non-LSB'
+      : (existsSync('/etc/os-release') && (/(?:^|\s)"?NAME"?="?([\w/)( ]+)"?/.exec(readTextSync('/etc/os-release')) || [])[ 1 ]) || 'non-LSB'
     cacheLinuxPackageManage = [ 'Arch Linux', 'Arch Linux ARM' ].includes(nameLinuxRelease) ? 'pacman'
       : [ 'Ubuntu', 'Debian GNU/Linux', 'Raspbian GNU/Linux', 'Android (Termux)' ].includes(nameLinuxRelease) ? 'apt'
         : 'unknown'
@@ -447,7 +447,7 @@ const SHELL_ALIAS_LIST = {
     'system-package-install': 'sudo apt install',
     'system-package-provide-bin': ($1) => [ 'sudo', 'dpkg', '-S', resolveCommand($1) ], // $1=bin-name-or-full-path // https://serverfault.com/questions/30737/how-do-i-find-the-package-that-contains-a-given-program-on-ubuntu
     'system-package-why': 'sudo apt-cache rdepends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances --installed --recurse', // https://askubuntu.com/questions/5636/can-i-see-why-a-package-is-installed#comment505140_5637
-    'system-reboot-required': () => [ 'echo', existsSync('/var/run/reboot-required') ? 'nope' : 'Reboot Required' ]
+    'system-reboot-required': () => [ 'echo', existsSync('/var/run/reboot-required') ? 'Reboot Required' : 'nope' ]
   }),
 
   'SPLA': _A('system-package-list-all'),
