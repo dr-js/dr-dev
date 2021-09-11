@@ -35,7 +35,7 @@
     "version-bump": "dr-dev --version-bump-git-branch --git-commit --debug",
     "tag-push": "dr-dev --shell-alias quick-git-push-combo",
     "check-outdated": "node ./output-gitignore/bin --check-outdated ./resource",
-    "check-outdated-write-back": "npm run check-outdated -- --write-back",
+    "check-outdated-write-back": "npm run check-outdated -- --write-back && npm run script-generate-spec",
     "check-outdated-self": "node ./output-gitignore/bin --check-outdated",
     "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json output-gitignore/browser",
     "lint": "eslint ./source/ ./source-bin/ ./resource/ ./script/",
