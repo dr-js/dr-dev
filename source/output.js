@@ -93,7 +93,7 @@ const packOutput = async ({
   await runNpm([ '--no-update-notifier', 'pack' ], { cwd, quiet: !__VERBOSE__ }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
-  if (fromRoot !== fromOutput) {
+  if (fromRoot() !== cwd) {
     kitLogger.log('move to root path')
     await modifyRename(fromOutput(packName), fromRoot(packName))
   }
