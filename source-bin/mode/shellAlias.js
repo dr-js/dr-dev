@@ -70,7 +70,7 @@ const GET_LINUX_PACKAGE_MANAGER = () => { // LSB linux: https://serverfault.com/
   if (cacheLinuxPackageManage === undefined) {
     const nameLinuxRelease = IS_ANDROID_TERMUX ? 'Android (Termux)'
       : (existsSync('/etc/os-release') && (/(?:^|\s)"?NAME"?="?([\w/)( ]+)"?/.exec(readTextSync('/etc/os-release')) || [])[ 1 ]) || 'non-LSB'
-    cacheLinuxPackageManage = [ 'Arch Linux', 'Arch Linux ARM' ].includes(nameLinuxRelease) ? 'pacman'
+    cacheLinuxPackageManage = [ 'Arch Linux', 'Arch Linux ARM', 'Manjaro', 'Manjaro-ARM' ].includes(nameLinuxRelease) ? 'pacman'
       : [ 'Ubuntu', 'Debian GNU/Linux', 'Raspbian GNU/Linux', 'Android (Termux)' ].includes(nameLinuxRelease) ? 'apt'
         : 'unknown'
     __DEV__ && console.log('GET_LINUX_PACKAGE_MANAGER', { nameLinuxRelease, cacheLinuxPackageManage })
