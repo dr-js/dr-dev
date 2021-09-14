@@ -1,6 +1,7 @@
 import { ok } from 'assert'
 import { statSync } from 'fs'
 import { binary } from '@dr-js/core/module/common/format.js'
+import { indentLineList } from '@dr-js/core/module/common/string.js'
 import { isBasicObject } from '@dr-js/core/module/common/check.js'
 import { getFirstBinPath, toPackageTgzName } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { parseSemVer } from '@dr-js/core/module/common/module/SemVer.js'
@@ -138,7 +139,7 @@ const verifyNoGitignore = async ({
 }) => {
   kitLogger.padLog('verify no gitignore file left')
   const badFileList = (await getFileList(path)).filter((path) => path.includes('gitignore'))
-  badFileList.length && kitLogger.log(`found gitignore file:\n  - ${badFileList.join('\n  - ')}`)
+  badFileList.length && kitLogger.log(`found gitignore file:\n${indentLineList(badFileList, '  - ')}`)
   ok(badFileList.length === 0, `${badFileList.length} gitignore file found`)
 }
 

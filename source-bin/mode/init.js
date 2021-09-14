@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 
 import { catchAsync } from '@dr-js/core/module/common/error.js'
-import { indentLine } from '@dr-js/core/module/common/string.js'
+import { indentLine, indentLineList } from '@dr-js/core/module/common/string.js'
 import { readTextSync } from '@dr-js/core/module/node/fs/File.js'
 import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 
@@ -76,7 +76,7 @@ const initVerify = async (pathRoot, VERIFY_RULE_LIST) => {
   for (const [ file, failedList ] of failedFileInfoMap) {
     console.warn(`  - FAILED: ${file}`)
     for (const { messageList, error } of failedList) {
-      console.warn(`    * ${messageList.join('\n      ')}`)
+      console.warn(indentLineList(messageList, '      ', '    * '))
       error && console.error(indentLine(`ERROR: ${error.stack || error}`, '        ', '      ! '))
     }
   }
