@@ -7,6 +7,7 @@ import { doInit } from './mode/init.js'
 import { doExec, doExecLoad } from './mode/exec.js'
 import { doCacheStep } from './mode/cacheStep.js'
 import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
+import { doPackageTrimNodeModules, doPackageTrimRubyGem } from './mode/packageTrim.js'
 import { doShellAlias } from './mode/shellAlias.js'
 
 import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
@@ -54,6 +55,11 @@ const runMode = async (optionData, modeName) => {
       return doVersionBump(await commonVersionBump(versionBumpToIdentifier, { identifier: argumentList[ 0 ] || 'dev' }))
     case 'version-bump-to-local':
       return doVersionBump(await commonVersionBump(versionBumpToLocal))
+
+    case 'package-trim-node-modules':
+      return doPackageTrimNodeModules({ pathList: argumentList, log })
+    case 'package-trim-ruby-gem':
+      return doPackageTrimRubyGem({ pathList: argumentList, log })
 
     // keep mode
     case 'test':

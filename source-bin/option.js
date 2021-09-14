@@ -15,6 +15,10 @@ const MODE_FORMAT_LIST = parseCompactList(
   'version-bump-to-identifier,VBTI/AS,O/0-1|bump package version to identifier: -G, -D, $0=labelIdentifier/dev',
   'version-bump-to-local,VBTL/T|bump package version to append identifier "local", for local testing: -G, -D',
 
+  // trim
+  'package-trim-node-modules,PTNM/AP,O|trim common doc/test/config in "node_modules/": $@=...pathList',
+  'package-trim-ruby-gem,PTRG/AP,O|trim common doc/test/config in "lib/ruby/gems/*/gems/": $@=...pathList',
+
   // keep mode
   [ 'test,test-root,T/AP,O|list of path to look test file from, default to "."', parseCompactList( // TODO: DEPRECATE: name `test-root`
     'test-file-suffix,TFS/AS,O|pattern for test file, default to ".js"',

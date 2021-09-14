@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { arch, release } from 'os'
+import { arch, release, userInfo } from 'os'
 
 import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format.js'
 
@@ -10,6 +10,8 @@ import { commonCombo } from './output.js'
 const runInfoPatchCombo = ({ RUN, padLog, log }) => {
   padLog('Log info')
   log(`system: ${process.platform}-${release()}[${arch()}]`)
+  const { username, uid, gid } = userInfo()
+  log(`user: ${username} [${uid}-${gid}]`)
   log(`node: ${process.version}`)
   log(`npm: ${require(resolve(getPathNpm(), './package.json')).version}`)
   log(`with: ${[ '@dr-js/core', '@dr-js/dev' ].map((v) => `${v}@${require(`${v}/package.json`).version}`).join(', ')}`)

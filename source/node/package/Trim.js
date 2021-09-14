@@ -93,6 +93,7 @@ const shouldTrimRubyGem = (relativeFile) => {
     '.rdoc',
     '.c', '.cc', '.cpp', '.h',
     '.bat', '.cmd',
+    'gemfile.lock', // https://stackoverflow.com/questions/7919913/are-you-supposed-to-include-gemfile-lock-in-a-published-gem
     // file name
     '/makefile', '/configure',
     '/readme', '/changelog', '/changes',

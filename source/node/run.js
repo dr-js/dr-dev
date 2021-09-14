@@ -39,7 +39,7 @@ const runWithAsyncFunc = async (argList, { asyncFunc, setupDelay = 500, ...optio
 
 const runWithTee = async (argList, option = {}, logFile) => { // output to both stdout and log file
   await createDirectory(dirname(logFile))
-  const { promise, subProcess } = run(argList, { ...option, quiet: true })
+  const { promise, subProcess } = run(argList, { ...option, quiet: true, describeError: false })
   const logStream = createWriteStream(logFile)
   subProcess.stdout.pipe(process.stdout, { end: false })
   subProcess.stderr.pipe(process.stderr, { end: false })

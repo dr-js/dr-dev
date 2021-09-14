@@ -1,3 +1,4 @@
+import { indentLineList } from '@dr-js/core/module/common/string.js'
 import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
 import { modifyDeleteForce } from '@dr-js/core/module/node/fs/Modify.js'
 
@@ -44,14 +45,14 @@ const doCacheStep = async ({
             console.log('[cache-step] debug report:', JSON.stringify(report, null, 2))
             break
           case 'stale-only':
-            console.log(`[cache-step] stale file:\n  - ${report.staleList.join('\n  - ')}`)
+            console.log(`[cache-step] stale file:\n${indentLineList(report.staleList, '  - ')}`)
             for (const path of report.staleList) await modifyDeleteForce(path)
             console.log(`[cache-step] done prune ${report.staleList.length} file from staleList`)
             break
           case 'unused':
-            console.log(`[cache-step] stale file:\n  - ${report.staleList.join('\n  - ')}`)
+            console.log(`[cache-step] stale file:\n${indentLineList(report.staleList, '  - ')}`)
             for (const path of report.staleList) await modifyDeleteForce(path)
-            console.log(`[cache-step] pend file:\n  - ${report.pendList.join('\n  - ')}`)
+            console.log(`[cache-step] pend file:\n${indentLineList(report.pendList, '  - ')}`)
             for (const path of report.pendList) await modifyDeleteForce(path)
             console.log(`[cache-step] done prune ${report.staleList.length + report.pendList.length} file from staleList & pendList`)
             break

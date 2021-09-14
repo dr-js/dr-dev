@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.4.22",
+  "version": "0.4.23",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -35,7 +35,7 @@
     "version-bump": "dr-dev --version-bump-git-branch --git-commit --debug",
     "tag-push": "dr-dev --shell-alias quick-git-push-combo",
     "check-outdated": "node ./output-gitignore/bin --check-outdated ./resource",
-    "check-outdated-write-back": "npm run check-outdated -- --write-back",
+    "check-outdated-write-back": "npm run check-outdated -- --write-back && npm run script-generate-spec",
     "check-outdated-self": "node ./output-gitignore/bin --check-outdated",
     "analyze-stat": "npx webpack-bundle-analyzer .temp-gitignore/profile-stat.json output-gitignore/browser",
     "lint": "eslint ./source/ ./source-bin/ ./resource/ ./script/",
@@ -47,17 +47,17 @@
     "npm": ">=6.14"
   },
   "dependencies": {
-    "@dr-js/core": "^0.4.19"
+    "@dr-js/core": "^0.4.20"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.4.22-dev.0",
-    "@dr-js/dev-web": "^0.4.22-dev.0",
-    "ssh2": "^1.3.0",
+    "@dr-js/dev": "^0.4.23-dev.0",
+    "@dr-js/dev-web": "^0.4.23-dev.0",
+    "ssh2": "^1.4.0",
     "ssh2-legacy": "npm:ssh2@^0.8.9",
     "yaml": "^1.10.2"
   },
   "optionalDependencies": {
-    "@dr-js/node": "^0.4.9"
+    "@dr-js/node": "^0.4.10"
   },
   "sideEffects": false
 }

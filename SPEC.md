@@ -131,6 +131,10 @@
 >       bump package version to identifier: -G, -D, $0=labelIdentifier/dev
 >   --version-bump-to-local --VBTL [OPTIONAL] [ARGUMENT=0-1]
 >       bump package version to append identifier "local", for local testing: -G, -D
+>   --package-trim-node-modules --PTNM [OPTIONAL] [ARGUMENT=1+]
+>       trim common doc/test/config in "node_modules/": $@=...pathList
+>   --package-trim-ruby-gem --PTRG [OPTIONAL] [ARGUMENT=1+]
+>       trim common doc/test/config in "lib/ruby/gems/*/gems/": $@=...pathList
 >   --test --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
 >       list of path to look test file from, default to "."
 >     --test-file-suffix --TFS [ARGUMENT=1+]
@@ -223,6 +227,8 @@
 >     export DR_DEV_VERSION_BUMP_LAST_NUMBER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBLN]"
 >     export DR_DEV_VERSION_BUMP_TO_IDENTIFIER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTI]"
 >     export DR_DEV_VERSION_BUMP_TO_LOCAL="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTL]"
+>     export DR_DEV_PACKAGE_TRIM_NODE_MODULES="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTNM]"
+>     export DR_DEV_PACKAGE_TRIM_RUBY_GEM="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTRG]"
 >     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
 >     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
 >     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
@@ -277,6 +283,8 @@
 >     "versionBumpLastNumber": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBLN]" ],
 >     "versionBumpToIdentifier": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTI]" ],
 >     "versionBumpToLocal": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTL]" ],
+>     "packageTrimNodeModules": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTNM]" ],
+>     "packageTrimRubyGem": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTRG]" ],
 >     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
 >     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
 >     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],
@@ -320,10 +328,10 @@
 
 | Package name                   |     Version |
 | :----                          |       ----: |
-| @babel/cli                     |     ^7.14.8 |
-| @babel/core                    |     ^7.15.0 |
-| @babel/eslint-parser           |     ^7.15.0 |
-| @babel/preset-env              |     ^7.15.0 |
+| @babel/cli                     |     ^7.15.4 |
+| @babel/core                    |     ^7.15.5 |
+| @babel/eslint-parser           |     ^7.15.4 |
+| @babel/preset-env              |     ^7.15.6 |
 | @babel/preset-react            |     ^7.14.5 |
 | @babel/register                |     ^7.15.3 |
 | babel-loader                   |      ^8.2.2 |
@@ -334,10 +342,10 @@
 | eslint-plugin-import           |     ^2.24.2 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^5.1.0 |
-| eslint-plugin-react            |     ^7.24.0 |
+| eslint-plugin-react            |     ^7.25.1 |
 | prop-types                     |     ^15.7.2 |
 | puppeteer                      |     ^10.2.0 |
 | react                          |     ^17.0.2 |
 | styled-components              |      ^5.3.1 |
-| terser                         |      ^5.7.2 |
-| webpack                        |     ^5.51.1 |
+| terser                         |      ^5.8.0 |
+| webpack                        |     ^5.52.1 |
