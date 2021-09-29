@@ -7,7 +7,7 @@
     "eslint-config-almost-standard-jsx-v8.js"
   ],
   "dependencies": {
-    "eslint-plugin-react": "^7.25.1",
-    "@babel/eslint-parser": "^7.15.4"
+    "eslint-plugin-react": "^7.26.0",
+    "@babel/eslint-parser": "^7.15.7"
   }
 }
