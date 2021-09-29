@@ -42,11 +42,11 @@ const shouldTrimNodeModules = (relativeFile) => {
     '/test/', '/tests/', '/__tests__/', '/powered-test/',
     '/doc/', '/docs/',
     '/example/', '/examples/',
-    '/coverage/', '/coverages/',
+    '/coverage/', '/coverages/'
     // trim for specific package
-    '/ajv/dist/',
-    '/bluebird/js/browser/',
-    '/uri-js/dist/esnext/'
+    // '/ajv/dist/',
+    // '/bluebird/js/browser/',
+    // '/uri-js/dist/esnext/'
   ]) if (relativeFile.includes(pattern)) return true
 
   // file
