@@ -14,7 +14,6 @@ import { argvFlag, getKitPathCombo, getKitRun } from '@dr-js/core/module/node/ki
 import { runNpm } from '@dr-js/core/module/node/module/Software/npm.js'
 import { runGitStdout, runGitStdoutSync } from '@dr-js/core/module/node/module/Software/git.js'
 
-import { __VERBOSE__ } from './node/env.js'
 import { FILTER_TEST_PATH } from './node/preset.js'
 import { getFileListFromPathList } from './node/file.js'
 import { writeLicenseFile } from './license.js'
@@ -91,7 +90,7 @@ const packOutput = async ({
   packageJSON = require(fromOutput('package.json'))
 }) => {
   kitLogger.padLog('run pack output')
-  await runNpm([ '--no-update-notifier', 'pack' ], { cwd, quiet: !__VERBOSE__ }).promise
+  await runNpm([ '--no-update-notifier', 'pack' ], { cwd, quiet: !kitLogger.isVerbose }).promise
 
   const packName = toPackageTgzName(packageJSON.name, packageJSON.version)
   if (fromRoot() !== cwd) {

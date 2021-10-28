@@ -7,7 +7,6 @@ import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 import { addExitListenerAsync } from '@dr-js/core/module/node/system/ExitListener.js'
 import { argvFlag } from '@dr-js/core/module/node/kit.js'
 
-import { __VERBOSE__ } from './node/env.js'
 import { getWebpackBabelConfig } from './babel.js'
 import { createProgressPlugin } from './webpack-progress-plugin.js'
 
@@ -39,14 +38,14 @@ const getStatsCheck = (onError, onStats) => (error, stats) => {
   onStats(stats)
 }
 
-const getLogStats = (isWatch, { padLog, log }) => {
+const getLogStats = (isWatch, kitLogger) => {
   const logSingleStats = (statsData, startTime, endTime) => {
-    startTime && endTime && padLog(`[${isWatch ? 'watch' : 'compile'}] time: ${time(endTime - startTime)}`)
+    startTime && endTime && kitLogger.padLog(`[${isWatch ? 'watch' : 'compile'}] time: ${time(endTime - startTime)}`)
 
     const { assets, chunks } = statsData.toJson({
       all: false, // fallback value for stats options when an option is not defined (has precedence over local webpack defaults)
       assets: true, // Add asset Information
-      chunks: __VERBOSE__ // Add chunk information (setting this to `false` allows for a less verbose output)
+      chunks: kitLogger.isVerbose // Add chunk information (setting this to `false` allows for a less verbose output)
     })
 
     const table = []
@@ -55,12 +54,12 @@ const getLogStats = (isWatch, { padLog, log }) => {
       formatSize(size),
       formatTag({ emitted })
     ]))
-    __VERBOSE__ && chunks.forEach(({ id, names, size, entry, initial, rendered }) => table.push([
+    kitLogger.isVerbose && chunks.forEach(({ id, names, size, entry, initial, rendered }) => table.push([
       `  Chunk ${id || '-'} ${names.join(',')}`,
       formatSize(size),
       formatTag({ entry, initial, rendered })
     ]))
-    log(`output:\n${padTable({ table, padFuncList: [ 'L', 'R', 'L' ] })}`)
+    kitLogger.log(`output:\n${padTable({ table, padFuncList: [ 'L', 'R', 'L' ] })}`)
   }
 
   return (stats) => {

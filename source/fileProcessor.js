@@ -3,8 +3,6 @@ import { promises as fsAsync } from 'fs'
 import { clock } from '@dr-js/core/module/common/time.js'
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
-import { __VERBOSE__ } from './node/env.js'
-
 const processFileList = async ({
   logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
   fileList, processor,
@@ -35,13 +33,13 @@ const processFileList = async ({
     const sizeDelta = sizeOutput - sizeSource
     totalSizeSource += sizeSource
     totalSizeDelta += sizeDelta
-    __VERBOSE__ && table.push([
+    kitLogger.isVerbose && table.push([
       `∆ ${(100 * sizeDelta / sizeSource).toFixed(2)}% (${binary(sizeDelta)}B)`,
       `${relative(outputPath, filePath)}`
     ])
   }
 
-  __VERBOSE__ && table.push([ '--', '--' ])
+  kitLogger.isVerbose && table.push([ '--', '--' ])
   table.push([
     `∆ ${(100 * totalSizeDelta / totalSizeSource).toFixed(2)}% (${binary(totalSizeDelta)}B)`,
     `TOTAL of ${fileList.length} file (${binary(totalSizeSource)}B|${time(clock() - totalTimeStart)})`

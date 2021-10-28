@@ -6,8 +6,6 @@ import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
 import { editBuffer } from '@dr-js/core/module/node/fs/File.js'
 
-import { __VERBOSE__ } from './node/env.js'
-
 const GET_TERSER = (log = console.warn) => {
   const Terser = tryRequire('terser')
   if (Terser) return Terser
@@ -78,13 +76,13 @@ const minifyFileListWithTerser = async ({
     const sizeDelta = sizeOutput - sizeSource
     totalSizeSource += sizeSource
     totalSizeDelta += sizeDelta
-    __VERBOSE__ && table.push([
+    kitLogger.isVerbose && table.push([
       `∆ ${(100 * sizeDelta / sizeSource).toFixed(2)}% (${binary(sizeDelta)}B)`,
       time(timeEnd - timeStart),
       `${relative(outputPath, filePath)}`
     ])
   }
-  __VERBOSE__ && table.push([ '--', '--', '--' ])
+  kitLogger.isVerbose && table.push([ '--', '--', '--' ])
   table.push([
     `∆ ${(100 * totalSizeDelta / totalSizeSource).toFixed(2)}% (${binary(totalSizeDelta)}B)`,
     time(clock() - totalTimeStart),
