@@ -3,9 +3,10 @@ import { relative } from 'path'
 import { toPosixPath } from '@dr-js/core/module/node/fs/Path.js'
 import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 import { guardPromiseEarlyExit } from '@dr-js/core/module/node/system/ExitListener.js'
-import { configureTerminalColor } from '@dr-js/core/module/node/module/TerminalColor.js'
 
 import { createTest } from '@dr-js/core/module/common/test.js'
+
+import { color } from 'source/node/color.js'
 
 const test = async ({
   testRoot = process.cwd(),
@@ -29,13 +30,12 @@ const test = async ({
     }
   }
 
-  const TerminalColor = configureTerminalColor()
   const { TEST_SETUP, TEST_RUN, describe } = createTest({ // setup colors
-    colorError: TerminalColor.fg.red,
-    colorMain: TerminalColor.fg.cyan,
-    colorTitle: TerminalColor.fg.green,
-    colorText: TerminalColor.fg.darkGray,
-    colorTime: TerminalColor.fg.yellow
+    colorError: color.red,
+    colorMain: color.cyan,
+    colorTitle: color.green,
+    colorText: color.darkGray,
+    colorTime: color.yellow
   })
 
   TEST_SETUP({ timeout: testTimeout })

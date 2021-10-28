@@ -26,7 +26,7 @@ import { MODE_NAME_LIST, parseOption, formatUsage } from './option.js'
 import { name as packageName, version as packageVersion } from '../package.json'
 
 const runMode = async (optionData, modeName) => {
-  const sharedPack = await sharedOption(optionData, modeName)
+  const sharedPack = sharedOption(optionData, modeName)
   const { get, tryGet, getFirst, tryGetFirst, getToggle } = optionData
   const { argumentList, log } = sharedPack
 
@@ -48,7 +48,10 @@ const runMode = async (optionData, modeName) => {
       })
 
     case 'version-bump-git-branch':
-      return doVersionBump(await commonVersionBump(versionBumpByGitBranch, { gitBranch: getGitBranch() }))
+      return doVersionBump(await commonVersionBump(versionBumpByGitBranch, {
+        gitBranch: getGitBranch(),
+        getIsMajorBranch: (gitBranch) => [ 'master', 'main', ...(process.env.GIT_MAJOR_BRANCH || '').split(',').map((v) => v.trim()) ].includes(gitBranch)
+      }))
     case 'version-bump-last-number':
       return doVersionBump(await commonVersionBump(versionBumpLastNumber))
     case 'version-bump-to-identifier':

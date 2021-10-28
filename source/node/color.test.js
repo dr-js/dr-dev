@@ -1,5 +1,5 @@
 import { strictEqual } from '@dr-js/core/module/common/verify.js'
-import { configureTerminalColor } from '@dr-js/core/module/node/module/TerminalColor.js'
+import { createColor } from '@dr-js/core/module/node/module/TerminalTTY.js'
 
 import {
   color
@@ -11,7 +11,7 @@ describe('Node.Color', () => {
   it('match TerminalColor:fg', () => {
     strictEqual(
       Object.keys(color).sort().join('|'),
-      Object.keys(configureTerminalColor().fg).sort().join('|')
+      Object.keys(createColor().fg).sort().join('|')
     )
   })
 })

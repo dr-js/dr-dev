@@ -4,7 +4,7 @@ import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common
 
 import { PATH_TYPE, getPathStat, getPathTypeFromStat } from '@dr-js/core/module/node/fs/Path.js'
 import { writeJSONPretty } from '@dr-js/core/module/node/fs/File.js'
-import { getDirInfoTree, walkDirInfoTreeAsync, createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+import { getDirInfoTree, walkDirInfoTree, createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 
 import { packTime, parseTime, loadStat, saveStat } from './function.js'
 
@@ -177,7 +177,7 @@ const calcStaleReportOfPath = async (
       break
     case PATH_TYPE.Directory: {
       const { getTailPromise, pushAuto } = extendAutoSelectLane(createAsyncLane({ laneSize: 4 })) // NOTE: too much or too lane will actually be slower
-      await walkDirInfoTreeAsync(await getDirInfoTree(absolutePath), async (dirInfo) => {
+      await walkDirInfoTree(await getDirInfoTree(absolutePath), async (dirInfo) => {
         dirInfo.type === PATH_TYPE.File && pushAuto(() => collector(dirInfo.path))
       })
       await getTailPromise()

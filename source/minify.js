@@ -4,8 +4,7 @@ import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { clock } from '@dr-js/core/module/common/time.js'
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
-import { __VERBOSE__ } from './node/env.js'
-import { copyAfterEdit } from './node/file.js'
+import { editBuffer } from '@dr-js/core/module/node/fs/File.js'
 
 const GET_TERSER = (log = console.warn) => {
   const Terser = tryRequire('terser')
@@ -45,7 +44,7 @@ const minifyFileWithTerser = async ({
     // sizeSource: 0,
     // sizeOutput: 0
   }
-  await copyAfterEdit(filePath, filePath, async (buffer) => {
+  await editBuffer(async (buffer) => {
     const { error, code: scriptOutput } = await Terser.minify(String(buffer), option)
     if (error) {
       kitLogger.padLog(`[minifyFileWithTerser] failed to minify file: ${filePath}`)
@@ -56,7 +55,7 @@ const minifyFileWithTerser = async ({
     result.sizeSource = buffer.length
     result.sizeOutput = bufferOutput.length
     return bufferOutput
-  })
+  }, filePath)
   return result
 }
 
@@ -77,13 +76,13 @@ const minifyFileListWithTerser = async ({
     const sizeDelta = sizeOutput - sizeSource
     totalSizeSource += sizeSource
     totalSizeDelta += sizeDelta
-    __VERBOSE__ && table.push([
+    kitLogger.isVerbose && table.push([
       `∆ ${(100 * sizeDelta / sizeSource).toFixed(2)}% (${binary(sizeDelta)}B)`,
       time(timeEnd - timeStart),
       `${relative(outputPath, filePath)}`
     ])
   }
-  __VERBOSE__ && table.push([ '--', '--', '--' ])
+  kitLogger.isVerbose && table.push([ '--', '--', '--' ])
   table.push([
     `∆ ${(100 * totalSizeDelta / totalSizeSource).toFixed(2)}% (${binary(totalSizeDelta)}B)`,
     time(clock() - totalTimeStart),

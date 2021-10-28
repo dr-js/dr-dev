@@ -1,7 +1,11 @@
 {
-  "IMPORT": [ "../" ],
-  "EXPORT": [ "INIT#babel.config.js" ],
+  "IMPORT": [
+    "../"
+  ],
+  "EXPORT": [
+    "INIT#babel.config.js"
+  ],
   "dependencies": {
-    "babel-plugin-styled-components": "^1.13.2"
+    "babel-plugin-styled-components": "^1.13.3"
   }
 }

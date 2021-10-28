@@ -1,11 +1,16 @@
 import {
+  ENV_KEY_VERBOSE,
   loadEnvKey,
   saveEnvKey,
   syncEnvKey,
   argvFlag
 } from '@dr-js/core/module/node/kit.js'
 
-/** @deprecated */ const __VERBOSE__ = syncEnvKey('__DEV_VERBOSE__', process.argv.includes('verbose'))
+/** @deprecated */ const __VERBOSE__ = syncEnvKey('__DEV_VERBOSE__', Boolean(
+  process.argv.includes('verbose') ||
+  loadEnvKey(ENV_KEY_VERBOSE) ||
+  process.env.KIT_VERBOSE
+))
 
 /** @deprecated */ const checkFlag = (flagList, checkFlagList) => flagList.find((flag) => checkFlagList.includes(flag))
 
