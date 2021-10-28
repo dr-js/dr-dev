@@ -26,7 +26,7 @@ import { MODE_NAME_LIST, parseOption, formatUsage } from './option.js'
 import { name as packageName, version as packageVersion } from '../package.json'
 
 const runMode = async (optionData, modeName) => {
-  const sharedPack = await sharedOption(optionData, modeName)
+  const sharedPack = sharedOption(optionData, modeName)
   const { get, tryGet, getFirst, tryGetFirst, getToggle } = optionData
   const { argumentList, log } = sharedPack
 
