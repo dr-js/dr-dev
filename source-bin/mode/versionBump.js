@@ -7,7 +7,7 @@ import { runGit } from '@dr-js/core/module/node/module/Software/git.js'
 import {
   writePackageJSON,
   loadPackageInfo, savePackageInfo
-} from 'source/node/package/function.js'
+} from '@dr-js/core/module/node/module/PackageJSON.js'
 
 const doVersionBump = async ({
   packageInfo,

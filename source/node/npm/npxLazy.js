@@ -1,7 +1,8 @@
 import { resolve } from 'path'
 import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
+import { parsePackageNameAndVersion } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { run } from '@dr-js/core/module/node/run.js'
-import { parsePackageNameAndVersion, findUpPackageRoot, fromNpmNodeModules, getPathNpmGlobalRoot } from '@dr-js/core/module/node/module/Software/npm.js'
+import { findUpPackageRoot, fromNpmNodeModules, getPathNpmGlobalRoot } from '@dr-js/core/module/node/module/Software/npm.js'
 
 /** @deprecated */ const runNpx = async ( // TODO: consider move to `npm exec` since the `npx|libnpx` package will be dropped since `npm@7` and may later break the usage
   argList = [],
