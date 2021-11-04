@@ -7,6 +7,18 @@ const DEFAULT_BABEL_ASSUMPTIONS = { // https://babeljs.io/docs/en/assumptions
   noNewArrows: true
 }
 
+// TODO: copy (1 of 2)
+//  keep license related comment
+//    @license
+//    @preserve
+//  and keep basic jsdoc tag comment
+//    @deprecated
+//    @type
+//    @params
+//    @arg(uments)
+//    @return(s)
+const REGEXP_COMMENT_KEEP = /@(license|preserve|deprecated|type|params|arg|return)/
+
 // https://babeljs.io/docs/en/options
 
 const getBabelConfig = ({
@@ -49,7 +61,16 @@ const getBabelConfig = ({
   ].filter(Boolean),
   assumptions,
   comments: false,
-  shouldPrintComment: isModule ? (string) => /@(license|preserve|deprecated)/.test(string) : undefined // NOTE: only keep comment mark for module output, babel commonjs will inject `module.exports` between comment & code
+  //  keep license related comment
+  //    @license
+  //    @preserve
+  //  and keep basic jsdoc tag comment
+  //    @deprecated
+  //    @type
+  //    @params
+  //    @arg(uments)
+  //    @return(s)
+  shouldPrintComment: isModule ? (string) => REGEXP_COMMENT_KEEP.test(string) : undefined // NOTE: only keep comment mark for module output, babel commonjs will inject `module.exports` between comment & code
 })
 
 const getWebpackBabelConfig = ({

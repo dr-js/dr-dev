@@ -6,6 +6,18 @@ import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
 import { editBuffer } from '@dr-js/core/module/node/fs/File.js'
 
+// TODO: copy (2 of 2)
+//  keep license related comment
+//    @license
+//    @preserve
+//  and keep basic jsdoc tag comment
+//    @deprecated
+//    @type
+//    @params
+//    @arg(uments)
+//    @return(s)
+const REGEXP_COMMENT_KEEP = /@(license|preserve|deprecated|type|params|arg|return)/
+
 const GET_TERSER = (log = console.warn) => {
   const Terser = tryRequire('terser')
   if (Terser) return Terser
@@ -23,7 +35,7 @@ const getTerserOption = ({
     '__DEV__': Boolean(isDevelopment),
     'process.env.NODE_ENV': isDevelopment ? 'development' : 'production'
   },
-  comments = /@(license|preserve|deprecated)/
+  comments = REGEXP_COMMENT_KEEP
 } = {}) => ({
   ecma, toplevel, module,
   compress: { passes: 2, join_vars: false, sequences: false, global_defs: globalDefineMap },
