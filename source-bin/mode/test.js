@@ -1,4 +1,4 @@
-import { relative } from 'path'
+import { resolve, relative } from 'path'
 
 import { toPosixPath } from '@dr-js/core/module/node/fs/Path.js'
 import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
@@ -24,8 +24,10 @@ const test = async ({
   if (!fileList.length) throw new Error([ 'no test file selected', `with suffix "${testFileSuffixList.join(',')}"`, `from ${testRoot}` ].filter(Boolean).join(' '))
 
   for (const testRequire of testRequireList) { // load pre require, mostly `@babel/register`
-    try { require(testRequire) } catch (error) {
-      console.error(`failed to require "${testRequire}"`)
+    const target = /^[./]/.test(testRequire) ? resolve(testRequire) // script file, like `./a.js`, or `/b/c/d.js`
+      : testRequire // module name, like `@dr-js/core`
+    try { require(target) } catch (error) {
+      console.error(`failed to require "${target}" (${testRequire})`)
       throw error
     }
   }
