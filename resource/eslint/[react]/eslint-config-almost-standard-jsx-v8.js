@@ -4,14 +4,14 @@
 
 module.exports = {
   parserOptions: {
-    ecmaVersion: 2021,
+    ecmaVersion: 'latest', // EDIT
     ecmaFeatures: { jsx: true },
     sourceType: 'module'
   },
 
   parser: '@babel/eslint-parser', // EDIT
 
-  plugins: [ 'react' ],
+  plugins: [ 'eslint-plugin-react' ], // EDIT
 
   settings: {
     react: { version: 'detect' }, // EDIT
