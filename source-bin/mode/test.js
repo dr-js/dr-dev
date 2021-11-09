@@ -8,11 +8,9 @@ import { createTest } from '@dr-js/core/module/common/test.js'
 
 import { color } from 'source/node/color.js'
 
-const test = async ({
+const getTestFilePairList = async ({
   testRoot = process.cwd(),
-  testFileSuffixList = [ '.js' ],
-  testRequireList = [],
-  testTimeout = 42 * 1000
+  testFileSuffixList = [ '.js' ]
 }) => {
   const testPathFunc = (testFileSuffixList && testFileSuffixList.length)
     ? (path) => testFileSuffixList.find((testFileSuffix) => path.endsWith(testFileSuffix))
@@ -22,16 +20,13 @@ const test = async ({
     : (fileList, { path }) => { fileList.push(path) }
   )
   if (!fileList.length) throw new Error([ 'no test file selected', `with suffix "${testFileSuffixList.join(',')}"`, `from ${testRoot}` ].filter(Boolean).join(' '))
+  return fileList.map((file) => [ file, toPosixPath(relative(testRoot, file)) ])
+}
 
-  for (const testRequire of testRequireList) { // load pre require, mostly `@babel/register`
-    const target = /^[./]/.test(testRequire) ? resolve(testRequire) // script file, like `./a.js`, or `/b/c/d.js`
-      : testRequire // module name, like `@dr-js/core`
-    try { require(target) } catch (error) {
-      console.error(`failed to require "${target}" (${testRequire})`)
-      throw error
-    }
-  }
-
+const test = async ({
+  testFilePairList = [], // [ [ file, relativeFile ] ]
+  testTimeout = 42 * 1000
+}) => {
   const { TEST_SETUP, TEST_RUN, describe } = createTest({ // setup colors
     colorError: color.red,
     colorMain: color.cyan,
@@ -42,10 +37,10 @@ const test = async ({
 
   TEST_SETUP({ timeout: testTimeout })
 
-  for (const file of fileList) {
+  for (const [ file, relativeFile ] of testFilePairList) {
     try {
       describe( // add one more scope for file
-        `[FILE] ${toPosixPath(relative(testRoot, file))}`,
+        `[FILE] ${relativeFile}`,
         () => { require(file) }
       )
     } catch (error) {
@@ -64,7 +59,7 @@ const test = async ({
 
   const failCount = failList.length
   const testCount = passList.length + failCount
-  if (failCount) throw new Error(`${failCount} of ${testCount} test fail from ${fileList.length} file`)
+  if (failCount) throw new Error(`${failCount} of ${testCount} test fail from ${testFilePairList.length} file`)
 }
 
 const doTest = async ({
@@ -73,14 +68,19 @@ const doTest = async ({
   testRequireList = [],
   testTimeout = 42 * 1000
 }) => {
+  const testFilePairList = []
   for (const testRoot of testRootList) {
-    await test({
-      testRoot,
-      testFileSuffixList,
-      testRequireList,
-      testTimeout
-    })
+    testFilePairList.push(...await getTestFilePairList({ testRoot, testFileSuffixList }))
   }
+  for (const testRequire of testRequireList) { // load pre require, mostly `@babel/register`
+    const target = /^[./]/.test(testRequire) ? resolve(testRequire) // script file, like `./a.js`, or `/b/c/d.js`
+      : testRequire // module name, like `@dr-js/core`
+    try { require(target) } catch (error) {
+      console.error(`failed to require "${target}" (${testRequire})`)
+      throw error
+    }
+  }
+  await test({ testFilePairList, testTimeout })
 }
 
 export { doTest }
