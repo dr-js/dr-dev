@@ -6,14 +6,14 @@ module.exports = {
   ignorePatterns: [ '!.*', 'node_modules' ], // EDIT: https://github.com/eslint/eslint/issues/10341#issuecomment-468548031
 
   parserOptions: {
-    ecmaVersion: 2021,
+    ecmaVersion: 'latest', // EDIT
     ecmaFeatures: { jsx: true },
     sourceType: 'module'
   },
 
   env: { es6: true, es2021: true, node: true },
 
-  plugins: [ 'import', 'node', 'promise' ],
+  plugins: [ 'eslint-plugin-import', 'eslint-plugin-node', 'eslint-plugin-promise' ], // EDIT
 
   globals: { globalThis: 'readonly', global: 'readonly', window: 'readonly', self: 'readonly', __DEV__: 'readonly' }, // globals: { document: 'readonly', navigator: 'readonly', window: 'readonly' }, // EDIT
 
