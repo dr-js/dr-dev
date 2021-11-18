@@ -1,3 +1,4 @@
+// UPDATE: edit: ban default export
 // UPDATE: https://github.com/standard/eslint-config-standard/compare/v14.1.1...v16.0.2#diff-31af7bef8291401346dd22af1e7c0ab20be3d024fb0104cfc82182bee0e73d99
 // UPDATE: https://github.com/standard/eslint-config-standard/compare/v13.0.1...v14.1.1#diff-1761f4f4ee815f0c4156b931d737ff32
 // EDIT: from https://github.com/standard/eslint-config-standard/blob/v13.0.1/eslintrc.json
@@ -192,6 +193,10 @@ module.exports = {
     'import/no-duplicates': 'error',
     'import/no-named-default': 'error',
     'import/no-webpack-loader-syntax': 'error',
+
+    'import/group-exports': 'error', // EDIT: add
+    'import/no-default-export': 'error', // EDIT: add
+    'import/no-mutable-exports': 'error', // EDIT: add
 
     'node/handle-callback-err': [ 'error', '^(err|error)$' ],
     'node/no-callback-literal': 'error',
