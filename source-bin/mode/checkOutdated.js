@@ -11,12 +11,13 @@ const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput }) => {
   const complexTable = []
   const outdatedTable = []
 
-  for (const [ name, { wanted: versionWanted } ] of Object.entries(outdatedMap)) {
+  // for (const [ name, { wanted: versionWanted } ] of Object.entries(outdatedMap)) {
+  for (const [ name, { latest: versionLatest } ] of Object.entries(outdatedMap)) {
     const { versionSpec, packageInfo: { packageJSONPath } } = dependencyInfoMap[ name ]
 
-    const rowList = [ name, versionSpec, versionWanted, relative(pathInput, packageJSONPath) || '-' ] // must match PAD_FUNC_LIST
+    const rowList = [ name, versionSpec, versionLatest, relative(pathInput, packageJSONPath) || '-' ] // must match PAD_FUNC_LIST
     if (isVersionSpecComplex(versionSpec)) complexTable.push(rowList) // hard to parse
-    else if (versionSpec.endsWith(versionWanted)) sameTable.push(rowList)
+    else if (versionSpec.endsWith(versionLatest)) sameTable.push(rowList)
     else outdatedTable.push(rowList)
   }
 
