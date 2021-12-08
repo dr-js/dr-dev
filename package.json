@@ -47,11 +47,11 @@
     "npm": ">=6.14"
   },
   "dependencies": {
-    "@dr-js/core": "^0.4.22"
+    "@dr-js/core": "^0.4.24 || ^0.4.23-dev.1"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.4.25",
-    "@dr-js/dev-web": "^0.4.25",
+    "@dr-js/dev": "^0.4.26",
+    "@dr-js/dev-web": "^0.4.26",
     "ssh2": "^1.5.0",
     "ssh2-legacy": "npm:ssh2@^0.8.9",
     "yaml": "^1.10.2"
