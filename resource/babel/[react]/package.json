@@ -6,6 +6,6 @@
     "INIT#babel.config.js"
   ],
   "dependencies": {
-    "@babel/preset-react": "^7.16.0"
+    "@babel/preset-react": "^7.16.5"
   }
 }

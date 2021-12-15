@@ -6,6 +6,6 @@
     "INIT#babel.config.js"
   ],
   "dependencies": {
-    "babel-plugin-styled-components": "^1.13.3"
+    "babel-plugin-styled-components": "^2.0.2"
   }
 }
