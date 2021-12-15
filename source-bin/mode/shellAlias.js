@@ -79,6 +79,8 @@ const GET_LINUX_PACKAGE_MANAGER = () => { // LSB linux: https://serverfault.com/
 }
 let cacheLinuxPackageManage
 
+const _RSS = (commandString) => String(runStdoutSync(commandString.split(' ').filter(Boolean))).trim()
+
 const SHELL_ALIAS_LIST = {
   // picked from: https://github.com/dr-js/stash/blob/master/bash/bash-aliases-extend.sh
 
@@ -112,7 +114,7 @@ const SHELL_ALIAS_LIST = {
     'git-clone': 'git clone',
     'git-clone-minimal': 'git clone --depth 1 --no-tags --config remote.origin.fetch=+refs/heads/master:refs/remotes/origin/master',
     'git-tag-combo': ($1) => _E([ 'git', 'tag', '--force', $1 ], [ 'git', 'push', 'origin', $1 ]),
-    'git-tag-clear-local': () => [ 'git', 'tag', '--delete', ...String(runStdoutSync([ 'git', 'tag', '-l' ])).split('\n') ],
+    'git-tag-clear-local': () => [ 'git', 'tag', '--delete', ..._RSS('git tag -l').split('\n') ],
     'git-tag-push-origin': 'git push origin', // append the tag name
     'git-tag-push-force-origin': 'git push --force origin', // append the tag name
     'git-tag-delete-origin': 'git push --delete origin', // append the tag name (or full name like `refs/tags/v0.4.2`)
@@ -419,7 +421,7 @@ const SHELL_ALIAS_LIST = {
       'sudo pacman -Sy --needed archlinux-keyring',
       'sudo pacman -Syu',
       () => {
-        const orphanPackageList = String(runStdoutSync([ 'pacman', '-Qtdq' ])).trim().split('\n')
+        const orphanPackageList = _RSS('pacman -Qtdq').split('\n')
         return orphanPackageList.length
           ? [ 'sudo', 'pacman', '-Rns', ...orphanPackageList ]
           : [ 'echo', 'nothing to clear' ]
@@ -432,8 +434,8 @@ const SHELL_ALIAS_LIST = {
     'system-reboot-required': () => {
       // hacky node version for: https://bbs.archlinux.org/viewtopic.php?id=173508
       // NOTE: for ArchLinuxARM `uname -r` will print extra `-ARCH`
-      const installedVersion = String(runStdoutSync([ 'pacman', '-Q', 'linux' ])).trim().split(' ').pop() // pick "5.13.10.arch1-1" from "linux 5.13.10.arch1-1"
-      const runningVersion = String(runStdoutSync([ 'uname', '-r' ]))
+      const installedVersion = _RSS('pacman -Q linux').split(' ').pop() // pick "5.13.10.arch1-1" from "linux 5.13.10.arch1-1"
+      const runningVersion = _RSS('uname -r')
       const formatVersion = (v) => v.replace(/\W/g, '.').toLowerCase()
       return [ 'echo', formatVersion(runningVersion).startsWith(formatVersion(installedVersion)) ? 'nope' : 'Reboot Required' ]
     }
