@@ -419,7 +419,7 @@ const SHELL_ALIAS_LIST = {
       'sudo pacman -Sy --needed archlinux-keyring',
       'sudo pacman -Syu',
       () => {
-        const orphanPackageList = String(runStdoutSync('pacman -Qtdq')).trim().split('\n')
+        const orphanPackageList = String(runStdoutSync([ 'pacman', '-Qtdq' ])).trim().split('\n')
         return orphanPackageList.length
           ? [ 'sudo', 'pacman', '-Rns', ...orphanPackageList ]
           : [ 'echo', 'nothing to clear' ]
