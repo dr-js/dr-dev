@@ -4,6 +4,7 @@ import { hostname } from 'os'
 import { describe } from '@dr-js/core/module/common/format.js'
 import { isBasicArray, isBasicFunction, isBasicObject, isString } from '@dr-js/core/module/common/check.js'
 import { getUTCDateTag } from '@dr-js/core/module/common/time.js'
+import { withFallbackResult } from '@dr-js/core/module/common/error.js'
 import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
 import { readTextSync, readJSONSync } from '@dr-js/core/module/node/fs/File.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
@@ -247,7 +248,7 @@ const SHELL_ALIAS_LIST = {
     'docker-container-attach': 'sudo docker container attach',
     'docker-container-ls': 'sudo docker container ls',
     'docker-container-ls-all': 'sudo docker container ls --all',
-    'docker-container-ls-minimal': [ 'sudo', 'docker', 'container', 'ls', '--format=table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.State}}' ],
+    'docker-container-ls-minimal': [ 'sudo', 'docker', 'container', 'ls', '--format=table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}' ],
     'docker-container-logs': 'sudo docker container logs',
     'docker-container-logs-tail': 'sudo docker container logs --follow --tail=10',
     'docker-container-top': 'sudo docker container top',
@@ -421,11 +422,12 @@ const SHELL_ALIAS_LIST = {
       'sudo pacman -Sy --needed archlinux-keyring',
       'sudo pacman -Syu',
       () => {
-        const orphanPackageList = _RSS('pacman -Qtdq').split('\n')
+        const orphanPackageList = withFallbackResult('', _RSS, 'pacman -Qtdq').split('\n').filter(Boolean)
         return orphanPackageList.length
           ? [ 'sudo', 'pacman', '-Rns', ...orphanPackageList ]
           : [ 'echo', 'nothing to clear' ]
-      }
+      },
+      'sudo pacman -Sc --noconfirm' // clear cache
     ),
     'system-package-remove': 'sudo pacman -R',
     'system-package-install': 'sudo pacman -S --needed',
