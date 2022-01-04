@@ -5,8 +5,8 @@
     "eslint-config-almost-standard-v14.js"
   ],
   "dependencies": {
-    "eslint": "^8.5.0",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint": "^8.6.0",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0"
   }
