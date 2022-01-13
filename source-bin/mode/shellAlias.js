@@ -66,19 +66,19 @@ const _E = (...baseList) => ({ E: baseList })
 const _A = (stringAlias, ...$List) => ({ A: stringAlias, $: $List })
 const _AE = (...stringAliasList) => ({ AE: stringAliasList })
 
-const IS_ANDROID_TERMUX = (process.env.PREFIX || '').includes('com.termux') // termux: https://www.reddit.com/r/termux/comments/co46qw/how_to_detect_in_a_bash_script_that_im_in_termux/ewi3fjj/
-const GET_LINUX_PACKAGE_MANAGER = () => { // LSB linux: https://serverfault.com/questions/879216/how-to-detect-linux-distribution-and-version/880087#880087
-  if (cacheLinuxPackageManage === undefined) {
-    const nameLinuxRelease = IS_ANDROID_TERMUX ? 'Android (Termux)'
-      : (existsSync('/etc/os-release') && (/(?:^|\s)"?NAME"?="?([\w/)( ]+)"?/.exec(readTextSync('/etc/os-release')) || [])[ 1 ]) || 'non-LSB'
-    cacheLinuxPackageManage = [ 'Arch Linux', 'Arch Linux ARM', 'Manjaro', 'Manjaro-ARM' ].includes(nameLinuxRelease) ? 'pacman'
-      : [ 'Ubuntu', 'Debian GNU/Linux', 'Raspbian GNU/Linux', 'Android (Termux)' ].includes(nameLinuxRelease) ? 'apt'
-        : 'unknown'
-    __DEV__ && console.log('GET_LINUX_PACKAGE_MANAGER', { nameLinuxRelease, cacheLinuxPackageManage })
+let __osRelease, __packageManager
+const WHICH_LINUX = () => { // systemd linux: http://0pointer.de/blog/projects/os-release
+  if (__packageManager === undefined) {
+    const textOsRelease = (process.env.PREFIX || '').includes('com.termux') ? 'Android (Termux)' // termux: https://www.reddit.com/r/termux/comments/co46qw/how_to_detect_in_a_bash_script_that_im_in_termux/ewi3fjj/
+      : withFallbackResult('', readTextSync, '/etc/os-release')
+    __osRelease = [ 'Arch', 'Manjaro', 'Debian', 'Ubuntu', 'Raspbian', 'Android (Termux)' ].filter((v) => textOsRelease.includes(v)).pop() || 'unknown-os-release'
+    __packageManager = [ 'Arch', 'Manjaro' ].includes(__osRelease) ? 'pacman'
+      : [ 'Debian', 'Ubuntu', 'Raspbian', 'Android (Termux)' ].includes(__osRelease) ? 'apt'
+        : 'unknown-package-manager'
+    __DEV__ && console.log('WHICH_LINUX', { __osRelease, __packageManager })
   }
-  return cacheLinuxPackageManage
+  return [ __osRelease, __packageManager ]
 }
-let cacheLinuxPackageManage
 
 const _RSS = (commandString) => String(runStdoutSync(commandString.split(' ').filter(Boolean))).trim()
 
@@ -415,7 +415,10 @@ const SHELL_ALIAS_LIST = {
   //
   // =============================
   // system aliases (S*)
-  ...(GET_LINUX_PACKAGE_MANAGER() === 'pacman' && {
+  'system-witch': () => [ 'echo', ...WHICH_LINUX() ],
+  'SW': _A('system-witch'),
+
+  ...(WHICH_LINUX()[ 1 ] === 'pacman' && {
     'system-package-list-all': 'sudo pacman -Q',
     'system-package-list': 'sudo pacman -Qe', // explicitly installed
     'system-package-update': _E(
@@ -443,7 +446,7 @@ const SHELL_ALIAS_LIST = {
     }
   }),
 
-  ...(GET_LINUX_PACKAGE_MANAGER() === 'apt' && {
+  ...(WHICH_LINUX()[ 1 ] === 'apt' && {
     'system-package-list-all': 'sudo apt list --installed',
     'system-package-list': 'sudo apt-mark showmanual',
     'system-package-update': _E('sudo apt update', 'sudo apt upgrade -y', 'sudo apt autoremove --purge -y'),
@@ -454,14 +457,16 @@ const SHELL_ALIAS_LIST = {
     'system-reboot-required': () => [ 'echo', existsSync('/var/run/reboot-required') ? 'Reboot Required' : 'nope' ]
   }),
 
-  'SPLA': _A('system-package-list-all'),
-  'SPL': _A('system-package-list'),
-  'SPU': _A('system-package-update'),
-  'SPR': _A('system-package-remove'),
-  'SPI': _A('system-package-install'),
-  'SPPB': _A('system-package-provide-bin'),
-  'SPWHY': _A('system-package-why'),
-  'SRR': _A('system-reboot-required')
+  ...(WHICH_LINUX()[ 1 ] !== 'unknown-package-manager' && {
+    'SPLA': _A('system-package-list-all'),
+    'SPL': _A('system-package-list'),
+    'SPU': _A('system-package-update'),
+    'SPR': _A('system-package-remove'),
+    'SPI': _A('system-package-install'),
+    'SPPB': _A('system-package-provide-bin'),
+    'SPWHY': _A('system-package-why'),
+    'SRR': _A('system-reboot-required')
+  })
 }
 
 export { doShellAlias }
