@@ -27,6 +27,7 @@ const doVersionBump = async ({
     log && log('- update "package-lock.json"')
     const packageLockJSON = await readJSON(pathPackageLock)
     packageLockJSON.version = packageJSON.version
+    try { packageLockJSON[ 'packages' ][ '' ].version = packageJSON.version } catch (error) {} // for lockfile v3
     await writePackageJSON(pathPackageLock, packageLockJSON)
   } else pathPackageLock = ''
   if (isGitCommit) {
