@@ -66,19 +66,19 @@ const _E = (...baseList) => ({ E: baseList })
 const _A = (stringAlias, ...$List) => ({ A: stringAlias, $: $List })
 const _AE = (...stringAliasList) => ({ AE: stringAliasList })
 
-const IS_ANDROID_TERMUX = (process.env.PREFIX || '').includes('com.termux') // termux: https://www.reddit.com/r/termux/comments/co46qw/how_to_detect_in_a_bash_script_that_im_in_termux/ewi3fjj/
-const GET_LINUX_PACKAGE_MANAGER = () => { // LSB linux: https://serverfault.com/questions/879216/how-to-detect-linux-distribution-and-version/880087#880087
-  if (cacheLinuxPackageManage === undefined) {
-    const nameLinuxRelease = IS_ANDROID_TERMUX ? 'Android (Termux)'
-      : (existsSync('/etc/os-release') && (/(?:^|\s)"?NAME"?="?([\w/)( ]+)"?/.exec(readTextSync('/etc/os-release')) || [])[ 1 ]) || 'non-LSB'
-    cacheLinuxPackageManage = [ 'Arch Linux', 'Arch Linux ARM', 'Manjaro', 'Manjaro-ARM' ].includes(nameLinuxRelease) ? 'pacman'
-      : [ 'Ubuntu', 'Debian GNU/Linux', 'Raspbian GNU/Linux', 'Android (Termux)' ].includes(nameLinuxRelease) ? 'apt'
-        : 'unknown'
-    __DEV__ && console.log('GET_LINUX_PACKAGE_MANAGER', { nameLinuxRelease, cacheLinuxPackageManage })
+let __osRelease, __packageManager
+const WHICH_LINUX = () => { // systemd linux: http://0pointer.de/blog/projects/os-release
+  if (__packageManager === undefined) {
+    const textOsRelease = (process.env.PREFIX || '').includes('com.termux') ? 'Android (Termux)' // termux: https://www.reddit.com/r/termux/comments/co46qw/how_to_detect_in_a_bash_script_that_im_in_termux/ewi3fjj/
+      : withFallbackResult('', readTextSync, '/etc/os-release')
+    __osRelease = [ 'Arch', 'Manjaro', 'Debian', 'Ubuntu', 'Raspbian', 'Android (Termux)' ].filter((v) => textOsRelease.includes(v)).pop() || 'unknown-os-release'
+    __packageManager = [ 'Arch', 'Manjaro' ].includes(__osRelease) ? 'pacman'
+      : [ 'Debian', 'Ubuntu', 'Raspbian', 'Android (Termux)' ].includes(__osRelease) ? 'apt'
+        : 'unknown-package-manager'
+    __DEV__ && console.log('WHICH_LINUX', { __osRelease, __packageManager })
   }
-  return cacheLinuxPackageManage
+  return [ __osRelease, __packageManager ]
 }
-let cacheLinuxPackageManage
 
 const _RSS = (commandString) => String(runStdoutSync(commandString.split(' ').filter(Boolean))).trim()
 
@@ -217,8 +217,11 @@ const SHELL_ALIAS_LIST = {
     'npm-install': 'npm install',
     'npm-install-global': 'sudo npm install --global',
     'npm-install-global-npm-6': _A('npm-install-global', 'npm@6'),
+    'npm-install-global-npm-8': _A('npm-install-global', 'npm@8'),
     'npm-install-prefer-offline': 'npm install --prefer-offline',
     'npm-install-package-lock-only': 'npm install --package-lock-only',
+    'npm-uninstall': 'npm uninstall',
+    'npm-uninstall-global': 'sudo npm uninstall --global',
     'npm-outdated': 'npm outdated',
     'npm-dedup-install': [ 'npm ddp', 'npm install --prefer-offline' ],
     'npm-audit': 'npm audit',
@@ -229,13 +232,50 @@ const SHELL_ALIAS_LIST = {
     'NI': _A('npm-install'),
     'NIG': _A('npm-install-global'),
     'NIGN6': _A('npm-install-global-npm-6'),
+    'NIGN8': _A('npm-install-global-npm-8'),
     'NIO': _A('npm-install-prefer-offline'),
     'NIPLO': _A('npm-install-package-lock-only'),
+    'NU': _A('npm-uninstall'),
+    'NUG': _A('npm-uninstall-global'),
     'NO': _A('npm-outdated'),
     'NDI': _A('npm-dedup-install'),
     'NA': _A('npm-audit'),
     'NAF': _A('npm-audit-fix'),
     'NR': _A('npm-run')
+  },
+
+  // =============================
+  // npm8 aliases (N8*) (from `@min-pack/npm`)
+  ...{
+    'npm8-list-global': 'npm8 ls --global --depth=0',
+    'npm8-install': 'npm8 install',
+    'npm8-install-global': 'sudo npm8 install --global',
+    'npm8-install-global-npm-6': _A('npm8-install-global', 'npm@6'),
+    'npm8-install-global-npm-8': _A('npm8-install-global', 'npm@8'),
+    'npm8-install-prefer-offline': 'npm8 install --prefer-offline',
+    'npm8-install-package-lock-only': 'npm8 install --package-lock-only',
+    'npm8-uninstall': 'npm8 uninstall',
+    'npm8-uninstall-global': 'sudo npm8 uninstall --global',
+    'npm8-outdated': 'npm8 outdated',
+    'npm8-dedup-install': [ 'npm8 ddp', 'npm8 install --prefer-offline' ],
+    'npm8-audit': 'npm8 audit',
+    'npm8-audit-fix': 'npm8 audit fix',
+    'npm8-run': 'npm8 run',
+
+    'N8LSG': _A('npm8-list-global'),
+    'N8I': _A('npm8-install'),
+    'N8IG': _A('npm8-install-global'),
+    'N8IGN6': _A('npm8-install-global-npm-6'),
+    'N8IGN8': _A('npm8-install-global-npm-8'),
+    'N8IO': _A('npm8-install-prefer-offline'),
+    'N8IPLO': _A('npm8-install-package-lock-only'),
+    'N8U': _A('npm8-uninstall'),
+    'N8UG': _A('npm8-uninstall-global'),
+    'N8O': _A('npm8-outdated'),
+    'N8DI': _A('npm8-dedup-install'),
+    'N8A': _A('npm8-audit'),
+    'N8AF': _A('npm8-audit-fix'),
+    'N8R': _A('npm8-run')
   },
 
   // =============================
@@ -415,7 +455,10 @@ const SHELL_ALIAS_LIST = {
   //
   // =============================
   // system aliases (S*)
-  ...(GET_LINUX_PACKAGE_MANAGER() === 'pacman' && {
+  'system-witch': () => [ 'echo', ...WHICH_LINUX() ],
+  'SW': _A('system-witch'),
+
+  ...(WHICH_LINUX()[ 1 ] === 'pacman' && {
     'system-package-list-all': 'sudo pacman -Q',
     'system-package-list': 'sudo pacman -Qe', // explicitly installed
     'system-package-update': _E(
@@ -443,7 +486,7 @@ const SHELL_ALIAS_LIST = {
     }
   }),
 
-  ...(GET_LINUX_PACKAGE_MANAGER() === 'apt' && {
+  ...(WHICH_LINUX()[ 1 ] === 'apt' && {
     'system-package-list-all': 'sudo apt list --installed',
     'system-package-list': 'sudo apt-mark showmanual',
     'system-package-update': _E('sudo apt update', 'sudo apt upgrade -y', 'sudo apt autoremove --purge -y'),
@@ -454,14 +497,16 @@ const SHELL_ALIAS_LIST = {
     'system-reboot-required': () => [ 'echo', existsSync('/var/run/reboot-required') ? 'Reboot Required' : 'nope' ]
   }),
 
-  'SPLA': _A('system-package-list-all'),
-  'SPL': _A('system-package-list'),
-  'SPU': _A('system-package-update'),
-  'SPR': _A('system-package-remove'),
-  'SPI': _A('system-package-install'),
-  'SPPB': _A('system-package-provide-bin'),
-  'SPWHY': _A('system-package-why'),
-  'SRR': _A('system-reboot-required')
+  ...(WHICH_LINUX()[ 1 ] !== 'unknown-package-manager' && {
+    'SPLA': _A('system-package-list-all'),
+    'SPL': _A('system-package-list'),
+    'SPU': _A('system-package-update'),
+    'SPR': _A('system-package-remove'),
+    'SPI': _A('system-package-install'),
+    'SPPB': _A('system-package-provide-bin'),
+    'SPWHY': _A('system-package-why'),
+    'SRR': _A('system-reboot-required')
+  })
 }
 
 export { doShellAlias }
