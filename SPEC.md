@@ -124,13 +124,15 @@
 >   --shell-alias --SA --A -A [OPTIONAL] [ARGUMENT=1+]
 >       run shell alias: $@=aliasName,...aliasArgList
 >   --version-bump-git-branch --VBGB [OPTIONAL] [ARGUMENT=0-1]
->       bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $0=gitBranch/current
+>       bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $GIT_MAJOR_BRANCH=master,main,major,...
 >   --version-bump-last-number --VBLN [OPTIONAL] [ARGUMENT=0-1]
 >       bump the last number found in package version: -G, -D
 >   --version-bump-to-identifier --VBTI [OPTIONAL] [ARGUMENT=0-1]
 >       bump package version to identifier: -G, -D, $0=labelIdentifier/dev
 >   --version-bump-to-local --VBTL [OPTIONAL] [ARGUMENT=0-1]
 >       bump package version to append identifier "local", for local testing: -G, -D
+>   --version-bump-to-major --VBTM [OPTIONAL] [ARGUMENT=0-1]
+>       bump package version and drop label: -G, -D
 >   --package-trim-node-modules --PTNM [OPTIONAL] [ARGUMENT=1+]
 >       trim common doc/test/config in "node_modules/": $@=...pathList
 >   --package-trim-ruby-gem --PTRG [OPTIONAL] [ARGUMENT=1+]
@@ -227,6 +229,7 @@
 >     export DR_DEV_VERSION_BUMP_LAST_NUMBER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBLN]"
 >     export DR_DEV_VERSION_BUMP_TO_IDENTIFIER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTI]"
 >     export DR_DEV_VERSION_BUMP_TO_LOCAL="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTL]"
+>     export DR_DEV_VERSION_BUMP_TO_MAJOR="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTM]"
 >     export DR_DEV_PACKAGE_TRIM_NODE_MODULES="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTNM]"
 >     export DR_DEV_PACKAGE_TRIM_RUBY_GEM="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTRG]"
 >     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
@@ -283,6 +286,7 @@
 >     "versionBumpLastNumber": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBLN]" ],
 >     "versionBumpToIdentifier": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTI]" ],
 >     "versionBumpToLocal": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTL]" ],
+>     "versionBumpToMajor": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTM]" ],
 >     "packageTrimNodeModules": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTNM]" ],
 >     "packageTrimRubyGem": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTRG]" ],
 >     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
