@@ -53,15 +53,15 @@ const doShellAlias = async ({
   runAliasName(aliasName, aliasArgList)
 }
 
-// base: when single command run, append `argList` if any
-//   [ stringArg ]: direct run without shell
-//   stringCommand: split by " " to get `[ stringArg ]`
-// extend:
-//   { E: [ base ] }: run each without shell
-// generated:
-//   (...argList) => base|extend: generated command
-//   { A: stringAlias, $: [] }: run base alias and append `$`
-//   { AE: [ stringAlias ] }: run each alias
+// @base: when single command run, append `argList` if any
+//   [ "stringArg" ]: direct run without shell
+//   "stringCommand with space": split by " " to get `[ stringArg ]`
+// @extend:
+//   { E: [ @base ] }: run each without shell
+// @generated:
+//   (...argList) => @base|@extend: generated command
+//   { A: "stringAlias", $: [ ...argList ] }: run alias and append `$`
+//   { AE: [ "stringAlias" ] }: run each alias
 const _E = (...baseList) => ({ E: baseList })
 const _A = (stringAlias, ...$List) => ({ A: stringAlias, $: $List })
 const _AE = (...stringAliasList) => ({ AE: stringAliasList })
@@ -202,7 +202,7 @@ const SHELL_ALIAS_LIST = {
     'systemd-resolve-flush-caches': 'sudo systemd-resolve --flush-caches',
     'systemd-resolve-statistics': 'sudo systemd-resolve --statistics',
     'systemd-resolvectl-status': 'sudo resolvectl status',
-    'systemd-journalctl-vacuum': [ 'sudo journalctl --flush --rotate', 'sudo journalctl --vacuum-size=0.5G' ],
+    'systemd-journalctl-vacuum': _E('sudo journalctl --flush --rotate', 'sudo journalctl --vacuum-size=0.5G'),
 
     'SRFC': _A('systemd-resolve-flush-caches'),
     'SRS': _A('systemd-resolve-statistics'),
