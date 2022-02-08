@@ -74,7 +74,7 @@
 + 📄 [source/node/config/Output.js](source/node/config/Output.js)
   - `outputConfig`, `outputConfigMap`
 + 📄 [source/node/config/YAML.js](source/node/config/YAML.js)
-  - `GET_YAML`, `USE_YAML`, `parseYAML`, `readYAML`, `stringifyYAML`, `writeYAML`
+  - `GET_YAML`, `USE_YAML`, `parseYAML`, `readYAML`, `readYAMLSync`, `stringifyYAML`, `writeYAML`, `writeYAMLSync`
 + 📄 [source/node/export/generate.js](source/node/export/generate.js)
   - `EXPORT_HOIST_LIST_KEY`, `EXPORT_LIST_KEY`, `HOIST_LIST_KEY`, `generateExportInfo`, `generateIndexScript`
 + 📄 [source/node/export/parse.js](source/node/export/parse.js)

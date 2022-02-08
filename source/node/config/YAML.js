@@ -1,5 +1,5 @@
 import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
-import { readText, writeText } from '@dr-js/core/module/node/fs/File.js'
+import { readText, writeText, readTextSync, writeTextSync } from '@dr-js/core/module/node/fs/File.js'
 
 const GET_YAML = (log = console.warn) => {
   const YAML = tryRequire('yaml')
@@ -20,10 +20,12 @@ const parseYAML = (string) => __YAML__().parse(string)
 const stringifyYAML = (value) => __YAML__().stringify(value)
 
 const readYAML = async (path) => parseYAML(await readText(path))
+const readYAMLSync = (path) => parseYAML(readTextSync(path))
 const writeYAML = async (path, value) => writeText(path, stringifyYAML(value))
+const writeYAMLSync = (path, value) => writeTextSync(path, stringifyYAML(value))
 
 export {
   GET_YAML, USE_YAML,
   parseYAML, stringifyYAML,
-  readYAML, writeYAML
+  readYAML, readYAMLSync, writeYAML, writeYAMLSync
 }
