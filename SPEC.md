@@ -33,6 +33,10 @@
   - `createTransformCacheWithInfo`, `hijackSetTimeoutInterval`
 + 📄 [source/common/test.js](source/common/test.js)
   - `createTest`
++ 📄 [source/common/config/Nginx.js](source/common/config/Nginx.js)
+  - `COMBO_BROTLI`, `COMBO_BROTLI_STATIC`, `COMBO_COMPRESS`, `COMBO_COMPRESS_STATIC`, `COMBO_GZIP`, `COMBO_GZIP_STATIC`, `COMBO_MIME`, `COMMON_COMPRESS_MIME_LIST`, `COMMON_MIME_MAP`, `DEFAULT_MIME`, `stringifyNginxConf`
++ 📄 [source/common/config/Object.js](source/common/config/Object.js)
+  - `FLAVOR_SEPARATOR`, `SECRET_PREFIX`, `mergeFlavor`, `pickFlavor`, `useFlavor`, `useSecret`
 + 📄 [source/common/packageJSON/Version.js](source/common/packageJSON/Version.js)
   - `isVersionSpecComplex`, `versionBumpByGitBranch`, `versionBumpLastNumber`, `versionBumpToIdentifier`, `versionBumpToLocal`
 + 📄 [source/common/packageJSON/function.js](source/common/packageJSON/function.js)

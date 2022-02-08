@@ -4,6 +4,8 @@ import { dupJSON } from '@dr-js/core/module/common/data/function.js'
 import { createTreeDepthFirstSearch } from '@dr-js/core/module/common/data/Tree.js'
 import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object.js'
 
+const FLAVOR_SEPARATOR = '|'
+
 const pickFlavor = (
   object = {},
   flavorConfig = {},
@@ -12,7 +14,7 @@ const pickFlavor = (
 ) => {
   const objectList = [ dupJSON(object) ]
   for (const [ keyOrCombo, flavorValue ] of Object.entries(flavorConfig)) {
-    const keyList = keyOrCombo.split('|')
+    const keyList = keyOrCombo.split(FLAVOR_SEPARATOR)
     keyList.forEach((key) => flavorSet.add(key))
     if (!keyList.includes(flavorKey)) continue
     if (!isBasicObject(flavorValue)) throw new Error(`invalid flavorValue of ${keyOrCombo}`)
@@ -69,6 +71,6 @@ const getPathValue = (object, keyPath) => {
 }
 
 export {
-  pickFlavor, mergeFlavor, useFlavor,
+  FLAVOR_SEPARATOR, pickFlavor, mergeFlavor, useFlavor,
   SECRET_PREFIX, useSecret
 }
