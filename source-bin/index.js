@@ -48,7 +48,10 @@ const runMode = async (optionData, modeName) => {
       })
 
     case 'version-bump-git-branch':
-      return doVersionBump(await commonVersionBump(versionBumpByGitBranch, { isMajorBranch: [ 'master', 'main', 'major', ...(process.env.GIT_MAJOR_BRANCH || '').split(',').map((v) => v.trim()) ].includes(getGitBranch()) }))
+      return doVersionBump(await commonVersionBump(versionBumpByGitBranch, {
+        gitBranch: getGitBranch(),
+        getIsMajorBranch: (gitBranch) => `master,main,major,${(process.env.GIT_MAJOR_BRANCH || '')}`.split(',').map((v) => v.trim()).filter(Boolean).includes(gitBranch)
+      }))
     case 'version-bump-last-number':
       return doVersionBump(await commonVersionBump(versionBumpLastNumber))
     case 'version-bump-to-identifier':
