@@ -53,15 +53,15 @@ const doShellAlias = async ({
   runAliasName(aliasName, aliasArgList)
 }
 
-// base: when single command run, append `argList` if any
-//   [ stringArg ]: direct run without shell
-//   stringCommand: split by " " to get `[ stringArg ]`
-// extend:
-//   { E: [ base ] }: run each without shell
-// generated:
-//   (...argList) => base|extend: generated command
-//   { A: stringAlias, $: [] }: run base alias and append `$`
-//   { AE: [ stringAlias ] }: run each alias
+// @base: when single command run, append `argList` if any
+//   [ "stringArg" ]: direct run without shell
+//   "stringCommand with space": split by " " to get `[ stringArg ]`
+// @extend:
+//   { E: [ @base ] }: run each without shell
+// @generated:
+//   (...argList) => @base|@extend: generated command
+//   { A: "stringAlias", $: [ ...argList ] }: run alias and append `$`
+//   { AE: [ "stringAlias" ] }: run each alias
 const _E = (...baseList) => ({ E: baseList })
 const _A = (stringAlias, ...$List) => ({ A: stringAlias, $: $List })
 const _AE = (...stringAliasList) => ({ AE: stringAliasList })
@@ -202,7 +202,7 @@ const SHELL_ALIAS_LIST = {
     'systemd-resolve-flush-caches': 'sudo systemd-resolve --flush-caches',
     'systemd-resolve-statistics': 'sudo systemd-resolve --statistics',
     'systemd-resolvectl-status': 'sudo resolvectl status',
-    'systemd-journalctl-vacuum': [ 'sudo journalctl --flush --rotate', 'sudo journalctl --vacuum-size=0.5G' ],
+    'systemd-journalctl-vacuum': _E('sudo journalctl --flush --rotate', 'sudo journalctl --vacuum-size=0.5G'),
 
     'SRFC': _A('systemd-resolve-flush-caches'),
     'SRS': _A('systemd-resolve-statistics'),
@@ -245,7 +245,7 @@ const SHELL_ALIAS_LIST = {
   },
 
   // =============================
-  // npm8 aliases (N8*) (from `@min-pack/npm`)
+  // npm8 aliases (NN*) (from `@min-pack/npm`)
   ...{
     'npm8-list-global': 'npm8 ls --global --depth=0',
     'npm8-install': 'npm8 install',
@@ -262,20 +262,20 @@ const SHELL_ALIAS_LIST = {
     'npm8-audit-fix': 'npm8 audit fix',
     'npm8-run': 'npm8 run',
 
-    'N8LSG': _A('npm8-list-global'),
-    'N8I': _A('npm8-install'),
-    'N8IG': _A('npm8-install-global'),
-    'N8IGN6': _A('npm8-install-global-npm-6'),
-    'N8IGN8': _A('npm8-install-global-npm-8'),
-    'N8IO': _A('npm8-install-prefer-offline'),
-    'N8IPLO': _A('npm8-install-package-lock-only'),
-    'N8U': _A('npm8-uninstall'),
-    'N8UG': _A('npm8-uninstall-global'),
-    'N8O': _A('npm8-outdated'),
-    'N8DI': _A('npm8-dedup-install'),
-    'N8A': _A('npm8-audit'),
-    'N8AF': _A('npm8-audit-fix'),
-    'N8R': _A('npm8-run')
+    'NNLSG': _A('npm8-list-global'),
+    'NNI': _A('npm8-install'),
+    'NNIG': _A('npm8-install-global'),
+    'NNIGN6': _A('npm8-install-global-npm-6'),
+    'NNIGN8': _A('npm8-install-global-npm-8'),
+    'NNIO': _A('npm8-install-prefer-offline'),
+    'NNIPLO': _A('npm8-install-package-lock-only'),
+    'NNU': _A('npm8-uninstall'),
+    'NNUG': _A('npm8-uninstall-global'),
+    'NNO': _A('npm8-outdated'),
+    'NNDI': _A('npm8-dedup-install'),
+    'NNA': _A('npm8-audit'),
+    'NNAF': _A('npm8-audit-fix'),
+    'NNR': _A('npm8-run')
   },
 
   // =============================
@@ -369,14 +369,6 @@ const SHELL_ALIAS_LIST = {
   'SL': _A('screen-list'),
 
   // =============================
-  // nano aliases (NN*)
-  'nano-reset': ($1) => _E( // $1=file-to-reset-and-edit
-    [ 'truncate', '--size=0', $1 ],
-    [ 'nano', $1 ]
-  ),
-  'NNR': _A('nano-reset'),
-
-  // =============================
   // quick aliases (Q*)
   'quick-dd-random': ($1 = '100') => [ 'dd', 'bs=1048576', `count=${$1}`, 'if=/dev/urandom', `of=./RANDOM-${$1}MiB` ], // $1=size-in-MiB-default-to-100
   'quick-shutdown': 'sudo shutdown 0',
@@ -413,6 +405,10 @@ const SHELL_ALIAS_LIST = {
   },
   'quick-git-push-combo': _AE('git-push', 'quick-git-tag-push'),
   'quick-git-push-combo-force': _AE('git-push-force', 'quick-git-tag-push-force'),
+  'quick-nano-reset': ($1) => _E( // $1=file-to-reset-and-edit
+    [ 'truncate', '--size=0', $1 ],
+    [ 'nano', $1 ]
+  ),
 
   'QDDR': _A('quick-dd-random'),
   'QSHUTDOWN': _A('quick-shutdown'),
@@ -432,6 +428,7 @@ const SHELL_ALIAS_LIST = {
   'QGTPF': _A('quick-git-tag-push-force'),
   'QGPC': _A('quick-git-push-combo'),
   'QGPCF': _A('quick-git-push-combo-force'),
+  'QNR': _A('quick-nano-reset'),
 
   // =============================
   // @dr-js aliases (D*)

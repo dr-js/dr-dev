@@ -10,10 +10,11 @@ const MODE_FORMAT_LIST = parseCompactList(
   'shell-alias,SA,A/AS,O|run shell alias: $@=aliasName,...aliasArgList',
 
   // version-bump
-  'version-bump-git-branch,VBGB/T|bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $0=gitBranch/current',
+  'version-bump-git-branch,VBGB/T|bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $GIT_MAJOR_BRANCH=master,main,major,...',
   'version-bump-last-number,VBLN/T|bump the last number found in package version: -G, -D',
   'version-bump-to-identifier,VBTI/AS,O/0-1|bump package version to identifier: -G, -D, $0=labelIdentifier/dev',
   'version-bump-to-local,VBTL/T|bump package version to append identifier "local", for local testing: -G, -D',
+  'version-bump-to-major,VBTM/T|bump package version and drop label: -G, -D',
 
   // trim
   'package-trim-node-modules,PTNM/AP,O|trim common doc/test/config in "node_modules/": $@=...pathList',

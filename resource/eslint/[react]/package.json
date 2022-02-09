@@ -8,6 +8,6 @@
   ],
   "dependencies": {
     "eslint-plugin-react": "^7.28.0",
-    "@babel/eslint-parser": "^7.16.5"
+    "@babel/eslint-parser": "^7.17.0"
   }
 }

@@ -33,6 +33,10 @@
   - `createTransformCacheWithInfo`, `hijackSetTimeoutInterval`
 + 📄 [source/common/test.js](source/common/test.js)
   - `createTest`
++ 📄 [source/common/config/Nginx.js](source/common/config/Nginx.js)
+  - `COMBO_BROTLI`, `COMBO_BROTLI_STATIC`, `COMBO_COMPRESS`, `COMBO_COMPRESS_STATIC`, `COMBO_GZIP`, `COMBO_GZIP_STATIC`, `COMBO_MIME`, `COMMON_COMPRESS_MIME_LIST`, `COMMON_MIME_MAP`, `DEFAULT_MIME`, `stringifyNginxConf`
++ 📄 [source/common/config/Object.js](source/common/config/Object.js)
+  - `FLAVOR_SEPARATOR`, `SECRET_PREFIX`, `mergeFlavor`, `pickFlavor`, `useFlavor`, `useSecret`
 + 📄 [source/common/packageJSON/Version.js](source/common/packageJSON/Version.js)
   - `isVersionSpecComplex`, `versionBumpByGitBranch`, `versionBumpLastNumber`, `versionBumpToIdentifier`, `versionBumpToLocal`
 + 📄 [source/common/packageJSON/function.js](source/common/packageJSON/function.js)
@@ -70,7 +74,7 @@
 + 📄 [source/node/config/Output.js](source/node/config/Output.js)
   - `outputConfig`, `outputConfigMap`
 + 📄 [source/node/config/YAML.js](source/node/config/YAML.js)
-  - `GET_YAML`, `USE_YAML`, `parseYAML`, `readYAML`, `stringifyYAML`, `writeYAML`
+  - `GET_YAML`, `USE_YAML`, `parseYAML`, `readYAML`, `readYAMLSync`, `stringifyYAML`, `writeYAML`, `writeYAMLSync`
 + 📄 [source/node/export/generate.js](source/node/export/generate.js)
   - `EXPORT_HOIST_LIST_KEY`, `EXPORT_LIST_KEY`, `HOIST_LIST_KEY`, `generateExportInfo`, `generateIndexScript`
 + 📄 [source/node/export/parse.js](source/node/export/parse.js)
@@ -124,13 +128,15 @@
 >   --shell-alias --SA --A -A [OPTIONAL] [ARGUMENT=1+]
 >       run shell alias: $@=aliasName,...aliasArgList
 >   --version-bump-git-branch --VBGB [OPTIONAL] [ARGUMENT=0-1]
->       bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $0=gitBranch/current
+>       bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $GIT_MAJOR_BRANCH=master,main,major,...
 >   --version-bump-last-number --VBLN [OPTIONAL] [ARGUMENT=0-1]
 >       bump the last number found in package version: -G, -D
 >   --version-bump-to-identifier --VBTI [OPTIONAL] [ARGUMENT=0-1]
 >       bump package version to identifier: -G, -D, $0=labelIdentifier/dev
 >   --version-bump-to-local --VBTL [OPTIONAL] [ARGUMENT=0-1]
 >       bump package version to append identifier "local", for local testing: -G, -D
+>   --version-bump-to-major --VBTM [OPTIONAL] [ARGUMENT=0-1]
+>       bump package version and drop label: -G, -D
 >   --package-trim-node-modules --PTNM [OPTIONAL] [ARGUMENT=1+]
 >       trim common doc/test/config in "node_modules/": $@=...pathList
 >   --package-trim-ruby-gem --PTRG [OPTIONAL] [ARGUMENT=1+]
@@ -227,6 +233,7 @@
 >     export DR_DEV_VERSION_BUMP_LAST_NUMBER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBLN]"
 >     export DR_DEV_VERSION_BUMP_TO_IDENTIFIER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTI]"
 >     export DR_DEV_VERSION_BUMP_TO_LOCAL="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTL]"
+>     export DR_DEV_VERSION_BUMP_TO_MAJOR="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTM]"
 >     export DR_DEV_PACKAGE_TRIM_NODE_MODULES="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTNM]"
 >     export DR_DEV_PACKAGE_TRIM_RUBY_GEM="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTRG]"
 >     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
@@ -283,6 +290,7 @@
 >     "versionBumpLastNumber": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBLN]" ],
 >     "versionBumpToIdentifier": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTI]" ],
 >     "versionBumpToLocal": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTL]" ],
+>     "versionBumpToMajor": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTM]" ],
 >     "packageTrimNodeModules": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTNM]" ],
 >     "packageTrimRubyGem": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTRG]" ],
 >     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
@@ -328,24 +336,24 @@
 
 | Package name                   |     Version |
 | :----                          |       ----: |
-| @babel/cli                     |     ^7.16.8 |
-| @babel/core                    |     ^7.16.7 |
-| @babel/eslint-parser           |     ^7.16.5 |
-| @babel/preset-env              |     ^7.16.8 |
+| @babel/cli                     |     ^7.17.0 |
+| @babel/core                    |     ^7.17.2 |
+| @babel/eslint-parser           |     ^7.17.0 |
+| @babel/preset-env              |    ^7.16.11 |
 | @babel/preset-react            |     ^7.16.7 |
-| @babel/register                |     ^7.16.9 |
+| @babel/register                |     ^7.17.0 |
 | babel-loader                   |      ^8.2.3 |
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |      ^2.0.2 |
-| eslint                         |      ^8.7.0 |
+| eslint                         |      ^8.8.0 |
 | eslint-plugin-import           |     ^2.25.4 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^6.0.0 |
 | eslint-plugin-react            |     ^7.28.0 |
 | prop-types                     |     ^15.8.1 |
-| puppeteer                      |     ^13.0.1 |
+| puppeteer                      |     ^13.2.0 |
 | react                          |     ^17.0.2 |
 | styled-components              |      ^5.3.3 |
 | terser                         |     ^5.10.0 |
-| webpack                        |     ^5.66.0 |
+| webpack                        |     ^5.68.0 |

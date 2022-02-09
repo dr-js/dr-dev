@@ -1,74 +1,18 @@
-import { typeNameOf } from '@dr-js/core/module/common/format.js'
-import { isBasicObject, isString } from '@dr-js/core/module/common/check.js'
-import { dupJSON } from '@dr-js/core/module/common/data/function.js'
-import { createTreeDepthFirstSearch } from '@dr-js/core/module/common/data/Tree.js'
-import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object.js'
-
-const pickFlavor = (
-  object = {},
-  flavorConfig = {},
-  flavorKey = '',
-  flavorSet = new Set() // to collect flavorKey in flavorConfig, for later check
-) => {
-  const objectList = [ dupJSON(object) ]
-  for (const [ keyOrCombo, flavorValue ] of Object.entries(flavorConfig)) {
-    const keyList = keyOrCombo.split('|')
-    keyList.forEach((key) => flavorSet.add(key))
-    if (!keyList.includes(flavorKey)) continue
-    if (!isBasicObject(flavorValue)) throw new Error(`invalid flavorValue of ${keyOrCombo}`)
-    objectList.push(flavorValue)
-  }
-  return objectList
-}
-
-const mergeFlavor = (objectList) => objectList.reduce((o, object) => objectMergeDeep(o, object), {})
-
-const useFlavor = (
-  object = {},
-  flavorConfig = {},
-  flavorKey = '',
-  flavorSet = new Set() // to collect flavorKey in flavorConfig, for later check
-) => mergeFlavor(pickFlavor(
-  object,
-  flavorConfig,
-  flavorKey,
-  flavorSet
-))
-
-const SECRET_PREFIX = '@@.'
-
-const useSecret = (
-  object = {},
-  secretConfig = {},
-  onSecret = (secretPath, valueType) => {} // for log
-) => {
-  object = dupJSON(object)
-  objectDFS(
-    [ null, '', object ],
-    ([ upValue, key, value ]) => {
-      if (!isString(value) || !value.startsWith(SECRET_PREFIX)) return
-      const secretValue = getPathValue(secretConfig, value.split('.').slice(1))
-      if (secretValue === undefined) throw new Error(`expect secret: ${value}`) // NOTE: can't use undefined as secret value
-      onSecret(value, typeNameOf(secretValue))
-      upValue[ key ] = secretValue
-    }
-  )
-  return object
-}
-const objectDFS = createTreeDepthFirstSearch(([ upValue, key, value ]) => {
-  if (!isBasicObject(value)) return
-  return Object.entries(value).map(([ subKey, subValue ]) => [ value, subKey, subValue ])
-})
-const getPathValue = (object, keyPath) => {
-  let index = 0
-  while (isBasicObject(object) && keyPath[ index ]) {
-    object = object[ keyPath[ index ] ]
-    index++
-  }
-  return object
-}
-
-export {
+import {
   pickFlavor, mergeFlavor, useFlavor,
   SECRET_PREFIX, useSecret
+} from 'source/common/config/Object.js'
+
+/** @deprecated */ const pickFlavorExport = pickFlavor // TODO: DEPRECATE
+/** @deprecated */ const mergeFlavorExport = mergeFlavor // TODO: DEPRECATE
+/** @deprecated */ const useFlavorExport = useFlavor // TODO: DEPRECATE
+/** @deprecated */ const SECRET_PREFIX_EXPORT = SECRET_PREFIX // TODO: DEPRECATE
+/** @deprecated */ const useSecretExport = useSecret // TODO: DEPRECATE
+
+export {
+  pickFlavorExport as pickFlavor,
+  mergeFlavorExport as mergeFlavor,
+  useFlavorExport as useFlavor,
+  SECRET_PREFIX_EXPORT as SECRET_PREFIX,
+  useSecretExport as useSecret
 }

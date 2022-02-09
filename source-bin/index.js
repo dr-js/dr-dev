@@ -48,16 +48,15 @@ const runMode = async (optionData, modeName) => {
       })
 
     case 'version-bump-git-branch':
-      return doVersionBump(await commonVersionBump(versionBumpByGitBranch, {
-        gitBranch: getGitBranch(),
-        getIsMajorBranch: (gitBranch) => [ 'master', 'main', ...(process.env.GIT_MAJOR_BRANCH || '').split(',').map((v) => v.trim()) ].includes(gitBranch)
-      }))
+      return doVersionBump(await commonVersionBump(versionBumpByGitBranch, { isMajorBranch: [ 'master', 'main', 'major', ...(process.env.GIT_MAJOR_BRANCH || '').split(',').map((v) => v.trim()) ].includes(getGitBranch()) }))
     case 'version-bump-last-number':
       return doVersionBump(await commonVersionBump(versionBumpLastNumber))
     case 'version-bump-to-identifier':
       return doVersionBump(await commonVersionBump(versionBumpToIdentifier, { identifier: argumentList[ 0 ] || 'dev' }))
     case 'version-bump-to-local':
       return doVersionBump(await commonVersionBump(versionBumpToLocal))
+    case 'version-bump-to-major':
+      return doVersionBump(await commonVersionBump(versionBumpByGitBranch, { isMajorBranch: true }))
 
     case 'package-trim-node-modules':
       return doPackageTrimNodeModules({ pathList: argumentList, log })
