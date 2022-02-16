@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SCRIPT_PATH="$(dirname "$(realpath "${BASH_SOURCE[0]}")")" # Absolute directory path this script is in
+SCRIPT_PATH="$(node -p "path.resolve(path.dirname(process.argv[ 1 ]))" "${BASH_SOURCE[0]}")" # Absolute directory path this script is in
 
 echo "@@ os: $(node -p "process.platform + '-' + process.arch")"
 echo "@@ node: $(node --version)"
