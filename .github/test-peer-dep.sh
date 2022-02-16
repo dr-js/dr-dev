@@ -37,9 +37,9 @@ cat > "${SCRIPT_PATH}/test/test-install/package.json" << 'EOL'
 }
 EOL
 
-cp -aT "${SCRIPT_PATH}/test/test-install/" "${SCRIPT_PATH}/test/test-install-0/"
-cp -aT "${SCRIPT_PATH}/test/test-install/" "${SCRIPT_PATH}/test/test-install-1/"
-cp -aT "${SCRIPT_PATH}/test/test-install/" "${SCRIPT_PATH}/test/test-install-2/"
+cp -a "${SCRIPT_PATH}/test/test-install/" "${SCRIPT_PATH}/test/test-install-0/"
+cp -a "${SCRIPT_PATH}/test/test-install/" "${SCRIPT_PATH}/test/test-install-1/"
+cp -a "${SCRIPT_PATH}/test/test-install/" "${SCRIPT_PATH}/test/test-install-2/"
 
 ( cd "${SCRIPT_PATH}/test/test-install-0/"
   npm install --strict-peer-deps
