@@ -245,40 +245,6 @@ const SHELL_ALIAS_LIST = {
   },
 
   // =============================
-  // npm8 aliases (NN*) (from `@min-pack/npm`)
-  ...{
-    'npm8-list-global': 'npm8 ls --global --depth=0',
-    'npm8-install': 'npm8 install',
-    'npm8-install-global': 'sudo npm8 install --global',
-    'npm8-install-global-npm-6': _A('npm8-install-global', 'npm@6'),
-    'npm8-install-global-npm-8': _A('npm8-install-global', 'npm@8'),
-    'npm8-install-prefer-offline': 'npm8 install --prefer-offline',
-    'npm8-install-package-lock-only': 'npm8 install --package-lock-only',
-    'npm8-uninstall': 'npm8 uninstall',
-    'npm8-uninstall-global': 'sudo npm8 uninstall --global',
-    'npm8-outdated': 'npm8 outdated',
-    'npm8-dedup-install': [ 'npm8 ddp', 'npm8 install --prefer-offline' ],
-    'npm8-audit': 'npm8 audit',
-    'npm8-audit-fix': 'npm8 audit fix',
-    'npm8-run': 'npm8 run',
-
-    'NNLSG': _A('npm8-list-global'),
-    'NNI': _A('npm8-install'),
-    'NNIG': _A('npm8-install-global'),
-    'NNIGN6': _A('npm8-install-global-npm-6'),
-    'NNIGN8': _A('npm8-install-global-npm-8'),
-    'NNIO': _A('npm8-install-prefer-offline'),
-    'NNIPLO': _A('npm8-install-package-lock-only'),
-    'NNU': _A('npm8-uninstall'),
-    'NNUG': _A('npm8-uninstall-global'),
-    'NNO': _A('npm8-outdated'),
-    'NNDI': _A('npm8-dedup-install'),
-    'NNA': _A('npm8-audit'),
-    'NNAF': _A('npm8-audit-fix'),
-    'NNR': _A('npm8-run')
-  },
-
-  // =============================
   // docker aliases (DC*,DI*,DV*)
   ...{
     'docker-container-run': 'sudo docker container run',

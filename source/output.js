@@ -1,6 +1,6 @@
 import { ok } from 'assert'
 import { statSync } from 'fs'
-import { binary } from '@dr-js/core/module/common/format.js'
+import { binary, describe } from '@dr-js/core/module/common/format.js'
 import { indentLineList } from '@dr-js/core/module/common/string.js'
 import { isBasicObject } from '@dr-js/core/module/common/check.js'
 import { getFirstBinPath, toPackageTgzName } from '@dr-js/core/module/common/module/PackageJSON.js'
@@ -41,6 +41,7 @@ const initOutput = async ({
   fromRoot = kit && kit.fromRoot,
 
   deleteKeyList = [ 'private', 'scripts', 'devExecCommands', 'devDependencies' ],
+  extraEntryMap = {},
   copyPathList = [ 'README.md' ],
   copyMapPathList = [],
   replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip
@@ -52,8 +53,13 @@ const initOutput = async ({
   kitLogger.padLog('init output package.json')
   const packageJSON = require(fromRoot('package.json'))
   for (const deleteKey of deleteKeyList) {
-    delete packageJSON[ deleteKey ]
     kitLogger.log(`dropped key: ${deleteKey}`)
+    delete packageJSON[ deleteKey ]
+  }
+  for (const [ key, value ] of Object.entries(extraEntryMap)) {
+    if (packageJSON[ key ] !== undefined) kitLogger.log(`changed key: ${key} (from ${describe(packageJSON[ key ])} to ${describe(value)})`)
+    else kitLogger.log(`added key: ${key} (${describe(value)})`)
+    packageJSON[ key ] = value
   }
   writeJSONSync(fromOutput('package.json'), packageJSON)
 
