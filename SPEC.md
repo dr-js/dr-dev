@@ -345,12 +345,12 @@
 | babel-loader                   |      ^8.2.3 |
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
-| babel-plugin-styled-components |      ^2.0.5 |
-| eslint                         |      ^8.9.0 |
+| babel-plugin-styled-components |      ^2.0.6 |
+| eslint                         |     ^8.10.0 |
 | eslint-plugin-import           |     ^2.25.4 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^6.0.0 |
-| eslint-plugin-react            |     ^7.28.0 |
+| eslint-plugin-react            |     ^7.29.2 |
 | prop-types                     |     ^15.8.1 |
 | puppeteer                      |     ^13.4.0 |
 | react                          |     ^17.0.2 |
