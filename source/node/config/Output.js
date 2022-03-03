@@ -4,7 +4,7 @@ import { writeBuffer } from '@dr-js/core/module/node/fs/File.js'
 import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
 
 import { stringifyYAML } from './YAML.js'
-import { stringifyNginxConf } from './Nginx.js'
+import { stringifyNginxConf } from 'source/common/config/Nginx.js'
 
 const outputConfig = async (
   pathCombo = '', // 'file-path.json|file-path.yml|file-path.yaml'

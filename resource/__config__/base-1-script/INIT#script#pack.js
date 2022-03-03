@@ -30,7 +30,7 @@ runKit(async (kit) => {
   kit.RUN('npm run build-library')
 
   await processOutput()
-  const isTest = argvFlag('test', 'publish')
+  const isTest = isPublish || argvFlag('test')
   isTest && kit.padLog('lint source')
   isTest && kit.RUN('npm run lint')
   isTest && await processOutput() // once more
