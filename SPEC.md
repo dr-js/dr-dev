@@ -350,10 +350,10 @@
 | eslint-plugin-import           |     ^2.25.4 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^6.0.0 |
-| eslint-plugin-react            |     ^7.29.2 |
+| eslint-plugin-react            |     ^7.29.3 |
 | prop-types                     |     ^15.8.1 |
-| puppeteer                      |     ^13.4.0 |
+| puppeteer                      |     ^13.5.0 |
 | react                          |     ^17.0.2 |
 | styled-components              |      ^5.3.3 |
-| terser                         |     ^5.11.0 |
-| webpack                        |     ^5.69.1 |
+| terser                         |     ^5.12.0 |
+| webpack                        |     ^5.70.0 |
