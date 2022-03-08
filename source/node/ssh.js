@@ -11,7 +11,7 @@ import { joinCommand } from '@dr-js/core/module/node/module/Software/bash.js'
 import { color } from './color.js'
 
 const GET_SSH2 = (log = console.warn) => {
-  const SSH2 = tryRequire('ssh2')
+  const SSH2 = tryRequire('@min-pack/ssh2') || tryRequire('ssh2')
   if (SSH2) return SSH2
   const error = new Error('[SSH2] failed to load package "ssh2"')
   log(error)
