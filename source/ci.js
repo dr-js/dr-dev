@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { arch, release, userInfo } from 'os'
 
+import { withFallbackResult } from '@dr-js/core/module/common/error.js'
 import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format.js'
 
 import { getPathNpm } from '@dr-js/core/module/node/module/Software/npm.js'
@@ -10,7 +11,7 @@ import { commonCombo } from './output.js'
 const runInfoPatchCombo = ({ RUN, padLog, log }) => {
   padLog('Log info')
   log(`system: ${process.platform}-${release()}[${arch()}]`)
-  const { username, uid, gid } = userInfo()
+  const { username = '???', uid = process.getuid(), gid = process.getgid() } = withFallbackResult({}, userInfo) // may throw in docker with uid-only-user: `SystemError [ERR_SYSTEM_ERROR]: A system error occurred: uv_os_get_passwd returned ENOENT`
   log(`user: ${username} [${uid}-${gid}]`)
   log(`node: ${process.version}`)
   log(`npm: ${require(resolve(getPathNpm(), './package.json')).version}`)
