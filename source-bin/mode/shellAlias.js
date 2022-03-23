@@ -7,6 +7,7 @@ import { getUTCDateTag } from '@dr-js/core/module/common/time.js'
 import { withFallbackResult } from '@dr-js/core/module/common/error.js'
 import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
 import { readTextSync, readJSONSync } from '@dr-js/core/module/node/fs/File.js'
+import { verify as verifyDocker } from '@dr-js/core/module/node/module/Software/docker.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
 import { runSync, runStdoutSync } from '@dr-js/core/module/node/run.js'
 
@@ -216,8 +217,6 @@ const SHELL_ALIAS_LIST = {
     'npm-list-global': 'npm ls --global --depth=0',
     'npm-install': 'npm install',
     'npm-install-global': 'sudo npm install --global',
-    'npm-install-global-npm-6': _A('npm-install-global', 'npm@6'),
-    'npm-install-global-npm-8': _A('npm-install-global', 'npm@8'),
     'npm-install-prefer-offline': 'npm install --prefer-offline',
     'npm-install-package-lock-only': 'npm install --package-lock-only',
     'npm-uninstall': 'npm uninstall',
@@ -231,8 +230,6 @@ const SHELL_ALIAS_LIST = {
     'NLSG': _A('npm-list-global'),
     'NI': _A('npm-install'),
     'NIG': _A('npm-install-global'),
-    'NIGN6': _A('npm-install-global-npm-6'),
-    'NIGN8': _A('npm-install-global-npm-8'),
     'NIO': _A('npm-install-prefer-offline'),
     'NIPLO': _A('npm-install-package-lock-only'),
     'NU': _A('npm-uninstall'),
@@ -247,25 +244,27 @@ const SHELL_ALIAS_LIST = {
   // =============================
   // docker aliases (DC*,DI*,DV*)
   ...{
-    'docker-container-run': 'sudo docker container run',
-    'docker-container-run-bash': 'sudo docker container run --interactive --tty --rm --entrypoint /bin/bash',
-    'docker-container-exec': 'sudo docker container exec',
-    'docker-container-exec-bash': ($1) => [ 'sudo', 'docker', 'container', 'exec', '--interactive', '--tty', $1, '/bin/bash' ], //  $1=container name or id
-    'docker-container-attach': 'sudo docker container attach',
-    'docker-container-ls': 'sudo docker container ls',
-    'docker-container-ls-all': 'sudo docker container ls --all',
-    'docker-container-ls-minimal': [ 'sudo', 'docker', 'container', 'ls', '--format=table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}' ],
-    'docker-container-logs': 'sudo docker container logs',
-    'docker-container-logs-tail': 'sudo docker container logs --follow --tail=10',
-    'docker-container-top': 'sudo docker container top',
-    'docker-container-rm': 'sudo docker container rm',
-    'docker-container-prune': 'sudo docker container prune',
-    'docker-container-prune-force': 'sudo docker container prune --force',
-    'docker-container-kill': 'sudo docker container kill',
-    'docker-container-stop': 'sudo docker container stop',
-    'docker-container-stats': 'sudo docker container stats --no-stream --no-trunc',
-    'docker-container-inspect': 'sudo docker container inspect',
-    'docker-container-commit': 'sudo docker container commit',
+    'docker': (...args) => [ ...verifyDocker(), ...args ],
+
+    'docker-container-run': _A('docker', 'container', 'run'),
+    'docker-container-run-bash': _A('docker-container-run', '--interactive', '--tty', '--rm', '--entrypoint', '/bin/bash'),
+    'docker-container-exec': _A('docker', 'container', 'exec'),
+    'docker-container-exec-bash': ($1) => [ ...verifyDocker(), 'container', 'exec', '--interactive', '--tty', $1, '/bin/bash' ], //  $1=container name or id
+    'docker-container-attach': _A('docker', 'container', 'attach'),
+    'docker-container-ls': _A('docker', 'container', 'ls'),
+    'docker-container-ls-all': _A('docker-container-ls', '--all'),
+    'docker-container-ls-minimal': _A('docker-container-ls', '--format=table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}'),
+    'docker-container-logs': _A('docker', 'container', 'logs'),
+    'docker-container-logs-tail': _A('docker-container-logs', '--follow', '--tail=10'),
+    'docker-container-top': _A('docker', 'container', 'top'),
+    'docker-container-rm': _A('docker', 'container', 'rm'),
+    'docker-container-prune': _A('docker', 'container', 'prune'),
+    'docker-container-prune-force': _A('docker-container-prune', '--force'),
+    'docker-container-kill': _A('docker', 'container', 'kill'),
+    'docker-container-stop': _A('docker', 'container', 'stop'),
+    'docker-container-stats': _A('docker', 'container', 'stats', '--no-stream', '--no-trunc'),
+    'docker-container-inspect': _A('docker', 'container', 'inspect'),
+    'docker-container-commit': _A('docker', 'container', 'commit'),
 
     'DCR': _A('docker-container-run'),
     'DCRB': _A('docker-container-run-bash'),
@@ -287,19 +286,19 @@ const SHELL_ALIAS_LIST = {
     'DCI': _A('docker-container-inspect'),
     'DCC': _A('docker-container-commit'),
 
-    'docker-image-build': 'sudo docker image build',
-    'docker-image-push': 'sudo docker image push',
-    'docker-image-pull': 'sudo docker image pull',
-    'docker-image-load': 'sudo docker image load',
-    'docker-image-save': 'sudo docker image save',
-    'docker-image-ls': 'sudo docker image ls',
-    'docker-image-ls-all': 'sudo docker image ls --all',
-    'docker-image-ls-tag': 'sudo docker image ls --format={{.Repository}}:{{.Tag}}',
-    'docker-image-rm': 'sudo docker image rm',
-    'docker-image-prune': 'sudo docker image prune',
-    'docker-image-prune-force': 'sudo docker image prune --force',
-    'docker-image-history': 'sudo docker image history',
-    'docker-image-inspect': 'sudo docker image inspect',
+    'docker-image-build': _A('docker', 'image', 'build'),
+    'docker-image-push': _A('docker', 'image', 'push'),
+    'docker-image-pull': _A('docker', 'image', 'pull'),
+    'docker-image-load': _A('docker', 'image', 'load'),
+    'docker-image-save': _A('docker', 'image', 'save'),
+    'docker-image-ls': _A('docker', 'image', 'ls'),
+    'docker-image-ls-all': _A('docker-image-ls', '--all'),
+    'docker-image-ls-tag': _A('docker-image-ls', '--format={{.Repository}}:{{.Tag}}'),
+    'docker-image-rm': _A('docker', 'image', 'rm'),
+    'docker-image-prune': _A('docker', 'image', 'prune'),
+    'docker-image-prune-force': _A('docker-image-prune', '--force'),
+    'docker-image-history': _A('docker', 'image', 'history'),
+    'docker-image-inspect': _A('docker', 'image', 'inspect'),
 
     'DIB': _A('docker-image-build'),
     'DIPUSH': _A('docker-image-push'),
@@ -315,10 +314,10 @@ const SHELL_ALIAS_LIST = {
     'DIH': _A('docker-image-history'),
     'DII': _A('docker-image-inspect'),
 
-    'docker-volume-ls': 'sudo docker volume ls',
-    'docker-volume-rm': 'sudo docker volume rm',
-    'docker-volume-create': 'sudo docker volume create',
-    'docker-volume-inspect': 'sudo docker volume inspect',
+    'docker-volume-ls': _A('docker', 'volume', 'ls'),
+    'docker-volume-rm': _A('docker', 'volume', 'rm'),
+    'docker-volume-create': _A('docker', 'volume', 'create'),
+    'docker-volume-inspect': _A('docker', 'volume', 'inspect'),
 
     'DVLS': _A('docker-volume-ls'),
     'DVRM': _A('docker-volume-rm'),
@@ -442,10 +441,10 @@ const SHELL_ALIAS_LIST = {
     'system-reboot-required': () => {
       // hacky node version for: https://bbs.archlinux.org/viewtopic.php?id=173508
       // NOTE: for ArchLinuxARM `uname -r` will print extra `-ARCH`
-      const installedVersion = _RSS('pacman -Q linux').split(' ').pop() // pick "5.13.10.arch1-1" from "linux 5.13.10.arch1-1"
-      const runningVersion = _RSS('uname -r')
+      const installedVersion = _RSS('pacman -Q linux').split(' ').pop() // pick version from "linux 5.13.10.arch1-1", or "linux-rc 5.17.rc8-2"
+      const runningVersion = _RSS('uname -r') // like "5.13.10.arch1-1", or "5.17.0-rc8-2-MANJARO-ARM-RC"
       const formatVersion = (v) => v.replace(/\W/g, '.').toLowerCase()
-      return [ 'echo', formatVersion(runningVersion).startsWith(formatVersion(installedVersion)) ? 'nope' : 'Reboot Required' ]
+      return [ 'echo', formatVersion(runningVersion).startsWith(formatVersion(installedVersion)) ? 'nope' : `Reboot Required ("${runningVersion}" -> "${installedVersion}")` ]
     }
   }),
 
@@ -457,7 +456,7 @@ const SHELL_ALIAS_LIST = {
     'system-package-install': 'sudo apt install',
     'system-package-provide-bin': ($1) => [ 'sudo', 'dpkg', '-S', resolveCommand($1) ], // $1=bin-name-or-full-path // https://serverfault.com/questions/30737/how-do-i-find-the-package-that-contains-a-given-program-on-ubuntu
     'system-package-why': 'sudo apt-cache rdepends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances --installed --recurse', // https://askubuntu.com/questions/5636/can-i-see-why-a-package-is-installed#comment505140_5637
-    'system-reboot-required': () => [ 'echo', existsSync('/var/run/reboot-required') ? 'Reboot Required' : 'nope' ]
+    'system-reboot-required': () => [ 'echo', existsSync('/var/run/reboot-required') ? 'Reboot Required (found "/var/run/reboot-required")' : 'nope' ]
   }),
 
   ...(WHICH_LINUX()[ 1 ] !== 'unknown-package-manager' && {
