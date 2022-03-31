@@ -346,14 +346,14 @@
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |      ^2.0.6 |
-| eslint                         |     ^8.11.0 |
+| eslint                         |     ^8.12.0 |
 | eslint-plugin-import           |     ^2.25.4 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^6.0.0 |
 | eslint-plugin-react            |     ^7.29.4 |
 | prop-types                     |     ^15.8.1 |
 | puppeteer                      |     ^13.5.1 |
-| react                          |     ^17.0.2 |
+| react                          |     ^18.0.0 |
 | styled-components              |      ^5.3.5 |
 | terser                         |     ^5.12.1 |
 | webpack                        |     ^5.70.0 |
