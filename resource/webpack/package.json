@@ -5,6 +5,6 @@
   ],
   "dependencies": {
     "webpack": "^5.70.0",
-    "babel-loader": "^8.2.3"
+    "babel-loader": "^8.2.4"
   }
 }
