@@ -4,7 +4,7 @@
     "INIT#package.json"
   ],
   "dependencies": {
-    "webpack": "^5.70.0",
+    "webpack": "^5.72.0",
     "babel-loader": "^8.2.4"
   }
 }

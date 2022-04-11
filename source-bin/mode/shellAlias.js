@@ -32,7 +32,7 @@ const doShellAlias = async ({
   }
   const runAlias = (alias, argList = [], name) => {
     if (isBasicFunction(alias)) {
-      alias = alias(...aliasArgList) // NOTE: always use input arg list
+      alias = alias(...argList)
       argList = [] // drop argList
     }
     if (isBasicObject(alias)) {
