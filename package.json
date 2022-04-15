@@ -56,7 +56,8 @@
     "@min-pack/ssh2": "^1.8.0",
     "ssh2": "^1.8.0",
     "ssh2-legacy": "npm:ssh2@^0.8.9",
-    "yaml": "^1.10.2"
+    "yaml": "^2.0.0",
+    "yaml-legacy": "npm:yaml@^1.10.2"
   },
   "optionalDependencies": {
     "@dr-js/node": "^0.4.10"
