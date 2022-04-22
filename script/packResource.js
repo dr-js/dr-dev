@@ -1,4 +1,4 @@
-import { resolve, dirname } from 'path'
+import { resolve, dirname } from 'node:path'
 import { objectMergeDeep } from '@dr-js/core/module/common/mutable/Object.js'
 import { readJSON, writeText } from '@dr-js/core/module/node/fs/File.js'
 import { resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'

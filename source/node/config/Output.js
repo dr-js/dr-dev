@@ -1,4 +1,4 @@
-import { resolve, dirname } from 'path'
+import { resolve, dirname } from 'node:path'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { writeBuffer } from '@dr-js/core/module/node/fs/File.js'
 import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'

@@ -1,4 +1,4 @@
-import { dirname } from 'path'
+import { dirname } from 'node:path'
 import { withFallbackResultAsync } from '@dr-js/core/module/common/error.js'
 import { readJSON, writeJSONPretty } from '@dr-js/core/module/node/fs/File.js'
 import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'

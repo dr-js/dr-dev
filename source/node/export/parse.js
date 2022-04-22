@@ -1,4 +1,4 @@
-import { sep } from 'path'
+import { sep } from 'node:path'
 import { parse as parseAST } from '@babel/parser'
 import { compareString } from '@dr-js/core/module/common/compare.js'
 import { objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'

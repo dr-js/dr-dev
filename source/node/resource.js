@@ -1,4 +1,4 @@
-import { runInThisContext } from 'vm'
+import { runInThisContext } from 'node:vm'
 import { readText, readJSON } from '@dr-js/core/module/node/fs/File.js'
 import { fetchLikeRequest } from '@dr-js/core/module/node/net.js'
 

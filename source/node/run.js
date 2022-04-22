@@ -1,5 +1,5 @@
-import { dirname } from 'path'
-import { createWriteStream } from 'fs'
+import { dirname } from 'node:path'
+import { createWriteStream } from 'node:fs'
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
 import { run } from '@dr-js/core/module/node/run.js'

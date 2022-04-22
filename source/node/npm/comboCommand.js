@@ -1,5 +1,5 @@
-import { resolve } from 'path'
-import { execSync } from 'child_process'
+import { resolve } from 'node:path'
+import { execSync } from 'node:child_process'
 import { isString, isBasicFunction } from '@dr-js/core/module/common/check.js'
 import { indentLine } from '@dr-js/core/module/common/string.js'
 import { writeText } from '@dr-js/core/module/node/fs/File.js'

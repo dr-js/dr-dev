@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { parsePackageNameAndVersion } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { run } from '@dr-js/core/module/node/run.js'

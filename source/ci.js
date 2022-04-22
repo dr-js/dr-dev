@@ -1,5 +1,5 @@
-import { resolve } from 'path'
-import { arch, release, userInfo } from 'os'
+import { resolve } from 'node:path'
+import { arch, release, userInfo } from 'node:os'
 
 import { withFallbackResult } from '@dr-js/core/module/common/error.js'
 import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format.js'

@@ -1,5 +1,5 @@
-import { resolve, relative, sep } from 'path'
-import { promises as fsAsync } from 'fs'
+import { resolve, relative, sep } from 'node:path'
+import { promises as fsAsync } from 'node:fs'
 
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { isString } from '@dr-js/core/module/common/check.js'

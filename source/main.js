@@ -1,5 +1,5 @@
-import { resolve, sep } from 'path'
-import { readFileSync, writeFileSync, existsSync } from 'fs'
+import { resolve, sep } from 'node:path'
+import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { isString } from '@dr-js/core/module/common/check.js'
 import { getKit, runKit, argvFlag } from '@dr-js/core/module/node/kit.js'
 

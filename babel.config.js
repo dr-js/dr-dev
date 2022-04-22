@@ -1,5 +1,5 @@
-const { resolve } = require('path')
-const { readFileSync } = require('fs')
+const { resolve } = require('node:path')
+const { readFileSync } = require('node:fs')
 
 // NOTE: hack to load ES module in sync mode
 const sourceScriptString = String(readFileSync(resolve(__dirname, './source/babel.js')))

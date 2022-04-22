@@ -1,4 +1,4 @@
-import { resolve, relative } from 'path'
+import { resolve, relative } from 'node:path'
 
 import { toPosixPath } from '@dr-js/core/module/node/fs/Path.js'
 import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'

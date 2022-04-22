@@ -1,4 +1,4 @@
-import { dirname } from 'path'
+import { dirname } from 'node:path'
 import { binary } from '@dr-js/core/module/common/format.js'
 import { createAsyncLane, extendAutoSelectLane } from '@dr-js/core/module/common/module/AsyncLane.js'
 

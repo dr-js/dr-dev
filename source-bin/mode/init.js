@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { indentLine, indentLineList } from '@dr-js/core/module/common/string.js'

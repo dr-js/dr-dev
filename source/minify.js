@@ -1,4 +1,4 @@
-import { relative } from 'path'
+import { relative } from 'node:path'
 
 import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { clock } from '@dr-js/core/module/common/time.js'

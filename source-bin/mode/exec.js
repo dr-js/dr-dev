@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { isString, isBasicObject, isBasicArray } from '@dr-js/core/module/common/check.js'
 import { objectFromEntries } from '@dr-js/core/module/common/immutable/Object.js'
 

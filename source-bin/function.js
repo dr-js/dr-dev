@@ -1,4 +1,4 @@
-import { resolve, basename } from 'path'
+import { resolve, basename } from 'node:path'
 import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/fs/Path.js'
 import { editTextSync, readJSONSync, writeJSONPrettySync } from '@dr-js/core/module/node/fs/File.js'
 import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'

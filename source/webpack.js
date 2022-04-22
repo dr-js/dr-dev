@@ -1,4 +1,4 @@
-import { join, dirname } from 'path'
+import { join, dirname } from 'node:path'
 
 import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'

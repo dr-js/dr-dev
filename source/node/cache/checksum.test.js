@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { strictEqual } from '@dr-js/core/module/common/verify.js'
 import { getSampleRange } from '@dr-js/core/module/common/math/sample.js'
 import { writeText } from '@dr-js/core/module/node/fs/File.js'

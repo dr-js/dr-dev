@@ -1,5 +1,5 @@
-import { relative } from 'path'
-import { promises as fsAsync } from 'fs'
+import { relative } from 'node:path'
+import { promises as fsAsync } from 'node:fs'
 import { clock } from '@dr-js/core/module/common/time.js'
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 

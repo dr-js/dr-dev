@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 
 import { readJSON } from '@dr-js/core/module/node/fs/File.js'
 import { existPath } from '@dr-js/core/module/node/fs/Path.js'

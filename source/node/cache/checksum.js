@@ -1,4 +1,4 @@
-import { dirname } from 'path'
+import { dirname } from 'node:path'
 
 import { calcHash } from '@dr-js/core/module/node/data/Buffer.js'
 import { readBuffer, writeText } from '@dr-js/core/module/node/fs/File.js'

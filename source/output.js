@@ -1,5 +1,5 @@
-import { ok } from 'assert'
-import { statSync } from 'fs'
+import { ok } from 'node:assert'
+import { statSync } from 'node:fs'
 import { binary, describe } from '@dr-js/core/module/common/format.js'
 import { indentLineList } from '@dr-js/core/module/common/string.js'
 import { isBasicObject } from '@dr-js/core/module/common/check.js'

@@ -1,4 +1,4 @@
-const { resolve } = require('path')
+const { resolve } = require('node:path')
 const { setTimeoutAsync } = require('@dr-js/core/library/common/time.js')
 const { getPathStat } = require('@dr-js/core/library/node/fs/Path.js')
 const { readText, writeText } = require('@dr-js/core/library/node/fs/File.js')

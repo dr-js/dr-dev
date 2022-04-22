@@ -1,5 +1,5 @@
-import { existsSync } from 'fs'
-import { hostname } from 'os'
+import { existsSync } from 'node:fs'
+import { hostname } from 'node:os'
 
 import { describe } from '@dr-js/core/module/common/format.js'
 import { isBasicArray, isBasicFunction, isBasicObject, isString } from '@dr-js/core/module/common/check.js'
