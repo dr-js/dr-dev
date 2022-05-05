@@ -95,7 +95,8 @@ const getWebpackBabelConfig = ({
   plugins: [
     ...extraPluginList
   ].filter(Boolean),
-  assumptions
+  assumptions,
+  comments: false // with default `shouldPrintComment` to keep license
 })
 
 // HACK: @MARK_REPO_SYNC_IMPORT
