@@ -6,7 +6,7 @@ runKit(async (kit) => {
 
   const config = getCommonWebpackConfig({
     output: { path: kit.fromOutput('browser'), filename: '[name].js', library: 'DrDevTest', libraryTarget: 'umd' },
-    entry: { 'test': 'source/common/test' }
+    entry: { 'test': 'source/browser/test.js' }
   })
 
   kit.padLog(`compile with webpack mode: ${mode}, isWatch: ${Boolean(isWatch)}`)

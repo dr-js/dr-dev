@@ -27,6 +27,8 @@
   - `createProgressPlugin`
 + 📄 [source/browser/resource.js](source/browser/resource.js)
   - `loadImage`, `loadScript`, `loadText`
++ 📄 [source/browser/test.js](source/browser/test.js)
+  - `createTest`
 + 📄 [source/common/dev.js](source/common/dev.js)
   - `createTransformCacheWithInfo`, `hijackSetTimeoutInterval`
 + 📄 [source/common/config/Nginx.js](source/common/config/Nginx.js)
