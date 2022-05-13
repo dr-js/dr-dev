@@ -1,16 +1,12 @@
 #!/usr/bin/env node
 
 import { doCheckOutdated } from './mode/checkOutdated.js'
-import { doStepPackageVersion } from './mode/stepPackageVersion.js'
 import { doTest } from './mode/test.js'
-import { doInit } from './mode/init.js'
-import { doExec, doExecLoad } from './mode/exec.js'
 import { doCacheStep } from './mode/cacheStep.js'
 import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
 import { doPackageTrimNodeModules, doPackageTrimRubyGem } from './mode/packageTrim.js'
 import { doShellAlias } from './mode/shellAlias.js'
 
-import { tryRequire } from '@dr-js/core/module/env/tryRequire.js'
 import { versionBumpByGitBranch, versionBumpLastNumber, versionBumpToIdentifier, versionBumpToLocal } from '@dr-js/core/module/common/module/SemVer.js'
 import { readJSONSync } from '@dr-js/core/module/node/fs/File.js'
 import { getGitBranch } from '@dr-js/core/module/node/module/Software/git.js'
@@ -18,8 +14,6 @@ import { run } from '@dr-js/core/module/node/run.js'
 import { patchModulePath as patchModulePathCore, sharedOption, sharedMode } from '@dr-js/core/bin/function.js'
 
 import { wrapJoinBashArgs, warpBashSubShell, parsePackageScript } from 'source/node/npm/parseScript.js'
-import { comboCommand } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
-import { runNpxLazy } from 'source/node/npm/npxLazy.js'
 
 import { patchModulePath } from './function.js'
 import { MODE_NAME_LIST, parseOption, formatUsage } from './option.js'
@@ -104,31 +98,6 @@ const runMode = async (optionData, modeName) => {
         pathTemp: tryGetFirst('path-temp'),
         isWriteBack: getToggle('write-back')
       })
-    case 'step-package-version':
-      return doStepPackageVersion({
-        pathInput: tryGetFirst('root') || '.',
-        isSortKey: getToggle('sort-key'),
-        isGitCommit
-      })
-    case 'init':
-      return doInit({
-        pathOutput: argumentList[ 0 ] || '.',
-        pathResourcePackage: tryGetFirst('init-resource-package') || '.',
-        isReset: getToggle('init-reset'),
-        isVerify: getToggle('init-verify'),
-        pathVerifyRule: tryGetFirst('init-verify-rule')
-      })
-    case 'exec': // TODO: support run z64string?
-      return doExec(argumentList, {
-        env: tryGetFirst('exec-env'),
-        cwd: tryGetFirst('exec-cwd') // TODO: naming
-      })
-    case 'exec-load':
-      return doExecLoad({
-        pathInput: tryGetFirst('root') || '.', // TODO: naming
-        name: argumentList[ 0 ],
-        extraArgList: argumentList.slice(1)
-      })
     case 'cache-step':
       return doCacheStep({
         cacheStepType: argumentList[ 0 ],
@@ -140,12 +109,6 @@ const runMode = async (optionData, modeName) => {
         pathStaleCheckFile: tryGetFirst('path-stale-check-file') || undefined,
         maxStaleDay: tryGetFirst('max-stale-day') || 8
       })
-    case 'npm-combo': { // TODO: DEPRECATE: unused
-      for (const name of argumentList) await comboCommand({ name, tabLog })
-      return
-    }
-    case 'npx-lazy':
-      return runNpxLazy(argumentList, tabLog)
 
     default:
       return sharedMode({
@@ -153,10 +116,7 @@ const runMode = async (optionData, modeName) => {
         patchMP: () => {
           patchModulePath()
           patchModulePathCore()
-          const { patchModulePath: patchModulePathNode = () => {} } = tryRequire('@dr-js/node/bin/function.js') || {} // TODO: DEPRECATE
-          patchModulePathNode() // TODO: DEPRECATE
-        },
-        fetchUA: `${packageName}/${packageVersion}` // TODO: DEPRECATE: drop mode 'fetch'
+        }
       })
   }
 }

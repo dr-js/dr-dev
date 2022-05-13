@@ -36,7 +36,8 @@ const sortSourceRouteMap = (sourceRouteMap) => {
 
 const createExportParser = ({
   parserPluginList,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
+
 }) => {
   let sourceRouteMap = {
     // 'source/route': {

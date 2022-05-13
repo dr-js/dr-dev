@@ -1,8 +1,7 @@
 {
   "EXPORT": [
     "INIT#.eslintrc.js",
-    "INIT#package.json",
-    "eslint-config-almost-standard-v14.js"
+    "INIT#package.json"
   ],
   "dependencies": {
     "eslint": "^8.15.0",

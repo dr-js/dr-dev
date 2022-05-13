@@ -1,8 +1,5 @@
 import { Preset, prepareOption } from '@dr-js/core/module/node/module/Option/preset.js'
 
-import { COMBO_COMMAND_CONFIG_MAP } from 'source/node/npm/comboCommand.js' // TODO: DEPRECATE: unused
-import { PACKAGE_KEY_DEV_EXEC_COMMAND_MAP } from './mode/exec.js'
-
 const { Config, parseCompactList, pickOneOf } = Preset
 
 const MODE_FORMAT_LIST = parseCompactList(
@@ -21,7 +18,7 @@ const MODE_FORMAT_LIST = parseCompactList(
   'package-trim-ruby-gem,PTRG/AP,O|trim common doc/test/config in "lib/ruby/gems/*/gems/": $@=...pathList',
 
   // keep mode
-  [ 'test,test-root,T/AP,O|list of path to look test file from, default to "."', parseCompactList( // TODO: DEPRECATE: name `test-root`
+  [ 'test,T/AP,O|list of path to look test file from, default to "."', parseCompactList(
     'test-file-suffix,TFS/AS,O|pattern for test file, default to ".js"',
     'test-require,TR/AS,O|module or file to require before test files, mostly for "@babel/register"',
     'test-timeout,TT/SI,O|timeout for each test, in msec, default to 42*1000 (42sec)' // TODO: move to "timeout"
@@ -42,23 +39,6 @@ const MODE_FORMAT_LIST = parseCompactList(
     'path-temp/SP,O|use "AUTO" for os temp,set will disable in-place check for single "package.json"'
   ) ],
 
-  [ 'step-package-version,S/T|step up package version (expect "0.0.0-dev.0-local.0" format): -G=isGitCommit', parseCompactList(
-    'sort-key,K/T|sort keys in package.json'
-  ) ],
-
-  [ 'init/AP,O/0-1|path for init a package, will not reset existing file, default to "."', parseCompactList( // TODO: DEPRECATE: simplify or remove
-    'init-resource-package/SP,O|path to resource package, default search for "./node_modules/@dr-js/dev-*/"',
-    'init-reset/T|allow init to reset existing file',
-    'init-verify/T|do common init file content check, will skip file modify',
-    'init-verify-rule/AP,O|path to verify rule, default search in "init-resource-package"'
-  ) ],
-
-  [ 'exec,E/AS,O|exec command, allow set env and cwd: $@=command, ...argList', parseCompactList(
-    'exec-env,EE/O/0-1|use URLSearchParams format String, or key-value Object', // TODO: "&" will cause command split in win32
-    'exec-cwd,EC/P,O/0-1|reset cwd to path'
-  ) ],
-  `exec-load,EL/AS,O|load and exec command from package.json[ "${PACKAGE_KEY_DEV_EXEC_COMMAND_MAP}" ]: $@=commandName, ...extraArgList`,
-
   [ 'cache-step,cs/SS,O', { // enable checksum, stale-check, and delete, will only stale-check on checksum change
     ...pickOneOf([
       'setup', 'mark', 'prune',
@@ -74,13 +54,7 @@ const MODE_FORMAT_LIST = parseCompactList(
       'path-stale-check-file/SP,O|path for generated stale-check report file, also useful for debugging',
       'max-stale-day/SI,O|how old unused file is stale, default: 8day'
     )
-  } ],
-
-  `npm-combo,nc,M/AS,O|useful npm combo, one of: ${Object.keys(COMBO_COMMAND_CONFIG_MAP).join('|')}`, // TODO: DEPRECATE: unused
-  'npx-lazy,npx,nl,X/AS,O|skip npx re-install if package version fit: $@=package@version,...extraArgs',
-
-  // shared mode
-  'fetch,f/AS,O/1-4|fetch url with http_proxy env support: -I=requestBody/null, -O=outputFile/stdout, $@=initialUrl,method/GET,jumpMax/4,timeout/0' // TODO: DEPRECATE: drop mode 'fetch'
+  } ]
 )
 
 const OPTION_CONFIG = {
@@ -98,7 +72,7 @@ const OPTION_CONFIG = {
       'input-file,I/SP,O|common option',
       'output-file,O/SP,O|common option',
       'pid-file,pid/SP,O|common option',
-      'root,path-input,R/SP,O|common option, may be path to repo folder, or "package.json" file: $0=path/cwd', // TODO: DEPRECATE: name "path-input"
+      'root,R/SP,O|common option, may be path to repo folder, or "package.json" file: $0=path/cwd',
 
       'git-commit,G/T|common option, mostly for version marking'
 

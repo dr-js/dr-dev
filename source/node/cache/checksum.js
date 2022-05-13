@@ -3,13 +3,7 @@ import { dirname } from 'node:path'
 import { calcHash } from '@dr-js/core/module/node/data/Buffer.js'
 import { readBuffer, writeText } from '@dr-js/core/module/node/fs/File.js'
 import { createDirectory } from '@dr-js/core/module/node/fs/Directory.js'
-import {
-  getChecksumInfoOfFile,
-  getChecksumInfoListOfPath,
-  getChecksumInfoListOfPathList,
-  describeChecksumInfoList,
-  describeChecksumOfPathList
-} from '@dr-js/core/module/node/fs/Checksum.js'
+import { describeChecksumOfPathList } from '@dr-js/core/module/node/fs/Checksum.js'
 
 import { packTime, parseTime, loadStat, saveStat } from './function.js'
 
@@ -74,18 +68,7 @@ const checksumDetectChange = async (config, isSkipSave = false) => { // set isSk
   }
 }
 
-/** @deprecated */ const getChecksumInfoOfFileExport = getChecksumInfoOfFile // TODO: DEPRECATE
-/** @deprecated */ const getChecksumInfoListOfPathExport = getChecksumInfoListOfPath // TODO: DEPRECATE
-/** @deprecated */ const getChecksumInfoListOfPathListExport = getChecksumInfoListOfPathList // TODO: DEPRECATE
-/** @deprecated */ const describeChecksumInfoListExport = describeChecksumInfoList // TODO: DEPRECATE
-/** @deprecated */ const describeChecksumOfPathListExport = describeChecksumOfPathList // TODO: DEPRECATE
-
 export {
   loadStatFile, saveStatFile,
-  checksumUpdate, checksumDetectChange,
-  getChecksumInfoOfFileExport as getChecksumInfoOfFile, // TODO: DEPRECATE
-  getChecksumInfoListOfPathExport as getChecksumInfoListOfPath, // TODO: DEPRECATE
-  getChecksumInfoListOfPathListExport as getChecksumInfoListOfPathList, // TODO: DEPRECATE
-  describeChecksumInfoListExport as describeChecksumInfoList, // TODO: DEPRECATE
-  describeChecksumOfPathListExport as describeChecksumOfPathList // TODO: DEPRECATE
+  checksumUpdate, checksumDetectChange
 }

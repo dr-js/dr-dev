@@ -73,7 +73,7 @@ const formatSize = (size) => `${binary(size)}B`
 const formatTag = (tagMap) => Object.entries(tagMap).map(([ k, v ]) => v && k).filter(Boolean).join(',')
 
 const compileWithWebpack = async ({
-  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit,
   Webpack = GET_WEBPACK(kitLogger.log),
 
   config, isWatch, profileOutput, namedChunkGroupOutput
@@ -123,7 +123,7 @@ const compileWithWebpack = async ({
 }
 
 const commonFlag = async ({
-  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit,
   fromRoot = kit && kit.fromRoot, // optional if directly set `profileOutput`
   Webpack = GET_WEBPACK(kitLogger),
 

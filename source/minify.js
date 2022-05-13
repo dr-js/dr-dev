@@ -45,7 +45,7 @@ const getTerserOption = ({
 })
 
 const minifyFileWithTerser = async ({
-  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit,
   Terser = GET_TERSER(kitLogger.log),
 
   filePath, option
@@ -72,10 +72,9 @@ const minifyFileWithTerser = async ({
 }
 
 const minifyFileListWithTerser = async ({
-  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit,
   fileList, option,
-  rootPath, // TODO: DEPRECATE: use outputPath
-  outputPath = rootPath || (kit && kit.fromOutput()) || ''
+  outputPath = (kit && kit.fromOutput()) || ''
 }) => {
   kitLogger.padLog(`minify ${fileList.length} file with terser`)
 
@@ -84,7 +83,7 @@ const minifyFileListWithTerser = async ({
   let totalSizeSource = 0
   let totalSizeDelta = 0
   for (const filePath of fileList) {
-    const { sizeSource, sizeOutput, timeStart, timeEnd } = await minifyFileWithTerser({ filePath, option, logger, kit, kitLogger })
+    const { sizeSource, sizeOutput, timeStart, timeEnd } = await minifyFileWithTerser({ filePath, option, kit, kitLogger })
     const sizeDelta = sizeOutput - sizeSource
     totalSizeSource += sizeSource
     totalSizeDelta += sizeDelta
