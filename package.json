@@ -55,12 +55,8 @@
     "@dr-js/dev-web": "^0.4.36",
     "@min-pack/ssh2": "^1.10.0",
     "ssh2": "^1.10.0",
-    "ssh2-legacy": "npm:ssh2@^0.8.9",
     "yaml": "^2.0.1",
     "yaml-legacy": "npm:yaml@^1.10.2"
-  },
-  "optionalDependencies": {
-    "@dr-js/node": "^0.4.10"
   },
   "sideEffects": false
 }
