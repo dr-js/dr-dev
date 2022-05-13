@@ -2,6 +2,7 @@
 
 import { doCheckOutdated } from './mode/checkOutdated.js'
 import { doTest } from './mode/test.js'
+import { doExec } from './mode/exec.js'
 import { doCacheStep } from './mode/cacheStep.js'
 import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
 import { doPackageTrimNodeModules, doPackageTrimRubyGem } from './mode/packageTrim.js'
@@ -97,6 +98,11 @@ const runMode = async (optionData, modeName) => {
         pathInput: argumentList[ 0 ] || tryGetFirst('root') || './package.json',
         pathTemp: tryGetFirst('path-temp'),
         isWriteBack: getToggle('write-back')
+      })
+    case 'exec': // TODO: support run z64string?
+      return doExec(argumentList, {
+        env: tryGetFirst('exec-env'),
+        cwd: tryGetFirst('exec-cwd') // TODO: naming
       })
     case 'cache-step':
       return doCacheStep({

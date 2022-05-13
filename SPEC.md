@@ -147,6 +147,12 @@
 >         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
 >         use "AUTO" for os temp,set will disable in-place check for single "package.json"
+>   --exec --E -E [OPTIONAL] [ARGUMENT=1+]
+>       exec command, allow set env and cwd: $@=command, ...argList
+>     --exec-env --EE [ARGUMENT=0-1]
+>         use URLSearchParams format String, or key-value Object
+>     --exec-cwd --EC [ARGUMENT=0-1]
+>         reset cwd to path
 >   --cache-step --cs [OPTIONAL] [ARGUMENT=1]
 >       one of:
 >         setup mark prune is-hash-changed
@@ -201,6 +207,9 @@
 >     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_WRITE_BACK="[ARGUMENT=0-1] [ALIAS=DR_DEV_WB]"
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
+>     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
+>     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1] [ALIAS=DR_DEV_EE]"
+>     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1] [ALIAS=DR_DEV_EC]"
 >     export DR_DEV_CACHE_STEP="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_CS]"
 >     export DR_DEV_PRUNE_POLICY="[ARGUMENT=1]"
 >     export DR_DEV_PATH_STAT_FILE="[ARGUMENT=1]"
@@ -244,6 +253,9 @@
 >     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "writeBack": [ "[ARGUMENT=0-1] [ALIAS=wb]" ],
 >     "pathTemp": [ "[ARGUMENT=1]" ],
+>     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
+>     "execEnv": [ "[ARGUMENT=0-1] [ALIAS=EE]" ],
+>     "execCwd": [ "[ARGUMENT=0-1] [ALIAS=EC]" ],
 >     "cacheStep": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=cs]" ],
 >     "prunePolicy": [ "[ARGUMENT=1]" ],
 >     "pathStatFile": [ "[ARGUMENT=1]" ],

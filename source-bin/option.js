@@ -39,6 +39,10 @@ const MODE_FORMAT_LIST = parseCompactList(
     'path-temp/SP,O|use "AUTO" for os temp,set will disable in-place check for single "package.json"'
   ) ],
 
+  [ 'exec,E/AS,O|exec command, allow set env and cwd: $@=command, ...argList', parseCompactList(
+    'exec-env,EE/O/0-1|use URLSearchParams format String, or key-value Object', // TODO: "&" will cause command split in win32
+    'exec-cwd,EC/P,O/0-1|reset cwd to path'
+  ) ],
   [ 'cache-step,cs/SS,O', { // enable checksum, stale-check, and delete, will only stale-check on checksum change
     ...pickOneOf([
       'setup', 'mark', 'prune',
