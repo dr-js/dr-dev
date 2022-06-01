@@ -1,4 +1,4 @@
-import { relative } from 'path'
+import { relative } from 'node:path'
 import { padTable } from '@dr-js/core/module/common/format.js'
 import { indentLine, forEachRegExpExec } from '@dr-js/core/module/common/string.js'
 import { toPosixPath } from '@dr-js/core/module/node/fs/Path.js'

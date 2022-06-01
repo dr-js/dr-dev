@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
 import { getSampleRange } from '@dr-js/core/module/common/math/sample.js'
 import { readText, writeText } from '@dr-js/core/module/node/fs/File.js'

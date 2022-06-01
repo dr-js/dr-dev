@@ -45,10 +45,7 @@ runKit(async (kit) => {
   await verifyNoGitignore({ path: kit.fromRoot('source'), kit })
   await verifyNoGitignore({ path: kit.fromRoot('source-bin'), kit })
   const packageJSON = await initOutput({
-    copyMapPathList: [ /** @deprecated */ // TODO: DEPRECATE: move to resource/
-      [ 'resource/eslint/eslint-config-almost-standard-v14.js', 'resource/eslint-config-almost-standard-v14.js' ],
-      [ 'resource/eslint/[react]/eslint-config-almost-standard-jsx-v8.js', 'resource/eslint-config-almost-standard-jsx-v8.js' ]
-    ],
+    copyPathList: [ 'resource/eslint-config-almost-standard-v14.js', 'resource/eslint-config-almost-standard-jsx-v8.js' ],
     kit
   })
   if (!argvFlag('pack')) return

@@ -1,4 +1,4 @@
-import { sep } from 'path'
+import { sep } from 'node:path'
 import { parse as parseAST } from '@babel/parser'
 import { compareString } from '@dr-js/core/module/common/compare.js'
 import { objectSortKey } from '@dr-js/core/module/common/mutable/Object.js'
@@ -36,7 +36,8 @@ const sortSourceRouteMap = (sourceRouteMap) => {
 
 const createExportParser = ({
   parserPluginList,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
+
 }) => {
   let sourceRouteMap = {
     // 'source/route': {

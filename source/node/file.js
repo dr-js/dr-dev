@@ -1,12 +1,10 @@
-import { resolve, relative, sep } from 'path'
-import { promises as fsAsync } from 'fs'
+import { resolve } from 'node:path'
 
-import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { isString } from '@dr-js/core/module/common/check.js'
 import { describe } from '@dr-js/core/module/common/format.js'
 import { getSample } from '@dr-js/core/module/common/math/sample.js'
-import { STAT_ERROR, getPathLstat, nearestExistPath } from '@dr-js/core/module/node/fs/Path.js'
-import { getDirInfoList, createDirectory, getFileList, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
+import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/fs/Path.js'
+import { getDirInfoList, getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
 import { compressGzBrFileAsync } from '@dr-js/core/module/node/module/Archive/function.js'
@@ -42,42 +40,6 @@ const findPathFragList = async (root, pathFragList = []) => {
   return resolve(...foundFragList)
 }
 const REGEXP_FRAG = /^[/\\]/
-
-/** @deprecated */ const withTempDirectory = async (tempPath, asyncTask) => { // NOTE: will always reset the directory, before & after the task // TODO: DEPRECATE: move to `@dr-js/core`, also code is different
-  const existPath = await nearestExistPath(tempPath)
-  const deletePath = resolve(existPath, relative(existPath, tempPath).split(sep)[ 0 ] || '.')
-  __DEV__ && console.log('[withTempDirectory]', { tempPath, existPath, deletePath })
-  if (existPath === deletePath) await modifyDelete(tempPath) // reset existing content
-  await createDirectory(tempPath) // also check tempPath is Directory
-  const { result, error } = await catchAsync(asyncTask, tempPath)
-  await modifyDelete(deletePath)
-  if (error) throw error
-  return result
-}
-
-/** @deprecated */ const loadFile = async (path) => fsAsync.readFile(path) // TODO: DEPRECATE: move to `@dr-js/core`
-/** @deprecated */ const loadText = async (path) => String(await loadFile(path)) // TODO: DEPRECATE: move to `@dr-js/core`
-/** @deprecated */ const loadJson = async (path) => JSON.parse(await loadText(path)) // TODO: DEPRECATE: move to `@dr-js/core`
-
-/** @deprecated */ const saveFile = async (bufferOrString, path) => fsAsync.writeFile(path, bufferOrString) // TODO: DEPRECATE: move to `@dr-js/core`
-/** @deprecated */ const saveText = saveFile // TODO: DEPRECATE: move to `@dr-js/core`
-/** @deprecated */ const saveJson = async (value, path) => saveText(path, JSON.stringify(value, null, 2)) // TODO: DEPRECATE: move to `@dr-js/core`
-
-/** @deprecated */ const editFile = async ( // TODO: DEPRECATE: move to `@dr-js/core`
-  editFunc = async (buffer) => buffer, // or String
-  pathFrom,
-  pathTo = pathFrom // for in-place edit
-) => fsAsync.writeFile(pathTo, await editFunc(await fsAsync.readFile(pathFrom)))
-/** @deprecated */ const editText = async ( // TODO: DEPRECATE: move to `@dr-js/core`
-  editFunc = async (string) => string,
-  pathFrom,
-  pathTo
-) => editFile(async (buffer) => editFunc(String(buffer)), pathFrom, pathTo)
-/** @deprecated */ const editJson = async ( // TODO: DEPRECATE: move to `@dr-js/core`
-  editFunc = async (value) => value, // mostly Object
-  pathFrom,
-  pathTo
-) => editText(async (string) => JSON.stringify(await editFunc(JSON.parse(string)), null, 2), pathFrom, pathTo)
 
 // for remove dup before zip/packing
 // given a list of file, return which file should keep, and which is just pre-compressed dup
@@ -133,21 +95,10 @@ const trimPrecompressForPath = async (path, filterResult) => {
   return filterResult
 }
 
-/** @deprecated */ const copyAfterEdit = async (pathFrom, pathTo, editFunc) => editFile(editFunc, pathFrom, pathTo) // TODO: DEPRECATE: use `editFile`
-/** @deprecated */ const resetDirectoryExport = resetDirectory // TODO: DEPRECATE
-
 export {
   getFileListFromPathList,
   findPathFragList,
-  withTempDirectory, // TODO: DEPRECATE: move to `@dr-js/core`
-
-  loadFile, loadText, loadJson, // TODO: DEPRECATE: move to `@dr-js/core`
-  saveFile, saveText, saveJson, // TODO: DEPRECATE: move to `@dr-js/core`
-  editFile, editText, editJson, // TODO: DEPRECATE: move to `@dr-js/core`
 
   filterPrecompressFileList,
-  generatePrecompressForPath, trimPrecompressForPath,
-
-  copyAfterEdit, // TODO: DEPRECATE: use `editFile`
-  resetDirectoryExport as resetDirectory // TODO: DEPRECATE
+  generatePrecompressForPath, trimPrecompressForPath
 }

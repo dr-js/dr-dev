@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { stringifyEqual, doThrowAsync } from '@dr-js/core/module/common/verify.js'
 
 import {

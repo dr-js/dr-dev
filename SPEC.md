@@ -8,19 +8,17 @@
 + 📄 [source/babel.js](source/babel.js)
   - `getBabelConfig`, `getWebpackBabelConfig`
 + 📄 [source/ci.js](source/ci.js)
-  - `commonInfoPatchCombo`, `runInfoPatchCombo`
+  - `runInfoPatchCombo`
 + 📄 [source/docker.js](source/docker.js)
-  - `checkImageExist`, `checkLocalImage`, `checkPullImage`, `compose`, `composeSync`, `docker`, `dockerSync`, `dockerWithTee`, `getContainerLsList`, `getContainerPsList`, `matchContainerLsList`, `matchContainerPsList`, `patchContainerLsListStartedAt`, `pullImage`, `runDocker`, `runDockerWithTee`
+  - `checkLocalImage`, `checkPullImage`, `getContainerLsList`, `matchContainerLsList`, `patchContainerLsListStartedAt`, `pullImage`, `runDockerWithTee`
 + 📄 [source/fileProcessor.js](source/fileProcessor.js)
-  - `fileProcessorBabel`, `fileProcessorWebpack`, `processFileList`
+  - `fileProcessorBabel`, `processFileList`
 + 📄 [source/license.js](source/license.js)
   - `writeLicenseFile`
-+ 📄 [source/main.js](source/main.js)
-  - `argvFlag`, `commonCombo`, `commonInfoPatchCombo`, `existsSync`, `readFileSync`, `resolve`, `runInfoPatchCombo`, `runMain`, `sep`, `writeFileSync`
 + 📄 [source/minify.js](source/minify.js)
   - `GET_TERSER`, `getTerserOption`, `minifyFileListWithTerser`, `minifyFileWithTerser`
 + 📄 [source/output.js](source/output.js)
-  - `REGEXP_PUBLISH_VERSION`, `REGEXP_PUBLISH_VERSION_DEV`, `clearOutput`, `commonCombo`, `fromPathCombo`, `getPublishFlag`, `initOutput`, `packOutput`, `publishOutput`, `publishPackage`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPackageVersionStrict`, `verifyPublishVersion`
+  - `clearOutput`, `initOutput`, `packOutput`, `publishPackage`, `verifyGitStatusClean`, `verifyNoGitignore`, `verifyOutputBin`, `verifyPackageVersionStrict`
 + 📄 [source/puppeteer.js](source/puppeteer.js)
   - `GET_PUPPETEER`, `clearPuppeteerBrowser`, `clearPuppeteerPage`, `initPuppeteerBrowser`, `initPuppeteerPage`, `reloadPuppeteerPage`, `runWithPuppeteer`, `setupPuppeteerPage`, `testBootPuppeteer`, `testWithPuppeteer`, `wrapTestScriptStringToHTML`
 + 📄 [source/webpack.js](source/webpack.js)
@@ -29,48 +27,36 @@
   - `createProgressPlugin`
 + 📄 [source/browser/resource.js](source/browser/resource.js)
   - `loadImage`, `loadScript`, `loadText`
++ 📄 [source/browser/test.js](source/browser/test.js)
+  - `createTest`
 + 📄 [source/common/dev.js](source/common/dev.js)
   - `createTransformCacheWithInfo`, `hijackSetTimeoutInterval`
-+ 📄 [source/common/test.js](source/common/test.js)
-  - `createTest`
 + 📄 [source/common/config/Nginx.js](source/common/config/Nginx.js)
   - `COMBO_BROTLI`, `COMBO_BROTLI_STATIC`, `COMBO_COMPRESS`, `COMBO_COMPRESS_STATIC`, `COMBO_GZIP`, `COMBO_GZIP_STATIC`, `COMBO_MIME`, `COMMON_COMPRESS_MIME_LIST`, `COMMON_MIME_MAP`, `DEFAULT_MIME`, `stringifyNginxConf`
 + 📄 [source/common/config/Object.js](source/common/config/Object.js)
   - `FLAVOR_SEPARATOR`, `SECRET_PREFIX`, `mergeFlavor`, `pickFlavor`, `useFlavor`, `useSecret`
-+ 📄 [source/common/packageJSON/Version.js](source/common/packageJSON/Version.js)
-  - `isVersionSpecComplex`, `versionBumpByGitBranch`, `versionBumpLastNumber`, `versionBumpToIdentifier`, `versionBumpToLocal`
-+ 📄 [source/common/packageJSON/function.js](source/common/packageJSON/function.js)
-  - `PACKAGE_KEY_DEV_EXEC_COMMAND_MAP`, `collectDependency`, `getFirstBinPath`, `packPackageJSON`, `sortPackageJSON`, `toPackageInfo`
 + 📄 [source/node/color.js](source/node/color.js)
   - `color`
-+ 📄 [source/node/env.js](source/node/env.js)
-  - `__VERBOSE__`, `argvFlag`, `checkFlag`, `loadEnvKey`, `saveEnvKey`, `syncEnvKey`
 + 📄 [source/node/file.js](source/node/file.js)
-  - `copyAfterEdit`, `editFile`, `editJson`, `editText`, `filterPrecompressFileList`, `findPathFragList`, `generatePrecompressForPath`, `getFileListFromPathList`, `loadFile`, `loadJson`, `loadText`, `resetDirectory`, `saveFile`, `saveJson`, `saveText`, `trimPrecompressForPath`, `withTempDirectory`
+  - `filterPrecompressFileList`, `findPathFragList`, `generatePrecompressForPath`, `getFileListFromPathList`, `trimPrecompressForPath`
 + 📄 [source/node/filePreset.js](source/node/filePreset.js)
   - `getSourceJsFileListFromPathList`
-+ 📄 [source/node/logger.js](source/node/logger.js)
-  - `getLogger`
 + 📄 [source/node/preset.js](source/node/preset.js)
   - `FILTER_JS_FILE`, `FILTER_SOURCE_JS_FILE`, `FILTER_SOURCE_PATH`, `FILTER_TEST_JS_FILE`, `FILTER_TEST_PATH`
 + 📄 [source/node/resource.js](source/node/resource.js)
   - `loadJSON`, `loadLocalJSON`, `loadLocalScript`, `loadRemoteJSON`, `loadRemoteScript`, `loadScript`
 + 📄 [source/node/run.js](source/node/run.js)
-  - `runAndHandover`, `runPassThrough`, `runWithAsyncFunc`, `runWithTee`, `withCwd`, `withRunBackground`
+  - `runPassThrough`, `runWithAsyncFunc`, `runWithTee`, `withCwd`
 + 📄 [source/node/ssh.js](source/node/ssh.js)
   - `GET_SSH2`, `LOG_CONFIG`, `LOG_ERROR`, `LOG_EXEC`, `createColorLog`, `getConnectOption`, `quickSSH`, `startDryRunSSHClient`, `startSSHClient`
 + 📄 [source/node/verify.js](source/node/verify.js)
   - `runTaskList`, `toTask`, `useKitLogger`, `verifyCommand`, `verifyCommandSemVer`, `verifyFile`, `verifyFileString`, `verifySemVer`, `verifyString`, `verifyTaskList`
 + 📄 [source/node/cache/checksum.js](source/node/cache/checksum.js)
-  - `checksumDetectChange`, `checksumUpdate`, `describeChecksumInfoList`, `describeChecksumOfPathList`, `getChecksumInfoListOfPath`, `getChecksumInfoListOfPathList`, `getChecksumInfoOfFile`, `loadStatFile`, `saveStatFile`
+  - `checksumDetectChange`, `checksumUpdate`, `loadStatFile`, `saveStatFile`
 + 📄 [source/node/cache/function.js](source/node/cache/function.js)
   - `loadStat`, `packTime`, `parseTime`, `saveStat`
 + 📄 [source/node/cache/staleCheck.js](source/node/cache/staleCheck.js)
   - `describeStaleReport`, `loadStatFile`, `saveStatFile`, `staleCheckCalcReport`, `staleCheckMark`, `staleCheckSetup`
-+ 📄 [source/node/config/Nginx.js](source/node/config/Nginx.js)
-  - `COMBO_BROTLI`, `COMBO_BROTLI_STATIC`, `COMBO_COMPRESS`, `COMBO_COMPRESS_STATIC`, `COMBO_GZIP`, `COMBO_GZIP_STATIC`, `COMBO_MIME`, `COMMON_COMPRESS_MIME_LIST`, `COMMON_MIME_MAP`, `DEFAULT_MIME`, `stringifyNginxConf`
-+ 📄 [source/node/config/Object.js](source/node/config/Object.js)
-  - `SECRET_PREFIX`, `mergeFlavor`, `pickFlavor`, `useFlavor`, `useSecret`
 + 📄 [source/node/config/Output.js](source/node/config/Output.js)
   - `outputConfig`, `outputConfigMap`
 + 📄 [source/node/config/YAML.js](source/node/config/YAML.js)
@@ -83,18 +69,12 @@
   - `collectSourceJsRouteMap`
 + 📄 [source/node/export/renderMarkdown.js](source/node/export/renderMarkdown.js)
   - `escapeMarkdownLink`, `getMarkdownDirectoryLink`, `getMarkdownFileLink`, `getMarkdownHeaderLink`, `renderMarkdownAutoAppendHeaderLink`, `renderMarkdownBlockQuote`, `renderMarkdownExportPath`, `renderMarkdownExportTree`, `renderMarkdownTable`
-+ 📄 [source/node/npm/comboCommand.js](source/node/npm/comboCommand.js)
-  - `COMBO_COMMAND_CONFIG_MAP`, `comboCommand`
-+ 📄 [source/node/npm/npxLazy.js](source/node/npm/npxLazy.js)
-  - `npxLazy`, `runNpx`, `runNpxLazy`
 + 📄 [source/node/npm/parseScript.js](source/node/npm/parseScript.js)
   - `parseCommand`, `parsePackageScript`, `warpBashSubShell`, `wrapJoinBashArgs`
 + 📄 [source/node/package/Npm.js](source/node/package/Npm.js)
   - `outdatedJSON`, `outdatedWithTempJSON`
 + 📄 [source/node/package/Trim.js](source/node/package/Trim.js)
   - `trimFile`, `trimFileNodeModules`, `trimFileRubyGem`
-+ 📄 [source/node/package/function.js](source/node/package/function.js)
-  - `editPackageJSON`, `loadPackageCombo`, `loadPackageInfo`, `loadPackageInfoList`, `savePackageInfo`, `savePackageJSON`, `toPackageJSONPath`, `toPackageRootPath`, `writePackageJSON`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)
@@ -121,7 +101,7 @@
 >       common option
 >   --pid-file --pid [OPTIONAL] [ARGUMENT=1]
 >       common option
->   --root --path-input --R -R [OPTIONAL] [ARGUMENT=1]
+>   --root --R -R [OPTIONAL] [ARGUMENT=1]
 >       common option, may be path to repo folder, or "package.json" file: $0=path/cwd
 >   --git-commit --G -G [OPTIONAL] [ARGUMENT=0-1]
 >       common option, mostly for version marking
@@ -141,7 +121,7 @@
 >       trim common doc/test/config in "node_modules/": $@=...pathList
 >   --package-trim-ruby-gem --PTRG [OPTIONAL] [ARGUMENT=1+]
 >       trim common doc/test/config in "lib/ruby/gems/*/gems/": $@=...pathList
->   --test --test-root --T -T [OPTIONAL] [ARGUMENT=1+]
+>   --test --T -T [OPTIONAL] [ARGUMENT=1+]
 >       list of path to look test file from, default to "."
 >     --test-file-suffix --TFS [ARGUMENT=1+]
 >         pattern for test file, default to ".js"
@@ -167,28 +147,12 @@
 >         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
 >         use "AUTO" for os temp,set will disable in-place check for single "package.json"
->   --step-package-version --S -S [OPTIONAL] [ARGUMENT=0-1]
->       step up package version (expect "0.0.0-dev.0-local.0" format): -G=isGitCommit
->     --sort-key --K -K [ARGUMENT=0-1]
->         sort keys in package.json
->   --init [OPTIONAL] [ARGUMENT=0-1]
->       path for init a package, will not reset existing file, default to "."
->     --init-resource-package [ARGUMENT=1]
->         path to resource package, default search for "./node_modules/@dr-js/dev-*/"
->     --init-reset [ARGUMENT=0-1]
->         allow init to reset existing file
->     --init-verify [ARGUMENT=0-1]
->         do common init file content check, will skip file modify
->     --init-verify-rule [ARGUMENT=1+]
->         path to verify rule, default search in "init-resource-package"
 >   --exec --E -E [OPTIONAL] [ARGUMENT=1+]
 >       exec command, allow set env and cwd: $@=command, ...argList
 >     --exec-env --EE [ARGUMENT=0-1]
 >         use URLSearchParams format String, or key-value Object
 >     --exec-cwd --EC [ARGUMENT=0-1]
 >         reset cwd to path
->   --exec-load --EL [OPTIONAL] [ARGUMENT=1+]
->       load and exec command from package.json[ "devExecCommands" ]: $@=commandName, ...extraArgList
 >   --cache-step --cs [OPTIONAL] [ARGUMENT=1]
 >       one of:
 >         setup mark prune is-hash-changed
@@ -208,12 +172,6 @@
 >         path for generated stale-check report file, also useful for debugging
 >     --max-stale-day [ARGUMENT=1]
 >         how old unused file is stale, default: 8day
->   --npm-combo --nc --M -M [OPTIONAL] [ARGUMENT=1+]
->       useful npm combo, one of: config|c|install-offline|io|install-clear|ic|package-dedupe|ddp|pd|package-reset|pr
->   --npx-lazy --npx --nl --X -X [OPTIONAL] [ARGUMENT=1+]
->       skip npx re-install if package version fit: $@=package@version,...extraArgs
->   --fetch --f -f [OPTIONAL] [ARGUMENT=1-4]
->       fetch url with http_proxy env support: -I=requestBody/null, -O=outputFile/stdout, $@=initialUrl,method/GET,jumpMax/4,timeout/0
 > ENV Usage:
 >   "
 >     #!/usr/bin/env bash
@@ -226,7 +184,7 @@
 >     export DR_DEV_INPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_OUTPUT_FILE="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
->     export DR_DEV_ROOT="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PATH_INPUT]"
+>     export DR_DEV_ROOT="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_GIT_COMMIT="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_SHELL_ALIAS="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_SA]"
 >     export DR_DEV_VERSION_BUMP_GIT_BRANCH="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBGB]"
@@ -236,7 +194,7 @@
 >     export DR_DEV_VERSION_BUMP_TO_MAJOR="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTM]"
 >     export DR_DEV_PACKAGE_TRIM_NODE_MODULES="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTNM]"
 >     export DR_DEV_PACKAGE_TRIM_RUBY_GEM="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTRG]"
->     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_TEST_ROOT]"
+>     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_TEST_FILE_SUFFIX="[ARGUMENT=1+] [ALIAS=DR_DEV_TFS]"
 >     export DR_DEV_TEST_REQUIRE="[ARGUMENT=1+] [ALIAS=DR_DEV_TR]"
 >     export DR_DEV_TEST_TIMEOUT="[ARGUMENT=1] [ALIAS=DR_DEV_TT]"
@@ -249,17 +207,9 @@
 >     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_WRITE_BACK="[ARGUMENT=0-1] [ALIAS=DR_DEV_WB]"
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
->     export DR_DEV_STEP_PACKAGE_VERSION="[OPTIONAL] [ARGUMENT=0-1]"
->     export DR_DEV_SORT_KEY="[ARGUMENT=0-1]"
->     export DR_DEV_INIT="[OPTIONAL] [ARGUMENT=0-1]"
->     export DR_DEV_INIT_RESOURCE_PACKAGE="[ARGUMENT=1]"
->     export DR_DEV_INIT_RESET="[ARGUMENT=0-1]"
->     export DR_DEV_INIT_VERIFY="[ARGUMENT=0-1]"
->     export DR_DEV_INIT_VERIFY_RULE="[ARGUMENT=1+]"
 >     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1] [ALIAS=DR_DEV_EE]"
 >     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1] [ALIAS=DR_DEV_EC]"
->     export DR_DEV_EXEC_LOAD="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_EL]"
 >     export DR_DEV_CACHE_STEP="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_CS]"
 >     export DR_DEV_PRUNE_POLICY="[ARGUMENT=1]"
 >     export DR_DEV_PATH_STAT_FILE="[ARGUMENT=1]"
@@ -268,9 +218,6 @@
 >     export DR_DEV_PATH_STALE_CHECK_LIST="[ARGUMENT=0+]"
 >     export DR_DEV_PATH_STALE_CHECK_FILE="[ARGUMENT=1]"
 >     export DR_DEV_MAX_STALE_DAY="[ARGUMENT=1]"
->     export DR_DEV_NPM_COMBO="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_NC]"
->     export DR_DEV_NPX_LAZY="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_NPX,DR_DEV_NL]"
->     export DR_DEV_FETCH="[OPTIONAL] [ARGUMENT=1-4]"
 >   "
 > CONFIG Usage:
 >   {
@@ -283,7 +230,7 @@
 >     "inputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "outputFile": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
->     "root": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pathInput]" ],
+>     "root": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "gitCommit": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "shellAlias": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=SA]" ],
 >     "versionBumpGitBranch": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBGB]" ],
@@ -293,7 +240,7 @@
 >     "versionBumpToMajor": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTM]" ],
 >     "packageTrimNodeModules": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTNM]" ],
 >     "packageTrimRubyGem": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTRG]" ],
->     "test": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=testRoot]" ],
+>     "test": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "testFileSuffix": [ "[ARGUMENT=1+] [ALIAS=TFS]" ],
 >     "testRequire": [ "[ARGUMENT=1+] [ALIAS=TR]" ],
 >     "testTimeout": [ "[ARGUMENT=1] [ALIAS=TT]" ],
@@ -306,17 +253,9 @@
 >     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "writeBack": [ "[ARGUMENT=0-1] [ALIAS=wb]" ],
 >     "pathTemp": [ "[ARGUMENT=1]" ],
->     "stepPackageVersion": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
->     "sortKey": [ "[ARGUMENT=0-1]" ],
->     "init": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
->     "initResourcePackage": [ "[ARGUMENT=1]" ],
->     "initReset": [ "[ARGUMENT=0-1]" ],
->     "initVerify": [ "[ARGUMENT=0-1]" ],
->     "initVerifyRule": [ "[ARGUMENT=1+]" ],
 >     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "execEnv": [ "[ARGUMENT=0-1] [ALIAS=EE]" ],
 >     "execCwd": [ "[ARGUMENT=0-1] [ALIAS=EC]" ],
->     "execLoad": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=EL]" ],
 >     "cacheStep": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=cs]" ],
 >     "prunePolicy": [ "[ARGUMENT=1]" ],
 >     "pathStatFile": [ "[ARGUMENT=1]" ],
@@ -325,9 +264,6 @@
 >     "pathStaleCheckList": [ "[ARGUMENT=0+]" ],
 >     "pathStaleCheckFile": [ "[ARGUMENT=1]" ],
 >     "maxStaleDay": [ "[ARGUMENT=1]" ],
->     "npmCombo": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=nc]" ],
->     "npxLazy": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=npx,nl]" ],
->     "fetch": [ "[OPTIONAL] [ARGUMENT=1-4]" ],
 >   }
 > ```
 
@@ -337,23 +273,23 @@
 | Package name                   |     Version |
 | :----                          |       ----: |
 | @babel/cli                     |    ^7.17.10 |
-| @babel/core                    |    ^7.17.10 |
-| @babel/eslint-parser           |     ^7.17.0 |
-| @babel/preset-env              |    ^7.17.10 |
-| @babel/preset-react            |     ^7.16.7 |
+| @babel/core                    |     ^7.18.2 |
+| @babel/eslint-parser           |     ^7.18.2 |
+| @babel/preset-env              |     ^7.18.2 |
+| @babel/preset-react            |    ^7.17.12 |
 | @babel/register                |     ^7.17.7 |
 | babel-loader                   |      ^8.2.5 |
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |      ^2.0.7 |
-| eslint                         |     ^8.14.0 |
+| eslint                         |     ^8.16.0 |
 | eslint-plugin-import           |     ^2.26.0 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^6.0.0 |
-| eslint-plugin-react            |     ^7.29.4 |
+| eslint-plugin-react            |     ^7.30.0 |
 | prop-types                     |     ^15.8.1 |
-| puppeteer                      |     ^13.7.0 |
+| puppeteer                      |     ^14.1.2 |
 | react                          |     ^18.1.0 |
 | styled-components              |      ^5.3.5 |
-| terser                         |     ^5.13.1 |
-| webpack                        |     ^5.72.0 |
+| terser                         |     ^5.14.0 |
+| webpack                        |     ^5.72.1 |

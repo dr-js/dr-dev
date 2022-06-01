@@ -3,11 +3,10 @@
     "../"
   ],
   "EXPORT": [
-    "INIT#.eslintrc.js",
-    "eslint-config-almost-standard-jsx-v8.js"
+    "INIT#.eslintrc.js"
   ],
   "dependencies": {
-    "eslint-plugin-react": "^7.29.4",
-    "@babel/eslint-parser": "^7.17.0"
+    "eslint-plugin-react": "^7.30.0",
+    "@babel/eslint-parser": "^7.18.2"
   }
 }

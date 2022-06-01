@@ -1,12 +1,8 @@
-import { resolve } from 'path'
-import { arch, release, userInfo } from 'os'
+import { resolve } from 'node:path'
+import { arch, release, userInfo } from 'node:os'
 
 import { withFallbackResult } from '@dr-js/core/module/common/error.js'
-import { prettyStringifyConfigObject } from '@dr-js/core/module/common/format.js'
-
 import { getPathNpm } from '@dr-js/core/module/node/module/Software/npm.js'
-
-import { commonCombo } from './output.js'
 
 const runInfoPatchCombo = ({ RUN, padLog, log }) => {
   padLog('Log info')
@@ -26,22 +22,6 @@ const runInfoPatchCombo = ({ RUN, padLog, log }) => {
   }
 }
 
-// NOTE: test local ci-patch with command like:
-//   DRY_RUN=1 npx dr-js-dev-*.tgz -eI .github/ci-patch.js
-
-/** @deprecated */ const commonInfoPatchCombo = (kitLogger, initConfig) => { // TODO: DEPRECATE
-  const { config, RUN, ...extra } = commonCombo(kitLogger, initConfig)
-
-  // patch config
-  config.IS_WIN32 = process.platform === 'win32' // TODO: DEPRECATE
-  config.COMMAND_SUDO_NPM = config.IS_WIN32 ? 'npm.cmd' : 'sudo npm' // win32 has no sudo & need .cmd extension // TODO: DEPRECATE
-  kitLogger.log(`config:\n${prettyStringifyConfigObject(config, '  ', '    ')}`)
-  runInfoPatchCombo({ ...kitLogger, RUN })
-
-  return { config, RUN, ...extra }
-}
-
 export {
-  runInfoPatchCombo,
-  commonInfoPatchCombo // TODO: DEPRECATE
+  runInfoPatchCombo
 }

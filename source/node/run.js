@@ -1,5 +1,5 @@
-import { dirname } from 'path'
-import { createWriteStream } from 'fs'
+import { dirname } from 'node:path'
+import { createWriteStream } from 'node:fs'
 import { catchAsync } from '@dr-js/core/module/common/error.js'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
 import { run } from '@dr-js/core/module/node/run.js'
@@ -81,14 +81,9 @@ const withCwd = (pathCwd, taskAsync) => async (...args) => { // NOTE: to run com
   return result
 }
 
-/** @deprecated */ const withRunBackground = async ({ command, argList = [], option, quiet, describeError }, asyncFunc, setupDelay = 500) => runWithAsyncFunc([ command, ...argList ], { asyncFunc, setupDelay, quiet, describeError, ...option }) // TODO: DEPRECATE
-/** @deprecated */ const runAndHandover = async ({ command, argList = [], option, quiet, describeError }) => runPassThrough([ command, ...argList ], { quiet, describeError, ...option }) // TODO: DEPRECATE
-
 export {
   runWithAsyncFunc,
   runWithTee,
   runPassThrough,
-  withCwd,
-
-  withRunBackground, runAndHandover // TODO: DEPRECATE
+  withCwd
 }

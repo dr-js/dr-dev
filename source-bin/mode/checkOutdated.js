@@ -1,4 +1,4 @@
-import { relative } from 'path'
+import { relative } from 'node:path'
 
 import { padTable } from '@dr-js/core/module/common/format.js'
 import { isVersionSpecComplex } from '@dr-js/core/module/common/module/SemVer.js'

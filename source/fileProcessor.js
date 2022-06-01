@@ -1,13 +1,12 @@
-import { relative } from 'path'
-import { promises as fsAsync } from 'fs'
+import { relative } from 'node:path'
+import { promises as fsAsync } from 'node:fs'
 import { clock } from '@dr-js/core/module/common/time.js'
 import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 
 const processFileList = async ({
-  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit,
   fileList, processor,
-  rootPath, // TODO: DEPRECATE: use outputPath
-  outputPath = rootPath || (kit && kit.fromOutput()) || ''
+  outputPath = (kit && kit.fromOutput()) || ''
 }) => {
   kitLogger.padLog(`process ${fileList.length} file`)
 
@@ -58,17 +57,7 @@ const fileProcessorBabel = (inputString) => inputString
   .replace(/[\n\r]{2,}/g, '\n') // remove multi-blank lines // TODO: may also change lines in `` strings
   .replace(/^[\n\r]+/, '') // remove leading blank line
 
-// do:
-//  - function(){return $a_}  =>  ()=>$a_
-//  - function(){return wt.a} =>  ()=>wt.a
-// don't:
-//  - function(){return a}()       =>  ()=>a()
-//  - function(){return this.a}()  =>  ()=>this.a
-/** @deprecated */ const fileProcessorWebpack = (inputString) => inputString // TODO: DEPRECATE: risk breaking code & replaceable `function()` is less often seem in minified webpack output
-// .replace(/function\s*\(\)\s*{\s*return\s+([\w$]+(?:\.[\w$]+)?)\s*}([\s;)\]])/g, '()=>$1$2') // TODO: may break code?
-
 export {
   processFileList,
-  fileProcessorBabel,
-  fileProcessorWebpack // TODO: DEPRECATE
+  fileProcessorBabel
 }

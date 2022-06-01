@@ -1,5 +1,5 @@
-import { resolve } from 'path'
-import { unlinkSync, writeFileSync } from 'fs'
+import { resolve } from 'node:path'
+import { unlinkSync, writeFileSync } from 'node:fs'
 import { getUnusedPort } from '@dr-js/core/module/node/server/function.js'
 import { createServerExot, createRequestListener } from '@dr-js/core/module/node/server/Server.js'
 import { responderSendBuffer, responderSendJSON } from '@dr-js/core/module/node/server/Responder/Send.js'

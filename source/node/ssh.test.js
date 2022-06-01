@@ -1,6 +1,6 @@
-import { resolve } from 'path'
-import { userInfo } from 'os'
-import { chmodSync } from 'fs'
+import { resolve } from 'node:path'
+import { userInfo } from 'node:os'
+import { chmodSync } from 'node:fs'
 import { doThrowAsync } from '@dr-js/core/module/common/verify.js'
 import { setTimeoutAsync } from '@dr-js/core/module/common/time.js'
 import { deleteDirectory, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'
@@ -224,9 +224,7 @@ CAN_TEST && describe('ssh', () => {
 
   addTestWithConnectOption({ ...connectOption, SSH2: require('@min-pack/ssh2') }, 'test-ssh2')
   addTestWithConnectOption({ ...connectOption, SSH2: require('ssh2') }, 'test-ssh2')
-  addTestWithConnectOption({ ...connectOption, SSH2: require('ssh2-legacy') }, 'test-ssh2-legacy')
 
   addTestWithConnectOption({ ...connectOptionPassphrase, SSH2: require('@min-pack/ssh2') }, 'test-ssh2-passphrase')
   addTestWithConnectOption({ ...connectOptionPassphrase, SSH2: require('ssh2') }, 'test-ssh2-passphrase')
-  addTestWithConnectOption({ ...connectOptionPassphrase, SSH2: require('ssh2-legacy') }, 'test-ssh2-legacy-passphrase')
 })

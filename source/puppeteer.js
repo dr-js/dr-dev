@@ -20,7 +20,7 @@ const puppeteerBrowserDisconnectListener = () => {
 
 const clearPuppeteerBrowser = ({
   puppeteerBrowser,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
 }) => {
   kitLogger && kitLogger.log('[Puppeteer|Browser] clear')
   puppeteerBrowser.removeListener('disconnected', puppeteerBrowserDisconnectListener)
@@ -31,7 +31,7 @@ const clearPuppeteerBrowser = ({
 }
 
 const initPuppeteerBrowser = async ({
-  logger, kit, kitLogger = kit || logger, // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit,
   Puppeteer = GET_PUPPETEER(kitLogger.log)
 }) => {
   if (!Puppeteer) {
@@ -57,7 +57,7 @@ const initPuppeteerBrowser = async ({
 
 const clearPuppeteerPage = async ({
   puppeteerPage,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
 }) => {
   kitLogger && kitLogger.log('[Puppeteer|Page] clear')
   await puppeteerPage.close()
@@ -66,7 +66,7 @@ const clearPuppeteerPage = async ({
 
 const initPuppeteerPage = async ({
   puppeteerBrowser, isDebug = false,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
 }) => {
   kitLogger.log('[Puppeteer|Page] init start')
   const puppeteerPage = await puppeteerBrowser.newPage()
@@ -83,7 +83,7 @@ const initPuppeteerPage = async ({
 
 const setupPuppeteerPage = async ({
   puppeteerPage, pageUrl, pageDefaultTimeout = 10 * 1000,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
 }) => {
   kitLogger.log(`[Puppeteer|Page] setup start, pageUrl: ${pageUrl}`)
   await puppeteerPage.setDefaultTimeout(pageDefaultTimeout)
@@ -94,7 +94,7 @@ const setupPuppeteerPage = async ({
 
 const reloadPuppeteerPage = async ({
   puppeteerPage,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
 }) => {
   kitLogger.log('[Puppeteer|Page] reload start')
   await puppeteerPage.reload({ waitUntil: 'networkidle2' }) // consider navigation to be finished when there are no more than 2 network connections for at least 500 ms.
@@ -102,25 +102,25 @@ const reloadPuppeteerPage = async ({
 }
 
 const testBootPuppeteer = async ({
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
 }) => {
   kitLogger.log(`[testBootPuppeteer] package version: ${(tryRequire('puppeteer/package.json') || {}).version}`)
-  const puppeteerBrowser = await initPuppeteerBrowser({ logger, kit, kitLogger })
+  const puppeteerBrowser = await initPuppeteerBrowser({ kit, kitLogger })
   kitLogger.log(`[testBootPuppeteer] browser version: ${await puppeteerBrowser.version()}, userAgent: ${await puppeteerBrowser.userAgent()}`)
-  const puppeteerPage = await initPuppeteerPage({ puppeteerBrowser, logger, kit, kitLogger })
+  const puppeteerPage = await initPuppeteerPage({ puppeteerBrowser, kit, kitLogger })
   kitLogger.log(`[testBootPuppeteer] page url: ${JSON.stringify(await puppeteerPage.url())}, viewport: ${JSON.stringify(await puppeteerPage.viewport())}`)
-  await clearPuppeteerPage({ puppeteerPage, logger, kit, kitLogger })
-  await clearPuppeteerBrowser({ puppeteerBrowser, logger, kit, kitLogger })
+  await clearPuppeteerPage({ puppeteerPage, kit, kitLogger })
+  await clearPuppeteerBrowser({ puppeteerBrowser, kit, kitLogger })
 }
 
 const runWithPuppeteer = async ({
   taskFunc,
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
 }) => {
-  const puppeteerBrowser = await initPuppeteerBrowser({ logger, kit, kitLogger })
-  const puppeteerPage = await initPuppeteerPage({ puppeteerBrowser, logger, kit, kitLogger })
+  const puppeteerBrowser = await initPuppeteerBrowser({ kit, kitLogger })
+  const puppeteerPage = await initPuppeteerPage({ puppeteerBrowser, kit, kitLogger })
   kitLogger.log('[Puppeteer|Page] test start')
-  const { result, error } = await catchAsync(taskFunc, { puppeteerPage, logger, kit, kitLogger })
+  const { result, error } = await catchAsync(taskFunc, { puppeteerPage, kit, kitLogger })
   kitLogger.log('[Puppeteer|Page] test done')
   await clearPuppeteerPage({ puppeteerPage })
   await clearPuppeteerBrowser({ puppeteerBrowser })
@@ -182,7 +182,7 @@ const testWithPuppeteer = async ({
   // test with server page
   testUrl, // prepared script with server
 
-  logger, kit, kitLogger = kit || logger // TODO: DEPRECATE: use 'kit' instead of 'logger'
+  kit, kitLogger = kit
 }) => runWithPuppeteer({
   taskFunc: async ({ puppeteerPage }) => {
     kitLogger.padLog(`[testWithPuppeteer] timeoutPage: ${time(timeoutPage)}, timeoutTest: ${time(timeoutTest)}`)
@@ -223,7 +223,7 @@ const testWithPuppeteer = async ({
     clearTimeout(timeoutToken)
     kitLogger.log('[test] done')
   },
-  logger, kit, kitLogger
+  kit, kitLogger
 })
 
 export {

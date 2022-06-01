@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { strictEqual, stringifyEqual } from '@dr-js/core/module/common/verify.js'
 import { readText } from '@dr-js/core/module/node/fs/File.js'
 import { deleteDirectory, resetDirectory } from '@dr-js/core/module/node/fs/Directory.js'

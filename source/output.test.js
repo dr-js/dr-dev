@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 
 import { indentLine } from '@dr-js/core/module/common/string.js'
 import { stringifyEqual, doThrow, doNotThrow, doThrowAsync, doNotThrowAsync } from '@dr-js/core/module/common/verify.js'

@@ -1,11 +1,10 @@
 {
   "EXPORT": [
     "INIT#.eslintrc.js",
-    "INIT#package.json",
-    "eslint-config-almost-standard-v14.js"
+    "INIT#package.json"
   ],
   "dependencies": {
-    "eslint": "^8.14.0",
+    "eslint": "^8.16.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0"

@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { withTimeoutPromise } from '@dr-js/core/module/common/function.js'
 import { toPackageInfo, collectDependency } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { writeJSON } from '@dr-js/core/module/node/fs/File.js'

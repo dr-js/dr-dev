@@ -10,13 +10,13 @@ jobs:
       fail-fast: false # allow all test to run to the end
       matrix:
         os: [ "ubuntu-latest", "windows-latest", "macos-latest" ]
-        node-version: [ "17.x" ]
+        node-version: [ "18.x" ]
         include: [ { os: "ubuntu-latest", node-version: "14.x" } ]
     runs-on: "${{ matrix.os }}"
     steps:
       - { uses: "actions/checkout@v2" } # https://github.com/actions/checkout
       - { uses: "actions/setup-node@v2", with: { node-version: "${{ matrix.node-version }}" } } # https://github.com/actions/setup-node
-      - run: npx @dr-js/dev@0.4 -eI .github/ci-patch.js
+      - run: npx @dr-js/dev@dev -eI .github/ci-patch.js
       - run: npm8 ci --no-optional
       - run: npm test
 
@@ -27,7 +27,7 @@ jobs:
     steps:
       - { uses: "actions/checkout@v2" } # https://github.com/actions/checkout
       - { uses: "actions/setup-node@v2", with: { node-version: "16.x" } } # https://github.com/actions/setup-node
-      - run: npx @dr-js/dev@0.4 -eI .github/ci-patch.js
-      - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN_DR_JS }}" > .npmrc
+      - run: npx @dr-js/dev@dev -eI .github/ci-patch.js
       - run: npm8 ci --no-optional
+      - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN_DR_JS }}" > .npmrc
       - run: npm run script-publish

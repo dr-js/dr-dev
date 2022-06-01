@@ -1,4 +1,4 @@
-const { resolve } = require('path')
+const { resolve } = require('node:path')
 const { setTimeoutAsync } = require('@dr-js/core/library/common/time.js')
 const { getPathStat } = require('@dr-js/core/library/node/fs/Path.js')
 const { readText, writeText } = require('@dr-js/core/library/node/fs/File.js')
@@ -9,7 +9,7 @@ const PATH_ROOT = resolve(__dirname, 'stale-check-gitignore/')
 const fromRoot = (...args) => resolve(PATH_ROOT, ...args)
 const getStatTime = ({ atime, mtime, ctime, birthtime }) => [ atime.toISOString(), mtime.toISOString(), ctime.toISOString(), birthtime.toISOString() ].join(' | ')
 
-// test with `npx @dr-js/core@0.4 -eI staleCheckDetect.test.js`
+// test with `npx @dr-js/core -eI staleCheckDetect.test.js`
 
 const main = async () => {
   await modifyDeleteForce(fromRoot())
