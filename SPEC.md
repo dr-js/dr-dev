@@ -105,6 +105,8 @@
 >       common option, may be path to repo folder, or "package.json" file: $0=path/cwd
 >   --git-commit --G -G [OPTIONAL] [ARGUMENT=0-1]
 >       common option, mostly for version marking
+>   --reset-bash-combo --RBC [OPTIONAL] [ARGUMENT=0-1]
+>       setup bashrc & alias
 >   --shell-alias --SA --A -A [OPTIONAL] [ARGUMENT=1+]
 >       run shell alias: $@=aliasName,...aliasArgList
 >   --version-bump-git-branch --VBGB [OPTIONAL] [ARGUMENT=0-1]
@@ -186,6 +188,7 @@
 >     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
 >     export DR_DEV_ROOT="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_GIT_COMMIT="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_RESET_BASH_COMBO="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_RBC]"
 >     export DR_DEV_SHELL_ALIAS="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_SA]"
 >     export DR_DEV_VERSION_BUMP_GIT_BRANCH="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBGB]"
 >     export DR_DEV_VERSION_BUMP_LAST_NUMBER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBLN]"
@@ -232,6 +235,7 @@
 >     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
 >     "root": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "gitCommit": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "resetBashCombo": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=RBC]" ],
 >     "shellAlias": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=SA]" ],
 >     "versionBumpGitBranch": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBGB]" ],
 >     "versionBumpLastNumber": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBLN]" ],

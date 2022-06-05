@@ -4,6 +4,7 @@ const { Config, parseCompactList, pickOneOf } = Preset
 
 const MODE_FORMAT_LIST = parseCompactList(
   // new mode (no short commands for now to avoid conflict)
+  'reset-bash-combo,RBC/T|setup bashrc & alias',
   'shell-alias,SA,A/AS,O|run shell alias: $@=aliasName,...aliasArgList',
 
   // version-bump

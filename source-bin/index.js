@@ -7,6 +7,7 @@ import { doCacheStep } from './mode/cacheStep.js'
 import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
 import { doPackageTrimNodeModules, doPackageTrimRubyGem } from './mode/packageTrim.js'
 import { doShellAlias } from './mode/shellAlias.js'
+import { resetBashCombo } from './mode/bashCombo.js'
 
 import { versionBumpByGitBranch, versionBumpLastNumber, versionBumpToIdentifier, versionBumpToLocal } from '@dr-js/core/module/common/module/SemVer.js'
 import { readJSONSync } from '@dr-js/core/module/node/fs/File.js'
@@ -35,6 +36,8 @@ const runMode = async (optionData, modeName) => {
 
   switch (modeName) {
     // new mode (no short commands for now to avoid conflict)
+    case 'reset-bash-combo':
+      return resetBashCombo()
     case 'shell-alias':
       return doShellAlias({
         aliasName: argumentList[ 0 ],

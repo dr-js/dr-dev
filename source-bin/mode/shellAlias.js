@@ -16,7 +16,7 @@ const doShellAlias = async ({
   aliasArgList = [],
   log
 }) => {
-  if ([ 'h', 'help', 'l', 'list' ].includes(aliasName)) return log && log(Object.keys(SHELL_ALIAS_LIST).join('\n'))
+  if ([ 'h', 'help', 'l', 'list' ].includes(aliasName)) return log && log(Object.keys(SHELL_ALIAS_MAP).join('\n'))
 
   const runBase = (commandStringOrArgList, argList = []) => {
     let commandList = [
@@ -46,7 +46,7 @@ const doShellAlias = async ({
     throw new Error(`invalid alias: ${describe(alias)} from aliasName: ${name}`)
   }
   const runAliasName = (aliasName, argList = []) => {
-    const alias = SHELL_ALIAS_LIST[ aliasName ]
+    const alias = SHELL_ALIAS_MAP[ aliasName ]
     if (!alias) throw new Error(`invalid aliasName: ${aliasName}`)
     runAlias(alias, argList, aliasName)
   }
@@ -70,9 +70,13 @@ const _AE = (...stringAliasList) => ({ AE: stringAliasList })
 let __osRelease, __packageManager
 const WHICH_LINUX = () => { // systemd linux: http://0pointer.de/blog/projects/os-release
   if (__packageManager === undefined) {
-    const textOsRelease = (process.env.PREFIX || '').includes('com.termux') ? 'Android (Termux)' // termux: https://www.reddit.com/r/termux/comments/co46qw/how_to_detect_in_a_bash_script_that_im_in_termux/ewi3fjj/
-      : withFallbackResult('', readTextSync, '/etc/os-release')
-    __osRelease = [ 'Arch', 'Manjaro', 'Debian', 'Ubuntu', 'Raspbian', 'Android (Termux)' ].filter((v) => textOsRelease.includes(v)).pop() || 'unknown-os-release'
+    if (process.platform === 'win32') __osRelease = 'win32'
+    else if (process.platform === 'darwin') __osRelease = 'darwin'
+    else if (process.platform === 'android' && (process.env.PREFIX || '').includes('com.termux')) __osRelease = 'Android (Termux)' // termux: https://www.reddit.com/r/termux/comments/co46qw/how_to_detect_in_a_bash_script_that_im_in_termux/ewi3fjj/
+    else {
+      const textOsRelease = withFallbackResult('', readTextSync, '/etc/os-release')
+      __osRelease = [ 'Arch', 'Manjaro', 'Debian', 'Ubuntu', 'Raspbian' ].filter((v) => textOsRelease.includes(v)).pop() || 'unknown-os-release'
+    }
     __packageManager = [ 'Arch', 'Manjaro' ].includes(__osRelease) ? 'pacman'
       : [ 'Debian', 'Ubuntu', 'Raspbian', 'Android (Termux)' ].includes(__osRelease) ? 'apt'
         : 'unknown-package-manager'
@@ -83,7 +87,7 @@ const WHICH_LINUX = () => { // systemd linux: http://0pointer.de/blog/projects/o
 
 const _RSS = (commandString) => String(runStdoutSync(commandString.split(' ').filter(Boolean))).trim()
 
-const SHELL_ALIAS_LIST = {
+const SHELL_ALIAS_MAP = {
   // picked from: https://github.com/dr-js/stash/blob/master/bash/bash-aliases-extend.sh
 
   // =============================
@@ -215,27 +219,27 @@ const SHELL_ALIAS_LIST = {
   // npm aliases (N*)
   ...{
     'npm-list-global': 'npm ls --global --depth=0',
-    'npm-install': 'npm install',
+    'npm-install': 'npm install --lockfile-version 3 --no-audit --no-fund --no-update-notifier',
+    'npm-install-simple': 'npm install',
     'npm-install-global': 'sudo npm install --global',
-    'npm-install-prefer-offline': 'npm install --prefer-offline',
-    'npm-install-package-lock-only': 'npm install --package-lock-only',
+    'npm-install-prefer-offline': 'npm install --prefer-offline --lockfile-version 3 --no-audit --no-fund --no-update-notifier',
+    'npm-install-package-lock-only': 'npm install --package-lock-only --lockfile-version 3 --no-audit --no-fund --no-update-notifier',
     'npm-uninstall': 'npm uninstall',
     'npm-uninstall-global': 'sudo npm uninstall --global',
     'npm-outdated': 'npm outdated',
-    'npm-dedup-install': [ 'npm ddp', 'npm install --prefer-offline' ],
     'npm-audit': 'npm audit',
     'npm-audit-fix': 'npm audit fix',
     'npm-run': 'npm run',
 
     'NLSG': _A('npm-list-global'),
     'NI': _A('npm-install'),
+    'NIS': _A('npm-install-simple'),
     'NIG': _A('npm-install-global'),
     'NIO': _A('npm-install-prefer-offline'),
     'NIPLO': _A('npm-install-package-lock-only'),
     'NU': _A('npm-uninstall'),
     'NUG': _A('npm-uninstall-global'),
     'NO': _A('npm-outdated'),
-    'NDI': _A('npm-dedup-install'),
     'NA': _A('npm-audit'),
     'NAF': _A('npm-audit-fix'),
     'NR': _A('npm-run')
@@ -322,7 +326,17 @@ const SHELL_ALIAS_LIST = {
     'DVLS': _A('docker-volume-ls'),
     'DVRM': _A('docker-volume-rm'),
     'DVC': _A('docker-volume-create'),
-    'DVI': _A('docker-volume-inspect')
+    'DVI': _A('docker-volume-inspect'),
+
+    'docker-system-df': _A('docker', 'system', 'df'),
+    'docker-system-info': _A('docker', 'system', 'info'),
+    'docker-system-prune': _A('docker', 'system', 'prune'),
+    'docker-system-prune-force': _A('docker', 'system', 'prune', '--force'),
+
+    'DSDF': _A('docker-system-df'),
+    'DSI': _A('docker-system-info'),
+    'DSP': _A('docker-system-prune'),
+    'DSPF': _A('docker-system-prune-force')
   },
 
   // =============================
@@ -399,12 +413,14 @@ const SHELL_ALIAS_LIST = {
   // @dr-js aliases (D*)
   'dr-js-npm-install-global-all': 'sudo npm i -g @dr-js/core @dr-js/dev',
   'dr-js-npm-install-global-all-dev': 'sudo npm i -g @dr-js/core@dev @dr-js/dev@dev',
-  'dr-js-package-reset': 'dr-js --rm package-lock.json node_modules',
+  'dr-js-rm': 'dr-js --rm',
+  'dr-js-package-reset': 'dr-js --rm package-lock.json node_modules/',
   'dr-js-package-reset-combo': _AE('dr-js-package-reset', 'npm-install'),
   'dr-js-package-reset-combo-combo': _AE('dr-js-package-reset', 'npm-install-prefer-offline'),
 
   'DNIGA': _A('dr-js-npm-install-global-all'),
   'DNIGAD': _A('dr-js-npm-install-global-all-dev'),
+  'DRM': _A('dr-js-rm'),
   'DPR': _A('dr-js-package-reset'),
   'DPRC': _A('dr-js-package-reset-combo'),
   'DPRCC': _A('dr-js-package-reset-combo-combo'),
@@ -459,7 +475,7 @@ const SHELL_ALIAS_LIST = {
     'system-reboot-required': () => [ 'echo', existsSync('/var/run/reboot-required') ? 'Reboot Required (found "/var/run/reboot-required")' : 'nope' ]
   }),
 
-  ...(WHICH_LINUX()[ 1 ] !== 'unknown-package-manager' && {
+  ...([ 'pacman', 'apt' ].includes(WHICH_LINUX()[ 1 ]) && {
     'SPLA': _A('system-package-list-all'),
     'SPL': _A('system-package-list'),
     'SPU': _A('system-package-update'),
@@ -471,4 +487,7 @@ const SHELL_ALIAS_LIST = {
   })
 }
 
-export { doShellAlias }
+export {
+  WHICH_LINUX, SHELL_ALIAS_MAP,
+  doShellAlias
+}
