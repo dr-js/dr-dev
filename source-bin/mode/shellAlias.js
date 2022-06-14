@@ -9,7 +9,7 @@ import { expandHome } from '@dr-js/core/module/node/fs/Path.js'
 import { readTextSync, readJSONSync } from '@dr-js/core/module/node/fs/File.js'
 import { verify as verifyDocker } from '@dr-js/core/module/node/module/Software/docker.js'
 import { resolveCommand } from '@dr-js/core/module/node/system/ResolveCommand.js'
-import { runSync, runStdoutSync } from '@dr-js/core/module/node/run.js'
+import { runSync, runStdoutSync, runDetached } from '@dr-js/core/module/node/run.js'
 
 const doShellAlias = async ({
   aliasName,
@@ -33,7 +33,7 @@ const doShellAlias = async ({
   const runAlias = (alias, argList = [], name) => {
     if (isBasicFunction(alias)) {
       alias = alias(...argList)
-      argList = [] // drop argList
+      argList = [] // drop argList, only use output from alias-func
     }
     if (isBasicObject(alias)) {
       if (alias.A) runAliasName(alias.A, [ ...alias.$, ...argList ])
@@ -368,6 +368,7 @@ const SHELL_ALIAS_MAP = {
     ? 'echo == cpufreq ==; cat /sys/devices/system/cpu/cpufreq/policy*/scaling_cur_freq; echo == thermal ==; cat /sys/class/thermal/thermal_zone*/temp;'
     : 'grep "cpu MHz" /proc/cpuinfo'
   ],
+  'quick-run-background': (...args) => [ 'echo', `background [${runDetached(args).subProcess.pid}]: ${args.join(' ')}` ],
   'quick-drop-caches': _E(
     'sync',
     [ 'sudo', 'bash', '-c', 'echo 1 > /proc/sys/vm/drop_caches' ]
