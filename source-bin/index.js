@@ -9,6 +9,7 @@ import { doPackageTrimNodeModules, doPackageTrimRubyGem } from './mode/packageTr
 import { doShellAlias } from './mode/shellAlias.js'
 import { resetBashCombo } from './mode/bashCombo.js'
 
+import { isNumber } from '@dr-js/core/module/common/check.js'
 import { versionBumpByGitBranch, versionBumpLastNumber, versionBumpToIdentifier, versionBumpToLocal } from '@dr-js/core/module/common/module/SemVer.js'
 import { readJSONSync } from '@dr-js/core/module/node/fs/File.js'
 import { getGitBranch } from '@dr-js/core/module/node/module/Software/git.js'
@@ -43,6 +44,9 @@ const runMode = async (optionData, modeName) => {
         aliasName: argumentList[ 0 ],
         aliasArgList: argumentList.slice(1),
         log
+      }).catch((error) => {
+        if (isNumber(error.code) && error.code > 0) process.exit(error.code) // pass through command exit code & be less noisy
+        else throw error
       })
 
     case 'version-bump-git-branch':
