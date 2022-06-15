@@ -105,6 +105,8 @@
 >       common option, may be path to repo folder, or "package.json" file: $0=path/cwd
 >   --git-commit --G -G [OPTIONAL] [ARGUMENT=0-1]
 >       common option, mostly for version marking
+>   --reset-bash-combo --RBC [OPTIONAL] [ARGUMENT=0-1]
+>       setup bashrc & alias
 >   --shell-alias --SA --A -A [OPTIONAL] [ARGUMENT=1+]
 >       run shell alias: $@=aliasName,...aliasArgList
 >   --version-bump-git-branch --VBGB [OPTIONAL] [ARGUMENT=0-1]
@@ -186,6 +188,7 @@
 >     export DR_DEV_PID_FILE="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_PID]"
 >     export DR_DEV_ROOT="[OPTIONAL] [ARGUMENT=1]"
 >     export DR_DEV_GIT_COMMIT="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_RESET_BASH_COMBO="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_RBC]"
 >     export DR_DEV_SHELL_ALIAS="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_SA]"
 >     export DR_DEV_VERSION_BUMP_GIT_BRANCH="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBGB]"
 >     export DR_DEV_VERSION_BUMP_LAST_NUMBER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBLN]"
@@ -232,6 +235,7 @@
 >     "pidFile": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=pid]" ],
 >     "root": [ "[OPTIONAL] [ARGUMENT=1]" ],
 >     "gitCommit": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "resetBashCombo": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=RBC]" ],
 >     "shellAlias": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=SA]" ],
 >     "versionBumpGitBranch": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBGB]" ],
 >     "versionBumpLastNumber": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBLN]" ],
@@ -273,7 +277,7 @@
 | Package name                   |     Version |
 | :----                          |       ----: |
 | @babel/cli                     |    ^7.17.10 |
-| @babel/core                    |     ^7.18.2 |
+| @babel/core                    |     ^7.18.5 |
 | @babel/eslint-parser           |     ^7.18.2 |
 | @babel/preset-env              |     ^7.18.2 |
 | @babel/preset-react            |    ^7.17.12 |
@@ -282,14 +286,14 @@
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^4.1.0 |
 | babel-plugin-styled-components |      ^2.0.7 |
-| eslint                         |     ^8.16.0 |
+| eslint                         |     ^8.17.0 |
 | eslint-plugin-import           |     ^2.26.0 |
 | eslint-plugin-node             |     ^11.1.0 |
 | eslint-plugin-promise          |      ^6.0.0 |
 | eslint-plugin-react            |     ^7.30.0 |
 | prop-types                     |     ^15.8.1 |
-| puppeteer                      |     ^14.1.2 |
-| react                          |     ^18.1.0 |
+| puppeteer                      |     ^14.4.0 |
+| react                          |     ^18.2.0 |
 | styled-components              |      ^5.3.5 |
-| terser                         |     ^5.14.0 |
-| webpack                        |     ^5.72.1 |
+| terser                         |     ^5.14.1 |
+| webpack                        |     ^5.73.0 |
