@@ -4,6 +4,7 @@ import { modifyCopySync } from '@dr-js/core/module/node/fs/Modify.js'
 
 import { WHICH_LINUX, SHELL_ALIAS_MAP } from './shellAlias.js'
 import { resolveCommandName } from '@dr-js/core/module/node/system/ResolveCommand.js'
+import { isBasicObject, isString } from '@dr-js/core/module/common/check.js'
 
 const getBashrc = () => `# ~/.bashrc: executed by bash(1) for non-login shells. edited from ubuntu1804 "/etc/skel/.bashrc"
 
@@ -135,8 +136,11 @@ export __PROXY_SOCKS5
 # =============================
 # alias redirect to "dr-dev"
 ${
-  Object.keys(SHELL_ALIAS_MAP)
-    .map((v) => `alias ${v}='dr-dev --shell-alias ${v} --'`)
+  Object.entries(SHELL_ALIAS_MAP)
+    .map(([ k, v ]) => {
+      if (isBasicObject(v) && isString(v.A) && v.$.length === 0) return `alias ${k}=${v.A}` // unpack simple _A
+      return `alias ${k}='dr-dev --shell-alias ${k} --'`
+    })
     .join('\n')
 }
 `
