@@ -53,8 +53,8 @@
   "devDependencies": {
     "@dr-js/dev": "^0.5.0",
     "@dr-js/dev-web": "^0.5.0",
-    "@min-pack/ssh2": "^1.10.0",
-    "ssh2": "^1.10.0",
+    "@min-pack/ssh2": "^1.11.0",
+    "ssh2": "^1.11.0",
     "yaml": "^2.1.1",
     "yaml-legacy": "npm:yaml@^1.10.2"
   },
