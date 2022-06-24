@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -48,11 +48,11 @@
     "npm": ">=6.14"
   },
   "dependencies": {
-    "@dr-js/core": "^0.5.0"
+    "@dr-js/core": "^0.5.1"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.5.0",
-    "@dr-js/dev-web": "^0.5.0",
+    "@dr-js/dev": "^0.5.1",
+    "@dr-js/dev-web": "^0.5.1",
     "@min-pack/ssh2": "^1.11.0",
     "ssh2": "^1.11.0",
     "yaml": "^2.1.1",
