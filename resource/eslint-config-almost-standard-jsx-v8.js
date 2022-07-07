@@ -1,3 +1,4 @@
+// UPDATE: https://github.com/standard/eslint-config-standard-jsx/compare/v10.0.0...v11.0.0#diff-31af7bef8291401346dd22af1e7c0ab20be3d024fb0104cfc82182bee0e73d99
 // UPDATE: https://github.com/standard/eslint-config-standard-jsx/compare/v8.1.0...v10.0.0#diff-31af7bef8291401346dd22af1e7c0ab20be3d024fb0104cfc82182bee0e73d99
 // UPDATE: https://github.com/standard/eslint-config-standard-jsx/compare/v7.0.0...v8.1.0#diff-1761f4f4ee815f0c4156b931d737ff32
 // EDIT: from https://github.com/standard/eslint-config-standard-jsx/blob/v7.0.0/eslintrc.json
@@ -26,9 +27,8 @@ module.exports = {
     'react/jsx-curly-brace-presence': [ 'error', { props: 'never', children: 'ignore' } ], // 'react/jsx-curly-brace-presence': [ 'error', { props: 'never', children: 'never' } ], // EDIT
     'react/jsx-curly-newline': [ 'error', { multiline: 'consistent', singleline: 'consistent' } ],
     'react/jsx-curly-spacing': [ 'error', {
-      attributes: { when: 'never' },
-      children: { when: 'never' },
-      allowMultiline: true
+      'attributes': { 'when': 'never', 'allowMultiline': true },
+      'children': { 'when': 'never', 'allowMultiline': true }
     } ],
     'react/jsx-equals-spacing': [ 'error', 'never' ],
     'react/jsx-first-prop-new-line': [ 'error', 'multiline-multiprop' ],

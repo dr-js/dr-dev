@@ -1,10 +1,14 @@
+// UPDATE: https://github.com/standard/eslint-config-standard/compare/v16.0.2...v17.0.0#diff-6884918dc8291219be508e05e28965b958c734def85324f3b53858ea4702090f
 // UPDATE: edit: ban default export
 // UPDATE: https://github.com/standard/eslint-config-standard/compare/v14.1.1...v16.0.2#diff-31af7bef8291401346dd22af1e7c0ab20be3d024fb0104cfc82182bee0e73d99
 // UPDATE: https://github.com/standard/eslint-config-standard/compare/v13.0.1...v14.1.1#diff-1761f4f4ee815f0c4156b931d737ff32
 // EDIT: from https://github.com/standard/eslint-config-standard/blob/v13.0.1/eslintrc.json
 
 module.exports = {
-  ignorePatterns: [ '!.*', 'node_modules' ], // EDIT: https://github.com/eslint/eslint/issues/10341#issuecomment-468548031
+  ignorePatterns: [
+    '!.*', 'node_modules', // EDIT: https://github.com/eslint/eslint/issues/10341#issuecomment-468548031
+    '**/*.ts' // EDIT: ignore ".ts" files (need "@typescript-eslint/parser")
+  ],
 
   parserOptions: {
     ecmaVersion: 'latest', // EDIT
@@ -14,12 +18,13 @@ module.exports = {
 
   env: { es6: true, es2021: true, node: true },
 
-  plugins: [ 'eslint-plugin-import', 'eslint-plugin-node', 'eslint-plugin-promise' ], // EDIT
+  plugins: [ 'eslint-plugin-import', 'eslint-plugin-n', 'eslint-plugin-promise' ], // EDIT
 
   globals: { globalThis: 'readonly', global: 'readonly', window: 'readonly', self: 'readonly', __DEV__: 'readonly' }, // globals: { document: 'readonly', navigator: 'readonly', window: 'readonly' }, // EDIT
 
   rules: {
     'no-var': 'warn',
+    'object-shorthand': [ 'warn', 'properties' ],
     'accessor-pairs': [ 'error', { setWithoutGet: true, enforceForClassMembers: true } ],
     'array-bracket-spacing': [ 'error', 'always' ], // 'array-bracket-spacing': [ 'error', 'never' ], // EDIT
     'array-callback-return': [ 'error', { allowImplicit: false, checkForEach: false } ],
@@ -198,13 +203,13 @@ module.exports = {
     'import/no-default-export': 'error', // EDIT: add
     'import/no-mutable-exports': 'error', // EDIT: add
 
-    'node/handle-callback-err': [ 'error', '^(err|error)$' ],
-    'node/no-callback-literal': 'error',
-    'node/no-deprecated-api': 'error',
-    'node/no-exports-assign': 'error',
-    'node/no-new-require': 'error',
-    'node/no-path-concat': 'error',
-    'node/process-exit-as-throw': 'error',
+    'n/handle-callback-err': [ 'error', '^(err|error)$' ],
+    'n/no-callback-literal': 'error',
+    'n/no-deprecated-api': 'error',
+    'n/no-exports-assign': 'error',
+    'n/no-new-require': 'error',
+    'n/no-path-concat': 'error',
+    'n/process-exit-as-throw': 'error',
 
     'promise/param-names': 'error'
   }

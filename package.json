@@ -54,6 +54,7 @@
     "@dr-js/dev": "^0.5.2",
     "@dr-js/dev-web": "^0.5.2",
     "@min-pack/ssh2": "^1.11.0",
+    "eslint-plugin-n": "^15.2.4",
     "ssh2": "^1.11.0",
     "yaml": "^2.1.1",
     "yaml-legacy": "npm:yaml@^1.10.2"
