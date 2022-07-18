@@ -52,7 +52,7 @@ chmod 700 /tmp/dr-dev-ssh-test/user-home/.ssh/
 chmod go-w /tmp/dr-dev-ssh-test/user-home/
 /usr/sbin/sshd -D -e -h /tmp/dr-dev-ssh-test/test-host-key-gitignore.pri -f /tmp/dr-dev-ssh-test/sshd-gitignore.conf
 `
-const DOCKER_IMAGE = 'ghcr.io/dr-js/debian:11-bin-git-0.2.7'
+const DOCKER_IMAGE = 'ghcr.io/dr-js/debian:11-bin-git-0.3.1'
 
 const generateSSHKey = async (name, passphrase = '') => {
   runSync([ 'ssh-keygen',
