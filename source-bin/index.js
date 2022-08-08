@@ -46,6 +46,7 @@ const runMode = async (optionData, modeName) => {
         log
       }).catch((error) => {
         if (isNumber(error.code) && error.code > 0) process.exit(error.code) // pass through command exit code & be less noisy
+        if (error.signal === 'SIGPIPE') process.exit(1) // convert common `SIGPIPE` to exit 1 (from `git-log-oneline`)
         else throw error
       })
 

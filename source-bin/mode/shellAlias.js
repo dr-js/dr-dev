@@ -226,7 +226,8 @@ const SHELL_ALIAS_MAP = {
   'npm-audit-fix': 'npm audit fix',
   'npm-run': 'npm run',
 
-  'NLSG': _A('npm-list-global'),
+  'NLSG': _A('npm-list-global'), // TODO: DEPRECATE: use `NLG`
+  'NLG': _A('npm-list-global'),
   'NI': _A('npm-install'),
   'NIS': _A('npm-install-simple'),
   'NIG': _A('npm-install-global'),
@@ -354,7 +355,7 @@ const SHELL_ALIAS_MAP = {
   'quick-reboot': 'sudo reboot',
   'quick-df': 'df -h',
   'quick-df-current': 'df -h .',
-  'quick-du': 'du -hd1',
+  'quick-du': 'sudo du -hd1',
   'quick-ssh-key-md5-list': [ 'ssh-keygen', '-E', 'md5', '-lf', expandHome('~/.ssh/authorized_keys') ],
   'quick-ssh-keygen': (
     $1 = `KEY_${getUTCDateTag()}_4096`, // TZ=UTC0 date +%Y%m%d
