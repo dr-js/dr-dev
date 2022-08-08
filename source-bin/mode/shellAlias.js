@@ -226,7 +226,8 @@ const SHELL_ALIAS_MAP = {
   'npm-audit-fix': 'npm audit fix',
   'npm-run': 'npm run',
 
-  'NLSG': _A('npm-list-global'),
+  'NLSG': _A('npm-list-global'), // TODO: DEPRECATE: use `NLG`
+  'NLG': _A('npm-list-global'),
   'NI': _A('npm-install'),
   'NIS': _A('npm-install-simple'),
   'NIG': _A('npm-install-global'),

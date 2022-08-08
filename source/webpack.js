@@ -162,7 +162,7 @@ const commonFlag = async ({
       rules: [
         babelOption && { test: /\.m?js$/, use: { loader: 'babel-loader', options: babelOption } },
         packageJSONPickOption && {
-          test: /package\.json$/,
+          test: /\/package\.json$/,
           type: (!packageJSONPickOption.exportMode || packageJSONPickOption.exportMode.startsWith('export-')) ? 'javascript/auto' : undefined,
           use: { loader: join(__dirname, 'webpack-json-pick-loader.js'), options: packageJSONPickOption }
         },
