@@ -110,9 +110,9 @@ const SHELL_ALIAS_MAP = {
   'git-branch-list': 'git branch --all --list', // local and remote
   'git-branch-delete': 'git branch -D',
   'git-checkout-branch-remote': 'git checkout --track', // $1=remove-branch-name # create and switch to a local branch tracking the remote
-  'git-cherry-pack-range': ($1, $2) => [ 'git', 'cherry-pick', `${$1}^..${$2}` ], // $1=commit-from, $2=commit-to # will include both from/to commit
-  'git-cherry-pack-abort': 'git cherry-pick --abort',
-  'git-cherry-pack-continue': 'git cherry-pick --continue',
+  'git-cherry-pick-range': ($1, $2) => [ 'git', 'cherry-pick', `${$1}^..${$2}` ], // $1=commit-from, $2=commit-to # will include both from/to commit
+  'git-cherry-pick-abort': 'git cherry-pick --abort',
+  'git-cherry-pick-continue': 'git cherry-pick --continue',
   'git-clear': _E('git remote prune origin', 'git gc --prune=now'),
   'git-commit': 'git commit',
   'git-commit-amend': 'git commit --amend',
@@ -148,9 +148,9 @@ const SHELL_ALIAS_MAP = {
   'GBL': _A('git-branch-list'),
   'GBD': _A('git-branch-delete'),
   'GCBR': _A('git-checkout-branch-remote'),
-  'GCPR': _A('git-cherry-pack-range'),
-  'GCPA': _A('git-cherry-pack-abort'),
-  'GCPC': _A('git-cherry-pack-continue'),
+  'GCPR': _A('git-cherry-pick-range'),
+  'GCPA': _A('git-cherry-pick-abort'),
+  'GCPC': _A('git-cherry-pick-continue'),
   'GC': _A('git-clear'),
   'GCM': _A('git-commit'),
   'GCMA': _A('git-commit-amend'),
