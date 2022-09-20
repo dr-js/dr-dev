@@ -32,6 +32,7 @@ const SSHD_CONF_STRING = `
 Port ${TEST_SSHD_PORT} # abnormal port for test
 AuthorizedKeysFile /tmp/dr-dev-ssh-test/user-home/.ssh/authorized_keys # locked path for test
 StrictModes no # bypass dir permission checking # NOTE: danger in production server
+PubkeyAcceptedKeyTypes +ssh-rsa # NOTE: OpenSSH@8 auth issue: https://github.com/mscdex/ssh2/issues/989
 
 PermitRootLogin prohibit-password
 PubkeyAuthentication yes
@@ -52,7 +53,7 @@ chmod 700 /tmp/dr-dev-ssh-test/user-home/.ssh/
 chmod go-w /tmp/dr-dev-ssh-test/user-home/
 /usr/sbin/sshd -D -e -h /tmp/dr-dev-ssh-test/test-host-key-gitignore.pri -f /tmp/dr-dev-ssh-test/sshd-gitignore.conf
 `
-const DOCKER_IMAGE = 'ghcr.io/dr-js/debian:11-bin-git-0.3.1'
+const DOCKER_IMAGE = 'ghcr.io/dr-js/debian:12-bin-git-0.3.2'
 
 const generateSSHKey = async (name, passphrase = '') => {
   runSync([ 'ssh-keygen',
