@@ -71,7 +71,7 @@ function ccd { mkdir -p "$1"; cd "$1"; } # $1=path to create and cd to
 
 # =============================
 # common path alias (C*)
-__PATH_GIT_ROOT_LIST="Git/ GitHub/ Documents/Git/ Documents/GitHub/" # list to search
+__PATH_GIT_ROOT_LIST="Git/ GitHub/ git/ github/ Documents/Git/ Documents/GitHub/ Documents/git/ Documents/github/" # list to search
 __PATH_GIT_ROOT=""
 for path in \${__PATH_GIT_ROOT_LIST}; do
   [[ -d "\${HOME}/\${path}" ]] && __PATH_GIT_ROOT="\${HOME}/\${path}"
