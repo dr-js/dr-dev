@@ -110,9 +110,9 @@ const SHELL_ALIAS_MAP = {
   'git-branch-list': 'git branch --all --list', // local and remote
   'git-branch-delete': 'git branch -D',
   'git-checkout-branch-remote': 'git checkout --track', // $1=remove-branch-name # create and switch to a local branch tracking the remote
-  'git-cherry-pack-range': ($1, $2) => [ 'git', 'cherry-pick', `${$1}^..${$2}` ], // $1=commit-from, $2=commit-to # will include both from/to commit
-  'git-cherry-pack-abort': 'git cherry-pick --abort',
-  'git-cherry-pack-continue': 'git cherry-pick --continue',
+  'git-cherry-pick-range': ($1, $2) => [ 'git', 'cherry-pick', `${$1}^..${$2}` ], // $1=commit-from, $2=commit-to # will include both from/to commit
+  'git-cherry-pick-abort': 'git cherry-pick --abort',
+  'git-cherry-pick-continue': 'git cherry-pick --continue',
   'git-clear': _E('git remote prune origin', 'git gc --prune=now'),
   'git-commit': 'git commit',
   'git-commit-amend': 'git commit --amend',
@@ -148,9 +148,9 @@ const SHELL_ALIAS_MAP = {
   'GBL': _A('git-branch-list'),
   'GBD': _A('git-branch-delete'),
   'GCBR': _A('git-checkout-branch-remote'),
-  'GCPR': _A('git-cherry-pack-range'),
-  'GCPA': _A('git-cherry-pack-abort'),
-  'GCPC': _A('git-cherry-pack-continue'),
+  'GCPR': _A('git-cherry-pick-range'),
+  'GCPA': _A('git-cherry-pick-abort'),
+  'GCPC': _A('git-cherry-pick-continue'),
   'GC': _A('git-clear'),
   'GCM': _A('git-commit'),
   'GCMA': _A('git-commit-amend'),
@@ -225,6 +225,7 @@ const SHELL_ALIAS_MAP = {
   'npm-audit': 'npm audit',
   'npm-audit-fix': 'npm audit fix',
   'npm-run': 'npm run',
+  'npm-view': 'npm view',
 
   'NLSG': _A('npm-list-global'), // TODO: DEPRECATE: use `NLG`
   'NLG': _A('npm-list-global'),
@@ -239,6 +240,7 @@ const SHELL_ALIAS_MAP = {
   'NA': _A('npm-audit'),
   'NAF': _A('npm-audit-fix'),
   'NR': _A('npm-run'),
+  'NV': _A('npm-view'),
 
   // =============================
   // docker & docker-compose aliases (DK, DC*,DI*,DV*,DS*, DD*)
@@ -390,6 +392,8 @@ const SHELL_ALIAS_MAP = {
     [ 'truncate', '--size=0', $1 ],
     [ 'nano', $1 ]
   ),
+  'quick-docker-log-ls': [ 'sudo', 'bash', '-c', 'cd /var/lib/docker/containers/ && ls -alh ./*/*.log' ],
+  'quick-docker-log-truncate': [ 'sudo', 'bash', '-c', 'cd /var/lib/docker/containers/ && truncate -s0 ./*/*.log' ],
 
   'QDDR': _A('quick-dd-random'),
   'QSHUTDOWN': _A('quick-shutdown'),
@@ -410,6 +414,8 @@ const SHELL_ALIAS_MAP = {
   'QGPC': _A('quick-git-push-combo'),
   'QGPCF': _A('quick-git-push-combo-force'),
   'QNR': _A('quick-nano-reset'),
+  'QDLL': _A('quick-docker-log-ls'),
+  'QDLT': _A('quick-docker-log-truncate'),
 
   // =============================
   // @dr-js aliases (D*)

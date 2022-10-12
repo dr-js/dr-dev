@@ -16,19 +16,19 @@ jobs:
       fail-fast: false # allow all test to run to the end
       matrix:
         os: [ "ubuntu-latest" ] # [ "ubuntu-latest", "windows-latest", "macos-latest" ]
-        node-version: [ "14.x", "16.x" ]
+        node-version: [ "16.x", "18.x" ]
     runs-on: "${{ matrix.os }}"
     steps:
-      - { uses: "actions/checkout@v2" } # https://github.com/actions/checkout
-      - { uses: "actions/setup-node@v2", with: { node-version: "${{ matrix.node-version }}" } } # https://github.com/actions/setup-node
+      - { uses: "actions/checkout@v3" } # https://github.com/actions/checkout
+      - { uses: "actions/setup-node@v3", with: { node-version: "${{ matrix.node-version }}" } } # https://github.com/actions/setup-node
       - run: npx @dr-js/dev@0.5 -eI .github/ci-patch.js
       - run: dr-dev -c .github/cache/config.js --cache-step setup
-      - { uses: "actions/cache@v2", with: { # https://github.com/actions/cache
+      - { uses: "actions/cache@v3", with: { # https://github.com/actions/cache
         key: "${{ runner.os }}-${{ env.cache-version }}-${{ matrix.node-version }}-${{ hashFiles('.github/cache/temp-gitignore/checksum-file') }}",
         restore-keys: "${{ runner.os }}-${{ env.cache-version }}-${{ matrix.node-version }}-",
         path: "${{ env.cache-path }}"
       } }
       - run: dr-dev -c .github/cache/config.js --cache-step mark
-      - run: npm ci
+      - run: npm ci --omit=optional
       - run: npm test
       - run: dr-dev -c .github/cache/config.js --cache-step prune

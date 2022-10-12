@@ -13,8 +13,8 @@ jobs:
         node-version: [ "16.x" ]
     runs-on: "${{ matrix.os }}"
     steps:
-      - { uses: "actions/checkout@v2" } # https://github.com/actions/checkout
-      - { uses: "actions/setup-node@v2", with: { node-version: "${{ matrix.node-version }}" } } # https://github.com/actions/setup-node
+      - { uses: "actions/checkout@v3" } # https://github.com/actions/checkout
+      - { uses: "actions/setup-node@v3", with: { node-version: "${{ matrix.node-version }}" } } # https://github.com/actions/setup-node
       - run: npx @dr-js/dev@0.5 -eI .github/ci-patch.js
       - run: npm8 ci --omit=optional
       - run: npm test
