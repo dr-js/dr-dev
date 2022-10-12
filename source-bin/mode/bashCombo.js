@@ -81,12 +81,20 @@ alias cd-git='cd "\${__PATH_GIT_ROOT}"'
 alias cd-log='cd /var/log/'
 alias cd-docker='cd /var/lib/docker/'
 alias cd-systemd='cd /lib/systemd/system/'
+alias cd-systemd-network='cd /etc/systemd/network/'
+alias cd-ssh='cd /etc/ssh/'
+alias cd-apt='cd /etc/apt/'
+alias cd-pacman='cd /etc/pacman.d/'
 alias cd-nginx='cd /etc/nginx/'
 
 alias CG=cd-git
 alias CL=cd-log
 alias CDK=cd-docker
 alias CSD=cd-systemd
+alias CSDN=cd-systemd-network
+alias CSSH=cd-ssh
+alias CAPT=cd-apt
+alias CPCM=cd-pacman
 alias CN=cd-nginx
 
 # =============================
