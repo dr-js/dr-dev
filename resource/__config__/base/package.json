@@ -20,7 +20,7 @@
   ],
   "repository": "github:dr-js/dr-dev",
   "engines": {
-    "node": ">=14.18",
-    "npm": ">=6.14"
+    "node": ">=18.12",
+    "npm": ">=8.19"
   }
 }
