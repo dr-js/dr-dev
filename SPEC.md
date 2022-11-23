@@ -155,25 +155,6 @@
 >         use URLSearchParams format String, or key-value Object
 >     --exec-cwd --EC [ARGUMENT=0-1]
 >         reset cwd to path
->   --cache-step --cs [OPTIONAL] [ARGUMENT=1]
->       one of:
->         setup mark prune is-hash-changed
->         IHC checksum-file-only CFO
->     --prune-policy [ARGUMENT=1]
->         "prune" only, one of:
->           unused stale-only debug
->     --path-stat-file [ARGUMENT=1]
->         path of stat file, used to help detect checksum change and compare stale-check time, only optional for "checksum-file-only" mode
->     --path-checksum-list --pcl [ARGUMENT=1+]
->         list of file or directory to calc checksum
->     --path-checksum-file --pcf [ARGUMENT=1]
->         path for generated checksum file
->     --path-stale-check-list [ARGUMENT=0+]
->         list of cache file or directory to check time
->     --path-stale-check-file [ARGUMENT=1]
->         path for generated stale-check report file, also useful for debugging
->     --max-stale-day [ARGUMENT=1]
->         how old unused file is stale, default: 8day
 > ENV Usage:
 >   "
 >     #!/usr/bin/env bash
@@ -213,14 +194,6 @@
 >     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
 >     export DR_DEV_EXEC_ENV="[ARGUMENT=0-1] [ALIAS=DR_DEV_EE]"
 >     export DR_DEV_EXEC_CWD="[ARGUMENT=0-1] [ALIAS=DR_DEV_EC]"
->     export DR_DEV_CACHE_STEP="[OPTIONAL] [ARGUMENT=1] [ALIAS=DR_DEV_CS]"
->     export DR_DEV_PRUNE_POLICY="[ARGUMENT=1]"
->     export DR_DEV_PATH_STAT_FILE="[ARGUMENT=1]"
->     export DR_DEV_PATH_CHECKSUM_LIST="[ARGUMENT=1+] [ALIAS=DR_DEV_PCL]"
->     export DR_DEV_PATH_CHECKSUM_FILE="[ARGUMENT=1] [ALIAS=DR_DEV_PCF]"
->     export DR_DEV_PATH_STALE_CHECK_LIST="[ARGUMENT=0+]"
->     export DR_DEV_PATH_STALE_CHECK_FILE="[ARGUMENT=1]"
->     export DR_DEV_MAX_STALE_DAY="[ARGUMENT=1]"
 >   "
 > CONFIG Usage:
 >   {
@@ -260,14 +233,6 @@
 >     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
 >     "execEnv": [ "[ARGUMENT=0-1] [ALIAS=EE]" ],
 >     "execCwd": [ "[ARGUMENT=0-1] [ALIAS=EC]" ],
->     "cacheStep": [ "[OPTIONAL] [ARGUMENT=1] [ALIAS=cs]" ],
->     "prunePolicy": [ "[ARGUMENT=1]" ],
->     "pathStatFile": [ "[ARGUMENT=1]" ],
->     "pathChecksumList": [ "[ARGUMENT=1+] [ALIAS=pcl]" ],
->     "pathChecksumFile": [ "[ARGUMENT=1] [ALIAS=pcf]" ],
->     "pathStaleCheckList": [ "[ARGUMENT=0+]" ],
->     "pathStaleCheckFile": [ "[ARGUMENT=1]" ],
->     "maxStaleDay": [ "[ARGUMENT=1]" ],
 >   }
 > ```
 

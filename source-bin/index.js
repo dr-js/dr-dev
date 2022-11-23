@@ -3,7 +3,6 @@
 import { doCheckOutdated } from './mode/checkOutdated.js'
 import { doTest } from './mode/test.js'
 import { doExec } from './mode/exec.js'
-import { doCacheStep } from './mode/cacheStep.js'
 import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
 import { doPackageTrimNodeModules, doPackageTrimRubyGem } from './mode/packageTrim.js'
 import { doShellAlias } from './mode/shellAlias.js'
@@ -24,7 +23,7 @@ import { name as packageName, version as packageVersion } from '../package.json'
 
 const runMode = async (optionData, modeName) => {
   const sharedPack = sharedOption(optionData, modeName)
-  const { get, tryGet, getFirst, tryGetFirst, getToggle } = optionData
+  const { tryGet, tryGetFirst, getToggle } = optionData
   const { argumentList, log } = sharedPack
 
   const isDebug = getToggle('debug')
@@ -111,17 +110,6 @@ const runMode = async (optionData, modeName) => {
       return doExec(argumentList, {
         env: tryGetFirst('exec-env'),
         cwd: tryGetFirst('exec-cwd') // TODO: naming
-      })
-    case 'cache-step':
-      return doCacheStep({
-        cacheStepType: argumentList[ 0 ],
-        prunePolicyType: tryGetFirst('prune-policy') || 'unused',
-        pathStatFile: tryGetFirst('path-stat-file'), // TODO: only when 'checksum-file-only'
-        pathChecksumList: get('path-checksum-list'),
-        pathChecksumFile: getFirst('path-checksum-file'),
-        pathStaleCheckList: tryGet('path-stale-check-list') || [],
-        pathStaleCheckFile: tryGetFirst('path-stale-check-file') || undefined,
-        maxStaleDay: tryGetFirst('max-stale-day') || 8
       })
 
     default:
