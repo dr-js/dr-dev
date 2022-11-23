@@ -16,8 +16,9 @@ jobs:
     steps:
       - { uses: "actions/checkout@v3" } # https://github.com/actions/checkout
       - { uses: "actions/setup-node@v3", with: { node-version: "${{ matrix.node-version }}" } } # https://github.com/actions/setup-node
-      - run: npx @dr-js/dev@0.5 -eI .github/ci-patch.js
-      - run: npm8 ci --omit=optional
+      # TODO: wait for npm fix # - run: npx @dr-js/dev@0.5 -eI .github/ci-patch.js
+      - run: npm i -g @dr-js/dev@0.5 && dr-dev -eI .github/ci-patch.js && npm rm -g @dr-js/dev
+      - run: npm ci --omit=optional
       - run: npm test
 
   publish-tag: # job id
@@ -27,7 +28,8 @@ jobs:
     steps:
       - { uses: "actions/checkout@v3" } # https://github.com/actions/checkout
       - { uses: "actions/setup-node@v3", with: { node-version: "18" } } # https://github.com/actions/setup-node
-      - run: npx @dr-js/dev@0.5 -eI .github/ci-patch.js
-      - run: npm8 ci --omit=optional
+      # TODO: wait for npm fix # - run: npx @dr-js/dev@0.5 -eI .github/ci-patch.js
+      - run: npm i -g @dr-js/dev@0.5 && dr-dev -eI .github/ci-patch.js && npm rm -g @dr-js/dev
+      - run: npm ci --omit=optional
       - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN_DR_JS }}" > .npmrc
       - run: npm run script-publish
