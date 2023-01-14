@@ -13,6 +13,7 @@ const MODE_FORMAT_LIST = parseCompactList(
   'version-bump-to-identifier,VBTI/AS,O/0-1|bump package version to identifier: -G, -D, $0=labelIdentifier/dev',
   'version-bump-to-local,VBTL/T|bump package version to append identifier "local", for local testing: -G, -D',
   'version-bump-to-major,VBTM/T|bump package version and drop label: -G, -D',
+  'version-bump-push-check,VBPC/T|check "WIP" message in commit, for "tag-push" script',
 
   // trim
   'package-trim-node-modules,PTNM/AP,O|trim common doc/test/config in "node_modules/": $@=...pathList',

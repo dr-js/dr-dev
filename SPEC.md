@@ -119,6 +119,8 @@
 >       bump package version to append identifier "local", for local testing: -G, -D
 >   --version-bump-to-major --VBTM [OPTIONAL] [ARGUMENT=0-1]
 >       bump package version and drop label: -G, -D
+>   --version-bump-push-check --VBPC [OPTIONAL] [ARGUMENT=0-1]
+>       check "WIP" message in commit, for "tag-push" script
 >   --package-trim-node-modules --PTNM [OPTIONAL] [ARGUMENT=1+]
 >       trim common doc/test/config in "node_modules/": $@=...pathList
 >   --package-trim-ruby-gem --PTRG [OPTIONAL] [ARGUMENT=1+]
@@ -195,6 +197,7 @@
 >     export DR_DEV_VERSION_BUMP_TO_IDENTIFIER="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTI]"
 >     export DR_DEV_VERSION_BUMP_TO_LOCAL="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTL]"
 >     export DR_DEV_VERSION_BUMP_TO_MAJOR="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBTM]"
+>     export DR_DEV_VERSION_BUMP_PUSH_CHECK="[OPTIONAL] [ARGUMENT=0-1] [ALIAS=DR_DEV_VBPC]"
 >     export DR_DEV_PACKAGE_TRIM_NODE_MODULES="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTNM]"
 >     export DR_DEV_PACKAGE_TRIM_RUBY_GEM="[OPTIONAL] [ARGUMENT=1+] [ALIAS=DR_DEV_PTRG]"
 >     export DR_DEV_TEST="[OPTIONAL] [ARGUMENT=1+]"
@@ -242,6 +245,7 @@
 >     "versionBumpToIdentifier": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTI]" ],
 >     "versionBumpToLocal": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTL]" ],
 >     "versionBumpToMajor": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBTM]" ],
+>     "versionBumpPushCheck": [ "[OPTIONAL] [ARGUMENT=0-1] [ALIAS=VBPC]" ],
 >     "packageTrimNodeModules": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTNM]" ],
 >     "packageTrimRubyGem": [ "[OPTIONAL] [ARGUMENT=1+] [ALIAS=PTRG]" ],
 >     "test": [ "[OPTIONAL] [ARGUMENT=1+]" ],

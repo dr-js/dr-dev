@@ -4,7 +4,7 @@ import { doCheckOutdated } from './mode/checkOutdated.js'
 import { doTest } from './mode/test.js'
 import { doExec } from './mode/exec.js'
 import { doCacheStep } from './mode/cacheStep.js'
-import { doVersionBump, getCommonVersionBump } from './mode/versionBump.js'
+import { doVersionBump, getCommonVersionBump, doVersionBumpCheckWIP } from './mode/versionBump.js'
 import { doPackageTrimNodeModules, doPackageTrimRubyGem } from './mode/packageTrim.js'
 import { doShellAlias } from './mode/shellAlias.js'
 import { resetBashCombo } from './mode/bashCombo.js'
@@ -63,6 +63,8 @@ const runMode = async (optionData, modeName) => {
       return doVersionBump(await commonVersionBump(versionBumpToLocal))
     case 'version-bump-to-major':
       return doVersionBump(await commonVersionBump(versionBumpByGitBranch, { isMajorBranch: true }))
+    case 'version-bump-push-check':
+      return doVersionBumpCheckWIP()
 
     case 'package-trim-node-modules':
       return doPackageTrimNodeModules({ pathList: argumentList, log })
