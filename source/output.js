@@ -22,6 +22,7 @@ const initOutput = async ({
   fromRoot = kit && kit.fromRoot,
 
   deleteKeyList = [ 'private', 'scripts', 'devExecCommands', 'devDependencies' ],
+  extraDeleteKeyList = [], // append to `deleteKeyList`
   extraEntryMap = {},
   copyPathList = [ 'README.md' ],
   copyMapPathList = [],
@@ -33,7 +34,7 @@ const initOutput = async ({
 
   kitLogger.padLog('init output package.json')
   const packageJSON = require(fromRoot('package.json'))
-  for (const deleteKey of deleteKeyList) {
+  for (const deleteKey of [ ...deleteKeyList, ...extraDeleteKeyList ]) {
     kitLogger.log(`dropped key: ${deleteKey}`)
     delete packageJSON[ deleteKey ]
   }
