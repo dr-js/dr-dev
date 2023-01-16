@@ -30,6 +30,11 @@ const runMode = async (optionData, modeName) => {
   const isDebug = getToggle('debug')
   const isGitCommit = getToggle('git-commit')
   const commonVersionBump = getCommonVersionBump(tryGetFirst('root'), isGitCommit, isDebug, log)
+  const runShellAlias = async (aliasName, ...aliasArgList) => doShellAlias({ aliasName, aliasArgList, log }).catch((error) => {
+    if (isNumber(error.code) && error.code > 0) process.exit(error.code) // pass through command exit code & be less noisy
+    if (error.signal === 'SIGPIPE') process.exit(1) // convert common `SIGPIPE` to exit 1 (from `git-log-oneline`)
+    else throw error
+  })
 
   const tabLog = isDebug
     ? (level, ...args) => log(`${'  '.repeat(level)}${args.join(' ')}`)
@@ -40,15 +45,7 @@ const runMode = async (optionData, modeName) => {
     case 'reset-bash-combo':
       return resetBashCombo()
     case 'shell-alias':
-      return doShellAlias({
-        aliasName: argumentList[ 0 ],
-        aliasArgList: argumentList.slice(1),
-        log
-      }).catch((error) => {
-        if (isNumber(error.code) && error.code > 0) process.exit(error.code) // pass through command exit code & be less noisy
-        if (error.signal === 'SIGPIPE') process.exit(1) // convert common `SIGPIPE` to exit 1 (from `git-log-oneline`)
-        else throw error
-      })
+      return runShellAlias(argumentList)
 
     case 'version-bump-git-branch':
       return doVersionBump(await commonVersionBump(versionBumpByGitBranch, {
@@ -64,8 +61,8 @@ const runMode = async (optionData, modeName) => {
     case 'version-bump-to-major':
       return doVersionBump(await commonVersionBump(versionBumpByGitBranch, { isMajorBranch: true }))
     case 'version-bump-push-check':
-      return doVersionBumpCheckWIP()
-
+      doVersionBumpCheckWIP()
+      return isGitCommit && runShellAlias('quick-git-push-combo')
     case 'package-trim-node-modules':
       return doPackageTrimNodeModules({ pathList: argumentList, log })
     case 'package-trim-ruby-gem':
