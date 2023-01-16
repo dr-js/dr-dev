@@ -22,7 +22,9 @@ const initOutput = async ({
   fromRoot = kit && kit.fromRoot,
 
   deleteKeyList = [ 'private', 'scripts', 'devExecCommands', 'devDependencies' ],
+  extraDeleteKeyList = [], // append to `deleteKeyList`
   extraEntryMap = {},
+  editPackageJSON = async (packageJSON) => {},
   copyPathList = [ 'README.md' ],
   copyMapPathList = [],
   replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip
@@ -33,7 +35,7 @@ const initOutput = async ({
 
   kitLogger.padLog('init output package.json')
   const packageJSON = require(fromRoot('package.json'))
-  for (const deleteKey of deleteKeyList) {
+  for (const deleteKey of [ ...deleteKeyList, ...extraDeleteKeyList ]) {
     kitLogger.log(`dropped key: ${deleteKey}`)
     delete packageJSON[ deleteKey ]
   }
@@ -42,6 +44,7 @@ const initOutput = async ({
     else kitLogger.log(`added key: ${key} (${describe(value)})`)
     packageJSON[ key ] = value
   }
+  await editPackageJSON(packageJSON)
   writeJSONSync(fromOutput('package.json'), packageJSON)
 
   const { license, author } = packageJSON

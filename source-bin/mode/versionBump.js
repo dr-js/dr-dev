@@ -2,7 +2,7 @@ import { resolve } from 'node:path'
 
 import { readJSON } from '@dr-js/core/module/node/fs/File.js'
 import { existPath } from '@dr-js/core/module/node/fs/Path.js'
-import { runGit } from '@dr-js/core/module/node/module/Software/git.js'
+import { runGit, getGitCommitMessage } from '@dr-js/core/module/node/module/Software/git.js'
 
 import {
   writePackageJSON,
@@ -41,8 +41,9 @@ const doVersionBump = async ({
   }
 }
 
+const COMMIT_MESSAGE_WIP_MARK = '[WIP]'
 const COMMIT_MESSAGE_CONTENT = [
-  '[WIP]',
+  COMMIT_MESSAGE_WIP_MARK,
   'notable change:',
   '- break: use `NEW` instead of `OLD`',
   '- deprecate: `OLD`, use `NEW`',
@@ -57,4 +58,13 @@ const getCommonVersionBump = (pathRoot = './', isGitCommit, isLongCommitText, lo
   bumpFunc, bumpArgList, isGitCommit, isLongCommitText, log
 })
 
-export { doVersionBump, getCommonVersionBump }
+const doVersionBumpCheckWIP = async () => {
+  const commitMessage = getGitCommitMessage()
+  if (!commitMessage.includes(COMMIT_MESSAGE_WIP_MARK)) return
+  throw new Error(`found ${COMMIT_MESSAGE_WIP_MARK} in commit: \n${commitMessage}`)
+}
+
+export {
+  doVersionBump, getCommonVersionBump,
+  doVersionBumpCheckWIP
+}
