@@ -291,10 +291,10 @@
 | babel-plugin-module-resolver   |      ^5.0.0 |
 | babel-plugin-styled-components |      ^2.0.7 |
 | eslint                         |     ^8.32.0 |
-| eslint-plugin-import           |     ^2.27.4 |
+| eslint-plugin-import           |     ^2.27.5 |
 | eslint-plugin-n                |     ^15.6.1 |
 | eslint-plugin-promise          |      ^6.1.1 |
-| eslint-plugin-react            |     ^7.32.0 |
+| eslint-plugin-react            |     ^7.32.1 |
 | prop-types                     |     ^15.8.1 |
 | puppeteer                      |     ^19.5.2 |
 | react                          |     ^18.2.0 |
