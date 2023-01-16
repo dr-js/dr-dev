@@ -24,6 +24,7 @@ const initOutput = async ({
   deleteKeyList = [ 'private', 'scripts', 'devExecCommands', 'devDependencies' ],
   extraDeleteKeyList = [], // append to `deleteKeyList`
   extraEntryMap = {},
+  editPackageJSON = async (packageJSON) => {},
   copyPathList = [ 'README.md' ],
   copyMapPathList = [],
   replaceReadmeNonPackageContent = '\n\nmore in source `README.md`', // set to false to skip
@@ -43,6 +44,7 @@ const initOutput = async ({
     else kitLogger.log(`added key: ${key} (${describe(value)})`)
     packageJSON[ key ] = value
   }
+  await editPackageJSON(packageJSON)
   writeJSONSync(fromOutput('package.json'), packageJSON)
 
   const { license, author } = packageJSON
