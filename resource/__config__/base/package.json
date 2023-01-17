@@ -5,8 +5,7 @@
     "INIT#.github#ci-patch.js",
     "INIT#.gitignore",
     "INIT#package.json",
-    "INIT#README.md",
-    "INIT_VERIFY_RULE.js"
+    "INIT#README.md"
   ],
   "name": "",
   "version": "",

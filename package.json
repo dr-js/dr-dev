@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dr-js/dev",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "A collection of strange functions, for development",
   "author": "dr-js",
   "license": "MIT",
@@ -12,8 +12,8 @@
   },
   "scripts": {
     "// repo ========================": "",
-    "version-bump": "dr-dev --version-bump-git-branch --git-commit --debug",
-    "tag-push": "dr-dev --version-bump-push-check && dr-dev --shell-alias quick-git-push-combo",
+    "version-bump": "node ./output-gitignore/bin --version-bump-git-branch --git-commit --debug",
+    "tag-push": "node ./output-gitignore/bin --version-bump-push-check --git-commit",
     "check-outdated": "node ./output-gitignore/bin --check-outdated ./resource",
     "check-outdated-write-back": "npm run check-outdated -- --write-back && npm run script-generate-spec",
     "check-outdated-self": "node ./output-gitignore/bin --check-outdated",
@@ -51,8 +51,8 @@
     "@dr-js/core": "^0.5.6 || ^0.5.7-dev.0"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.5.4-dev.2",
-    "@dr-js/dev-web": "^0.5.4-dev.2",
+    "@dr-js/dev": "^0.5.4",
+    "@dr-js/dev-web": "^0.5.4",
     "@min-pack/ssh2": "^1.11.0",
     "ssh2": "^1.11.0",
     "yaml": "^2.2.1",

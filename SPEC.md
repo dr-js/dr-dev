@@ -110,7 +110,7 @@
 >   --shell-alias --SA --A -A [OPTIONAL] [ARGUMENT=1+]
 >       run shell alias: $@=aliasName,...aliasArgList
 >   --version-bump-git-branch --VBGB [OPTIONAL] [ARGUMENT=0-1]
->       bump package version by git branch: -G=isGitCommit, -D=isLongCommitText, $GIT_MAJOR_BRANCH=master,main,major,...
+>       bump package version by git branch: -G=isGitCommit, -D=isDevCommit, $GIT_MAJOR_BRANCH=master,main,major,...
 >   --version-bump-last-number --VBLN [OPTIONAL] [ARGUMENT=0-1]
 >       bump the last number found in package version: -G, -D
 >   --version-bump-to-identifier --VBTI [OPTIONAL] [ARGUMENT=0-1]
@@ -120,7 +120,7 @@
 >   --version-bump-to-major --VBTM [OPTIONAL] [ARGUMENT=0-1]
 >       bump package version and drop label: -G, -D
 >   --version-bump-push-check --VBPC [OPTIONAL] [ARGUMENT=0-1]
->       check "WIP" message in commit, for "tag-push" script
+>       check "WIP" message in dev commit, optionally run "quick-git-push-combo" shell-alias: -G=isRunQGPC
 >   --package-trim-node-modules --PTNM [OPTIONAL] [ARGUMENT=1+]
 >       trim common doc/test/config in "node_modules/": $@=...pathList
 >   --package-trim-ruby-gem --PTRG [OPTIONAL] [ARGUMENT=1+]
@@ -291,10 +291,10 @@
 | babel-plugin-module-resolver   |      ^5.0.0 |
 | babel-plugin-styled-components |      ^2.0.7 |
 | eslint                         |     ^8.32.0 |
-| eslint-plugin-import           |     ^2.27.4 |
+| eslint-plugin-import           |     ^2.27.5 |
 | eslint-plugin-n                |     ^15.6.1 |
 | eslint-plugin-promise          |      ^6.1.1 |
-| eslint-plugin-react            |     ^7.32.0 |
+| eslint-plugin-react            |     ^7.32.1 |
 | prop-types                     |     ^15.8.1 |
 | puppeteer                      |     ^19.5.2 |
 | react                          |     ^18.2.0 |

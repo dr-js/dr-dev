@@ -42,9 +42,10 @@ const doVersionBump = async ({
 }
 
 const COMMIT_MESSAGE_WIP_MARK = '[WIP]'
+const COMMIT_MESSAGE_CHG_MARK = 'notable change:'
 const COMMIT_MESSAGE_CONTENT = [
   COMMIT_MESSAGE_WIP_MARK,
-  'notable change:',
+  COMMIT_MESSAGE_CHG_MARK,
   '- break: use `NEW` instead of `OLD`',
   '- deprecate: `OLD`, use `NEW`',
   '- fix: some strange bug in `PATH`',
@@ -58,10 +59,10 @@ const getCommonVersionBump = (pathRoot = './', isGitCommit, isLongCommitText, lo
   bumpFunc, bumpArgList, isGitCommit, isLongCommitText, log
 })
 
-const doVersionBumpCheckWIP = async () => {
+const doVersionBumpCheckWIP = () => {
   const commitMessage = getGitCommitMessage()
-  if (!commitMessage.includes(COMMIT_MESSAGE_WIP_MARK)) return
-  throw new Error(`found ${COMMIT_MESSAGE_WIP_MARK} in commit: \n${commitMessage}`)
+  if (commitMessage.includes(COMMIT_MESSAGE_WIP_MARK)) throw new Error(`found "${COMMIT_MESSAGE_WIP_MARK}" in commit: \n${commitMessage}`)
+  if (!commitMessage.includes(COMMIT_MESSAGE_CHG_MARK)) throw new Error(`expect "${COMMIT_MESSAGE_CHG_MARK}" in commit: \n${commitMessage}`)
 }
 
 export {

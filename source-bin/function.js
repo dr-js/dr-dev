@@ -1,8 +1,6 @@
 import { resolve, basename } from 'node:path'
-import { STAT_ERROR, getPathLstat } from '@dr-js/core/module/node/fs/Path.js'
-import { editTextSync, readJSONSync, writeJSONPrettySync } from '@dr-js/core/module/node/fs/File.js'
+import { writeJSONPrettySync } from '@dr-js/core/module/node/fs/File.js'
 import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
-import { modifyCopy, modifyDeleteForce } from '@dr-js/core/module/node/fs/Modify.js'
 
 import { modulePathHack } from '@dr-js/core/bin/function.js'
 
@@ -32,41 +30,9 @@ const writePackExportInitJSON = async ({
   )
 }
 
-const loadAndCopyPackExportInitJSON = async ({
-  pathPackage,
-  pathOutput,
-  isReset = false
-}) => {
-  const fromPackExport = getFromPackExport(pathPackage)
-  const initPairList = readJSONSync(fromPackExport(NAME_PACK_EXPORT_INIT_JSON)) // get init list
-
-  if (!isReset) { // check if file overwrite will happen
-    for (const [ , relativeInitPath ] of initPairList) {
-      if (STAT_ERROR !== await getPathLstat(resolve(pathOutput, relativeInitPath))) throw new Error(`quit reset existing file: ${relativeInitPath}`)
-    }
-  }
-
-  for (const [ sourceName, relativeInitPath ] of initPairList) { // put/reset file to output path
-    const sourcePath = fromPackExport(sourceName)
-    const initPath = resolve(pathOutput, relativeInitPath)
-    await modifyDeleteForce(initPath)
-    await modifyCopy(sourcePath, initPath)
-    // update file content
-    REGEXP_TEXT_FILE.test(relativeInitPath) && editTextSync(
-      (string) => string
-        .replace(/{FLAVOR}/g, /@dr-js[/\\]dev-([\w-]+)$/.exec(pathPackage)[ 1 ])
-        .replace(/{FLAVOR-VERSION}/g, readJSONSync(resolve(pathPackage, 'package.json')).version)
-      , initPath
-    )
-    console.log(`[init] file: ${relativeInitPath}`)
-  }
-}
-const REGEXP_TEXT_FILE = /\.(js|json|md|ya?ml|gitignore)$/
-
 export {
   patchModulePath,
 
   getFromPackExport,
-  writePackExportInitJSON,
-  loadAndCopyPackExportInitJSON
+  writePackExportInitJSON
 }
