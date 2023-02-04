@@ -45,7 +45,7 @@ const runMode = async (optionData, modeName) => {
     case 'reset-bash-combo':
       return resetBashCombo()
     case 'shell-alias':
-      return runShellAlias(argumentList)
+      return runShellAlias(...argumentList)
 
     case 'version-bump-git-branch':
       return doVersionBump(await commonVersionBump(versionBumpByGitBranch, {
