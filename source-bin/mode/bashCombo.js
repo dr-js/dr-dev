@@ -146,7 +146,7 @@ export __PROXY_SOCKS5
 ${
   Object.entries(SHELL_ALIAS_MAP)
     .map(([ k, v ]) => {
-      if (isString(v) && !v.includes('\'')) return `alias ${k}='${v}'` // reuse simple shell alias
+      if (isString(v) && /^[\w-. ]*$/.test(v)) return `alias ${k}='${v}'` // reuse simple shell alias
       if (isBasicObject(v) && isString(v.A) && v.$.length === 0) return `alias ${k}=${v.A}` // unpack simple _A
       return `alias ${k}='dr-dev --shell-alias ${k} --'`
     })
