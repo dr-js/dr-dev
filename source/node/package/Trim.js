@@ -74,6 +74,9 @@ const shouldTrimNodeModules = (relativeFile) => {
 const shouldTrimRubyGem = (relativeFile) => {
   relativeFile = relativeFile.toLowerCase()
 
+  // keep all `lib` file (to keep file like `rspec-rails-6.0.1/lib/rspec/rails/example/channel_example_group.rb`)
+  if (relativeFile.includes('/lib/')) return false
+
   // trim all dot file & folder
   if (relativeFile.includes('/.')) return true
 
