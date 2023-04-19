@@ -1,6 +1,6 @@
 const DEFAULT_BABEL_ASSUMPTIONS = { // https://babeljs.io/docs/en/assumptions
-  constantReexports: true,
-  enumerableModuleMeta: true,
+  // constantReexports: true,
+  // enumerableModuleMeta: true,
   ignoreFunctionLength: true,
   ignoreToPrimitiveHint: true,
   noDocumentAll: true,
