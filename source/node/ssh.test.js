@@ -142,6 +142,10 @@ const addTestWithConnectOption = (connectOption, tag = 'test') => {
       [ __filename, `/tmp/${tag}-upload-0` ],
       [ __filename, `/tmp/${tag}-upload-1` ]
     ],
+    downloadList: [
+      [ fromRoot(`__tmp_${tag}-upload-0`), `/tmp/${tag}-upload-0` ],
+      [ fromRoot(`__tmp_${tag}-upload-1`), `/tmp/${tag}-upload-1` ]
+    ],
     isDryRun: true
   }))
 
@@ -182,10 +186,23 @@ const addTestWithConnectOption = (connectOption, tag = 'test') => {
     ]
   }))
 
+  it('quickSSH downloadList', async () => quickSSH(connectOption, commonCommandList([
+  ]), {
+    downloadList: [
+      [ fromRoot(`__tmp_${tag}-upload-0`), `/tmp/${tag}-upload-0` ],
+      [ fromRoot(`__tmp_${tag}-upload-1`), `/tmp/${tag}-upload-1` ]
+    ]
+  }))
+
   it('quickSSH uploadList no-auto-mkdir', async () => doThrowAsync(async () => quickSSH(connectOption, commonCommandList([
     'ls -al /tmp/'
   ]), {
     uploadList: [ [ __filename, `/tmp/${tag}-folder-not-exist/upload-0` ] ]
+  })))
+
+  it('quickSSH downloadList no-auto-mkdir', async () => doThrowAsync(async () => quickSSH(connectOption, commonCommandList([
+  ]), {
+    downloadList: [ [ fromRoot(`__tmp_${tag}-folder-not-exist/upload-0`), `/tmp/${tag}-folder-not-exist/upload-0` ] ]
   })))
 
   it('quickSSH toHeredocNoMagic()', async () => quickSSH(connectOption, commonCommandList([
