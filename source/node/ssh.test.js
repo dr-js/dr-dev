@@ -32,7 +32,7 @@ const SSHD_CONF_STRING = `
 Port ${TEST_SSHD_PORT} # abnormal port for test
 AuthorizedKeysFile /tmp/dr-dev-ssh-test/user-home/.ssh/authorized_keys # locked path for test
 StrictModes no # bypass dir permission checking # NOTE: danger in production server
-PubkeyAcceptedKeyTypes +ssh-rsa # NOTE: OpenSSH@8 auth issue: https://github.com/mscdex/ssh2/issues/989
+# PubkeyAcceptedKeyTypes +ssh-rsa # NOTE: OpenSSH@8 auth issue: https://github.com/mscdex/ssh2/issues/989
 
 PermitRootLogin prohibit-password
 PubkeyAuthentication yes
@@ -240,9 +240,9 @@ CAN_TEST && describe('ssh', () => {
     privateKeyPassphrase: 'word-pass'
   }
 
-  addTestWithConnectOption({ ...connectOption, SSH2: require('@min-pack/ssh2') }, 'test-ssh2')
+  addTestWithConnectOption({ ...connectOption, SSH2: require('@min-pack/ssh2') }, 'test-mpssh2')
   addTestWithConnectOption({ ...connectOption, SSH2: require('ssh2') }, 'test-ssh2')
 
-  addTestWithConnectOption({ ...connectOptionPassphrase, SSH2: require('@min-pack/ssh2') }, 'test-ssh2-passphrase')
+  addTestWithConnectOption({ ...connectOptionPassphrase, SSH2: require('@min-pack/ssh2') }, 'test-mpssh2-passphrase')
   addTestWithConnectOption({ ...connectOptionPassphrase, SSH2: require('ssh2') }, 'test-ssh2-passphrase')
 })
