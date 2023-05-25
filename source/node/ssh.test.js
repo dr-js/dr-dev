@@ -32,7 +32,7 @@ const SSHD_CONF_STRING = `
 Port ${TEST_SSHD_PORT} # abnormal port for test
 AuthorizedKeysFile /tmp/dr-dev-ssh-test/user-home/.ssh/authorized_keys # locked path for test
 StrictModes no # bypass dir permission checking # NOTE: danger in production server
-PubkeyAcceptedKeyTypes +ssh-rsa # NOTE: OpenSSH@8 auth issue: https://github.com/mscdex/ssh2/issues/989
+# PubkeyAcceptedKeyTypes +ssh-rsa # NOTE: OpenSSH@8 auth issue: https://github.com/mscdex/ssh2/issues/989
 
 PermitRootLogin prohibit-password
 PubkeyAuthentication yes
@@ -142,6 +142,10 @@ const addTestWithConnectOption = (connectOption, tag = 'test') => {
       [ __filename, `/tmp/${tag}-upload-0` ],
       [ __filename, `/tmp/${tag}-upload-1` ]
     ],
+    downloadList: [
+      [ fromRoot(`__tmp_${tag}-upload-0`), `/tmp/${tag}-upload-0` ],
+      [ fromRoot(`__tmp_${tag}-upload-1`), `/tmp/${tag}-upload-1` ]
+    ],
     isDryRun: true
   }))
 
@@ -182,10 +186,23 @@ const addTestWithConnectOption = (connectOption, tag = 'test') => {
     ]
   }))
 
+  it('quickSSH downloadList', async () => quickSSH(connectOption, commonCommandList([
+  ]), {
+    downloadList: [
+      [ fromRoot(`__tmp_${tag}-upload-0`), `/tmp/${tag}-upload-0` ],
+      [ fromRoot(`__tmp_${tag}-upload-1`), `/tmp/${tag}-upload-1` ]
+    ]
+  }))
+
   it('quickSSH uploadList no-auto-mkdir', async () => doThrowAsync(async () => quickSSH(connectOption, commonCommandList([
     'ls -al /tmp/'
   ]), {
     uploadList: [ [ __filename, `/tmp/${tag}-folder-not-exist/upload-0` ] ]
+  })))
+
+  it('quickSSH downloadList no-auto-mkdir', async () => doThrowAsync(async () => quickSSH(connectOption, commonCommandList([
+  ]), {
+    downloadList: [ [ fromRoot(`__tmp_${tag}-folder-not-exist/upload-0`), `/tmp/${tag}-folder-not-exist/upload-0` ] ]
   })))
 
   it('quickSSH toHeredocNoMagic()', async () => quickSSH(connectOption, commonCommandList([
@@ -223,9 +240,9 @@ CAN_TEST && describe('ssh', () => {
     privateKeyPassphrase: 'word-pass'
   }
 
-  addTestWithConnectOption({ ...connectOption, SSH2: require('@min-pack/ssh2') }, 'test-ssh2')
+  addTestWithConnectOption({ ...connectOption, SSH2: require('@min-pack/ssh2') }, 'test-mpssh2')
   addTestWithConnectOption({ ...connectOption, SSH2: require('ssh2') }, 'test-ssh2')
 
-  addTestWithConnectOption({ ...connectOptionPassphrase, SSH2: require('@min-pack/ssh2') }, 'test-ssh2-passphrase')
+  addTestWithConnectOption({ ...connectOptionPassphrase, SSH2: require('@min-pack/ssh2') }, 'test-mpssh2-passphrase')
   addTestWithConnectOption({ ...connectOptionPassphrase, SSH2: require('ssh2') }, 'test-ssh2-passphrase')
 })

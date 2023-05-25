@@ -61,7 +61,7 @@ const startSSHClient = async (connectOption) => { // should though `getConnectOp
   }
 
   const end = async () => {
-    sftp = undefined
+    _sftp = undefined
     const IOP = createInsideOutPromise()
     connection.on('error', IOP.reject)
     connection.on('close', IOP.resolve)
@@ -82,10 +82,16 @@ const startSSHClient = async (connectOption) => { // should though `getConnectOp
     onOutputBuffer && channelStream.stderr.on('data', (buffer) => onOutputBuffer('stderr', buffer))
   }))
 
-  let sftp
+  let _sftp
+  const sftpConn = async () => { if (_sftp === undefined) _sftp = await new Promise((resolve, reject) => connection.sftp((error, sftp) => error ? reject(error) : resolve(sftp))) }
   const sftpUpload = async ({ localPath, remotePath }) => { // https://www.npmjs.com/package/ssh2#get-a-directory-listing-via-sftp & https://github.com/mscdex/ssh2-streams/blob/master/SFTPStream.md
-    if (sftp === undefined) sftp = await new Promise((resolve, reject) => connection.sftp((error, sftp) => error ? reject(error) : resolve(sftp)))
-    return new Promise((resolve, reject) => sftp.fastPut(localPath, remotePath, (error) => error ? reject(error) : resolve()))
+    await sftpConn()
+    return new Promise((resolve, reject) => _sftp.fastPut(localPath, remotePath, (error) => error ? reject(error) : resolve()))
+    // sftp.disconnect() // no method, so just wait SSH end
+  }
+  const sftpDownload = async ({ localPath, remotePath }) => {
+    await sftpConn()
+    return new Promise((resolve, reject) => _sftp.fastGet(remotePath, localPath, (error) => error ? reject(error) : resolve()))
     // sftp.disconnect() // no method, so just wait SSH end
   }
 
@@ -96,7 +102,7 @@ const startSSHClient = async (connectOption) => { // should though `getConnectOp
   __DEV__ && connection.on('ready', () => console.log('## ready ##'))
   __DEV__ && connection.on('continue', () => console.log('## continue ##'))
 
-  return { end, exec, sftpUpload }
+  return { end, exec, sftpUpload, sftpDownload }
 }
 
 const startDryRunSSHClient = async (log = console.warn) => {
@@ -107,7 +113,8 @@ const startDryRunSSHClient = async (log = console.warn) => {
       log('DRY-RUN|SSH', `skip exec ${JSON.stringify(autoEllipsis(command))}`)
       return { code: 0, signal: null }
     },
-    sftpUpload: async ({ localPath, remotePath }) => { log('DRY-RUN|SSH', `skip upload to "${remotePath}"`) }
+    sftpUpload: async ({ localPath, remotePath }) => { log('DRY-RUN|SSH', `skip upload to "${remotePath}"`) },
+    sftpDownload: async ({ localPath, remotePath }) => { log('DRY-RUN|SSH', `skip download from "${remotePath}"`) }
   }
 }
 
@@ -137,6 +144,8 @@ const quickSSH = async (
     uploadList = [], // [ [ localPath, remotePath ] ] // NOTE: cannot auto mkdir, so make sure upper path exists
     preExec = ({ connectOption, command, commandList }) => LOG_EXEC('EXEC', command), // log command
     postExec = ({ connectOption, command, commandList, duration, code, signal }) => LOG_EXEC('', `done, code: ${code}, signal: ${signal} (${time(duration)})`), // log exit code
+    preDownload = ({ connectOption, localPath, remotePath }) => LOG_EXEC('DOWNLOAD', `TO   "${localPath}"`, `FROM "${remotePath}"`), // log upload
+    downloadList = [], // [ [ localPath, remotePath ] ] // NOTE: cannot auto mkdir, so make sure upper path exists
     onOutputBuffer = DEFAULT_ON_OUTPUT_BUFFER,
     isIgnoreExecCode = false, // default stop on non-zero code
     isDryRun = false // for testing process
@@ -145,7 +154,7 @@ const quickSSH = async (
   const connectOption = getConnectOption(connectOptionRaw)
   const command = joinCommand(commandList)
   preConnect && await preConnect({ connectOption, command, commandList })
-  const { end, exec, sftpUpload } = await (isDryRun ? startDryRunSSHClient(LOG_ERROR) : startSSHClient(connectOption))
+  const { end, exec, sftpUpload, sftpDownload } = await (isDryRun ? startDryRunSSHClient(LOG_ERROR) : startSSHClient(connectOption))
   try {
     for (const [ localPath, remotePath ] of uploadList) {
       preUpload && await preUpload({ connectOption, localPath, remotePath })
@@ -159,6 +168,15 @@ const quickSSH = async (
   const stepper = createStepper()
   const { code, signal } = await exec({ command, onOutputBuffer })
   preExec && await postExec({ connectOption, command, commandList, duration: stepper(), code, signal })
+  try {
+    for (const [ localPath, remotePath ] of downloadList) {
+      preDownload && await preDownload({ connectOption, localPath, remotePath })
+      await sftpDownload({ localPath, remotePath })
+    }
+  } catch (error) {
+    await end() // close connection
+    throw error // re-throw
+  }
   await end()
   if (!isIgnoreExecCode && code !== 0) throw new Error(`task end with code: ${code}, signal: ${signal}, command:\n${indentLine(command, '  ')}`)
   return { code, signal }

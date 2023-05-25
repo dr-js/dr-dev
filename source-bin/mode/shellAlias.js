@@ -175,7 +175,8 @@ const SHELL_ALIAS_MAP = {
 
   // =============================
   // systemd aliases (SD*,SR*)
-  'systemd-list-active': 'sudo systemctl list-units --type=service --state=active',
+  'systemd-list': 'sudo systemctl list-unit-files --type=service --state=enabled,disabled,generated',
+  'systemd-list-active': 'sudo systemctl list-units --type=service',
   'systemd-list-enabled': 'sudo systemctl list-unit-files --type=service --state=enabled,generated',
   'systemd-list-timers': 'sudo systemctl list-timers',
   'systemd-daemon-reload': 'sudo systemctl daemon-reload',
@@ -188,6 +189,7 @@ const SHELL_ALIAS_MAP = {
   'systemd-restart': 'sudo systemctl restart',
   'systemd-reload': 'sudo systemctl reload',
 
+  'SDL': _A('systemd-list'),
   'SDLA': _A('systemd-list-active'),
   'SDLE': _A('systemd-list-enabled'),
   'SDLT': _A('systemd-list-timers'),

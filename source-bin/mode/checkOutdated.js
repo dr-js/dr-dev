@@ -1,7 +1,7 @@
 import { relative } from 'node:path'
 
 import { padTable } from '@dr-js/core/module/common/format.js'
-import { isVersionSpecComplex } from '@dr-js/core/module/common/module/SemVer.js'
+import { parseSemVer, isVersionSpecComplex } from '@dr-js/core/module/common/module/SemVer.js'
 import { loadPackageCombo, writePackageJSON } from '@dr-js/core/module/node/module/PackageJSON.js'
 
 import { outdatedJSON, outdatedWithTempJSON } from 'source/node/package/Npm.js'
@@ -16,7 +16,7 @@ const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput }) => {
     const { versionSpec, packageInfo: { packageJSONPath } } = dependencyInfoMap[ name ]
 
     const rowList = [ name, versionSpec, versionLatest, relative(pathInput, packageJSONPath) || '-' ] // must match PAD_FUNC_LIST
-    if (isVersionSpecComplex(versionSpec)) complexTable.push(rowList) // hard to parse
+    if (isVersionSpecComplex(versionSpec) || parseSemVer(versionLatest).label) complexTable.push(rowList) // hard to parse
     else if (versionSpec.endsWith(versionLatest)) sameTable.push(rowList)
     else outdatedTable.push(rowList)
   }
