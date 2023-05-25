@@ -4,7 +4,7 @@
     "INIT#package.json"
   ],
   "dependencies": {
-    "eslint": "^8.40.0",
+    "eslint": "^8.41.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^16.0.0",
     "eslint-plugin-promise": "^6.1.1"
