@@ -1,12 +1,30 @@
 import { join, relative } from 'node:path'
 
 import { toPosixPath } from '@dr-js/core/module/node/fs/Path.js'
-import { getFileList } from '@dr-js/core/module/node/fs/Directory.js'
+import { getDirInfoTree, getFileList } from '@dr-js/core/module/node/fs/Directory.js'
 import { modifyDelete } from '@dr-js/core/module/node/fs/Modify.js'
 
 const getRelativePosixFileList = async (pathRoot) => getFileList(pathRoot, (fileList, { path }) => {
   fileList.push(toPosixPath(`./${relative(pathRoot, path)}`))
 })
+
+const trimEmptyFolder = async (
+  pathRootFolder
+) => {
+  const trimFolderList = []
+  let found = false
+  do {
+    found = false
+    const { root, dirInfoListMap } = await getDirInfoTree(pathRootFolder) // TODO: just search & mark the same dirInfoListMap
+    for (const [ path, dirInfoList ] of dirInfoListMap.entries()) {
+      if (dirInfoList.length || path === root) continue
+      trimFolderList.push(path)
+      await modifyDelete(path)
+      found = true
+    }
+  } while (found)
+  return trimFolderList
+}
 
 const trimFile = async ( // TODO: NOTE: now only file will get deleted, may leave some empty folder
   pathRoot,
@@ -84,8 +102,11 @@ const shouldTrimRubyGem = (relativeFile) => {
   for (const pattern of [
     // common pattern to remove
     '/doc/', '/docs/',
+    '/test/', '/tests/',
+    '/spec/', '/specs/',
     '/example/', '/examples/',
     '/coverage/', '/coverages/',
+    '/benchmark/', '/benchmarks/',
     '/tmp/'
   ]) if (relativeFile.includes(pattern)) return true
 
@@ -96,8 +117,9 @@ const shouldTrimRubyGem = (relativeFile) => {
     '.rdoc',
     '.c', '.cc', '.cpp', '.h',
     '.bat', '.cmd',
-    'gemfile.lock', // https://stackoverflow.com/questions/7919913/are-you-supposed-to-include-gemfile-lock-in-a-published-gem
+    // '.gemspec', // TODO: no use only if under "ruby/a.b.c/gems/"
     // file name
+    '/gemfile', '/rakefile', '/brewfile', '/gemfile.lock', // https://stackoverflow.com/questions/7919913/are-you-supposed-to-include-gemfile-lock-in-a-published-gem
     '/makefile', '/configure',
     '/readme', '/changelog', '/changes',
     '/authors', '/contributors'
@@ -110,6 +132,7 @@ const trimFileNodeModules = async (pathNodeModules) => trimFile(pathNodeModules,
 const trimFileRubyGem = async (pathRubyGem) => trimFile(pathRubyGem, shouldTrimRubyGem)
 
 export {
+  trimEmptyFolder,
   trimFile,
   trimFileNodeModules, trimFileRubyGem
 }

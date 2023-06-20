@@ -74,7 +74,7 @@
 + 📄 [source/node/package/Npm.js](source/node/package/Npm.js)
   - `outdatedJSON`, `outdatedWithTempJSON`
 + 📄 [source/node/package/Trim.js](source/node/package/Trim.js)
-  - `trimFile`, `trimFileNodeModules`, `trimFileRubyGem`
+  - `trimEmptyFolder`, `trimFile`, `trimFileNodeModules`, `trimFileRubyGem`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)
