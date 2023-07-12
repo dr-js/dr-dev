@@ -16,7 +16,9 @@ describe('Node.Package.Npm', () => {
     info(JSON.stringify(await outdatedWithTempJSON({
       packageJSON: {
         dependencies: { '@dr-js/core': '*' },
-        devDependencies: { '@dr-js/dev': '*' }
+        devDependencies: { '@dr-js/dev': '*' },
+        peerDependencies: { 'from-peer': 'npm:@dr-js/core@*' },
+        optionalDependencies: { 'from-optional': 'npm:@dr-js/dev@*' }
       }
     })))
   })
