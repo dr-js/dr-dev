@@ -21,7 +21,9 @@ const outdatedJSON = async ({ packageRoot }) => { // run outdated in place
   })
   __DEV__ && console.log(`code: ${code}, signal: ${signal}`)
 
-  // { package-name: { wanted: '0.0.0', latest: '0.0.0' } }
+  // NOTE: for aliased package like: `"alias-name": "npm:src-name@ver-spec"`
+  //   `name-spec` will be like: `alias-name:src-name@ver-spec`
+  // { [name-spec]: { wanted: '0.0.0', latest: '0.0.0' } }
   return JSON.parse(String(await stdoutPromise))
 }
 

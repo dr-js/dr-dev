@@ -11,8 +11,8 @@ const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput }) => {
   const complexTable = []
   const outdatedTable = []
 
-  // for (const [ name, { wanted: versionWanted } ] of Object.entries(outdatedMap)) {
-  for (const [ name, { latest: versionLatest } ] of Object.entries(outdatedMap)) {
+  for (const [ nameSpec, { latest: versionLatest } ] of Object.entries(outdatedMap)) {
+    const name = nameSpec.split(':')[ 0 ]
     const { versionSpec, packageInfo: { packageJSONPath } } = dependencyInfoMap[ name ]
 
     const rowList = [ name, versionSpec, versionLatest, relative(pathInput, packageJSONPath) || '-' ] // must match PAD_FUNC_LIST
@@ -40,13 +40,13 @@ const logResult = ({ sameTable, complexTable, outdatedTable, log = console.log }
   log(outputList.join('\n'))
 }
 
-const writeBack = async ({ dependencyInfoMap, outdatedTable, log = console.log }) => {
+const writeBack = async ({ dependencyInfoMap, outdatedTable, pathInput, log = console.log }) => {
   for (const [ name, versionSpec, versionWanted ] of outdatedTable) {
     const { packageInfo: { packageJSON, packageJSONPath } } = dependencyInfoMap[ name ]
     const versionSpecNext = [ versionSpec.split(/\d/)[ 0 ], versionWanted ].join('') // keep prefix like "^" & "~"
     const tryUpdate = (key) => {
       if (!packageJSON[ key ] || packageJSON[ key ][ name ] !== versionSpec) return
-      log(`[writeBack] update ${key}/${name} from "${versionSpec}" to "${versionSpecNext}" in: ${packageJSONPath}`)
+      log(`[writeBack] update ${key}/${name} from "${versionSpec}" to "${versionSpecNext}" in: '${relative(pathInput, packageJSONPath)}'`)
       packageJSON[ key ][ name ] = versionSpecNext
     }
     tryUpdate('dependencies')
@@ -77,7 +77,7 @@ const doCheckOutdated = async ({
     })
   const { sameTable, complexTable, outdatedTable } = sortResult({ dependencyInfoMap, outdatedMap, pathInput })
   logResult({ sameTable, complexTable, outdatedTable, log })
-  if (isWriteBack) await writeBack({ dependencyInfoMap, outdatedTable, log })
+  if (isWriteBack) await writeBack({ dependencyInfoMap, outdatedTable, pathInput, log })
   else if (outdatedTable.length) throw new Error(`[checkOutdated] found ${outdatedTable.length} outdated package`)
 }
 

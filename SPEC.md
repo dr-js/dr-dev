@@ -74,7 +74,7 @@
 + 📄 [source/node/package/Npm.js](source/node/package/Npm.js)
   - `outdatedJSON`, `outdatedWithTempJSON`
 + 📄 [source/node/package/Trim.js](source/node/package/Trim.js)
-  - `trimFile`, `trimFileNodeModules`, `trimFileRubyGem`
+  - `trimEmptyFolder`, `trimFile`, `trimFileNodeModules`, `trimFileRubyGem`
 
 #### Bin Option Format
 📄 [source-bin/option.js](source-bin/option.js)
@@ -280,24 +280,24 @@
 
 | Package name                   |     Version |
 | :----                          |       ----: |
-| @babel/cli                     |     ^7.21.5 |
-| @babel/core                    |     ^7.21.8 |
-| @babel/eslint-parser           |     ^7.21.8 |
-| @babel/preset-env              |     ^7.21.5 |
-| @babel/preset-react            |     ^7.18.6 |
-| @babel/register                |     ^7.21.0 |
-| babel-loader                   |      ^9.1.2 |
+| @babel/cli                     |     ^7.22.6 |
+| @babel/core                    |     ^7.22.8 |
+| @babel/eslint-parser           |     ^7.22.7 |
+| @babel/preset-env              |     ^7.22.7 |
+| @babel/preset-react            |     ^7.22.5 |
+| @babel/register                |     ^7.22.5 |
+| babel-loader                   |      ^9.1.3 |
 | babel-plugin-minify-replace    |      ^0.5.0 |
 | babel-plugin-module-resolver   |      ^5.0.0 |
-| babel-plugin-styled-components |      ^2.1.3 |
-| eslint                         |     ^8.41.0 |
+| babel-plugin-styled-components |      ^2.1.4 |
+| eslint                         |     ^8.44.0 |
 | eslint-plugin-import           |     ^2.27.5 |
-| eslint-plugin-n                |     ^16.0.0 |
+| eslint-plugin-n                |     ^16.0.1 |
 | eslint-plugin-promise          |      ^6.1.1 |
 | eslint-plugin-react            |     ^7.32.2 |
 | prop-types                     |     ^15.8.1 |
-| puppeteer                      |     ^20.3.0 |
+| puppeteer                      |     ^20.8.1 |
 | react                          |     ^18.2.0 |
-| styled-components              |     ^5.3.10 |
-| terser                         |     ^5.17.6 |
-| webpack                        |     ^5.84.0 |
+| styled-components              |      ^6.0.3 |
+| terser                         |     ^5.19.0 |
+| webpack                        |     ^5.88.1 |
