@@ -7,6 +7,9 @@ import { binary, time, padTable } from '@dr-js/core/module/common/format.js'
 import { editBuffer } from '@dr-js/core/module/node/fs/File.js'
 
 // TODO: copy (2 of 2)
+//  keep webpack related comment (https://webpack.js.org/api/module-methods/#magic-comments)
+//    webpackChunkName: "my-chunk-name"
+//    webpackMode: "lazy"
 //  keep license related comment
 //    @license
 //    @preserve
@@ -16,7 +19,7 @@ import { editBuffer } from '@dr-js/core/module/node/fs/File.js'
 //    @params
 //    @arg(uments)
 //    @return(s)
-const REGEXP_COMMENT_KEEP = /@(license|preserve|deprecated|type|params|arg|return)/
+const REGEXP_COMMENT_KEEP = /webpack\w+:|@(license|preserve|deprecated|type|params|arg|return)/
 
 const GET_TERSER = (log = console.warn) => {
   const Terser = tryRequire('terser')

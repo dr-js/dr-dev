@@ -8,6 +8,9 @@ const DEFAULT_BABEL_ASSUMPTIONS = { // https://babeljs.io/docs/en/assumptions
 }
 
 // TODO: copy (1 of 2)
+//  keep webpack related comment (https://webpack.js.org/api/module-methods/#magic-comments)
+//    webpackChunkName: "my-chunk-name"
+//    webpackMode: "lazy"
 //  keep license related comment
 //    @license
 //    @preserve
@@ -17,7 +20,7 @@ const DEFAULT_BABEL_ASSUMPTIONS = { // https://babeljs.io/docs/en/assumptions
 //    @params
 //    @arg(uments)
 //    @return(s)
-const REGEXP_COMMENT_KEEP = /@(license|preserve|deprecated|type|params|arg|return)/
+const REGEXP_COMMENT_KEEP = /webpack\w+:|@(license|preserve|deprecated|type|params|arg|return)/
 
 // https://babeljs.io/docs/en/options
 
@@ -61,15 +64,6 @@ const getBabelConfig = ({
   ].filter(Boolean),
   assumptions,
   comments: false,
-  //  keep license related comment
-  //    @license
-  //    @preserve
-  //  and keep basic jsdoc tag comment
-  //    @deprecated
-  //    @type
-  //    @params
-  //    @arg(uments)
-  //    @return(s)
   shouldPrintComment: isModule ? (string) => REGEXP_COMMENT_KEEP.test(string) : undefined // NOTE: only keep comment mark for module output, babel commonjs will inject `module.exports` between comment & code
 })
 
