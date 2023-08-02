@@ -3,6 +3,6 @@
     "../"
   ],
   "dependencies": {
-    "styled-components": "^6.0.3"
+    "styled-components": "^6.0.6"
   }
 }

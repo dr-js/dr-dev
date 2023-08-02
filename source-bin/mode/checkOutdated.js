@@ -4,19 +4,17 @@ import { padTable } from '@dr-js/core/module/common/format.js'
 import { parseSemVer, isVersionSpecComplex } from '@dr-js/core/module/common/module/SemVer.js'
 import { loadPackageCombo, writePackageJSON } from '@dr-js/core/module/node/module/PackageJSON.js'
 
-import { outdatedJSON, outdatedWithTempJSON } from 'source/node/package/Npm.js'
+import { REGEXP_ALIAS_VER_SPEC, outdatedJSON, outdatedWithTempJSON } from 'source/node/package/Npm.js'
 
 const sortResult = ({ dependencyInfoMap, outdatedMap, pathInput }) => {
   const sameTable = []
   const complexTable = []
   const outdatedTable = []
 
-  for (const [ nameSpec, { latest: versionLatest } ] of Object.entries(outdatedMap)) {
-    const name = nameSpec.split(':')[ 0 ]
+  for (const [ name, { latest: versionLatest } ] of Object.entries(outdatedMap)) {
     const { versionSpec, packageInfo: { packageJSONPath } } = dependencyInfoMap[ name ]
-
     const rowList = [ name, versionSpec, versionLatest, relative(pathInput, packageJSONPath) || '-' ] // must match PAD_FUNC_LIST
-    if (isVersionSpecComplex(versionSpec) || parseSemVer(versionLatest).label) complexTable.push(rowList) // hard to parse
+    if ((isVersionSpecComplex(versionSpec) && !REGEXP_ALIAS_VER_SPEC.test(versionSpec)) || parseSemVer(versionLatest).label) complexTable.push(rowList) // hard to parse
     else if (versionSpec.endsWith(versionLatest)) sameTable.push(rowList)
     else outdatedTable.push(rowList)
   }
@@ -43,7 +41,9 @@ const logResult = ({ sameTable, complexTable, outdatedTable, log = console.log }
 const writeBack = async ({ dependencyInfoMap, outdatedTable, pathInput, log = console.log }) => {
   for (const [ name, versionSpec, versionWanted ] of outdatedTable) {
     const { packageInfo: { packageJSON, packageJSONPath } } = dependencyInfoMap[ name ]
-    const versionSpecNext = [ versionSpec.split(/\d/)[ 0 ], versionWanted ].join('') // keep prefix like "^" & "~"
+    const versionSpecStub = versionSpec.split('@')
+    versionSpecStub.push(versionSpecStub.pop().split(/\d/)[ 0 ])
+    const versionSpecNext = [ versionSpecStub.join('@'), versionWanted ].join('') // keep prefix like "^" & "~" and support aliased package version like: `"npm:src-name@ver-spec"`
     const tryUpdate = (key) => {
       if (!packageJSON[ key ] || packageJSON[ key ][ name ] !== versionSpec) return
       log(`[writeBack] update ${key}/${name} from "${versionSpec}" to "${versionSpecNext}" in: '${relative(pathInput, packageJSONPath)}'`)
@@ -61,6 +61,7 @@ const doCheckOutdated = async ({
   pathInput,
   pathTemp,
   isWriteBack = false,
+  isBuggyTag = false,
   log = console.log
 }) => {
   log(`[checkOutdated] checking '${pathInput}'`)
@@ -70,10 +71,11 @@ const doCheckOutdated = async ({
     log(`[WARN] dropped duplicate package: ${name} at ${relative(pathInput, packageJSONPath)} with version: ${versionSpec}, checking: ${existPackageInfo.versionSpec}`)
   }
   const outdatedMap = (!pathTemp && packageInfoList.length === 1)
-    ? await outdatedJSON({ packageRoot: packageInfoList[ 0 ].packageRootPath }) // check in-place
+    ? await outdatedJSON({ packageRoot: packageInfoList[ 0 ].packageRootPath, isBuggyTag }) // check in-place
     : await outdatedWithTempJSON({ // create temp path, do not work for private repo or altered ".npmrc"
       packageJSON: { dependencies: dependencyMap },
-      pathTemp: (pathTemp && pathTemp !== 'AUTO') ? pathTemp : undefined
+      pathTemp: (pathTemp && pathTemp !== 'AUTO') ? pathTemp : undefined,
+      isBuggyTag
     })
   const { sameTable, complexTable, outdatedTable } = sortResult({ dependencyInfoMap, outdatedMap, pathInput })
   logResult({ sameTable, complexTable, outdatedTable, log })

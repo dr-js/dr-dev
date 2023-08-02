@@ -104,7 +104,8 @@ const runMode = async (optionData, modeName) => {
       return doCheckOutdated({
         pathInput: argumentList[ 0 ] || tryGetFirst('root') || './package.json',
         pathTemp: tryGetFirst('path-temp'),
-        isWriteBack: getToggle('write-back')
+        isWriteBack: getToggle('write-back'),
+        isBuggyTag: getToggle('buggy-tag')
       })
     case 'exec': // TODO: support run z64string?
       return doExec(argumentList, {
