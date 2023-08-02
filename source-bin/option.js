@@ -37,6 +37,7 @@ const MODE_FORMAT_LIST = parseCompactList(
 
   // TODO: DEPRECATE: reorder & rename options
   [ 'check-outdated,C/AP,O/0-1|check dependency version from "package.json", or all under the folder: $0/-R=checkPath/"./package.json"', parseCompactList( // TODO: get path from this option
+    'buggy-tag,bt/T',
     'write-back,wb/T',
     'path-temp/SP,O|use "AUTO" for os temp,set will disable in-place check for single "package.json"'
   ) ],

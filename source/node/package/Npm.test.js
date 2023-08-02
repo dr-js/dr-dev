@@ -10,16 +10,17 @@ describe('Node.Package.Npm', () => {
     const packageRoot = findUpPackageRoot(process.cwd())
     info(`packageRoot: ${packageRoot}`)
     info(JSON.stringify(await outdatedJSON({ packageRoot })))
+    info(JSON.stringify(await outdatedJSON({ packageRoot, isBuggyTag: true })))
   })
 
   it('outdatedWithTempJSON()', async () => {
-    info(JSON.stringify(await outdatedWithTempJSON({
-      packageJSON: {
-        dependencies: { '@dr-js/core': '*' },
-        devDependencies: { '@dr-js/dev': '*' },
-        peerDependencies: { 'from-peer': 'npm:@dr-js/core@*' },
-        optionalDependencies: { 'from-optional': 'npm:@dr-js/dev@*' }
-      }
-    })))
+    const packageJSON = {
+      dependencies: { '@dr-js/core': '*' },
+      devDependencies: { '@dr-js/dev': '*' },
+      peerDependencies: { 'from-peer': 'npm:@dr-js/core@*' },
+      optionalDependencies: { 'from-optional': 'npm:@dr-js/dev@*' }
+    }
+    info(JSON.stringify(await outdatedWithTempJSON({ packageJSON })))
+    info(JSON.stringify(await outdatedWithTempJSON({ packageJSON, isBuggyTag: true })))
   })
 })

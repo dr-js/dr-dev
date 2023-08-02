@@ -72,7 +72,7 @@
 + 📄 [source/node/npm/parseScript.js](source/node/npm/parseScript.js)
   - `parseCommand`, `parsePackageScript`, `warpBashSubShell`, `wrapJoinBashArgs`
 + 📄 [source/node/package/Npm.js](source/node/package/Npm.js)
-  - `outdatedJSON`, `outdatedWithTempJSON`
+  - `REGEXP_ALIAS_VER_SPEC`, `outdatedJSON`, `outdatedWithTempJSON`
 + 📄 [source/node/package/Trim.js](source/node/package/Trim.js)
   - `trimEmptyFolder`, `trimFile`, `trimFileNodeModules`, `trimFileRubyGem`
 
@@ -147,6 +147,8 @@
 >       start node REPL
 >   --check-outdated --C -C [OPTIONAL] [ARGUMENT=0-1]
 >       check dependency version from "package.json", or all under the folder: $0/-R=checkPath/"./package.json"
+>     --buggy-tag --bt [ARGUMENT=0-1]
+>         set to ANY value to enable, except "false/no/n/0"
 >     --write-back --wb [ARGUMENT=0-1]
 >         set to ANY value to enable, except "false/no/n/0"
 >     --path-temp [ARGUMENT=1]
@@ -211,6 +213,7 @@
 >     export DR_DEV_EVAL="[OPTIONAL] [ARGUMENT=0+]"
 >     export DR_DEV_REPL="[OPTIONAL] [ARGUMENT=0-1]"
 >     export DR_DEV_CHECK_OUTDATED="[OPTIONAL] [ARGUMENT=0-1]"
+>     export DR_DEV_BUGGY_TAG="[ARGUMENT=0-1] [ALIAS=DR_DEV_BT]"
 >     export DR_DEV_WRITE_BACK="[ARGUMENT=0-1] [ALIAS=DR_DEV_WB]"
 >     export DR_DEV_PATH_TEMP="[ARGUMENT=1]"
 >     export DR_DEV_EXEC="[OPTIONAL] [ARGUMENT=1+]"
@@ -259,6 +262,7 @@
 >     "eval": [ "[OPTIONAL] [ARGUMENT=0+]" ],
 >     "repl": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
 >     "checkOutdated": [ "[OPTIONAL] [ARGUMENT=0-1]" ],
+>     "buggyTag": [ "[ARGUMENT=0-1] [ALIAS=bt]" ],
 >     "writeBack": [ "[ARGUMENT=0-1] [ALIAS=wb]" ],
 >     "pathTemp": [ "[ARGUMENT=1]" ],
 >     "exec": [ "[OPTIONAL] [ARGUMENT=1+]" ],
