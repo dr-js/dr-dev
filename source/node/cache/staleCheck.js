@@ -39,20 +39,20 @@ __DEV__ && console.log({
 })
 
 const STAT_KEY = 'stale-check'
-const loadStatFile = async (config) => loadStat(config, STAT_KEY, (rawStat) => ({
+/** @deprecated */ const loadStatFile = async (config) => loadStat(config, STAT_KEY, (rawStat) => ({
   timeSetupFirst: parseTime(rawStat[ 'time-setup-first' ]),
   timeSetup: parseTime(rawStat[ 'time-setup' ]),
   timeMark: parseTime(rawStat[ 'time-mark' ]),
   timeReport: parseTime(rawStat[ 'time-report' ])
 }))
-const saveStatFile = async (config) => saveStat(config, STAT_KEY, (stat) => ({
+/** @deprecated */ const saveStatFile = async (config) => saveStat(config, STAT_KEY, (stat) => ({
   'time-setup-first': packTime(stat.timeSetupFirst),
   'time-setup': packTime(stat.timeSetup),
   'time-mark': packTime(stat.timeMark),
   'time-report': packTime(stat.timeReport)
 }))
 
-const staleCheckSetup = async (config) => {
+/** @deprecated */ const staleCheckSetup = async (config) => {
   // load stat
   config = await loadStatFile(config)
 
@@ -67,7 +67,7 @@ const staleCheckSetup = async (config) => {
   await saveStatFile(config)
 }
 
-const staleCheckMark = async (config) => {
+/** @deprecated */ const staleCheckMark = async (config) => {
   // load stat
   config = await loadStatFile(config)
 
@@ -82,7 +82,7 @@ const staleCheckMark = async (config) => {
   await saveStatFile(config)
 }
 
-const staleCheckCalcReport = async (
+/** @deprecated */ const staleCheckCalcReport = async (
   config,
   report = { // all item in list is `absolutePath` of file
     staleSize: 0, staleList: [], // write & read before mark-stale, can delete to free space
@@ -121,7 +121,7 @@ const staleCheckCalcReport = async (
   return { report }
 }
 
-const describeStaleReport = (report) => [
+/** @deprecated */ const describeStaleReport = (report) => [
   report.staleSize && `- stale:  ${binary(report.staleSize)}B/#${report.staleList.length}`,
   report.pendSize && `- pend:   ${binary(report.pendSize)}B/#${report.pendList.length}`,
   report.bugSize && `- bug:    ${binary(report.bugSize)}B/#${report.bugList.length}`,

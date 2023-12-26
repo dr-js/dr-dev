@@ -112,7 +112,7 @@ const runMode = async (optionData, modeName) => {
         env: tryGetFirst('exec-env'),
         cwd: tryGetFirst('exec-cwd') // TODO: naming
       })
-    case 'cache-step':
+    case 'cache-step': // TODO: DEPRECATED: not so useful
       return doCacheStep({
         cacheStepType: argumentList[ 0 ],
         prunePolicyType: tryGetFirst('prune-policy') || 'unused',

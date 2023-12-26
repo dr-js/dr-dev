@@ -15,18 +15,18 @@ __DEV__ && console.log({
   }
 })
 const STAT_KEY = 'checksum'
-const loadStatFile = async (config) => loadStat(config, STAT_KEY, (rawStat) => ({
+/** @deprecated */ const loadStatFile = async (config) => loadStat(config, STAT_KEY, (rawStat) => ({
   timeUpdate: parseTime(rawStat[ 'time-update' ]),
   checksumHash: rawStat[ 'checksum-hash' ],
   checksumHashPrev: undefined // drop prev
 }))
-const saveStatFile = async (config) => saveStat(config, STAT_KEY, (stat) => ({
+/** @deprecated */ const saveStatFile = async (config) => saveStat(config, STAT_KEY, (stat) => ({
   'time-update': packTime(stat.timeUpdate),
   'checksum-hash': stat.checksumHash,
   'checksum-hash-prev': stat.checksumHashPrev
 }))
 
-const checksumUpdate = async (config, isChecksumFileOnly = false) => { // set isChecksumFileOnly to only write the checksum file
+/** @deprecated */ const checksumUpdate = async (config, isChecksumFileOnly = false) => { // set isChecksumFileOnly to only write the checksum file
   // load stat
   if (!isChecksumFileOnly) config = await loadStatFile(config)
 
@@ -46,7 +46,7 @@ const checksumUpdate = async (config, isChecksumFileOnly = false) => { // set is
   return { checksumHash, isHashChanged }
 }
 
-const checksumDetectChange = async (config, isSkipSave = false) => { // set isSkipSave to allow repeatedly check hash change
+/** @deprecated */ const checksumDetectChange = async (config, isSkipSave = false) => { // set isSkipSave to allow repeatedly check hash change
   // load stat
   config = await loadStatFile(config)
 
