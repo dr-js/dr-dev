@@ -195,7 +195,7 @@ const testWithPuppeteer = async ({
     puppeteerPage.on('console', (consoleMessage) => {
       const logType = consoleMessage.type()
       const logText = consoleMessage.text()
-      kitLogger.log(`[test|${logType}] ${logText}`)
+      kitLogger.devLog(`[test|${logType}] ${logText}`)
       if (!logText.includes(testTag)) return
       const { [ testTag ]: { failCount } } = JSON.parse(logText)
       failCount
