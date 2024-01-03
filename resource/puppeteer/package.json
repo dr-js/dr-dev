@@ -4,6 +4,6 @@
     "INIT#package.json"
   ],
   "dependencies": {
-    "puppeteer": "^20.9.0"
+    "puppeteer": "^21.6.1"
   }
 }

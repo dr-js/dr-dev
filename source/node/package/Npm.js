@@ -1,5 +1,7 @@
 import { resolve } from 'node:path'
-import { withTimeoutPromise } from '@dr-js/core/module/common/function.js'
+import { cpus } from 'node:os'
+import { withTimeoutPromise, runAsyncByLane } from '@dr-js/core/module/common/function.js'
+import { clamp } from '@dr-js/core/module/common/math/base.js'
 import { isVersionSpecComplex, parseSemVer, compareSemVer } from '@dr-js/core/module/common/module/SemVer.js'
 import { toPackageInfo, collectDependency } from '@dr-js/core/module/common/module/PackageJSON.js'
 import { writeJSON, readJSON } from '@dr-js/core/module/node/fs/File.js'
@@ -30,12 +32,12 @@ const outdatedJSON = async ({
   if (isBuggyTag) {
     const { dependencyMap } = collectDependency(toPackageInfo({ packageJSON: await readJSON(resolve(packageRoot, 'package.json')) }))
     const outdatedMap = {} // { [name-spec]: { latest: '0.0.0' } }
-    for (const [ name, versionSpec ] of Object.entries(dependencyMap)) {
+    await runAsyncByLane(clamp(cpus().length || 0, 2, 8), Object.entries(dependencyMap).map(([ name, versionSpec ]) => async () => {
       const realName = REGEXP_ALIAS_VER_SPEC.test(versionSpec) ? REGEXP_ALIAS_VER_SPEC.exec(versionSpec)[ 1 ] : name
       const { versions = [] } = await _npmJSON([ 'view', realName ], packageRoot)
       const biggestVersion = versions.filter((v) => !isVersionSpecComplex(v) && !parseSemVer(v).label).sort(compareSemVer).pop() // smaller first, pick biggest version
       outdatedMap[ name ] = { latest: biggestVersion }
-    }
+    }))
     return outdatedMap
   }
 

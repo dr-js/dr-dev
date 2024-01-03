@@ -98,7 +98,7 @@ const SHELL_ALIAS_MAP = {
   // =============================
   // git aliases (G*)
   'git-fetch': 'git fetch',
-  'git-fetch-all': 'git fetch --all --tags --prune',
+  'git-fetch-all': 'git fetch --all --tags --prune --force',
   'git-git-combo': 'git fetch --prune', // # no `--prune-tags`
   'git-git-git-combo': _E('git fetch --prune', 'git gc --auto'),
   'git-git-git-git-combo': _E('git fetch --prune', 'git gc --prune=now'),

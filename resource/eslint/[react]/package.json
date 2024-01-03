@@ -6,7 +6,7 @@
     "INIT#.eslintrc.js"
   ],
   "dependencies": {
-    "eslint-plugin-react": "^7.33.1",
-    "@babel/eslint-parser": "^7.22.9"
+    "eslint-plugin-react": "^7.33.2",
+    "@babel/eslint-parser": "^7.23.3"
   }
 }
