@@ -58,7 +58,7 @@
 + 📄 [source/node/cache/staleCheck.js](source/node/cache/staleCheck.js)
   - `describeStaleReport`, `loadStatFile`, `saveStatFile`, `staleCheckCalcReport`, `staleCheckMark`, `staleCheckSetup`
 + 📄 [source/node/config/Output.js](source/node/config/Output.js)
-  - `outputConfig`, `outputConfigMap`
+  - `getRawBuffer`, `getRawText`, `outputConfig`, `outputConfigMap`, `toRawBuffer`, `toRawText`
 + 📄 [source/node/config/YAML.js](source/node/config/YAML.js)
   - `GET_YAML`, `USE_YAML`, `parseYAML`, `readYAML`, `readYAMLSync`, `stringifyYAML`, `writeYAML`, `writeYAMLSync`
 + 📄 [source/node/export/generate.js](source/node/export/generate.js)
