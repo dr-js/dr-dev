@@ -175,9 +175,9 @@ const SHELL_ALIAS_MAP = {
 
   // =============================
   // systemd aliases (SD*,SR*)
-  'systemd-list': 'sudo systemctl list-unit-files --type=service --state=enabled,disabled,generated',
+  'systemd-list': 'sudo systemctl list-unit-files --state=enabled,disabled,generated',
   'systemd-list-active': 'sudo systemctl list-units --type=service',
-  'systemd-list-enabled': 'sudo systemctl list-unit-files --type=service --state=enabled,generated',
+  'systemd-list-enabled': 'sudo systemctl list-unit-files --state=enabled,generated',
   'systemd-list-timers': 'sudo systemctl list-timers',
   'systemd-daemon-reload': 'sudo systemctl daemon-reload',
   'systemd-reset-failed': 'sudo systemctl reset-failed', // https://serverfault.com/questions/606520/how-to-remove-missing-systemd-units
