@@ -23,7 +23,7 @@ const clearPuppeteerBrowser = ({
   kit, kitLogger = kit
 }) => {
   kitLogger && kitLogger.log('[Puppeteer|Browser] clear')
-  puppeteerBrowser.removeListener('disconnected', puppeteerBrowserDisconnectListener)
+  puppeteerBrowser.off('disconnected', puppeteerBrowserDisconnectListener)
   return puppeteerBrowser.close().catch((error) => {
     kitLogger && kitLogger.log(`[Puppeteer] puppeteerBrowser clear error: ${String(error)}`)
     process.exit(-1)
@@ -50,7 +50,7 @@ const initPuppeteerBrowser = async ({
     // For stable testing
     dumpio: Boolean(process.env.PUPPETEER_DUMPIO) // Whether to pipe the browser process stdout and stderr into process.stdout and process.stderr
   })
-  puppeteerBrowser.addListener('disconnected', puppeteerBrowserDisconnectListener)
+  puppeteerBrowser.on('disconnected', puppeteerBrowserDisconnectListener)
   kitLogger.log('[Puppeteer|Browser] init complete')
   return puppeteerBrowser
 }
