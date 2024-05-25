@@ -51,12 +51,12 @@
     "@dr-js/core": "^0.5.13 || ^0.5.14-dev.0 || ^0.5.15-dev.0"
   },
   "devDependencies": {
-    "@dr-js/dev": "^0.5.12",
-    "@dr-js/dev-web": "^0.5.12",
-    "@min-pack/ssh2": "^1.14.0",
+    "@dr-js/dev": "^0.5.13",
+    "@dr-js/dev-web": "^0.5.13",
+    "@min-pack/ssh2": "^1.15.0",
     "eslint-plugin-n": "=15.7.0",
     "ssh2": "^1.15.0",
-    "yaml": "^2.4.1",
+    "yaml": "^2.4.2",
     "yaml-legacy": "npm:yaml@^1.10.2"
   },
   "sideEffects": false
