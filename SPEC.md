@@ -284,24 +284,24 @@
 
 | Package name                   |            Version |
 | :----                          |              ----: |
-| @babel/cli                     |            ^7.24.1 |
-| @babel/core                    |            ^7.24.3 |
-| @babel/eslint-parser           |            ^7.24.1 |
-| @babel/preset-env              |            ^7.24.3 |
-| @babel/preset-react            |            ^7.24.1 |
-| @babel/register                |            ^7.23.7 |
+| @babel/cli                     |            ^7.24.6 |
+| @babel/core                    |            ^7.24.6 |
+| @babel/eslint-parser           |            ^7.24.6 |
+| @babel/preset-env              |            ^7.24.6 |
+| @babel/preset-react            |            ^7.24.6 |
+| @babel/register                |            ^7.24.6 |
 | babel-loader                   |             ^9.1.3 |
 | babel-plugin-minify-replace    |             ^0.5.0 |
-| babel-plugin-module-resolver   |             ^5.0.0 |
+| babel-plugin-module-resolver   |             ^5.0.2 |
 | babel-plugin-styled-components |             ^2.1.4 |
-| eslint                         |            ^8.57.0 |
+| eslint                         |             ^9.3.0 |
 | eslint-plugin-import           |            ^2.29.1 |
-| eslint-plugin-n                | ^16.6.2 || ^15.7.0 |
+| eslint-plugin-n                | ^17.7.0 || ^15.7.0 |
 | eslint-plugin-promise          |             ^6.1.1 |
 | eslint-plugin-react            |            ^7.34.1 |
 | prop-types                     |            ^15.8.1 |
-| puppeteer                      |            ^22.6.1 |
-| react                          |            ^18.2.0 |
-| styled-components              |             ^6.1.8 |
-| terser                         |            ^5.30.0 |
+| puppeteer                      |           ^22.10.0 |
+| react                          |            ^18.3.1 |
+| styled-components              |            ^6.1.11 |
+| terser                         |            ^5.31.0 |
 | webpack                        |            ^5.91.0 |
