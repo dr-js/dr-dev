@@ -294,7 +294,7 @@
 | babel-plugin-minify-replace    |             ^0.5.0 |
 | babel-plugin-module-resolver   |             ^5.0.2 |
 | babel-plugin-styled-components |             ^2.1.4 |
-| eslint                         |             ^9.3.0 |
+| eslint                         |  ^9.3.0 || ^8.57.0 |
 | eslint-plugin-import           |            ^2.29.1 |
 | eslint-plugin-n                | ^17.7.0 || ^15.7.0 |
 | eslint-plugin-promise          |             ^6.1.1 |
